@@ -5,7 +5,7 @@ function App() {
   return (
     <div>
         <ConfigProvider theme={theme}>
-        <AppLayout/>
+          <AppLayout/>
         </ConfigProvider>
     </div>
   );
