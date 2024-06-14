@@ -1,8 +1,12 @@
 
 export const theme = {
     token: {
-        colorPrimary: '#a80000',
-        colorBgContainer:"#ffffff"
+        colorPrimary: '#1c1c1c',
+        colorBgContainer:"#ffffff",
+        Button: {
+            colorPrimary: '#00b96b',
+            algorithm: true, // Enable algorithm
+        },
     },
 };
 

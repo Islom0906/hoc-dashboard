@@ -1,11 +1,12 @@
-import React from 'react';
+import './index.scss'
+import {Button} from "antd";
 
-const Index = () => {
+const AppHeader = () => {
     return (
-        <div>
-            
+        <div className={'ant--header'}>
+            <Button type={'primary'}>Send</Button>
         </div>
     );
 };
 
-export default Index;
+export default AppHeader;

@@ -3,16 +3,20 @@ import {Layout} from "antd";
 import AppHeader from "./AppHeader";
 import AppPage from "./AppPage";
 import AppFooter from "./AppFooter";
+import './index.scss'
 
 const AppLayout = () => {
 
     return (
         <Layout>
-            <AppSidebar/>
+            <AppHeader></AppHeader>
             <Layout>
-                <AppHeader></AppHeader>
-                <AppPage></AppPage>
-                <AppFooter></AppFooter>
+                <AppSidebar/>
+                <Layout className={'ant--page'}>
+                    <AppPage></AppPage>
+                    <AppFooter></AppFooter>
+                </Layout>
+
             </Layout>
         </Layout>
     );
