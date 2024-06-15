@@ -9,7 +9,10 @@ export const configLight = {
     Input: {
         activeBorderColor: "rgb(118, 188, 51)",
         hoverBorderColor: "rgb(118, 188, 51)"
-    }
+    },
+    Typography: {
+        colorTextHeading:"rgb(81, 90, 100)"
+    },
 };
 export const configDark = {
     colorPrimary: 'rgb(37, 43, 54)',
@@ -19,7 +22,11 @@ export const configDark = {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
     },
-    "Input": {
+    Typography: {
+        colorTextHeading:"#DEDEE6"
+    },
+
+    Input: {
         hoverBorderColor: "rgb(118, 188, 51)",
         colorBgContainer: "rgb(37, 43, 54)",
         colorBorder: "rgb(81, 90, 100)",
