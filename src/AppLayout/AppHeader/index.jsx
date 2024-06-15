@@ -32,6 +32,7 @@ const items = [
 ];
 
 const AppHeader = () => {
+    const isDarkHandle=()=>{}
     return (
         <Header className={'app-header'}>
             <img src={logo} className={'logo'} alt={'logo'}/>

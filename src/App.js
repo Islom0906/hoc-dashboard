@@ -4,7 +4,7 @@ import {useState} from "react";
 import AppLayout from "./AppLayout";
 
 function App() {
-    const [isDark, setIsDark] = useState(true)
+    const [isDark, setIsDark] = useState(false)
       const {defaultAlgorithm,darkAlgorithm}=theme
 
     return (
