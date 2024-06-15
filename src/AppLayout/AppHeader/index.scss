@@ -1,3 +1,42 @@
-.ant--header{
-  padding: 10px 5px;
+.app-header {
+  width: 100%;
+  padding: 10px 2%;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    width: 250px;
+    height: 100%;
+    background-color: red;
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .icon {
+    font-size: 24px;
+  }
+}
+
+.userDropdown {
+  padding: 20px 15px;
+  border: none;
+  background: transparent;
+
+  .text {
+    text-align: left;
+
+    h5 {
+      font-size:14px;
+      margin-bottom: 0;
+    }
+    p {
+      font-size: 12px;
+    }
+  }
 }
