@@ -12,6 +12,9 @@ export const configLight = {
         colorTextPlaceholder: "rgb(199, 199, 204)",
         activeShadow: ""
     },
+    Typography: {
+        colorTextHeading:"rgb(81, 90, 100)"
+    },
     InputNumber: {
         hoverBorderColor: "rgb(118, 188, 51)",
         colorBorder: "rgb(222, 222, 230)",
@@ -72,6 +75,10 @@ export const configDark = {
         colorTextPlaceholder: "rgb(222, 222, 230)",
         activeShadow: ""
     },
+    Typography: {
+        colorTextHeading:"#DEDEE6"
+    },
+
     InputNumber: {
         hoverBorderColor: "rgb(118, 188, 51)",
         colorBgContainer: "rgb(37, 43, 54)",

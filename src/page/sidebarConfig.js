@@ -10,25 +10,25 @@ import {
 const items = [
   {
     key:100,
-    icon: <PieChartOutlined />,
+    icon: <PieChartOutlined className={'icon'} style={{fontSize:24}} />,
     label: 'Dashboard',
     path:'/'
   },
   {
     key:120,
-    icon: <UserOutlined />,
+    icon: <UserOutlined className={'icon'}  style={{fontSize:24}} />,
     label: 'Profile',
     path:'/userProfile'
   },
   {
     key:121,
-    icon: <OrderedListOutlined />,
+    icon: <OrderedListOutlined className={'icon'}  style={{fontSize:24}} />,
     label: 'Task',
     path:'/task'
   },
   {
     key:122,
-    icon: <InboxOutlined />,
+    icon: <InboxOutlined className={'icon'}  style={{fontSize:24}} />,
     label: 'Inbox',
     path:'/inbox'
   },

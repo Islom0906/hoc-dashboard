@@ -1,6 +1,7 @@
 import './index.scss'
 import {BellOutlined, MoonOutlined, UserOutlined} from "@ant-design/icons";
 import {Badge, Button, Dropdown} from "antd";
+import logo from './evolution-logo1.svg'
 import {Header} from "antd/es/layout/layout";
 
 const items = [
@@ -33,7 +34,7 @@ const items = [
 const AppHeader = () => {
     return (
         <Header className={'app-header'}>
-            <img src={'logo'} className={'logo'} alt={'logo'}/>
+            <img src={logo} className={'logo'} alt={'logo'}/>
           <div className={'content'}>
             <Badge dot className={'notification'} >
               <BellOutlined className={'icon'} />
@@ -57,8 +58,8 @@ export  const  UserAccount = ({items , src})=> {
                 :
                 <UserOutlined className={'icon'} />
           }
-          <span className={'text'}>
-            <h5>admin user</h5>
+          <span className={'content'}>
+            <p className={'title'}>admin user</p>
             <p>system manager</p>
           </span>
 
