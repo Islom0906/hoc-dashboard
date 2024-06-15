@@ -1,7 +1,7 @@
-import AppLayout from "./AppLayout";
 import {ConfigProvider, theme} from "antd";
 import {configDark,configLight} from "./constants/theme";
 import {useState} from "react";
+import AppLayout from "./AppLayout";
 
 function App() {
     const [isDark, setIsDark] = useState(true)
