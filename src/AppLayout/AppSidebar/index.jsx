@@ -42,10 +42,16 @@ const AppSidebar = () => {
     }
   };
   return (
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+      <Sider
+          width={300}
+          breakpoint={"lg"}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}>
+
         <Menu
             className={'app-aside'}
-            theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items}
+             defaultSelectedKeys={['1']} mode="inline" items={items}
             openKeys={stateOpenKeys}
             onOpenChange={onOpenChange}
 

@@ -1,6 +1,7 @@
 import './index.scss'
 import {BellOutlined, MoonOutlined, UserOutlined} from "@ant-design/icons";
 import {Badge, Button, Dropdown} from "antd";
+import {Header} from "antd/es/layout/layout";
 
 const items = [
   {
@@ -31,7 +32,7 @@ const items = [
 
 const AppHeader = () => {
     return (
-        <header className={'app-header'}>
+        <Header className={'app-header'}>
             <img src={'logo'} className={'logo'} alt={'logo'}/>
           <div className={'content'}>
             <Badge dot className={'notification'} >
@@ -40,7 +41,7 @@ const AppHeader = () => {
             <MoonOutlined className={'icon'} />
             <UserAccount items={items} />
           </div>
-        </header>
+        </Header>
     );
 };
 
