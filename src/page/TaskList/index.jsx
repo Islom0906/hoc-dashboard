@@ -13,8 +13,26 @@ const TaskList = () => {
         <Row gutter={16}>
           <Col span={6}>
             <TaskCard/>
-
           </Col>
+          <Col span={6}>
+            <TaskCard/>
+          </Col>
+          <Col span={6}>
+            <TaskCard/>
+          </Col>
+          <Col span={6}>
+            <TaskCard/>
+          </Col>
+          <Col span={6}>
+            <TaskCard/>
+          </Col>
+          <Col span={6}>
+            <TaskCard/>
+          </Col>
+          <Col span={6}>
+            <TaskCard/>
+          </Col>
+
 
         </Row>
       </div>
