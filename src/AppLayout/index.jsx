@@ -9,7 +9,7 @@ const AppLayout = () => {
 
     return (
         <Layout>
-            <AppHeader></AppHeader>
+            <AppHeader/>
             <Layout>
                 <AppSidebar/>
                 <Layout className={'ant--page'}>

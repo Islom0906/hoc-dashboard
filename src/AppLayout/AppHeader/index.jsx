@@ -1,12 +1,67 @@
 import './index.scss'
-import {Button} from "antd";
+import {BellOutlined, MoonOutlined, UserOutlined} from "@ant-design/icons";
+import {Badge, Button, Dropdown} from "antd";
+
+const items = [
+  {
+    key: '1',
+    label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          changle
+        </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+         edit
+        </a>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+         quit
+        </a>
+    ),
+  },
+];
 
 const AppHeader = () => {
     return (
-        <div className={'ant--header'}>
-            <Button type={'primary'}>Send</Button>
-        </div>
+        <header className={'app-header'}>
+            <img src={'logo'} className={'logo'} alt={'logo'}/>
+          <div className={'content'}>
+            <Badge dot className={'notification'} >
+              <BellOutlined className={'icon'} />
+            </Badge>
+            <MoonOutlined className={'icon'} />
+            <UserAccount items={items} />
+          </div>
+        </header>
     );
 };
 
 export default AppHeader;
+
+export  const  UserAccount = ({items , src})=> {
+  return(
+      <Dropdown menu={{ items }} placement="topRight" className={'userDropdown'} arrow>
+        <Button>
+          {
+            src ?
+          <img src={src} alt="icon"/>
+                :
+                <UserOutlined className={'icon'} />
+          }
+          <span className={'text'}>
+            <h5>admin user</h5>
+            <p>system manager</p>
+          </span>
+
+        </Button>
+      </Dropdown>
+  )
+}
