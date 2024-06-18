@@ -1,7 +1,7 @@
 import {Content} from "antd/es/layout/layout";
 import './index.scss'
 import {theme} from "antd";
-import {UserProfile, TaskList, CalendarTask} from "../../page";
+import {UserProfile, TaskList, CalendarTask, Inbox, MyApplications} from "../../page";
 
 const AppPage = () => {
     const {
@@ -26,6 +26,8 @@ const AppPage = () => {
                 <UserProfile/>
                 <TaskList/>
                 <CalendarTask />
+                <Inbox />
+                <MyApplications />
             </div>
         </Content>
     );
