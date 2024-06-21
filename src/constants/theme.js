@@ -56,7 +56,29 @@ export const configLight = {
         controlItemBgHover: "rgb(251, 251, 251)",
         colorPrimaryBorder: "rgb(81, 90, 100)",
         colorBgElevated: "rgb(251, 251, 251)"
-
+    },
+    Card: {
+        colorText: "rgb(81, 90, 100)",
+        colorTextDescription: "rgb(81, 90, 100)",
+        colorPrimary: "rgb(81, 90, 100)",
+        extraColor: "rgb(81, 90, 100)",
+        colorTextHeading: "rgb(81, 90, 100)",
+        boxShadowCard: "box-shadow: 2px 2px 16px 0px rgba(0, 0, 0, 0.06);"
+    },
+    Table: {
+        headerBg: "rgb(244, 250, 239)",
+        fixedHeaderSortActiveBg: "rgba(118, 188, 51, 0.3)",
+        colorText: "rgb(81, 90, 100)",
+        colorTextHeading: "rgb(81, 90, 100)",
+        rowHoverBg: "rgb(244, 250, 239)",
+        footerBg: "rgb(244, 250, 239)",
+        footerColor: "rgb(81, 90, 100)",
+        bodySortBg: "rgb(255, 255, 255)"
+    },
+    Pagination: {
+        colorPrimary: "rgb(118, 188, 51)",
+        colorPrimaryHover: "rgb(118, 188, 51)",
+        colorText: "rgb(81, 90, 100)"
     }
 };
 export const configDark = {
@@ -121,6 +143,32 @@ export const configDark = {
         controlItemBgHover: "rgb(30, 35, 44)",
         colorBgElevated: "rgb(81, 90, 100)",
         colorPrimaryBorder: "rgb(222, 222, 230)",
+    },
+    Card: {
+        extraColor: "rgb(81, 90, 100)",
+        colorBgContainer: "rgb(37, 43, 54)",
+        colorPrimary: "rgb(222, 222, 230)",
+        colorText: "rgb(222, 222, 230)",
+        colorTextDescription: "rgb(222, 222, 230)",
+        colorTextHeading: "rgb(222, 222, 230)",
+        colorBorderSecondary: "rgba(0, 0, 0, 0)",
+        boxShadowCard: "box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.1);"
+    },
+    Table: {
+        headerBg: "rgb(42, 57, 54)",
+        fixedHeaderSortActiveBg: "rgb(42, 57, 54)",
+        colorText: "rgb(222, 222, 230)",
+        colorTextHeading: "rgb(222, 222, 230)",
+        rowHoverBg: "rgb(81, 90, 100)",
+        footerBg: "rgb(42, 57, 54)",
+        footerColor: "rgb(222, 222, 230)",
+        colorBgContainer: "rgba(0, 0, 0, 0)",
+        bodySortBg: "rgba(0, 0, 0, 0)"
+    },
+    Pagination: {
+        colorPrimary: "rgb(118, 188, 51)",
+        colorPrimaryHover: "rgb(118, 188, 51)",
+        colorText: "rgb(222, 222, 230)"
     }
 };
 

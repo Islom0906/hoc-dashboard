@@ -1,12 +1,11 @@
 import {Content} from "antd/es/layout/layout";
 import './index.scss'
-import {theme} from "antd";
 import {UserProfile, TaskList, CalendarTask, Inbox, MyApplications} from "../../page";
+import BackgroundContent from "./BackgrountContent";
+import Login from "../../page/auth/Login";
 
 const AppPage = () => {
-    const {
-        token: { colorBgContainer, borderRadiusLG,contentBg },
-    } = theme.useToken();
+
     return (
         <Content
             style={{
@@ -14,21 +13,17 @@ const AppPage = () => {
                 overflowY:"scroll"
             }}
         >
-            <div
-                style={{
-                    padding:40,
-                    minHeight: 360,
-                    background: contentBg,
-                    borderRadius: borderRadiusLG,
-                }}
-            >
-
-                <UserProfile/>
-                <TaskList/>
+            <BackgroundContent>
                 <CalendarTask />
+
+            </BackgroundContent>
+                <Login/>
+            <BackgroundContent>
+                <UserProfile/>
+            </BackgroundContent>
+                <TaskList/>
                 <Inbox />
                 <MyApplications />
-            </div>
         </Content>
     );
 };
