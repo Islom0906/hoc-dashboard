@@ -14,25 +14,83 @@ const TaskList = () => {
 
         <Divider orientation="right"><h4>Completed</h4> </Divider>
         <Row gutter={[24, 24]} >
-          <Col className="gutter-row" span={6}  >
+          <Col className="gutter-row" xs={{
+              span:12
+          }}
+               md={{
+                   span:8
+               }}
+
+          xl={{
+              span:6
+          }}
+          >
             <TaskCard/>
           </Col>
-          <Col className="gutter-row" span={6}>
+          <Col className="gutter-row" xs={{
+              span:12
+          }}
+               md={{
+                   span:8
+               }}
+          xl={{
+              span:6
+          }}>
             <TaskCard/>
           </Col>
-          <Col className="gutter-row" span={6}>
+          <Col className="gutter-row" xs={{
+              span:12
+          }}
+               md={{
+                   span:8
+               }}
+          xl={{
+              span:6
+          }}>
             <TaskCard/>
           </Col>
-          <Col className="gutter-row" span={6}>
+          <Col className="gutter-row" xs={{
+              span:12
+          }}
+               md={{
+                   span:8
+               }}
+          xl={{
+              span:6
+          }}>
             <TaskCard/>
           </Col>
-          <Col className="gutter-row" span={6}>
+          <Col className="gutter-row" xs={{
+              span:12
+          }}
+               md={{
+                   span:8
+               }}
+          xl={{
+              span:6
+          }}>
             <TaskCard/>
           </Col>
-          <Col className="gutter-row" span={6}>
+          <Col className="gutter-row" xs={{
+              span:12
+          }}
+               md={{
+                   span:8
+               }}
+          xl={{
+              span:6
+          }}>
             <TaskCard/>
           </Col>
-          <Col className="gutter-row" span={6}>
+          <Col className="gutter-row" xs={{
+              span:12
+          }}
+               md={{
+                   span:8
+               }}
+          xl={{
+              span:6
+          }}>
             <TaskCard/>
           </Col>
 
