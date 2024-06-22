@@ -10,6 +10,8 @@ import Login from "../../page/auth/Login";
 
 const AppPage = () => {
 
+
+  console.log(samplePagesConfigs)
     return (
         <Content
             style={{
@@ -17,16 +19,16 @@ const AppPage = () => {
               overflowY:"scroll"
             }}
         >
-            <BackgroundContent>
-                <CalendarTask />
-            </BackgroundContent>
-                <Login/>
-            <BackgroundContent>
-                <UserProfile/>
-            </BackgroundContent>
-                <TaskList/>
-                <Inbox />
-                <MyApplications />
+            {/*<BackgroundContent>*/}
+            {/*    <CalendarTask />*/}
+            {/*</BackgroundContent>*/}
+            {/*    <Login/>*/}
+            {/*<BackgroundContent>*/}
+            {/*    <UserProfile/>*/}
+            {/*</BackgroundContent>*/}
+            {/*    <TaskList/>*/}
+            {/*    <Inbox />*/}
+            {/*    <MyApplications />*/}
 
           <Router>
             <Routes>
@@ -37,13 +39,13 @@ const AppPage = () => {
                       element={
                         <PrivateRoute
                             component={route.element}
-                            permittedRoles={route.permittedRoles}
+                            permittedRoles={route.permittedRole}
                         />
                       }
                   />
               ))}
               <Route path="/" element={<div>Home Page</div>} />
-              <Route path="*" element={<div>404 Not Found</div>} />
+              <Route path="*" element={<Login/>} />
             </Routes>
           </Router>
         </Content>

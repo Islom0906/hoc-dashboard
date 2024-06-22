@@ -1,21 +1,22 @@
 import React from 'react';
-import {Route, Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-const PrivateRoute = ({ component: Component, permittedRoles, ...rest }) => {
+const PrivateRoute = ({ component: Component, permittedRoles }) => {
   const currentRole = getCurrentUserRole(); // Replace with actual role retrieval logic
 
-  return (
-  <Route
-      {...rest}
-      element={permittedRoles.includes(currentRole) ? <Component /> : <Navigate to="/login" />}
-  />
+  console.log(currentRole);
+
+  return permittedRoles.includes(currentRole) ? (
+      <Component />
+  ) : (
+      <Navigate to="/404" />
   );
 };
 
 const getCurrentUserRole = () => {
   // Replace this with actual authentication role retrieval logic
   // For example, you might get the role from a user context, a Redux store, or directly from localStorage
-  return localStorage.getItem('userRole'); // Example using localStorage
+  return 'boss'; // Example using localStorage
 };
 
 export default PrivateRoute;

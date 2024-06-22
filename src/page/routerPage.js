@@ -1,9 +1,9 @@
 import React from 'react';
 
 export const authRole = {
-  admin:['user' , 'admin'],
-  boss: ['user' , 'boss'],
-  user: ['user']
+  admin:'admin',
+  boss: 'boss',
+  user: 'user'
 }
 
 const Dashboard = React.lazy(() => import('./Dashboard'));
@@ -16,14 +16,10 @@ const UserProfile = React.lazy(() => import('./UserProfile'));
 
 
 export const samplePagesConfigs = [
-  {
-    permittedRole: authRole.user,
-    path: '/dashboard',
-    element: <Dashboard/>,
-  },
-  {
-    permittedRole: authRole.admin,
-    path: '/calendar',
-    element: <CalendarTask/>,
-  },
+  { path: '/dashboard', element: Dashboard, permittedRole: ['admin', 'user' , 'boss'] },
+  { path: '/user-profile', element: UserProfile, permittedRole: ['admin', 'user'] },
+  { path: '/task-list', element: TaskList, permittedRole: ['user'] },
+  { path: '/calendar-task', element: CalendarTask, permittedRole: ['admin'] },
+  { path: '/inbox', element: Inbox, permittedRole: ['user'] },
+  { path: '/my-applications', element: MyApplications, permittedRole: ['boss'] },
 ];

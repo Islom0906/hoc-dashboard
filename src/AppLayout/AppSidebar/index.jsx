@@ -21,6 +21,8 @@ const AppSidebar = () => {
     return key;
   }
   const levelKeys = getLevelKeys(items);
+
+  console.log(levelKeys)
   const [stateOpenKeys, setStateOpenKeys] = useState(['2', '23']);
   const onOpenChange = (openKeys) => {
     const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
@@ -48,7 +50,6 @@ const AppSidebar = () => {
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}>
-
         <Menu
             className={'app-aside'}
              defaultSelectedKeys={['1']} mode="inline" items={items}
