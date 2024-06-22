@@ -1,7 +1,9 @@
 import {Content} from "antd/es/layout/layout";
 import './index.scss'
 import {theme} from "antd";
-import {UserProfile, TaskList, CalendarTask, Inbox, MyApplications} from "../../page";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
+import {samplePagesConfigs} from "../../page/routerPage";
 
 const AppPage = () => {
     const {
@@ -22,15 +24,38 @@ const AppPage = () => {
                     borderRadius: borderRadiusLG,
                 }}
             >
+              <Router>
+                <Routes>
+                  {samplePagesConfigs.map((route, index) => (
+                      <Route
+                          key={index}
+                          path={route.path}
+                          element={
+                            <PrivateRoute
+                                component={route.element}
+                                permittedRoles={route.permittedRoles}
+                            />
+                          }
+                      />
+                  ))}
+                  <Route path="/" element={<div>Home Page</div>} />
+                  <Route path="*" element={<div>404 Not Found</div>} />
+                </Routes>
+              </Router>
 
-                <UserProfile/>
-                <TaskList/>
-                <CalendarTask />
-                <Inbox />
-                <MyApplications />
             </div>
         </Content>
     );
 };
 
 export default AppPage;
+
+
+
+{/*<UserProfile/>*/}
+{/*<TaskList/>*/}
+{/*<CalendarTask />*/}
+{/*<Inbox />*/}
+{/*<MyApplications />*/}
+
+// import {UserProfile, TaskList, CalendarTask, Inbox, MyApplications} from "../../page";
