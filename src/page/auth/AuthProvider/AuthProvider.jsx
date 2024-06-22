@@ -3,8 +3,10 @@ import axios, {setAuthToken} from "../../../service/auth/axios";
 import apiService from "../../../service/apis/api";
 import {authData} from "../../../store/slice/authSlice";
 import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const AuthProvider = ({children}) => {
+    const navigate=useNavigate()
     const dispatch=useDispatch()
     axios.interceptors.response.use(
         (res) => res,
@@ -49,8 +51,10 @@ const AuthProvider = ({children}) => {
                     isLoading: false,
                     isAuthenticated: false
                 }))
+                navigate('/')
                 return;
             }
+
             setAuthToken(token)
             try {
 

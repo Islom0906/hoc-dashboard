@@ -6,10 +6,12 @@ import './index.scss'
 import AppPage from "./AppPage";
 import {configDark, configLight} from "../constants/theme";
 import {useSelector} from "react-redux";
+import {Routes, Route} from 'react-router-dom';
+import Login from "../page/auth/Login";
 
 const AppLayout = () => {
     const {systemMode} = useSelector((state) => state.theme)
-
+    const {data:{isAuthenticated}}=useSelector(state => state.auth)
 
     const {defaultAlgorithm, darkAlgorithm} = theme
     return (
@@ -17,17 +19,30 @@ const AppLayout = () => {
             algorithm: systemMode === 'dark' ? darkAlgorithm : defaultAlgorithm,
             token: systemMode === 'dark' ? configDark : configLight,
         }}>
-            <Layout>
-                <AppHeader/>
-                <Layout>
-                    <AppSidebar/>
-                    <Layout className={'ant--page'}>
-                        <AppPage/>
-                        <AppFooter/>
-                    </Layout>
 
-                </Layout>
-            </Layout>
+                {
+                    !isAuthenticated ?
+                        <Routes>
+                            <Route path="/" element={<Login/>}/>
+                        </Routes>
+                        :
+
+                        <Layout>
+                            <AppHeader/>
+                            <Layout>
+                                <AppSidebar/>
+                                <Layout className={'ant--page'}>
+                                    <AppPage/>
+                                    <AppFooter/>
+                                </Layout>
+
+                            </Layout>
+                        </Layout>
+                }
+
+
+
+
         </ConfigProvider>
     );
 };

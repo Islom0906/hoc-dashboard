@@ -9,7 +9,7 @@ const PrivateRoute = ({ component: Component, permittedRoles }) => {
   return permittedRoles.includes(currentRole) ? (
       <Component />
   ) : (
-      <Navigate to="/404" />
+      <Navigate to="/" />
   );
 };
 

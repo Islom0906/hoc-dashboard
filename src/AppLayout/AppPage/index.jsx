@@ -30,7 +30,6 @@ const AppPage = () => {
             {/*    <Inbox />*/}
             {/*    <MyApplications />*/}
 
-          <Router>
             <Routes>
               {samplePagesConfigs.map((route, index) => (
                   <Route
@@ -44,10 +43,9 @@ const AppPage = () => {
                       }
                   />
               ))}
-              <Route path="/" element={<div>Home Page</div>} />
-              <Route path="*" element={<Login/>} />
+                <Route path="*" element={<div>Salom</div>}/>
+
             </Routes>
-          </Router>
         </Content>
     );
 };
