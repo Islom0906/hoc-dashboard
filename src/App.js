@@ -10,10 +10,9 @@ function App() {
     return (
         <Provider store={store}>
             <Router>
-
-            <AuthProvider>
-                <AppLayout/>
-            </AuthProvider>
+                <AuthProvider>
+                        <AppLayout/>
+                </AuthProvider>
             </Router>
         </Provider>
     );

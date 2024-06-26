@@ -3,7 +3,7 @@ import {theme} from "antd";
 
 const BackgroundContent = ({children}) => {
     const {
-        token: { colorBgContainer, borderRadiusLG,contentBg },
+        token: {  borderRadiusLG,contentBg },
     } = theme.useToken();
     return (
         <div

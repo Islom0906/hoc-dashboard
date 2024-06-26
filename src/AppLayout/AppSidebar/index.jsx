@@ -22,7 +22,6 @@ const AppSidebar = () => {
   }
   const levelKeys = getLevelKeys(items);
 
-  console.log(levelKeys)
   const [stateOpenKeys, setStateOpenKeys] = useState(['2', '23']);
   const onOpenChange = (openKeys) => {
     const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);

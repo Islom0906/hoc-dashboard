@@ -12,7 +12,7 @@ const items = [
     key:100,
     icon: <PieChartOutlined className={'icon'} style={{fontSize:24}} />,
     label: 'Dashboard',
-    path:'/'
+    path:'/dashboard'
   },
   {
     key:120,
@@ -24,7 +24,7 @@ const items = [
     key:121,
     icon: <OrderedListOutlined className={'icon'}  style={{fontSize:24}} />,
     label: 'Task',
-    path:'/task'
+    path:'/task-list'
   },
   {
     key:122,
