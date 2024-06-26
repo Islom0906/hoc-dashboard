@@ -1,5 +1,6 @@
 export const configLight = {
     contentBg:'#FFFFFF',
+    mainBg:"#FBFBFB",
     Button: {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
@@ -83,7 +84,7 @@ export const configLight = {
 };
 export const configDark = {
     contentBg:'#252B36',
-
+    mainBg:"rgb(27, 31, 40)",
     Button: {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',

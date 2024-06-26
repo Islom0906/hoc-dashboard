@@ -12,7 +12,7 @@ const items = [
     key:100,
     icon: <PieChartOutlined className={'icon'} style={{fontSize:24}} />,
     label: 'Dashboard',
-    path:'/'
+    path:'/dashboard'
   },
   {
     key:120,

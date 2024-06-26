@@ -51,7 +51,7 @@ const AuthProvider = ({children}) => {
                     isLoading: false,
                     isAuthenticated: false
                 }))
-                navigate('/')
+                navigate('/login')
                 return;
             }
 
@@ -64,6 +64,7 @@ const AuthProvider = ({children}) => {
                     isLoading: false,
                     isAuthenticated: true
                 }))
+                // navigate(0)
             } catch (error) {
                 console.log(error)
                 dispatch(authData({
@@ -71,6 +72,7 @@ const AuthProvider = ({children}) => {
                     isLoading: false,
                     isAuthenticated: false
                 }))
+                navigate('/login')
             }
         }
 

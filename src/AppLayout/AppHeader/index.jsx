@@ -6,32 +6,7 @@ import {Header} from "antd/es/layout/layout";
 import {useDispatch, useSelector} from "react-redux";
 import {changeThemeMode} from "../../store/slice/themeSlice";
 
-const items = [
-  {
-    key: '1',
-    label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-          changle
-        </a>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-         edit
-        </a>
-    ),
-  },
-  {
-    key: '3',
-    label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-         quit
-        </a>
-    ),
-  },
-];
+
 
 const AppHeader = () => {
     const {systemMode}=useSelector(state => state.theme)
@@ -54,7 +29,7 @@ const AppHeader = () => {
                           <SunOutlined className={'icon'}/>
                   }
               </div>
-            <UserAccount items={items} />
+            <UserAccount  />
           </div>
         </Header>
     );
@@ -62,7 +37,37 @@ const AppHeader = () => {
 
 export default AppHeader;
 
-export  const  UserAccount = ({items , src})=> {
+export  const  UserAccount = ({ src})=> {
+    const logout=()=>{
+        console.log('render')
+    }
+    const items = [
+        {
+            key: '1',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                    changle
+                </a>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                    edit
+                </a>
+            ),
+        },
+        {
+            key: '3',
+            label: (
+                <div onClick={logout}>
+                    quit
+                </div>
+            ),
+        },
+    ];
+
 
   return(
       <Dropdown menu={{ items }} placement="topRight" className={'userDropdown'} arrow>
