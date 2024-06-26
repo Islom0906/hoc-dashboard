@@ -11,7 +11,6 @@ import Login from "../../page/auth/Login";
 const AppPage = () => {
 
 
-  console.log(samplePagesConfigs)
     return (
         <Content
             style={{
@@ -19,17 +18,6 @@ const AppPage = () => {
               overflowY:"scroll"
             }}
         >
-            {/*<BackgroundContent>*/}
-            {/*    <CalendarTask />*/}
-            {/*</BackgroundContent>*/}
-            {/*    <Login/>*/}
-            {/*<BackgroundContent>*/}
-            {/*    <UserProfile/>*/}
-            {/*</BackgroundContent>*/}
-            {/*    <TaskList/>*/}
-            {/*    <Inbox />*/}
-            {/*    <MyApplications />*/}
-
             <Routes>
               {samplePagesConfigs.map((route, index) => (
                   <Route
@@ -44,7 +32,6 @@ const AppPage = () => {
                   />
               ))}
                 <Route path="*" element={<div>Salom</div>}/>
-
             </Routes>
         </Content>
     );

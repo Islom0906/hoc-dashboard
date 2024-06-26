@@ -18,13 +18,13 @@ const items = [
     key:120,
     icon: <UserOutlined className={'icon'}  style={{fontSize:24}} />,
     label: 'Profile',
-    path:'/userProfile'
+    path:'/user-profile'
   },
   {
     key:121,
     icon: <OrderedListOutlined className={'icon'}  style={{fontSize:24}} />,
     label: 'Task',
-    path:'/task'
+    path:'/task-list'
   },
   {
     key:122,

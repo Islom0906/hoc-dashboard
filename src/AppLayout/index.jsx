@@ -8,6 +8,7 @@ import {configDark, configLight} from "../constants/theme";
 import {useSelector} from "react-redux";
 import {Routes, Route} from 'react-router-dom';
 import Login from "../page/auth/Login";
+import {BrowserRouter as Router} from 'react-router-dom';
 
 const AppLayout = () => {
     const {systemMode} = useSelector((state) => state.theme)
@@ -19,7 +20,7 @@ const AppLayout = () => {
             algorithm: systemMode === 'dark' ? darkAlgorithm : defaultAlgorithm,
             token: systemMode === 'dark' ? configDark : configLight,
         }}>
-
+          <Router>
                 {
                     !isAuthenticated ?
                         <Routes>
@@ -40,7 +41,7 @@ const AppLayout = () => {
                         </Layout>
                 }
 
-
+            </Router>
 
 
         </ConfigProvider>
