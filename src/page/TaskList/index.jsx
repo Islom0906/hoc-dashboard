@@ -1,11 +1,19 @@
 
-
+// import { useQuery} from 'react-query';
 import {Avatar, Card, Col, Divider, Flex, Progress, Row, Space, Tooltip, Typography} from "antd";
 import './index.scss'
-import {AntDesignOutlined, CalendarFilled, FieldTimeOutlined, UserOutlined} from "@ant-design/icons";
+import {CalendarFilled, FieldTimeOutlined, UserOutlined} from "@ant-design/icons";
 import TaskInner from "./TaskInner";
+import apiService from "../../service/apis/api";
 
 const TaskList = () => {
+  // const {data: slotData, refetch: slotFetch} = useQuery(
+  //     'get-apartment-slot',
+  //     () => apiService.getData('/Slot'),
+  //     {
+  //       enabled: false,
+  //     },
+  // );
   return (
       <div>
         <h1>

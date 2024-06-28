@@ -27,7 +27,6 @@ const AppLayout = () => {
                             <Route path="/login" element={<Login/>}/>
                         </Routes>
                         :
-
                         <Layout>
                             <AppHeader/>
                             <Layout>
@@ -36,14 +35,10 @@ const AppLayout = () => {
                                     <AppPage/>
                                     <AppFooter/>
                                 </Layout>
-
                             </Layout>
                         </Layout>
                 }
-
-
             </AuthRoutes>
-
         </ConfigProvider>
     );
 };

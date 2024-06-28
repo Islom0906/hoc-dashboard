@@ -1,62 +1,70 @@
-import React, { useState } from 'react';
-import { Menu } from 'antd';
-import Sider from "antd/es/layout/Sider";
-import items from '../../page/sidebarConfig'
-import './index.scss'
-const AppSidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const getLevelKeys = (items1) => {
-    const key = {};
-    const func = (items2, level = 1) => {
-      items2.forEach((item) => {
-        if (item.key) {
-          key[item.key] = level;
-        }
-        if (item.children) {
-          func(item.children, level + 1);
-        }
-      });
-    };
-    func(items1);
-    return key;
-  }
-  const levelKeys = getLevelKeys(items);
+import { Flex, Menu } from 'antd';
+import Sider from 'antd/es/layout/Sider';
+import './index.scss';
+import SubMenu from 'antd/es/menu/SubMenu';
+import { Link } from 'react-router-dom';
+import { samplePagesConfigs} from "../../page/routerPage";
+import {useSelector} from "react-redux";
+import {useEffect, useState} from "react";
 
-  const [stateOpenKeys, setStateOpenKeys] = useState(['2', '23']);
-  const onOpenChange = (openKeys) => {
-    const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
-    // open
-    if (currentOpenKey !== undefined) {
-      const repeatIndex = openKeys
-          .filter((key) => key !== currentOpenKey)
-          .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
-      setStateOpenKeys(
-          openKeys
-              // remove repeat key
-              .filter((_, index) => index !== repeatIndex)
-              // remove current level all child
-              .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey]),
-      );
-    } else {
-      // close
-      setStateOpenKeys(openKeys);
-    }
-  };
+const AppSidebar = () => {
+  const [userRole ,setUserRole] = useState(null)
+  const {data:{user}} = useSelector(state => state.auth)
+
+useEffect(() => {
+  if(user) {
+  user?.roles.map(item => (
+      setUserRole([item.name])
+  ))
+  }
+} , [user])
+
+  console.log(userRole)
+  const isPermitted = (roles) => roles.some(role => userRole.includes(role));
+
   return (
-      <Sider
-          width={300}
-          breakpoint={"lg"}
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}>
-        <Menu
-            className={'app-aside'}
-             defaultSelectedKeys={['1']} mode="inline" items={items}
-            openKeys={stateOpenKeys}
-            onOpenChange={onOpenChange}
-        />
+      <Sider width={300} breakpoint={'lg'}>
+        <Menu className={'app-aside'} mode="inline">
+          {userRole && samplePagesConfigs
+              .filter(menu => isPermitted(menu.permittedRole) && !menu.noIndex)
+              .map((menu) => (
+                  menu.children ? (
+                      <SubMenu
+                          key={menu.key}
+                          title={<LinkItem icon={menu?.icon} label={menu.label} />}
+                      >
+                        <Menu.ItemGroup>
+                          {menu.children
+                              .filter(menuItem => isPermitted(menuItem.permittedRole) && !menuItem.noIndex)
+                              .map((menuItem) => (
+                                  <Menu.Item key={menuItem.key}>
+                                    <Link to={`${menuItem.path}`}>
+                                      <LinkItem icon={menuItem?.icon} label={menuItem.label} />
+                                    </Link>
+                                  </Menu.Item>
+                              ))}
+                        </Menu.ItemGroup>
+                      </SubMenu>
+                  ) : (
+                      <Menu.Item key={menu.key}>
+                        <Link to={`${menu.path}`}>
+                          <LinkItem icon={menu?.icon} label={menu.label} />
+                        </Link>
+                      </Menu.Item>
+                  )
+              ))}
+        </Menu>
       </Sider>
   );
 };
 
 export default AppSidebar;
+
+export const LinkItem = ({ icon, label }) => {
+  return (
+      <Flex gap={20}>
+        <span>{icon}</span>
+        <span>{label}</span>
+      </Flex>
+  );
+};

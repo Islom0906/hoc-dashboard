@@ -5,8 +5,6 @@ import AuthProvider from "./page/auth/AuthProvider/AuthProvider";
 import {BrowserRouter as Router} from 'react-router-dom';
 
 function App() {
-
-
     return (
         <Provider store={store}>
             <Router>
@@ -17,5 +15,4 @@ function App() {
         </Provider>
     );
 }
-
 export default App;

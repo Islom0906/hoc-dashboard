@@ -1,19 +1,35 @@
 import './index.scss'
 import {BellOutlined, MoonOutlined, SunOutlined, UserOutlined} from "@ant-design/icons";
-import {Badge, Button, Dropdown} from "antd";
+import {Badge, Button, Dropdown, Flex} from "antd";
 import logo from './evolution-logo1.svg'
 import {Header} from "antd/es/layout/layout";
 import {useDispatch, useSelector} from "react-redux";
 import {changeThemeMode} from "../../store/slice/themeSlice";
+import {authData} from "../../store/slice/authSlice";
+import {useNavigate} from "react-router-dom";
 
 
 
 const AppHeader = () => {
     const {systemMode}=useSelector(state => state.theme)
+    const {data:{user}}=useSelector(state => state.auth)
     const dispatch=useDispatch()
+  const navigate=useNavigate()
     const isDarkHandle=()=>{
         dispatch(changeThemeMode())
     }
+
+  const logOut =() => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('refToken')
+    dispatch(authData({
+      user: null,
+      isLoading: false,
+      isAuthenticated: false
+    }))
+    navigate('/login')
+
+  }
     return (
         <Header className={'app-header'}>
             <img src={logo} className={'logo'} alt={'logo'}/>
@@ -29,7 +45,7 @@ const AppHeader = () => {
                           <SunOutlined className={'icon'}/>
                   }
               </div>
-            <UserAccount  />
+            <UserAccount user={user} logOut={logOut}  />
           </div>
         </Header>
     );
@@ -37,10 +53,9 @@ const AppHeader = () => {
 
 export default AppHeader;
 
-export  const  UserAccount = ({ src})=> {
-    const logout=()=>{
-        console.log('render')
-    }
+export  const  UserAccount = ({ user , logOut})=> {
+
+
     const items = [
         {
             key: '1',
@@ -61,7 +76,7 @@ export  const  UserAccount = ({ src})=> {
         {
             key: '3',
             label: (
-                <div onClick={logout}>
+                <div onClick={logOut}>
                     quit
                 </div>
             ),
@@ -73,14 +88,13 @@ export  const  UserAccount = ({ src})=> {
       <Dropdown menu={{ items }} placement="topRight" className={'userDropdown'} arrow>
         <Button>
           {
-            src ?
-          <img src={src} alt="icon"/>
+            user?.image ?
+          <img src={user?.image} alt="icon"/>
                 :
                 <UserOutlined className={'icon'} />
           }
           <span className={'content'}>
-            <p className={'title'}>admin user</p>
-            <p>system manager</p>
+            <Flex className={'title'} gap={5}><span>{user.first_name}</span> <span>{user.last_name}</span></Flex>
           </span>
 
         </Button>

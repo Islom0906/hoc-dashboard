@@ -4,7 +4,6 @@ import { Navigate } from 'react-router-dom';
 const PrivateRoute = ({ component: Component, permittedRoles }) => {
   const currentRole = getCurrentUserRole(); // Replace with actual role retrieval logic
 
-
   return permittedRoles.includes(currentRole) ? (
       <Component />
   ) : (
