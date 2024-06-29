@@ -19,7 +19,6 @@ useEffect(() => {
   }
 } , [user])
 
-  console.log(userRole)
   const isPermitted = (roles) => roles.some(role => userRole.includes(role));
 
   return (
