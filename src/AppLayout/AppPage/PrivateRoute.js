@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const PrivateRoute = ({ component: Component, permittedRoles }) => {
-  const currentRole = getCurrentUserRole(); // Replace with actual role retrieval logic
+  const { data: { user } } = useSelector(state => state.auth);
+  const [userRoles, setUserRoles] = useState([]);
+  const [hasAccess, setHasAccess] = useState(false);
 
-  return permittedRoles.includes(currentRole) ? (
+  useEffect(() => {
+    if (user && user.roles) {
+      setUserRoles([user.roles]);
+      console.log('User Roles:', userRoles);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userRoles.length > 0) {
+      setHasAccess(userRoles.some(role => permittedRoles.includes(role)));
+    }
+  }, [userRoles, permittedRoles]);
+
+  console.log('User:', user);
+  console.log('Permitted Roles:', permittedRoles);
+  console.log('Has Access:', hasAccess);
+
+  return userRoles.length > 0 && hasAccess ? (
       <Component />
   ) : (
       <Navigate to="/404" />
   );
-};
-
-const getCurrentUserRole = () => {
-  // Replace this with actual authentication role retrieval logic
-  // For example, you might get the role from a user context, a Redux store, or directly from localStorage
-  return 'boss'; // Example using localStorage
 };
 
 export default PrivateRoute;
