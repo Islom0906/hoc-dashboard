@@ -1,4 +1,4 @@
-import {Button,  Form, Input, theme} from "antd";
+import {Button, Form, Input, message, theme} from "antd";
 import {setAuthToken} from "../../../service/auth/axios";
 import {useDispatch} from "react-redux";
 import {authData} from "../../../store/slice/authSlice";
@@ -32,7 +32,10 @@ const Login = () => {
                 isAuthenticated: true,
             }))
             navigate('/')
+            message.success('Успешно')
         } catch (error) {
+            console.log(error.response)
+            message.error(error?.response?.data?.detail)
             dispatch(authData({
                 user: null,
                 isLoading: false,
@@ -69,8 +72,8 @@ const Login = () => {
                         maxWidth: 600,
                     }}
                     initialValues={{
-                        email: 'baxtiyorovjavlon8@mail.ru',
-                        password: 'boss001'
+                        email: 'sirofim012@gmail.com',
+                        password: 'admin001'
                     }}
                     onFinish={onFinish}
                     autoComplete="off"

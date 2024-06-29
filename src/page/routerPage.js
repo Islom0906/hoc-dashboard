@@ -1,11 +1,6 @@
-import Dashboard from './Dashboard'
-import Inbox from './Inbox'
-import MyApplications from './MyApplications'
-import TaskList from './TaskList'
-import TaskInner from './TaskList/TaskInner/'
-import UserProfile from './UserProfile'
-import CalendarTask from './CalendarTask'
+import {Company,Dashboard,Inbox,MyApplications,TaskList,UserProfile,CalendarTask,TaskInner} from './index'
 import {CalendarOutlined, InboxOutlined, OrderedListOutlined, PieChartOutlined, UserOutlined} from "@ant-design/icons";
+
 
 export const authRole = {
     admin: 'admin',
@@ -13,13 +8,6 @@ export const authRole = {
     user: 'user'
 }
 
-
-// const Dashboard = React.lazy(() => import('./Dashboard'));
-// const CalendarTask = React.lazy(() => import('./CalendarTask'));
-// const Inbox = React.lazy(() => import('./Inbox'));
-// const MyApplications = React.lazy(() => import('./MyApplications'));
-// const TaskList = React.lazy(() => import('./TaskList'));
-// const UserProfile = React.lazy(() => import('./UserProfile'));
 
 
 export const samplePagesConfigs = [
@@ -30,6 +18,7 @@ export const samplePagesConfigs = [
         label: 'Dashboard',
         element: Dashboard,
         permittedRole: [ 'admin', 'staff',"boss"]},
+
     {
         key: 125,
         icon: <OrderedListOutlined className={'icon'} style={{ fontSize: 24 }} />,
@@ -76,10 +65,19 @@ export const samplePagesConfigs = [
         permittedRole: ['staff','admin',"boss"]
     },
     {
+        key:1213,
+        label: 'Company',
+        icon:<InboxOutlined className={'icon'} style={{ fontSize: 24 }} />,
+        path: '/company',
+        element: Company,
+        permittedRole: ["admin",'boss']
+    },
+    {
         key: 120,
         icon: <UserOutlined className={'icon'} style={{ fontSize: 24 }} />,
         label: 'Profile',
         path: '/user-profile',
         element: UserProfile,
-        permittedRole: ['admin', 'staff',"boss"]},
+        permittedRole: ['admin', 'staff',"boss"]
+    },
 ];
