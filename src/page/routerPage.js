@@ -1,11 +1,16 @@
-import Dashboard from './Dashboard'
-import Inbox from './Inbox'
-import MyApplications from './MyApplications'
-import TaskList from './TaskList'
-import TaskInner from './TaskList/TaskInner/'
-import UserProfile from './UserProfile'
-import CalendarTask from './CalendarTask'
+import {
+    Company,
+    Dashboard,
+    Inbox,
+    MyApplications,
+    TaskList,
+    UserProfile,
+    CalendarTask,
+    TaskInner,
+    CompanyPostEdit
+} from './index'
 import {CalendarOutlined, InboxOutlined, OrderedListOutlined, PieChartOutlined, UserOutlined} from "@ant-design/icons";
+
 
 export const authRole = {
     admin: 'admin',
@@ -14,72 +19,94 @@ export const authRole = {
 }
 
 
-// const Dashboard = React.lazy(() => import('./Dashboard'));
-// const CalendarTask = React.lazy(() => import('./CalendarTask'));
-// const Inbox = React.lazy(() => import('./Inbox'));
-// const MyApplications = React.lazy(() => import('./MyApplications'));
-// const TaskList = React.lazy(() => import('./TaskList'));
-// const UserProfile = React.lazy(() => import('./UserProfile'));
-
-
 export const samplePagesConfigs = [
     {
         key: 100,
-        icon: <PieChartOutlined className={'icon'} style={{ fontSize: 24 }} />,
+        icon: <PieChartOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/dashboard',
         label: 'Dashboard',
         element: Dashboard,
-        permittedRole: [ 'admin', 'staff',"boss"]},
+        permittedRole: ['admin', 'staff', "boss"],
+        isBackground: false
+    },
     {
         key: 125,
-        icon: <OrderedListOutlined className={'icon'} style={{ fontSize: 24 }} />,
+        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/task-list',
         label: 'Task',
         element: TaskList,
-        permittedRole: ['staff' , 'admin',"boss"]},
+        permittedRole: ['staff', 'admin', "boss"],
+        isBackground: false
+    },
     {
-        icon: <OrderedListOutlined className={'icon'} style={{ fontSize: 24 }} />,
+
+        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/task-list',
         label: 'Task User',
         element: TaskInner,
-        permittedRole: ["boss"],
-        noIndex: false
+        permittedRole: ["boss","admin"],
+        noIndex: true,
+        isBackground: false
     },
     {
         key: 1276,
-        icon: <OrderedListOutlined className={'icon'} style={{ fontSize: 24 }} />,
+        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/task-list/item',
         label: 'Task Inner',
         element: TaskList,
-        permittedRole: ["boss"]
+        permittedRole: ["boss"],
+        isBackground: false
     },
     {
-        key:121,
-        icon:<CalendarOutlined />,
+        key: 121,
+        icon: <CalendarOutlined/>,
         label: 'Calendar',
         path: '/calendar-task',
         element: CalendarTask,
-        permittedRole: ['admin',"boss" , 'staff']},
+        permittedRole: ['admin', "boss", 'staff'],
+        isBackground: false
+    },
     {
         key: 122,
-        icon: <InboxOutlined className={'icon'} style={{ fontSize: 24 }} />,
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/inbox',
         label: 'Inbox',
         element: Inbox,
-        permittedRole: ['staff',"boss"]},
+        permittedRole: ['staff', "boss"],
+        isBackground: false
+    },
     {
-        key:1212,
+        key: 1212,
         label: 'My Applications',
-        icon:<InboxOutlined className={'icon'} style={{ fontSize: 24 }} />,
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/my-applications',
         element: MyApplications,
-        permittedRole: ['staff','admin',"boss"]
+        permittedRole: ['staff', 'admin', "boss"],
+        isBackground: false
+    },
+    {
+        key: 1213,
+        label: 'Company',
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        path: '/company',
+        element: Company,
+        permittedRole: ["admin", "boss"],
+        isBackground: true
+    },
+    {
+        path: '/company/add',
+        element: CompanyPostEdit,
+        permittedRole: ["admin"],
+        isBackground: true,
+        noIndex: true
     },
     {
         key: 120,
-        icon: <UserOutlined className={'icon'} style={{ fontSize: 24 }} />,
+        icon: <UserOutlined className={'icon'} style={{fontSize: 24}}/>,
         label: 'Profile',
         path: '/user-profile',
         element: UserProfile,
-        permittedRole: ['admin', 'staff',"boss"]},
+        permittedRole: ['admin', 'staff', "boss"],
+        isBackground: false
+    },
 ];

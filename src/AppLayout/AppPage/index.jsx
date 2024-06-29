@@ -1,14 +1,11 @@
 import {Content} from "antd/es/layout/layout";
 import './index.scss'
-import {theme} from "antd";
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import {samplePagesConfigs} from "../../page/routerPage";
-import {UserProfile, TaskList, CalendarTask, Inbox, MyApplications} from "../../page";
-import BackgroundContent from "./BackgrountContent";
-import Login from "../../page/auth/Login";
 
 const AppPage = () => {
+    console.log('render page')
 
 
     return (
@@ -26,6 +23,7 @@ const AppPage = () => {
                         element={
                             <PrivateRoute
                                 component={route.element}
+                                isBackground={route.isBackground}
                                 permittedRoles={route.permittedRole}
                             />
                         }
