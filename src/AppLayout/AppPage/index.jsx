@@ -5,6 +5,7 @@ import PrivateRoute from './PrivateRoute';
 import {samplePagesConfigs} from "../../page/routerPage";
 
 const AppPage = () => {
+    console.log('render page')
 
 
     return (
@@ -22,6 +23,7 @@ const AppPage = () => {
                         element={
                             <PrivateRoute
                                 component={route.element}
+                                isBackground={route.isBackground}
                                 permittedRoles={route.permittedRole}
                             />
                         }

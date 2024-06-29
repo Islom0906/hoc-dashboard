@@ -4,6 +4,8 @@ export const configLight = {
     Button: {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
+        defaultBg:"transparent"
+
     },
     Input: {
         hoverBorderColor: "rgb(118, 188, 51)",
@@ -88,6 +90,7 @@ export const configDark = {
     Button: {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
+        defaultBg:"transparent"
     },
     Input: {
         hoverBorderColor: "rgb(118, 188, 51)",

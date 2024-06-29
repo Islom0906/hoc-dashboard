@@ -1,17 +1,22 @@
 import React from 'react';
 import {Button, Image, Popconfirm, Space, Table} from "antd";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {editIdQuery} from "../../store/slice/querySlice";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
 
-const CompanyTable = ({data}) => {
+const CompanyTable = ({data,deleteHandle}) => {
+    const navigate=useNavigate()
+    const dispatch=useDispatch()
     const Delete = async (id) => {
-        // deleteHandle('/House',id)
+        deleteHandle('/users/companies',id)
     };
 
 
     const Edit = (id) => {
-        // localStorage.setItem('editDataId',id)
-        // dispatch({type:EDIT_DATA,payload:id})
-        // navigate('/house/add')
+        localStorage.setItem('editDataId',id)
+        dispatch(editIdQuery(id))
+        navigate('/company/add')
     };
 
 
@@ -30,7 +35,7 @@ const CompanyTable = ({data}) => {
                 return (
                     <Image
                         width={50}
-
+                        height={50}
                         src={image}
                     />
                 )},
@@ -42,17 +47,14 @@ const CompanyTable = ({data}) => {
                 <Space size={20}>
                     <Button
                         onClick={() => Edit(record.id)}
-                        type='primary'
-                        icon={<EditOutlined />}>
-                        Изменить
-                    </Button>
+                        type='dashed'
+                        out
+                        icon={<EditOutlined />}/>
                     <Popconfirm
                         title={'Вы уверены, что хотите удалить это?'}
                         description={'Удалить'}
                         onConfirm={() => Delete(record.id)}>
-                        <Button type='danger' icon={<DeleteOutlined />}>
-                            Удалить
-                        </Button>
+                        <Button  type='primary' danger icon={<DeleteOutlined />} />
                     </Popconfirm>
                 </Space>
             ),
