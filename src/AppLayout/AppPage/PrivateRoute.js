@@ -9,10 +9,10 @@ const PrivateRoute = ({ component: Component, permittedRoles }) => {
 
   useEffect(() => {
     if (user && user.roles) {
-      setUserRoles([user.roles]);
-      console.log('User Roles:', userRoles);
+      const roles = user.roles.map(item => item.name);
+      setUserRoles([...roles]);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (userRoles.length > 0) {
@@ -20,11 +20,11 @@ const PrivateRoute = ({ component: Component, permittedRoles }) => {
     }
   }, [userRoles, permittedRoles]);
 
-  console.log('User:', user);
-  console.log('Permitted Roles:', permittedRoles);
-  console.log('Has Access:', hasAccess);
+  console.log('user', user);
+  console.log('userRoles', userRoles);
+  console.log('permittedRoles', permittedRoles);
 
-  return userRoles.length > 0 && hasAccess ? (
+  return hasAccess ? (
       <Component />
   ) : (
       <Navigate to="/404" />
