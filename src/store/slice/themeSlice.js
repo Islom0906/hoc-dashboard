@@ -11,7 +11,7 @@ export const themeSlice = createSlice({
         changeThemeMode:(state)=>{
             state.systemMode=state.systemMode==='light'? "dark":'light'
             localStorage.setItem('systemMode',state.systemMode)
-        }
+        },
     },
 })
 

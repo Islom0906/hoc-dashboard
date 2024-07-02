@@ -7,7 +7,7 @@ import {
     UserProfile,
     CalendarTask,
     TaskInner,
-    CompanyPostEdit
+    CompanyPostEdit, CreateWorker, CreateWorkerPostEdit
 } from './index'
 import {CalendarOutlined, InboxOutlined, OrderedListOutlined, PieChartOutlined, UserOutlined} from "@ant-design/icons";
 
@@ -21,7 +21,7 @@ export const authRole = {
 
 export const samplePagesConfigs = [
     {
-        key: 100,
+        key: 1,
         icon: <PieChartOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/dashboard',
         label: 'Dashboard',
@@ -30,7 +30,7 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
-        key: 125,
+        key: 2,
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/task-list',
         label: 'Task',
@@ -49,7 +49,7 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
-        key: 1276,
+        key: 3,
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/task-list/item',
         label: 'Task Inner',
@@ -58,7 +58,7 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
-        key: 121,
+        key: 4,
         icon: <CalendarOutlined/>,
         label: 'Calendar',
         path: '/calendar-task',
@@ -67,7 +67,7 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
-        key: 122,
+        key: 5,
         icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/inbox',
         label: 'Inbox',
@@ -76,7 +76,7 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
-        key: 1212,
+        key: 6,
         label: 'My Applications',
         icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/my-applications',
@@ -85,7 +85,7 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
-        key: 1213,
+        key: 7,
         label: 'Company',
         icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/company',
@@ -101,12 +101,28 @@ export const samplePagesConfigs = [
         noIndex: true
     },
     {
-        key: 120,
+        key: 8,
+        label: 'Create Worker',
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        path: '/create-worker',
+        element: CreateWorker,
+        permittedRole: ["admin"],
+        isBackground: true
+    },
+    {
+        path: '/create-worker/add',
+        element: CreateWorkerPostEdit,
+        permittedRole: ["admin"],
+        isBackground: true,
+        noIndex: true
+    },
+    {
+        key: 9,
         icon: <UserOutlined className={'icon'} style={{fontSize: 24}}/>,
         label: 'Profile',
         path: '/user-profile',
         element: UserProfile,
         permittedRole: ['admin', 'staff', "boss"],
-        isBackground: false
+        isBackground: true
     },
 ];
