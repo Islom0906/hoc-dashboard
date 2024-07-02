@@ -5,7 +5,6 @@ export const configLight = {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
         defaultBg:"transparent"
-
     },
     Input: {
         hoverBorderColor: "rgb(118, 188, 51)",
@@ -82,6 +81,17 @@ export const configLight = {
         colorPrimary: "rgb(118, 188, 51)",
         colorPrimaryHover: "rgb(118, 188, 51)",
         colorText: "rgb(81, 90, 100)"
+    },
+    DatePicker: {
+        hoverBorderColor: "rgb(118, 188, 51)",
+        colorBorder: "rgb(118, 188, 51)",
+        activeBorderColor: "rgb(118, 188, 51)",
+        colorPrimary: "rgb(118, 188, 51)"
+    },
+    Select: {
+        colorBorder: "rgb(118, 188, 51)",
+        colorPrimary: "rgb(118, 188, 51)",
+        colorPrimaryHover: "rgb(118, 188, 51)"
     }
 };
 export const configDark = {
@@ -173,6 +183,32 @@ export const configDark = {
         colorPrimary: "rgb(118, 188, 51)",
         colorPrimaryHover: "rgb(118, 188, 51)",
         colorText: "rgb(222, 222, 230)"
+    },
+    DatePicker: {
+        hoverBorderColor: "rgb(118, 188, 51)",
+        colorBorder: "rgb(118, 188, 51)",
+        activeBorderColor: "rgb(118, 188, 51)",
+        colorPrimaryBorder: "rgb(118, 188, 51)",
+        colorText: "rgb(255, 255, 255)",
+        colorPrimary: "rgb(118, 188, 51)",
+        activeBg: "rgba(0, 0, 0, 0)",
+        colorBgElevated: "rgb(27, 31, 40)",
+        colorTextDescription: "rgb(255, 255, 255)",
+        colorTextDisabled: "rgb(255, 255, 255)",
+        colorTextHeading: "rgb(255, 255, 255)",
+        colorIcon: "rgb(255, 255, 255)",
+        colorBgContainer: "rgba(255, 255, 255, 0.01)"
+    },
+    Select: {
+        colorBorder: "rgb(118, 188, 51)",
+        colorPrimary: "rgb(118, 188, 51)",
+        colorPrimaryHover: "rgb(118, 188, 51)",
+        colorBgContainer: "rgba(255, 255, 255, 0)",
+        optionSelectedBg: "rgb(42, 57, 54)",
+        optionSelectedColor: "rgb(255, 255, 255)",
+        selectorBg: "rgba(255, 255, 255, 0)",
+        colorBgElevated: "rgb(27, 31, 40)",
+        colorText: "rgb(255, 255, 255)"
     }
 };
 

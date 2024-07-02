@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form,  InputNumber} from "antd";
 
-const FormInputNumber = ({label,name,required,required_text}) => {
+const FormInputNumber = ({label,name,required,required_text,before=false}) => {
     return (
         <Form.Item
             label={label}

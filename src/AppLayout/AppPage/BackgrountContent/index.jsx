@@ -9,7 +9,7 @@ const BackgroundContent = ({children}) => {
         <div
             style={{
                 padding:40,
-                minHeight: 360,
+                minHeight: 200,
                 background: contentBg,
                 borderRadius: borderRadiusLG,
             }}

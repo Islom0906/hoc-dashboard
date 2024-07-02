@@ -7,3 +7,5 @@ export {default as Inbox} from './Inbox';
 export {default as MyApplications} from './MyApplications';
 export {default as Company} from './Company';
 export {default as CompanyPostEdit} from './Company/CompanyPostEdit';
+export {default as CreateWorker} from './Create worker';
+export {default as CreateWorkerPostEdit} from './Create worker/CreateWorkerPostEdit';

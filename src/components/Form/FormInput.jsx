@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form, Input} from "antd";
 
-const FormInput = ({label,name,required,required_text,warning}) => {
+const FormInput = ({label,name,required,required_text,warning,disabled=false}) => {
     return (
         <Form.Item
             label={warning ? <div>
@@ -15,7 +15,7 @@ const FormInput = ({label,name,required,required_text,warning}) => {
                 required: required, message: required_text
             }]}
         >
-            <Input />
+            <Input disabled={disabled}/>
         </Form.Item>
     );
 };

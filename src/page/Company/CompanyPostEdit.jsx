@@ -28,7 +28,7 @@ const CompanyPostEdit = () => {
     } = useMutation(({url, data}) => apiService.postData(url, data), {
         onSuccess: () => {
 
-            message.success('Success')
+            message.success('Успешно')
         },
         onError: (error) => {
             for (let obj in error.response.data) {
@@ -58,7 +58,7 @@ const CompanyPostEdit = () => {
                          id
                      }) => apiService.editData(url, data, id), {
         onSuccess: () => {
-            message.success('Success')
+            message.success('Успешно')
         },
         onError: (error) => {
             for (let obj in error.response.data) {
