@@ -62,15 +62,15 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             dataIndex: 'user_roles',
             id: 'user_roles',
             render: (text) => (
-                text?.map(company=> (
-                    <Space key={company?.id} direction={"horizontal"} size={"small"}>
-                        <p>{company?.module_name}</p>
+                // text?.map(company=> (
+                    <Space key={text[0]?.id} direction={"horizontal"} size={"small"}>
+                        <p>{text[0]?.module_name}</p>
                         :
                         <Tag>
-                            {company?.user_role_name}
+                            {text[0]?.user_role_name}
                         </Tag>
                     </Space>
-                ))
+                // ))
             ),
         },
         {

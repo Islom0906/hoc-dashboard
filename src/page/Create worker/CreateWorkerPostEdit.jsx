@@ -82,7 +82,6 @@ const CreateWorkerPostEdit = () => {
     // query-create-worker
     const {
         mutate: postCreateWorkerMutate,
-        data: postCreateWorker,
         isLoading: postCreateWorkerLoading,
         isSuccess: postCreateWorkerSuccess,
     } = useMutation(({url, data}) => apiService.postData(url, data), {
@@ -110,7 +109,6 @@ const CreateWorkerPostEdit = () => {
     const {
         mutate: putCreateWorker,
         isLoading: putCreateWorkerLoading,
-        data: putData,
         isSuccess: putCreateWorkerSuccess
     } = useMutation(({
                          url,
@@ -153,21 +151,24 @@ const CreateWorkerPostEdit = () => {
     //edit create-worker
     useEffect(() => {
         if (editCreateWorkerSuccess) {
-            const user_roles = []
+            const user_roles = [{
+                module: editCreateWorkerData?.user_roles[0]?.module,
+                user_role: editCreateWorkerData?.user_roles[0]?.user_role
+            }]
             const image = [{
                 uid: editCreateWorkerData?.images?.id,
                 name: editCreateWorkerData?.images?.id,
                 status: "done",
                 url: editCreateWorkerData.images?.image
             }];
-
-            editCreateWorkerData?.user_roles?.map(role => {
-                const data = {
-                    module: role?.module,
-                    user_role: role?.user_role
-                }
-                user_roles.push(data)
-            })
+            // 2-reliz
+            // editCreateWorkerData?.user_roles?.map(role => {
+            //     const data = {
+            //         module: role?.module,
+            //         user_role: role?.user_role
+            //     }
+            //     user_roles.push(data)
+            // })
 
             const edit = {
                 first_name: editCreateWorkerData?.first_name,
@@ -227,7 +228,6 @@ const CreateWorkerPostEdit = () => {
         const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
         if (storedValues) {
             // storedValues.image = []
-            console.log(storedValues)
             setFileListProps(storedValues.image)
             const data = {
                 ...storedValues,

@@ -4,7 +4,6 @@ import {AppLoader, FormInput} from "../../components";
 import {useDispatch, useSelector} from "react-redux";
 import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
-import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 
@@ -18,8 +17,6 @@ const CompanyPostEdit = () => {
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
     const [fileListProps, setFileListProps] = useState([]);
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
     // query-company
     const {
         mutate: postCompanyMutate,
@@ -70,13 +67,8 @@ const CompanyPostEdit = () => {
     // ================================ useEffect =============================
     // company success
     SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')
-
-
-
     // if edit compant
     EditGetById(editCompanyRefetch)
-
-
     // if no edit company
     SetInitialValue(form,initialValueForm)
 
@@ -151,7 +143,10 @@ const CompanyPostEdit = () => {
 
 
     // image
-
+    const onChangeImage = ({fileList: newFileList}) => {
+        setFileListProps(newFileList);
+        form.setFieldsValue({image: newFileList});
+    };
 
     return (<div>
         {(postCompanyLoading || editCompanyLoading || putCompanyLoading) ?
