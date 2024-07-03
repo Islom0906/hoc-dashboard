@@ -176,7 +176,7 @@ export const configDark = {
         rowHoverBg: "rgb(81, 90, 100)",
         footerBg: "rgb(42, 57, 54)",
         footerColor: "rgb(222, 222, 230)",
-        colorBgContainer: "rgba(0, 0, 0, 0)",
+        colorBgContainer: "rgb(37, 43, 54)",
         bodySortBg: "rgba(0, 0, 0, 0)"
     },
     Pagination: {

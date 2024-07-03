@@ -89,6 +89,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
         {
             title: 'Событие',
             id: 'action',
+            fixed: 'right',
             render: (_, record) => (
                 <Space size={20}>
                     <Button
@@ -108,6 +109,9 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
     ];
     return <Table
         columns={columns}
+        scroll={{
+            x: 1500,
+        }}
         dataSource={data}
         rowKey={(record) => record.id}
     />

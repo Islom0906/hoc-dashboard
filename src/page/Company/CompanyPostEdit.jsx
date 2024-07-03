@@ -6,6 +6,7 @@ import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
+import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 
 
 const initialValueForm = {
@@ -68,31 +69,17 @@ const CompanyPostEdit = () => {
     });
     // ================================ useEffect =============================
     // company success
-    useEffect(() => {
-        if (putCompanySuccess) {
-            dispatch(editIdQuery(''))
-        }
+    SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')
 
-        if (postCompanySuccess || putCompanySuccess) {
-
-            navigate('/company')
-        }
-    }, [postCompany, putData])
 
 
     // if edit compant
-    useEffect(() => {
-        if (editId !== "") {
-            editCompanyRefetch();
-        }
-    }, [editId]);
+    EditGetById(editCompanyRefetch)
+
 
     // if no edit company
-    useEffect(() => {
-        if (editId === "") {
-            form.setFieldsValue(initialValueForm)
-        }
-    }, []);
+    SetInitialValue(form,initialValueForm)
+
 
 
     //edit company
@@ -164,25 +151,6 @@ const CompanyPostEdit = () => {
 
 
     // image
-    const onChangeImage = ({fileList: newFileList}) => {
-        setFileListProps(newFileList);
-        form.setFieldsValue({image: newFileList});
-    };
-
-    const onPreview = async (file) => {
-        let src = file.url;
-        if (!src) {
-            src = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj);
-                reader.onload = () => resolve(reader.result);
-            });
-        }
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(image.outerHTML);
-    };
 
 
     return (<div>
@@ -224,7 +192,7 @@ const CompanyPostEdit = () => {
                                 fileList={fileListProps}
                                 listType='picture-card'
                                 onChange={onChangeImage}
-                                onPreview={onPreview}
+                                onPreview={onPreviewImage}
                                 beforeUpload={() => false}
                             >
                                 {fileListProps.length > 0 ? "" : "Upload"}

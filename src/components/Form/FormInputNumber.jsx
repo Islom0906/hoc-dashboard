@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form,  InputNumber} from "antd";
 
-const FormInputNumber = ({label,name,required,required_text,before=false}) => {
+const FormInputNumber = ({label,name,required,required_text}) => {
     return (
         <Form.Item
             label={label}
@@ -11,7 +11,7 @@ const FormInputNumber = ({label,name,required,required_text,before=false}) => {
                 required: required, message: required_text
             }]}
         >
-            <InputNumber style={{width:'100%'}}/>
+            <InputNumber  style={{width:'100%'}}/>
         </Form.Item>
     );
 };
