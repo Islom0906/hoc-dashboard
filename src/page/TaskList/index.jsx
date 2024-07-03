@@ -21,7 +21,6 @@ const TaskList = () => {
     refetchStaffGetTask()
   }, []);
 
-  console.log(staffGetTask)
   return (
       <div>
         <h1>
@@ -50,7 +49,7 @@ const TaskList = () => {
           }
         </Row>
 
-        <TaskInner />
+        {/*<TaskInner />*/}
       </div>
   );
 };
