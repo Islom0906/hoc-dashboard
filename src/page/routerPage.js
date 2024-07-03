@@ -10,6 +10,8 @@ import {
     CompanyPostEdit, CreateWorker, CreateWorkerPostEdit
 } from './index'
 import {CalendarOutlined, InboxOutlined, OrderedListOutlined, PieChartOutlined, UserOutlined} from "@ant-design/icons";
+import TaskCreated from "./TaskCreated";
+import TaskPostEdit from "./TaskCreated/TaskPostEdit";
 
 
 export const authRole = {
@@ -43,7 +45,7 @@ export const samplePagesConfigs = [
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/task-list',
         label: 'Task User',
-        element: TaskInner,
+        element: TaskList,
         permittedRole: ["boss","admin"],
         noIndex: true,
         isBackground: false
@@ -53,7 +55,8 @@ export const samplePagesConfigs = [
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/task-list/item',
         label: 'Task Inner',
-        element: TaskList,
+        element:  TaskInner,
+        noIndex: true,
         permittedRole: ["boss"],
         isBackground: false
     },
@@ -85,12 +88,28 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
+        key: 12132,
+        label: 'создайте задачу',
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        path: '/taskCreated',
+        element: TaskCreated,
+        permittedRole: ["admin"],
+        isBackground: true
+    },
+    {
+        path: '/task/add',
+        element: TaskPostEdit,
+        permittedRole: ["admin"],
+        isBackground: true,
+        noIndex: true
+    },
+    {
         key: 7,
         label: 'Company',
         icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/company',
         element: Company,
-        permittedRole: ["admin", "boss"],
+        permittedRole: ["admin"],
         isBackground: true
     },
     {
