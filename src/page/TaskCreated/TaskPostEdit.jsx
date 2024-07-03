@@ -182,6 +182,8 @@ const TaskPostEdit = () => {
       selectModuls.push(item.moduls)
     })
 
+    console.log(selectStaff)
+
     const data = {
       title: value.title,
       text: value.text,
