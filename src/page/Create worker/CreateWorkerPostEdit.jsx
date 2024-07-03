@@ -1,12 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Button, Col, DatePicker, Form, message, Row, Select, Upload} from "antd";
 import {AppLoader, FormInput, FormInputEmail, FormInputNumber} from "../../components";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
-import {editIdQuery} from "../../store/slice/querySlice";
-import {useNavigate} from "react-router-dom";
 import moment from "moment";
+import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 
 const initialValueForm = {
     first_name: "",
@@ -31,8 +30,8 @@ const CreateWorkerPostEdit = () => {
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
     const [fileListProps, setFileListProps] = useState([]);
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const dispatch = useDispatch()
+    // const navigate = useNavigate()
 
     // query-company-get
     const {data: companyData, refetch: companyFetch} = useQuery(
@@ -137,40 +136,24 @@ const CreateWorkerPostEdit = () => {
 
 
     // create-worker success
-    useEffect(() => {
-        if (putCreateWorkerSuccess) {
-            dispatch(editIdQuery(''))
-        }
-
-        if (postCreateWorkerSuccess || putCreateWorkerSuccess) {
-
-            navigate('/create-worker')
-        }
-    }, [postCreateWorker, putData])
-
+    SuccessCreateAndEdit(postCreateWorkerSuccess, putCreateWorkerSuccess, '/create-worker')
 
     // if edit create-worker
-    useEffect(() => {
-        if (editId !== "") {
-            editCreateWorkerRefetch();
-        }
-    }, [editId]);
+    EditGetById(editCreateWorkerRefetch)
 
     // if no edit create-worker
+    SetInitialValue(form, initialValueForm)
+
     useEffect(() => {
-        if (editId === "") {
-            form.setFieldsValue(initialValueForm)
-        }
         companyFetch()
         moduleFetch()
         userRoleFetch()
     }, []);
 
-
     //edit create-worker
     useEffect(() => {
         if (editCreateWorkerSuccess) {
-            const user_roles=[]
+            const user_roles = []
             const image = [{
                 uid: editCreateWorkerData?.images?.id,
                 name: editCreateWorkerData?.images?.id,
@@ -178,10 +161,10 @@ const CreateWorkerPostEdit = () => {
                 url: editCreateWorkerData.images?.image
             }];
 
-            editCreateWorkerData?.user_roles?.map(role=>{
-                const data={
-                    module:role?.module,
-                    user_role:role?.user_role
+            editCreateWorkerData?.user_roles?.map(role => {
+                const data = {
+                    module: role?.module,
+                    user_role: role?.user_role
                 }
                 user_roles.push(data)
             })
@@ -199,7 +182,6 @@ const CreateWorkerPostEdit = () => {
                 company: editCreateWorkerData?.companies[0]?.id,
                 user_roles
             }
-            console.log(edit)
 
             setFileListProps(image)
             form.setFieldsValue(edit)
@@ -209,13 +191,13 @@ const CreateWorkerPostEdit = () => {
 
     const onFinish = (value) => {
 
-        const data={
+        const data = {
             first_name: value?.first_name,
             last_name: value?.last_name,
             birthday: moment(value?.birthday).format('DD.MM.YYYY'),
             gender: value?.gender,
-            image:fileListProps[0]?.uid,
-            phone: +value?.phone,
+            image: fileListProps[0]?.uid,
+            phone: value?.phone,
             position: value?.position,
             email: value?.email,
             password: value?.password,
@@ -224,7 +206,6 @@ const CreateWorkerPostEdit = () => {
             ],
             user_roles: value?.user_roles
         }
-        console.log(data)
 
         if (editCreateWorkerData) {
             putCreateWorker({url: '/users/users', data, id: editId})
@@ -235,16 +216,24 @@ const CreateWorkerPostEdit = () => {
 
     }
 
-    const onFinishFailed=(value)=>{
+    const onFinishFailed = (value) => {
         console.log(value)
     }
 
     // refresh page again get data
     useEffect(() => {
+
+
         const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
         if (storedValues) {
-            storedValues.images = []
-            form.setFieldsValue(storedValues);
+            // storedValues.image = []
+            console.log(storedValues)
+            setFileListProps(storedValues.image)
+            const data = {
+                ...storedValues,
+                birthday: moment(storedValues?.birthday)
+            }
+            form.setFieldsValue(data);
         }
 
         const handleBeforeUnload = () => {
@@ -258,12 +247,12 @@ const CreateWorkerPostEdit = () => {
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
-            console.log('render')
-            // localStorage.removeItem('editDataId')
+            localStorage.removeItem('editDataId')
             localStorage.removeItem('myFormValues')
             window.removeEventListener('beforeunload', handleBeforeUnload);
         }
     }, []);
+
 
     // image
 
@@ -296,21 +285,6 @@ const CreateWorkerPostEdit = () => {
             formData.append("image", newFileList[0].originFileObj);
             imagesUploadMutate({url: "/users/images/", formData});
         }
-    };
-
-    const onPreview = async (file) => {
-        let src = file.url;
-        if (!src) {
-            src = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj);
-                reader.onload = () => resolve(reader.result);
-            });
-        }
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(image.outerHTML);
     };
 
 
@@ -359,7 +333,7 @@ const CreateWorkerPostEdit = () => {
     }, []);
 
     return (<div>
-        {(postCreateWorkerLoading || editCreateWorkerLoading || putCreateWorkerLoading||imagesUploadLoading) ?
+        {(postCreateWorkerLoading || editCreateWorkerLoading || putCreateWorkerLoading || imagesUploadLoading) ?
             <AppLoader/> :
             <Form
                 form={form}
@@ -435,6 +409,7 @@ const CreateWorkerPostEdit = () => {
                             label={'Номер телефона'}
                             name={'phone'}
                         />
+
                     </Col>
                     <Col span={12}>
                         <FormInput
@@ -482,7 +457,25 @@ const CreateWorkerPostEdit = () => {
                             />
                         </Form.Item>
                     </Col>
-
+                    <Col span={12}>
+                        <Form.Item
+                            label='Изображение'
+                            name={'image'}
+                            rules={[{required: true, message: 'Требуется изображение'}]}>
+                            {/*<ImgCrop>*/}
+                            <Upload
+                                maxCount={1}
+                                fileList={fileListProps}
+                                listType='picture-card'
+                                onChange={onChangeImage}
+                                onPreview={onPreviewImage}
+                                beforeUpload={() => false}
+                            >
+                                {fileListProps.length > 0 ? "" : "Upload"}
+                            </Upload>
+                            {/*</ImgCrop>*/}
+                        </Form.Item>
+                    </Col>
                 </Row>
                 <Form.List name="user_roles">
                     {(fields, {add, remove}) => (
@@ -556,28 +549,6 @@ const CreateWorkerPostEdit = () => {
                         </>
                     )}
                 </Form.List>
-                <Row>
-                    <Col span={12}>
-                        <Form.Item
-                            label='Изображение'
-                            name={'image'}
-                            rules={[{required: true, message: 'Требуется изображение'}]}>
-                            {/*<ImgCrop>*/}
-                            <Upload
-                                maxCount={1}
-                                fileList={fileListProps}
-                                listType='picture-card'
-                                onChange={onChangeImage}
-                                onPreview={onPreview}
-                                beforeUpload={() => false}
-                            >
-                                {fileListProps.length > 0 ? "" : "Upload"}
-                            </Upload>
-                            {/*</ImgCrop>*/}
-                        </Form.Item>
-                    </Col>
-                </Row>
-
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
                     {editCreateWorkerSuccess ? 'Изменить' : 'Создать'}
                 </Button>
