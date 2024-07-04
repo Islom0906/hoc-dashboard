@@ -4,7 +4,7 @@ import {DeleteOutlined, EditOutlined, UserOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-
+import moment from  'moment'
 const TaskTable = ({data,deleteHandle}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -29,37 +29,45 @@ const TaskTable = ({data,deleteHandle}) => {
       title: 'данное время',
       dataIndex: 'created_at',
       id: 'created_at',
-      render: (text) => <p>{text}</p>
+      render: (text) => <p>{moment(text).format('l')}</p>
     },
     {
       title: 'крайний срок',
       dataIndex: 'deadline',
       id: 'deadline',
+      render: (text) => <p>{moment(text).format('l')}</p>
+    },
+    {
+      title: 'статус задачи',
+      dataIndex: 'task_status',
+      id: 'task_status',
       render: (text) => <p>{text}</p>
     },
     {
       title: 'команда',
-      dataIndex: 'moduls',
-      id: 'moduls',
-      render: (moduls) => <Avatar.Group size={"small"} >
-        {
-          moduls?.map(user => (
-              <Tooltip title={<p>
-                    <span>
-                      {user?.name
-                      }
-                    </span>
-              </p>} placement="top">
-                <Avatar
-                    style={{
-                      backgroundColor: '#87d068',
-                    }}
-                    icon={user?.image? <img src={user?.image} alt={user?.first_name} />: <UserOutlined />}
-                />
-              </Tooltip>
-          ))
-        }
-      </Avatar.Group>
+      dataIndex: ['moduls', 'included_users'],
+      id: 'team',
+      render: (text, record) => {
+        const users = [...(record.moduls || []), ...(record.included_users || [])];
+        return (
+            <Avatar.Group size={"small"}>
+              {
+                users.map(user => (
+                    <Tooltip
+                        title={<p><span>{user?.name}</span></p>}
+                        placement="top"
+                        key={user?.id}
+                    >
+                      <Avatar
+                          style={{ backgroundColor: '#87d068' }}
+                          icon={user?.image ? <img src={user?.image} alt={user?.name} /> : <UserOutlined />}
+                      />
+                    </Tooltip>
+                ))
+              }
+            </Avatar.Group>
+        );
+      }
     },
 
     {
