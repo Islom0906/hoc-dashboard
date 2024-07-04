@@ -1,14 +1,15 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Col, Form, message, Row, DatePicker, Select, Typography, Flex, Card} from "antd";
+import {Button, Card, Col, DatePicker, Flex, Form, message, Row, Select, Typography} from "antd";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
-import {editIdQuery} from "../../store/slice/querySlice";
 import moment from "moment";
 import {MinusCircleOutlined} from "@ant-design/icons";
-const { RangePicker } = DatePicker;
+import successCreateAndEdit from "../../hooks/successCreateAndEdit";
+import editGetById from "../../hooks/editGetById";
+import setInitialValue from "../../hooks/setInitialValue";
+
 const {Title} = Typography
 
 const initialValueForm = {
@@ -17,10 +18,11 @@ text: '',
 deadline: '',
 company: null,
 moduls: [],
+  users: [],
 sub_tasks: [
     {
-    title: "string",
-    text: "string",
+      title: "",
+      text: "",
     deadline: '',
     staff: null
     }
@@ -35,8 +37,6 @@ const TaskPostEdit = () => {
   const [selectModulesID, setSelectModulesID] = useState(null)
   const [selectAddSubTask , setSelectAddSubTask] = useState(false)
   const {editId} = useSelector(state => state.query)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
   // get -company
   const {
     data:getCompany,
@@ -73,7 +73,6 @@ const TaskPostEdit = () => {
   // post task
   const {
     mutate: postTaskMutate,
-    data: postTask,
     isLoading: postTaskLoading,
     isSuccess: postTaskSuccess,
   } = useMutation(({url, data}) => apiService.postData(url, data), {
@@ -97,7 +96,6 @@ const TaskPostEdit = () => {
   const {
     mutate: putTask,
     isLoading: putTaskLoading,
-    data: putData,
     isSuccess: putTaskSuccess
   } = useMutation(({
                      url,
@@ -118,32 +116,15 @@ const TaskPostEdit = () => {
     refetchGetCompany()
   } , [])
   // tasks success
-  useEffect(() => {
-    if (putTaskSuccess) {
-      dispatch(editIdQuery(''))
-    }
-    if (putTaskSuccess || putTaskSuccess) {
-      navigate('/tasks')
-    }
-  }, [postTask, putData])
 
-  useEffect(() => {
-    if (editId !== "") {
-      editTaskRefetch();
-    }
-  }, [editId]);
+  successCreateAndEdit(postTaskSuccess, putTaskSuccess, '/taskCreated')
+  editGetById(editTaskRefetch)
+  setInitialValue(form, initialValueForm)
 
-
-  // if no edit tasks
-  useEffect(() => {
-    if (editId === "") {
-      form.setFieldsValue(initialValueForm)
-    }
-  }, []);
   //edit company
   useEffect(() => {
     const subTask = []
-
+    const allModuls = []
     editTaskData?.sub_tasks?.map(item => {
       subTask.push({
         title : item?.title,
@@ -152,9 +133,17 @@ const TaskPostEdit = () => {
         staff :item?.staff
       })
       })
+    editTaskData?.included_users?.map(included => {
+      allModuls.push({
+        moduls: included?.modules[0],
+        user: included?.id
+      })
+    })
+    console.log(editTaskData)
 
-    console.log(editTaskData?.sub_tasks)
-
+    if(!editTaskData?.included_users?.length>0){
+      setSelectAddSubTask(true)
+    }
 
     if (editTaskSuccess) {
       const edit = {
@@ -163,9 +152,13 @@ const TaskPostEdit = () => {
         deadline: moment(editTaskData?.deadline),
         company: editTaskData?.company?.id,
         moduls: editTaskData?.moduls,
-        sub_tasks: subTask
+        sub_tasks: subTask,
+        allModuls
       }
       console.log(edit)
+
+      setSelectCompanyID(editTaskData?.company?.id)
+      // setSelectModulesID(allModuls[0]?.)
       form.setFieldsValue(edit)
     }
   }, [editTaskData])
@@ -175,24 +168,24 @@ const TaskPostEdit = () => {
     console.log(value)
     const selectStaff = []
     const selectModuls = []
+
     value?.allModuls?.map(item => {
-      console.log(item)
-      console.log(1)
-      selectStaff.push(item.staff)
+      if (item.user) {
+        selectStaff.push(item.user)
+      }
+      if (item.moduls) {
       selectModuls.push(item.moduls)
+      }
     })
-
-    console.log(selectStaff)
-
     const data = {
       title: value.title,
       text: value.text,
       deadline: moment(value?.deadline).format('YYYY-MM-DDTHH:mm:ss'),
       company:value?.company,
-      moduls:value?.sub_tasks.length<1 ?selectModuls : [],
-      sub_tasks: value?.sub_tasks
+      moduls: value?.sub_tasks?.length < 1 ? selectModuls : [],
+      users: value?.sub_tasks ? [] : selectStaff,
+      sub_tasks: value?.sub_tasks ? value?.sub_tasks : []
     }
-
     console.log(data)
     if (editTaskData) {
       putTask({url: '/users/tasks', data: data, id: editId})
@@ -241,13 +234,15 @@ const TaskPostEdit = () => {
   }, [getModules]);
   // option module
   const optionsUserByModules = useMemo(() => {
+
+
     return getUserByModules?.results?.map((option) => {
       return {
         value: option?.id,
         label:` ${option?.full_name}(${option?.position})`,
       };
     });
-  }, [getUserByModules , selectModulesID]);
+  }, [getUserByModules , selectModulesID,getStaff]);
 
   const onChangeCompany =  (id) => {
     setSelectCompanyID(id)
@@ -390,14 +385,14 @@ const AddStaff =({optionsUserByModules ,optionsModules ,onChangeModules  }) => {
               {fields.map((field, index) => {
                 return (
                     <div key={field.fieldKey} style={{marginBottom: 20}}>
-                      <Row gutter={20}  >
+                      <Row gutter={20}>
                         <Col span={11}>
 
                           <Form.Item
                               label={'Выберите департамент'}
                               name={[field.name ,'moduls']}
                               rules={[{
-
+                                required: true,
                                 message: 'Выберите департамент'
                               }]}
                               wrapperCol={{
@@ -438,7 +433,6 @@ const AddStaff =({optionsUserByModules ,optionsModules ,onChangeModules  }) => {
                               <MinusCircleOutlined
                                   />
                             </Button>
-
                         </Col>
                       </Row>
                     </div>
