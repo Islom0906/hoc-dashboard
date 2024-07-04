@@ -1,4 +1,4 @@
-import {Button, Image, Popconfirm, Space, Table, Tag} from "antd";
+import {Button,  Popconfirm, Space, Table} from "antd";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
@@ -31,7 +31,7 @@ const ModuleTable = ({data,deleteHandle}) => {
             title: 'Компания',
             dataIndex: 'companies',
             id: 'companies',
-            render:<p>{text}</p>,
+            render: (text) =><p>{text?.title}</p>,
         },
 
         {

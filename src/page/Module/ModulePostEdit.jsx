@@ -1,11 +1,10 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Col, DatePicker, Form, message, Row, Select, Upload} from "antd";
-import {AppLoader, FormInput, FormInputEmail, FormInputNumber} from "../../components";
+import React, {useEffect, useMemo} from 'react';
+import {Button, Col,  Form, message, Row, Select} from "antd";
+import {AppLoader, FormInput} from "../../components";
 import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
-import moment from "moment";
-import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
+import {EditGetById,  SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 
 const initialValueForm = {
     name: "",
@@ -27,10 +26,9 @@ const ModulePostEdit = () => {
     );
 
 
-    // query-create-worker
+    // query-module
     const {
         mutate: postModuleMutate,
-
         isLoading: postModuleLoading,
         isSuccess: postModuleSuccess,
     } = useMutation(({url, data}) => apiService.postData(url, data), {
@@ -47,18 +45,18 @@ const ModulePostEdit = () => {
 
     // query-edit
     const {
-        isLoading: editCreateWorkerLoading,
-        data: editCreateWorkerData,
-        refetch: editCreateWorkerRefetch,
-        isSuccess: editCreateWorkerSuccess,
-    } = useQuery(["edit-create-worker", editId], () => apiService.getDataByID("/users/users", editId), {
+        isLoading: editModuleLoading,
+        data: editModuleData,
+        refetch: editModuleRefetch,
+        isSuccess: editModuleSuccess,
+    } = useQuery(["edit-module", editId], () => apiService.getDataByID("/users/modules", editId), {
         enabled: false
     });
     // put-query
     const {
-        mutate: putCreateWorker,
-        isLoading: putCreateWorkerLoading,
-        isSuccess: putCreateWorkerSuccess
+        mutate: putModule,
+        isLoading: putModuleLoading,
+        isSuccess: putModuleSuccess
     } = useMutation(({
                          url,
                          data,
@@ -77,33 +75,33 @@ const ModulePostEdit = () => {
     // ================================ useEffect =============================
 
 
-    // create-worker success
-    SuccessCreateAndEdit(postModuleSuccess, putCreateWorkerSuccess, '/module')
+    // module success
+    SuccessCreateAndEdit(postModuleSuccess, putModuleSuccess, '/module')
 
-    // if edit create-worker
-    EditGetById(editCreateWorkerRefetch)
+    // if edit module
+    EditGetById(editModuleRefetch)
 
-    // if no edit create-worker
+    // if no edit module
     SetInitialValue(form, initialValueForm)
 
     useEffect(() => {
         companyFetch()
     }, []);
 
-    //edit create-worker
+    //edit module
     useEffect(() => {
-        if (editCreateWorkerSuccess) {
+        if (editModuleSuccess) {
 
 
             const edit = {
-                name: editCreateWorkerData?.name,
-                company: editCreateWorkerData?.company
+                name: editModuleData?.name,
+                company: editModuleData?.companies?.id
             }
 
             form.setFieldsValue(edit)
         }
 
-    }, [editCreateWorkerData])
+    }, [editModuleData])
 
     const onFinish = (value) => {
 
@@ -112,10 +110,10 @@ const ModulePostEdit = () => {
             company: value?.company,
         }
 
-        if (editCreateWorkerData) {
-            putCreateWorker({url: '/users/users', data, id: editId})
+        if (editModuleData) {
+            putModule({url: '/users/modules', data, id: editId})
         } else {
-            postModuleMutate({url: "/users/users/", data});
+            postModuleMutate({url: "/users/modules/", data});
         }
 
 
@@ -127,8 +125,6 @@ const ModulePostEdit = () => {
 
     // refresh page again get data
     useEffect(() => {
-
-
         const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
         if (storedValues) {
 
@@ -165,7 +161,7 @@ const ModulePostEdit = () => {
 
 
     return (<div>
-        {(postModuleLoading || editCreateWorkerLoading || putCreateWorkerLoading || imagesUploadLoading) ?
+        {(postModuleLoading || editModuleLoading || putModuleLoading ) ?
             <AppLoader/> :
             <Form
                 form={form}
@@ -217,7 +213,7 @@ const ModulePostEdit = () => {
                     </Col>
                 </Row>
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-                    {editCreateWorkerSuccess ? 'Изменить' : 'Создать'}
+                    {editModuleSuccess ? 'Изменить' : 'Создать'}
                 </Button>
             </Form>}
     </div>);
