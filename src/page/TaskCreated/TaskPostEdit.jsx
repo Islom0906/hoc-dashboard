@@ -49,7 +49,6 @@ const TaskPostEdit = () => {
     // get-responsibleUser
     const {
         data: responsibleUser,
-        isLoading: isLoadingResponsibleUser,
         refetch: refetchResponsibleUser,
     } = useQuery('get-responsibleUser', () => apiService.getData(`users/user-filter-by-company?company_id=${selectCompanyID}`), {
         enabled: false,
@@ -61,7 +60,6 @@ const TaskPostEdit = () => {
     // get-company
     const {
         data: getCompany,
-        isLoading: loadingGetCompany,
         refetch: refetchGetCompany,
     } = useQuery('get-company', () => apiService.getData(`/users/companies/`), {
         enabled: false,
@@ -72,7 +70,6 @@ const TaskPostEdit = () => {
 
     const {
         data: getModules,
-        isLoading: loadingGetModules,
         refetch: refetchGetModules,
     } = useQuery('get-modules', () => apiService.getData(`/users/module-filter?company_id=${selectCompanyID}`), {
         enabled: false,
@@ -83,7 +80,6 @@ const TaskPostEdit = () => {
     // get-user
     const {
         data: getUserByModules,
-        isLoading: loadingGetUserByModules,
         refetch: refetchGetUserByModules,
     } = useQuery('get-user', () => apiService.getData(`/users/user-filter?module_id=${selectModulesID}`), {
         enabled: false,
