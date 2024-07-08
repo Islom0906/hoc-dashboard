@@ -61,7 +61,7 @@ const CreateWorker = () => {
         }
 
         const filterData = data?.filter(
-            (data) => data?.first_name.toLowerCase().includes(value.toLowerCase()));
+            (data) => data?.name.toLowerCase().includes(value.toLowerCase()));
         setSearch(filterData);
     };
     return (

@@ -9,3 +9,5 @@ export {default as Company} from './Company';
 export {default as CompanyPostEdit} from './Company/CompanyPostEdit';
 export {default as CreateWorker} from './Create worker';
 export {default as CreateWorkerPostEdit} from './Create worker/CreateWorkerPostEdit';
+export {default as Module} from './Module';
+export {default as ModulePostEdit} from './Module/ModulePostEdit';

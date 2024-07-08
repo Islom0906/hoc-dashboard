@@ -7,7 +7,8 @@ import {
     UserProfile,
     CalendarTask,
     TaskInner,
-    CompanyPostEdit, CreateWorker, CreateWorkerPostEdit
+    CompanyPostEdit, CreateWorker, CreateWorkerPostEdit,
+    Module,ModulePostEdit
 } from './index'
 import {CalendarOutlined, InboxOutlined, OrderedListOutlined, PieChartOutlined, UserOutlined} from "@ant-design/icons";
 import TaskCreated from "./TaskCreated";
@@ -128,6 +129,22 @@ export const samplePagesConfigs = [
     {
         path: '/create-worker/add',
         element: CreateWorkerPostEdit,
+        permittedRole: ["admin"],
+        isBackground: true,
+        noIndex: true
+    },
+    {
+        key: 89,
+        label: 'Module',
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        path: '/module',
+        element: Module,
+        permittedRole: ["admin"],
+        isBackground: true
+    },
+    {
+        path: '/module/add',
+        element: ModulePostEdit,
         permittedRole: ["admin"],
         isBackground: true,
         noIndex: true

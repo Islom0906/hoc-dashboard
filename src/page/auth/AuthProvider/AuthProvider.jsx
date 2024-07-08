@@ -30,6 +30,7 @@ const AuthProvider = ({children}) => {
                     return Promise.reject(refreshError);
                 }
             }else if (err.response.status === 401){
+                navigate('/login')
                 dispatch(authData({
                     user: null,
                     isLoading: false,

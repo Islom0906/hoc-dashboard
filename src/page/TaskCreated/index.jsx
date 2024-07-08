@@ -59,7 +59,7 @@ const TaskCreated = () => {
     }
 
     const filterData = data?.filter(
-        (data) => data.title.toLowerCase().includes(value.toLowerCase()));
+        (data) => data?.results?.title.toLowerCase().includes(value.toLowerCase()));
     setSearch(filterData);
   };
 
@@ -90,7 +90,7 @@ const TaskCreated = () => {
               size='medium'
               spinning={getTaskLoading || deleteLoading}>
             <TaskTable
-                data={isSearch ? search : data}
+                data={isSearch ? search : data?.results}
                 deleteHandle={deleteHandle}
             />
           </Spin>

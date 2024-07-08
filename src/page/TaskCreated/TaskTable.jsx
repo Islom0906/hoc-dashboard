@@ -48,7 +48,7 @@ const TaskTable = ({data,deleteHandle}) => {
       dataIndex: ['moduls', 'included_users'],
       id: 'team',
       render: (text, record) => {
-        const users = [...(record.moduls || []), ...(record.included_users || [])];
+        const users = [record?.responsible_user,...(record.included_users || [])];
         return (
             <Avatar.Group size={"small"}>
               {
