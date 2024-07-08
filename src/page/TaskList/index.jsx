@@ -7,7 +7,6 @@ import { useQuery } from "react-query";
 import { useEffect, useMemo } from "react";
 import moment from "moment";
 import { MdOutlineReadMore } from "react-icons/md";
-import { Link } from "react-router-dom";
 
 const TaskList = () => {
   const { data: staffGetTask, refetch: refetchStaffGetTask } = useQuery(
@@ -22,6 +21,8 @@ const TaskList = () => {
     refetchStaffGetTask();
   }, [refetchStaffGetTask]);
 
+
+  console.log(staffGetTask)
   return (
       <div>
         <h1>User setting</h1>
@@ -49,10 +50,11 @@ export const TaskCard = ({ task }) => {
     } else if (deadlineStatus === 'progress') {
       color = '#FF7F3E';
     }
+
+    console.log(task?.main_deadline_status)
     return color;
   }, [task]);
 
-  console.log(deadlineColor);
 
   if (!task) {
     return null; // or a fallback UI if task is null
@@ -100,6 +102,7 @@ export const TaskCard = ({ task }) => {
           <Flex align={'center'} justify={'space-between'} gap={5}>
             <Text>
               офицер по назначениям:
+
             </Text>
             <Tooltip
                 title={

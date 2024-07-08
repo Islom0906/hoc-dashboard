@@ -14,9 +14,7 @@ import {
   Typography,
   Upload
 } from "antd";
-import {AntDesignOutlined, UserOutlined} from "@ant-design/icons";
-// import { SettingOutlined } from '@ant-design/icons';
-import { Collapse  } from 'antd';
+import { UserOutlined} from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import apiService from "../../../service/apis/api";
 import {useMutation, useQuery} from "react-query";
@@ -37,9 +35,7 @@ const TaskInner = () => {
     refetchTaskInner()
   } , [])
 
-  const onChange = (key) => {
-    console.log(key);
-  };
+
 
   console.log(taskInner)
 
@@ -79,11 +75,7 @@ const TaskInner = () => {
 
         </Col>
         <Col span={16}>
-          {
-            taskInner?.sub_tasks?.map(subTask => (
-              <TaskList subTask={subTask} />
-            ))
-          }
+          <TaskList subTask={taskInner?.sub_tasks} />
          </Col>
         <Col span={8}>
         <TaskInnerCard main_task_responsible_user={taskInner?.main_task_responsible_user} taskPercent={taskInner?.done_sub_tasks_count/taskInner?.sub_tasks_count * 100} main_task_deadline={taskInner?.main_task_deadline} main_task_created_at={taskInner?.main_task_created_at}  main_deadline_status={taskInner?.main_deadline_status} />
@@ -92,18 +84,6 @@ const TaskInner = () => {
   );
 };
 
-
-
-const tasks = [
-  {
-    message: 'Create login UX Flow for new product line',
-    subMessage: 'asdasd safafasfas',
-    comment: '',
-    dueDate: '21 Jan 2023',
-    avatar: 'adsdasda',
-    completed: false,
-  },
-];
 
 export  const TaskList = ({subTask}) => {
   const [fileListProps, setFileListProps] = useState([]);
@@ -138,7 +118,6 @@ export  const TaskList = ({subTask}) => {
     isLoading: imagesUploadLoading,
     isSuccess: imagesUploadSuccess,
   } = useMutation(({url, formData}) => apiService.postData(url, formData), {
-
     onSuccess: () => {
       message.success('Успешно')
     },
@@ -148,7 +127,6 @@ export  const TaskList = ({subTask}) => {
       }
     }
   });
-
   useEffect(() => {
     if (imagesUploadSuccess) {
       const uploadImg = [{
@@ -157,7 +135,6 @@ export  const TaskList = ({subTask}) => {
         status: "done",
         url: imagesUpload?.image
       }]
-
       form.setFieldsValue({image: uploadImg});
       setFileListProps(uploadImg);
     }
@@ -168,18 +145,14 @@ export  const TaskList = ({subTask}) => {
     if (fileListProps.length !== 0 || newFileList.length === 0) {
       form.setFieldsValue({image: []});
       const id = [fileListProps[0]?.uid];
-      imagesDeleteMutate({url: "users/images", id});
+      imagesDeleteMutate({url: "users/files", id});
       setFileListProps([])
     } else if (newFileList.length !== 0) {
       formData.append("image", newFileList[0].originFileObj);
-      imagesUploadMutate({url: "/users/images/", formData});
+      imagesUploadMutate({url: "/users/files/", formData});
     }
   };
   // delete image
-
-
-
-
   const onFinishFailed = value => {
     console.log(value)
   }
@@ -195,18 +168,20 @@ export  const TaskList = ({subTask}) => {
       postCommentMutate({url: "/users/messages/", data: data});
   }
 
+console.log(subTask)
+
   return (
       <div>
         <List
+            dataSource={Array.isArray(subTask) ? subTask : []}
             itemLayout="vertical"
-            dataSource={tasks}
-            renderItem={task => (
+            renderItem={subTask => (
                 <List.Item>
                   <Card style={{ width: '100%' }}>
                     <List.Item.Meta
                         title={
                           <Flex gap={10} align={"start"}>
-                              <Checkbox defaultChecked={task.completed} style={{ marginRight: 8 }} />
+                              <Checkbox defaultChecked={true} style={{ marginRight: 8 }} />
                             <Flex align={"start"} gap={10} vertical={true}>
                               <Title level={4}>{subTask?.title}</Title>
                             <Text>{subTask?.message}</Text>
@@ -262,7 +237,10 @@ export  const TaskList = ({subTask}) => {
                             </Form>
                             </Spin>
 
-                            <Comment comment={task} />
+                            {subTask?.messages?.map(message => (
+                              <Comment comment={message} />
+                                ))
+                            }
                           </Space>
                         }
                     />
@@ -275,15 +253,44 @@ export  const TaskList = ({subTask}) => {
 };
 
 
-export const Comment = ({comment}) => {
-  <Flex align={"start"} justify={"space-between"} style={{ width: '100%'}}>
-    <Flex align={"start"} gap={10} style={{ width: '100%'}}>
-      <Avatar style={{flexShrink:0}} icon={<UserOutlined />}  />
-      <Text >Update user flows with UX feedback lorem smfkmelkgmslkm sdlkgmlskmlkmgslkmfd msdmslkdgmslkgmdkmgsdg msmdmms;dflmsm;ldf from Session #245 skmlam lkama skmlasm lkfamlfmalkfm lasmflk kmsflkmal kfmals fkmalkkm lsfkmlaskm flakfsm lakksmfl kamsflamlf malskfm alk fmaslfmalk mflkasmflamflsmlka mfksam</Text>
-    </Flex>
-    <Text style={{flexShrink:0 , fontSize:'12px'}} type="secondary" >Due {comment.dueDate}</Text>
-  </Flex>
-}
+
+export const Comment = ({ comment }) => {
+  const extractFilename = (url) => {
+    return url.substring(url.lastIndexOf('/') + 1);
+  };
+  return (
+      <Flex align={"start"} justify={"space-between"} gap={15} style={{ width: '100%'}}>
+        <Flex align={"start"} gap={10} style={{ width: '100%'}}>
+          <Tooltip
+              key={comment?.created_user?.id}
+              title={
+                <p>
+                  <span>{comment?.created_user?.full_name}</span>
+                  <br />
+                  <span>
+                    {comment?.created_user?.position}
+                  </span>
+                </p>
+              }
+              placement="top"
+          >
+            <Avatar style={{flexShrink:0}} icon={comment?.created_user?.images?.image ? <img src={comment?.created_user?.images.image} alt={comment?.created_user?.full_name} /> : <UserOutlined />}  />
+          </Tooltip>
+          <Flex vertical={true} gap={5}>
+            <Text>{comment?.message}</Text>
+            {
+                comment?.file &&
+                <a href={comment?.file} >
+                  {extractFilename(comment.file)}
+                </a>
+            }
+          </Flex>
+        </Flex>
+        <Text style={{flexShrink:0, fontSize:'11px'}} type="secondary">{moment(comment.created_at).format('llll')}</Text>
+      </Flex>
+  );
+};
+
 
 
 
@@ -305,7 +312,7 @@ export const TaskInnerCard = ({main_task_responsible_user , main_task_deadline ,
 
   console.log(main_deadline_status)
 
- return(
+  return(
      <Card size={"small"}  style={{ borderColor:`${deadlineColor}` , borderTop: '6px', borderStyle: 'solid', borderTopColor:`${deadlineColor}` }}  title="Details" >
         <Flex vertical={true} gap={10}>
           <Flex align={'center'} justify={'space-between'}>
