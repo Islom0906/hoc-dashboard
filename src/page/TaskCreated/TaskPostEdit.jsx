@@ -242,7 +242,7 @@ const TaskPostEdit = () => {
         label:` ${option?.full_name}(${option?.position})`,
       };
     });
-  }, [getUserByModules , selectModulesID,getStaff]);
+  }, [getUserByModules , selectModulesID]);
 
   const onChangeCompany =  (id) => {
     setSelectCompanyID(id)

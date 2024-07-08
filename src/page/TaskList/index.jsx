@@ -1,16 +1,16 @@
-
-// import { useQuery} from 'react-query';
-import {Avatar, Card, Col, Divider, Flex, Progress, Row, Space, Tooltip, Typography} from "antd";
-import './index.scss'
-import {CalendarFilled, FieldTimeOutlined, UserOutlined} from "@ant-design/icons";
-import TaskInner from "./TaskInner";
+// import { useQuery } from 'react-query';
+import { Avatar, Button, Card, Col, Divider, Flex, Progress, Row, Space, Tooltip, Typography } from "antd";
+import './index.scss';
+import { CalendarFilled, FieldTimeOutlined, UserOutlined } from "@ant-design/icons";
 import apiService from "../../service/apis/api";
-import {useQuery} from "react-query";
-import {useEffect} from "react";
+import { useQuery } from "react-query";
+import { useEffect, useMemo } from "react";
 import moment from "moment";
+import { MdOutlineReadMore } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const TaskList = () => {
-  const {data: staffGetTask, refetch: refetchStaffGetTask} = useQuery(
+  const { data: staffGetTask, refetch: refetchStaffGetTask } = useQuery(
       'staff-get-task',
       () => apiService.getData('users/staff-subtasks'),
       {
@@ -19,104 +19,138 @@ const TaskList = () => {
   );
 
   useEffect(() => {
-    refetchStaffGetTask()
-  }, []);
+    refetchStaffGetTask();
+  }, [refetchStaffGetTask]);
 
   return (
       <div>
-        <h1>
-          User setting
-        </h1>
-
-        <Divider orientation="right"><h4>Completed</h4> </Divider>
-        <Row gutter={[24, 24]} >
-
-          {
-            staffGetTask?.results?.map(task => (
-                <Col className="gutter-row" xs={{
-                  span:12
-                }}
-                     md={{
-                       span:8
-                     }}
-
-                     xl={{
-                       span:6
-                     }}
-                >
-                  <TaskCard task={task}/>
-                </Col>
-            ))
-          }
+        <h1>User setting</h1>
+        <Divider orientation="right"><h4>Completed</h4></Divider>
+        <Row gutter={[24, 24]}>
+          {staffGetTask?.results?.map(task => (
+              <Col key={task?.main_task_id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
+                <TaskCard key={task?.main_task_id} task={task} />
+              </Col>
+          ))}
         </Row>
-
-        {/*<TaskInner />*/}
+        {/* <TaskInner /> */}
       </div>
   );
 };
 
+export const TaskCard = ({ task }) => {
+  const deadlineColor = useMemo(() => {
+    const deadlineStatus = task?.main_deadline_status;
+    let color = '#3FA2F6';
+    if (deadlineStatus === 'soon') {
+      color = '#FAFFAF';
+    } else if (deadlineStatus === 'failed') {
+      color = '#C80036';
+    } else if (deadlineStatus === 'progress') {
+      color = '#FF7F3E';
+    }
+    return color;
+  }, [task]);
 
-export  const  TaskCard = ({task})=> {
+  console.log(deadlineColor);
+
+  if (!task) {
+    return null; // or a fallback UI if task is null
+  }
+
   const { Text } = Typography;
-return(
-    <Card className={'TaskCard'} size={"small"}>
-      <Space size={20} direction={'vertical'}>
-        <h3>
-          {task?.main_task_title}
-        </h3>
-        <Flex  wrap={true} justify={'space-between'} gap={5} align={'center'}>
-          <Flex align={'center'} wrap={'nowrap'} gap={8}>
-            <CalendarFilled className={'icon'}/>
-            <Text type={'secondary'} >Start: </Text>
-            <Text type={'secondary'}>{moment(task?.main_task_created_at).format('l')}</Text>
+  return (
+      <Card
+          className={'TaskCard'}
+          style={{ borderColor:`${deadlineColor}` , borderTop: '6px', borderStyle: 'solid', borderTopColor:`${deadlineColor}` }}
+          size={"small"}
+          title={task?.main_task_title}
+          extra={
+              <Button href={`task-list/${task.main_task_id}`} type={"primary"} size={"small"}>
+                <MdOutlineReadMore />
+              </Button>
+          }
+      >
+        <Space style={{ width: '100%' }} size={20} direction={'vertical'}>
+          <Flex wrap={true} justify={'space-between'} gap={5} align={'center'}>
+            <Tooltip title={<p>time start:</p>} placement="top">
+              <Flex align={'center'} wrap={'nowrap'} gap={8}>
+                <CalendarFilled className={'icon'} />
+                <Text type={'secondary'}>{moment(task?.main_task_created_at).format('l')}</Text>
+              </Flex>
+            </Tooltip>
+
+            <Tooltip title={<p>time end:</p>} placement="top">
+              <Flex wrap={'nowrap'} align={'center'} gap={8}>
+                <FieldTimeOutlined className={'icon'} />
+                <Text type={'secondary'}>{moment(task?.main_task_deadline).format('l')}</Text>
+              </Flex>
+            </Tooltip>
           </Flex>
-          <Flex wrap={'nowrap'} align={'center'} gap={8}>
-            <FieldTimeOutlined className={'icon'}/>
-            <Text type={'secondary'}>end: </Text>
-            <Text type={'secondary'}>{task?.main_task_deadline}</Text>
+          <Progress
+              percent={task.done_sub_tasks_count/task.sub_tasks_count * 100}
+              percentPosition={{
+                align: 'center',
+                type: 'outer',
+              }}
+              size={['100%', 3]}
+              strokeColor="#E6F4FF"
+              className={'progress'}
+          />
+          <Flex align={'center'} justify={'space-between'} gap={5}>
+            <Text>
+              офицер по назначениям:
+            </Text>
+            <Tooltip
+                title={
+                  <p>
+                    <span>{task?.main_task_responsible_user?.full_name}</span>
+                  </p>
+                }
+                placement="top"
+            >
+              <Avatar
+                  style={{ backgroundColor: '#87d068' }}
+                  icon={task?.main_task_responsible_user?.image ? <img src={task?.main_task_responsible_user?.image} alt={task?.main_task_responsible_user?.full_name} /> : <UserOutlined />}
+              />
+            </Tooltip>
           </Flex>
-        </Flex>
-        <Progress percent={30}
-                  percentPosition={{
-                    align: 'center',
-                    type: 'outer',
-                  }}
-                  size={['100%', 5]}
-                  strokeColor="#E6F4FF" className={'progress'}/>
-        <Flex align={'center'} wrap={true} gap={5} justify={'space-between'}>
-          <Text type={'secondary'}>
-            {task?.staff_last_sub_task_updated_at}
-          </Text>
-          <Avatar.Group size={"small"} >
-            {
-              task?.included_users.map(user => (
-                  <Tooltip title={<p>
-                    <span>
-                      {user?.first_name
-                        }
-                        {user?.last_name
-                        }
-                    </span>
-                    <br/>
-                    <span>
+
+          <Flex align={'center'} wrap={true} gap={5} justify={'space-between'}>
+
+            <Text type={'secondary'}>
+              {moment(task?.staff_last_sub_task_updated_at).format('l')}
+            </Text>
+
+
+            <Avatar.Group size={"small"}>
+              {task?.included_users.map(user => (
+                  <Tooltip
+                      key={user?.id}
+                      title={
+                        <p>
+                          <span>{user?.full_name}</span>
+                          <br />
+                          <span>
                       {user?.roles[0]?.name}
-                      {user?.roles[1]?.name}
+                            {user?.roles[1]?.name}
                     </span>
-                  </p>} placement="top">
+                        </p>
+                      }
+                      placement="top"
+                  >
                     <Avatar
-                        style={{
-                          backgroundColor: '#87d068',
-                        }}
-                        icon={user?.image? <img src={user?.image} alt={user?.first_name} />: <UserOutlined />}
+                        style={{ backgroundColor: '#87d068' }}
+                        icon={user?.image ? <img src={user?.image} alt={user?.full_name} /> : <UserOutlined />}
                     />
                   </Tooltip>
-              ))
-            }
-          </Avatar.Group>
-        </Flex>
-      </Space>
-    </Card>
-)
-}
+              ))}
+            </Avatar.Group>
+          </Flex>
+
+        </Space>
+      </Card>
+  );
+};
 
 export default TaskList;

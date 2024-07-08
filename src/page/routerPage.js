@@ -51,13 +51,10 @@ export const samplePagesConfigs = [
         isBackground: false
     },
     {
-        key: 3,
-        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
-        path: '/task-list/item',
-        label: 'Task Inner',
+        path: '/task-list/:item',
         element:  TaskInner,
         noIndex: true,
-        permittedRole: ["boss"],
+        permittedRole: ["boss" , "staff"],
         isBackground: false
     },
     {
