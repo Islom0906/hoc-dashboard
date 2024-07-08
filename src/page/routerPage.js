@@ -137,7 +137,7 @@ export const samplePagesConfigs = [
         noIndex: true
     },
     {
-        key: 8,
+        key: 89,
         label: 'Module',
         icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/module',
