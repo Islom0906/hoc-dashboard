@@ -85,7 +85,6 @@ const CompanyPostEdit = () => {
                 url: editCompanyData.image
             }];
 
-            console.log(editCompanyData)
             const edit = {
                 image,
                 title: editCompanyData?.title

@@ -34,7 +34,6 @@ const Login = () => {
             navigate('/')
             message.success('Успешно')
         } catch (error) {
-            console.log(error.response)
             message.error(error?.response?.data?.detail)
             dispatch(authData({
                 user: null,

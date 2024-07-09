@@ -67,7 +67,6 @@ const AuthProvider = ({children}) => {
                 }))
                 // navigate(0)
             } catch (error) {
-                console.log(error)
                 dispatch(authData({
                     user: null,
                     isLoading: false,
