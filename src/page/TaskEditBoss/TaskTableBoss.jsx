@@ -3,7 +3,7 @@ import {DeleteOutlined, EditOutlined, UserOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import moment from  'moment'
+import dayjs  from "dayjs";
 const TaskTableBoss = ({data}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -26,13 +26,13 @@ const TaskTableBoss = ({data}) => {
       title: 'данное время',
       dataIndex: 'created_at',
       id: 'created_at',
-      render: (text) => <p>{moment(text).format('l')}</p>
+      render: (text) => <p>{dayjs(text).format('l')}</p>
     },
     {
       title: 'крайний срок',
       dataIndex: 'deadline',
       id: 'deadline',
-      render: (text) => <p>{moment(text).format('l')}</p>
+      render: (text) => <p>{dayjs(text).format('l')}</p>
     },
     {
       title: 'статус задачи',

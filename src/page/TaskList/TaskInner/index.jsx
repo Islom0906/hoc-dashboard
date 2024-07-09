@@ -20,7 +20,7 @@ import {useParams} from "react-router-dom";
 import apiService from "../../../service/apis/api";
 import {useMutation, useQuery} from "react-query";
 import React, {useEffect, useMemo, useState} from "react";
-import moment from "moment/moment";
+import dayjs from "dayjs";
 import {Checkbox, Input, List} from 'antd';
 import {FormTextArea} from "../../../components";
 import {onPreviewImage} from "../../../hooks";
@@ -383,7 +383,7 @@ export const Comment = ({comment}) => {
           </Flex>
         </Flex>
         <Text style={{flexShrink: 0, fontSize: '11px'}}
-              type="secondary">{moment(comment.created_at).format('llll')}</Text>
+              type="secondary">{dayjs(comment.created_at).format('llll')}</Text>
       </Flex>
   );
 };
@@ -446,11 +446,11 @@ export const TaskInnerCard = ({
           </Flex>
           <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Due date:</Text>
-            <Text type={'success'}>{moment(main_task_deadline).format('l')}</Text>
+            <Text type={'success'}>{dayjs(main_task_deadline).format('l')}</Text>
           </Flex>
           <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Due date:</Text>
-            <Text type={'success'}>{moment(main_task_created_at).format('l')}</Text>
+            <Text type={'success'}>{dayjs(main_task_created_at).format('l')}</Text>
           </Flex>
           <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Progress:</Text>

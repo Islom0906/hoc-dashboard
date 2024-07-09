@@ -76,14 +76,14 @@ export const TaskCard = ({ task }) => {
             <Tooltip title={<p>time start:</p>} placement="top">
               <Flex align={'center'} wrap={'nowrap'} gap={8}>
                 <CalendarFilled className={'icon'} />
-                <Text type={'secondary'}>{moment(task?.main_task_created_at).format('l')}</Text>
+                <Text type={'secondary'}>{dayjs(task?.main_task_created_at).format('l')}</Text>
               </Flex>
             </Tooltip>
 
             <Tooltip title={<p>time end:</p>} placement="top">
               <Flex wrap={'nowrap'} align={'center'} gap={8}>
                 <FieldTimeOutlined className={'icon'} />
-                <Text type={'secondary'}>{moment(task?.main_task_deadline).format('l')}</Text>
+                <Text type={'secondary'}>{dayjs(task?.main_task_deadline).format('l')}</Text>
               </Flex>
             </Tooltip>
           </Flex>
@@ -120,7 +120,7 @@ export const TaskCard = ({ task }) => {
           <Flex align={'center'} wrap={true} gap={5} justify={'space-between'}>
 
             <Text type={'secondary'}>
-              {moment(task?.staff_last_sub_task_updated_at).format('l')}
+              {dayjs(task?.staff_last_sub_task_updated_at).format('l')}
             </Text>
 
 

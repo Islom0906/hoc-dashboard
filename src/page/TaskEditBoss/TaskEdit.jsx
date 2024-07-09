@@ -4,7 +4,7 @@ import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import apiService from "../../service/apis/api";
-import moment from "moment";
+import dayjs from "dayjs";
 import {MinusCircleOutlined} from "@ant-design/icons";
 import successCreateAndEdit from "../../hooks/successCreateAndEdit";
 import editGetById from "../../hooks/editGetById";
@@ -153,7 +153,7 @@ const TaskEdit = () => {
             subTask.push({
                 title: item?.title,
                 text: item?.text,
-                deadline: moment(item?.deadline) || null,
+                deadline: dayjs(item?.deadline) || null,
                 staff: item?.staff,
                 module: item?.module?.id
             })
@@ -193,7 +193,7 @@ const TaskEdit = () => {
             const edit = {
                 title: editTaskData?.title,
                 text: editTaskData?.title,
-                deadline: moment(editTaskData?.deadline),
+                deadline: dayjs(editTaskData?.deadline),
                 responsible_user: editTaskData?.responsible_user?.id,
                 company: editTaskData?.company?.id,
                 moduls: editTaskData?.moduls,
@@ -220,7 +220,7 @@ const TaskEdit = () => {
         const data = {
             title: value.title,
             text: value.text,
-            deadline: moment(value?.deadline).format('YYYY-MM-DDTHH:mm:ss'),
+            deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm:ss'),
             company: value?.company,
             moduls: selectAddSubTask ? [] : selectModuls,
             users: selectAddSubTask ? [] : selectStaff,
@@ -241,7 +241,7 @@ const TaskEdit = () => {
             // storedValues.image = []
             const data = {
                 ...storedValues,
-                deadline: moment(storedValues?.deadline)
+                deadline: dayjs(storedValues?.deadline)
             }
             form.setFieldsValue(data);
         }
