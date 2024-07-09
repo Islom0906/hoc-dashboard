@@ -13,6 +13,8 @@ import {
 import {CalendarOutlined, InboxOutlined, OrderedListOutlined, PieChartOutlined, UserOutlined} from "@ant-design/icons";
 import TaskCreated from "./TaskCreated";
 import TaskPostEdit from "./TaskCreated/TaskPostEdit";
+import TaskEditBoss from "./TaskEditBoss";
+import TaskEdit from "./TaskEditBoss/TaskEdit";
 
 
 export const authRole = {
@@ -93,6 +95,22 @@ export const samplePagesConfigs = [
         element: TaskCreated,
         permittedRole: ["admin"],
         isBackground: true
+    },
+    {
+        key: 121322,
+        label: 'создайте задачу',
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        path: '/taskEditBoss',
+        element: TaskEditBoss,
+        permittedRole: ["boss"],
+        isBackground: true
+    },
+    {
+        path: '/taskEditBoss/add',
+        element: TaskEdit,
+        permittedRole: ["boss"],
+        isBackground: true,
+        noIndex: true
     },
     {
         path: '/task/add',

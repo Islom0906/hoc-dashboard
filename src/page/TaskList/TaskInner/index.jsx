@@ -12,33 +12,48 @@ import {
   Spin,
   Tooltip,
   Typography,
-  Upload
+  Upload,
+  Modal, Popconfirm
 } from "antd";
-import { UserOutlined} from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import {UserOutlined} from "@ant-design/icons";
+import {useParams} from "react-router-dom";
 import apiService from "../../../service/apis/api";
 import {useMutation, useQuery} from "react-query";
 import React, {useEffect, useMemo, useState} from "react";
 import moment from "moment/moment";
-import {  Checkbox, Input,  List } from 'antd';
+import {Checkbox, Input, List} from 'antd';
 import {FormTextArea} from "../../../components";
 import {onPreviewImage} from "../../../hooks";
-const { TextArea } = Input;
-const { Text ,Title } = Typography;
+
+const {Text, Title} = Typography;
 
 const TaskInner = () => {
-    const { item } = useParams();
-  const { data: taskInner  , refetch: refetchTaskInner, isLoading , isSuccess } = useQuery(["taskInner" , item], () =>
-      apiService.getDataByID('users/staff-subtask-retrieve' ,item) , { enabled: false}
+  const [open, setOpen] = useState(false);
+  const [whichWriteID, setWhichWriteID] = useState(null);
+  const [whichWriteIDTask, setWhichWriteIDTask] = useState(null);
+  const {item} = useParams();
+  const {data: taskInner, refetch: refetchTaskInner, isLoading, isSuccess} = useQuery(["taskInner", item], () =>
+      apiService.getDataByID('users/staff-subtask-retrieve', item), {enabled: false}
   );
   useEffect(() => {
     refetchTaskInner()
-  } , [])
-
-
+  }, [])
 
   console.log(taskInner)
 
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleCommentModel = (id) => {
+    showModal()
+    setWhichWriteIDTask(id)
+  }
+
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
   return (
       <Row gutter={[16, 16]}>
         <Col span={24}>
@@ -54,7 +69,7 @@ const TaskInner = () => {
                       title={
                         <p>
                           <span>{user?.full_name}</span>
-                          <br />
+                          <br/>
                           <span>
                       {user?.roles[0]?.name}
                             {user?.roles[1]?.name}
@@ -64,8 +79,8 @@ const TaskInner = () => {
                       placement="top"
                   >
                     <Avatar
-                        style={{ backgroundColor: '#87d068' }}
-                        icon={user?.image ? <img src={user?.image} alt={user?.full_name} /> : <UserOutlined />}
+                        style={{backgroundColor: '#87d068'}}
+                        icon={user?.image ? <img src={user?.image} alt={user?.full_name}/> : <UserOutlined/>}
                     />
                   </Tooltip>
               ))}
@@ -75,22 +90,54 @@ const TaskInner = () => {
 
         </Col>
         <Col span={16}>
-          <TaskList subTask={taskInner?.sub_tasks} />
-         </Col>
-        <Col span={8}>
-        <TaskInnerCard main_task_responsible_user={taskInner?.main_task_responsible_user} taskPercent={taskInner?.done_sub_tasks_count/taskInner?.sub_tasks_count * 100} main_task_deadline={taskInner?.main_task_deadline} main_task_created_at={taskInner?.main_task_created_at}  main_deadline_status={taskInner?.main_deadline_status} />
+
+          {
+              taskInner?.sub_tasks.length  ?
+              <TaskList subTask={taskInner?.sub_tasks} setWhichWriteID={setWhichWriteID} showModal={showModal}/>
+                  :
+                  <Space direction={"vertical"} size={'large'} style={{width:'100%'}}>
+                    {taskInner?.messages?.map(message => (
+                        <>
+                          <Comment comment={message}/>
+                        </>
+                    ))
+                    }
+                    <Button  type="primary" onClick={() => handleCommentModel(taskInner?.id)}>
+                      Open Modal
+                    </Button>
+
+                  </Space>
+          }
+
+
+
         </Col>
+        <Col span={8}>
+          <TaskInnerCard main_task_responsible_user={taskInner?.main_task_responsible_user}
+                         taskPercent={taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
+                         main_task_deadline={taskInner?.main_task_deadline}
+                         main_task_created_at={taskInner?.main_task_created_at}
+                         main_deadline_status={taskInner?.main_deadline_status}/>
+        </Col>
+
+        <Modal
+            open={open}
+            title="Send Comment"
+            onCancel={handleCancel}
+            footer={null}
+        >
+          <WriteComment whichWriteID={whichWriteID} whichWriteIDTask={whichWriteIDTask} handleCancel={handleCancel} />
+        </Modal>
       </Row>
   );
 };
 
-
-export  const TaskList = ({subTask}) => {
+export const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => {
   const [fileListProps, setFileListProps] = useState([]);
   const [form] = Form.useForm();
   const initialValueForm = {
     message: '',
-    file:[]
+    file: []
   }
   const {
     mutate: postCommentMutate,
@@ -98,7 +145,7 @@ export  const TaskList = ({subTask}) => {
     isSuccess: postCommentSuccess,
   } = useMutation(({url, data}) => apiService.postData(url, data), {
     onSuccess: () => {
-      message.success('Success')
+      message.success('Успешно')
     },
     onError: (error) => {
       for (let obj in error.response.data) {
@@ -107,8 +154,9 @@ export  const TaskList = ({subTask}) => {
     }
   });
 
+
   const {mutate: imagesDeleteMutate} = useMutation(({url, id}) => apiService.deleteData(url, id), {
-    onSuccess: () => message.success('Success'),
+    onSuccess: () => message.success('Успешно'),
     onError: (error) => message.error(error.message)
   });
   // query-image
@@ -157,116 +205,162 @@ export  const TaskList = ({subTask}) => {
     console.log(value)
   }
   const onFinish = (value) => {
-    console.log(value)
     const data = {
-      task: null,
-      sub_task: subTask?.id,
+      task:whichWriteIDTask || null,
+      sub_task: whichWriteID || null,
       image: fileListProps[0]?.uid,
       message: value.message,
     }
-    console.log(data)
-      postCommentMutate({url: "/users/messages/", data: data});
+    postCommentMutate({url: "/users/messages/", data: data});
+    form.setFieldsValue(initialValueForm)
+    handleCancel()
   }
 
-console.log(subTask)
+  return (
+      <Spin spinning={imagesUploadLoading || postCommentLoading}>
+        <Form
+            form={form}
+            name="basic"
+            labelCol={{
+              span: 24
+            }}
+            wrapperCol={{
+              span: 24
+            }}
+            style={{
+              maxWidth: "100%"
+            }}
+            initialValues={initialValueForm}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+        >
+          <FormTextArea
+              placeholder={'comment'}
+              required={true}
+              required_message={'текст к заданию'}
+              name={'message'}
+          />
+          <Form.Item
+              label='File'
+              name={'file'}>
+            <Upload
+                maxCount={1}
+                fileList={fileListProps}
+                listType='picture-card'
+                onChange={onChangeImage}
+                onPreview={onPreviewImage}
+                beforeUpload={() => false}
+            >
+              {fileListProps.length > 0 ? "" : "Upload"}
+            </Upload>
+          </Form.Item>
+          <Button htmlType="submit" type={"primary"} >
+            Send
+          </Button>
+        </Form>
+      </Spin>
+  )
+}
+
+export const TaskList = ({subTask, showModal, setWhichWriteID}) => {
+  const [checkedState, setCheckedState] = useState({});
+  const clickHandle = (id) => {
+    setWhichWriteID(id)
+    showModal()
+  }
+  const {
+    mutate: putProjectDone,
+    isLoading: putProjectDoneLoading,
+    isSuccess: putProjectDoneSuccess
+  } = useMutation(({
+                     url,
+                     data,
+                     id
+                   }) => apiService.editData(url, data, id), {
+    onSuccess: () => {
+      message.success('Успешно')
+    },
+    onError: (error) => {
+      for (let obj in error.response.data) {
+        message.error(`${obj}: ${error.response.data[obj][0]}`)
+      }
+    }
+  });
+
+  const onChangeDoneProject = (id) => {
+    putProjectDone({url: `/users/staff-subtasks`, data:{task_status: 'done'}, id})
+    setCheckedState((prevState) => ({ ...prevState, [id]: true }));
+  }
+
+  useEffect(() => {
+    subTask?.map(item => {
+    setCheckedState((prevState) => ({ ...prevState, [item?.id]: item?.task_status === 'done'? true : false }));
+    })
+  } , [subTask])
 
   return (
       <div>
-        <List
-            dataSource={Array.isArray(subTask) ? subTask : []}
-            itemLayout="vertical"
-            renderItem={subTask => (
-                <List.Item>
-                  <Card style={{ width: '100%' }}>
-                    <List.Item.Meta
-                        title={
-                          <Flex gap={10} align={"start"}>
-                              <Checkbox defaultChecked={true} style={{ marginRight: 8 }} />
-                            <Flex align={"start"} gap={10} vertical={true}>
-                              <Title level={4}>{subTask?.title}</Title>
-                            <Text>{subTask?.message}</Text>
-                            </Flex>
-                          </Flex>
-
-                        }
-
-                        description={
-                          <Space size={'large'} direction={"vertical"} style={{width:'100%'}} >
-                            <Spin spinning={imagesUploadLoading}>
-                            <Form
-                                form={form}
-                                name="basic"
-                                labelCol={{
-                                  span: 24
-                                }}
-                                wrapperCol={{
-                                  span: 24
-                                }}
-                                style={{
-                                  maxWidth: "100%"
-                                }}
-                                initialValues={initialValueForm}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
-                                autoComplete="off"
-                            >
-                              <FormTextArea
-                                  placeholder={'comment'}
-                                  required={true}
-                                  required_message={'текст к заданию'}
-                                  name={'message'}
-                              />
-                              <Form.Item
-                                  label='File'
-                                  name={'file'}>
-                                <Upload
-                                    maxCount={1}
-                                    fileList={fileListProps}
-                                    listType='picture-card'
-                                    onChange={onChangeImage}
-                                    onPreview={onPreviewImage}
-                                    beforeUpload={() => false}
-                                >
-                                  {fileListProps.length > 0 ? "" : "Upload"}
-                                </Upload>
-                              </Form.Item>
-
-                              <Button htmlType="submit" type={"primary"} style={{marginTop:20}}>
-                                Send
+        <Spin spinning={putProjectDoneLoading}>
+          <List
+              dataSource={Array.isArray(subTask) ? subTask : []}
+              itemLayout="vertical"
+              renderItem={subTask => (
+                  <List.Item>
+                    <Card style={{width: '100%'}}>
+                      <List.Item.Meta
+                          title={
+                            <Flex gap={10} align={"start"}>
+                              <Popconfirm
+                                  title={'Вы уверены, что хотите удалить это?'}
+                                  description={'Удалить'}
+                                  onConfirm={() =>  onChangeDoneProject(subTask?.id)}
+                              >
+                                <Checkbox  checked={!!checkedState[subTask.id]} style={{marginRight: 8}}/>
+                              </Popconfirm>
+                              <Flex align={"start"} gap={5} vertical={true}>
+                                <Title level={4}>{subTask?.title}</Title>
+                                <Text>{subTask?.text}</Text>
+                              </Flex>
+                              <Button  type="primary" onClick={() => clickHandle(subTask?.id)}>
+                                Open Modal
                               </Button>
-                            </Form>
-                            </Spin>
+                            </Flex>
+                          }
+                          description={
+                            <Space size={'large'} direction={"vertical"} style={{width: '100%'}}>
+                              {subTask?.messages?.map(message => (
+                                  <Comment comment={message}/>
+                              ))
+                              }
+                            </Space>
+                          }
+                      />
+                    </Card>
+                  </List.Item>
+              )}
+          />
+        </Spin>
 
-                            {subTask?.messages?.map(message => (
-                              <Comment comment={message} />
-                                ))
-                            }
-                          </Space>
-                        }
-                    />
-                  </Card>
-                </List.Item>
-            )}
-        />
       </div>
   );
 };
 
 
-
-export const Comment = ({ comment }) => {
+export const Comment = ({comment}) => {
   const extractFilename = (url) => {
     return url.substring(url.lastIndexOf('/') + 1);
   };
   return (
-      <Flex align={"start"} justify={"space-between"} gap={15} style={{ width: '100%'}}>
-        <Flex align={"start"} gap={10} style={{ width: '100%'}}>
+      <Flex align={"start"} justify={"space-between"} gap={15} style={{width: '100%',padding:'10px 5px',
+        border:'1px dashed #ffffff70' , borderRadius:'5px'}}>
+        <Flex align={"start"} gap={10} style={{width: '100%'}}>
           <Tooltip
               key={comment?.created_user?.id}
               title={
                 <p>
                   <span>{comment?.created_user?.full_name}</span>
-                  <br />
+                  <br/>
                   <span>
                     {comment?.created_user?.position}
                   </span>
@@ -274,29 +368,35 @@ export const Comment = ({ comment }) => {
               }
               placement="top"
           >
-            <Avatar style={{flexShrink:0}} icon={comment?.created_user?.images?.image ? <img src={comment?.created_user?.images.image} alt={comment?.created_user?.full_name} /> : <UserOutlined />}  />
+            <Avatar style={{flexShrink: 0}} icon={comment?.created_user?.images?.image ?
+                <img src={comment?.created_user?.images.image} alt={comment?.created_user?.full_name}/> :
+                <UserOutlined/>}/>
           </Tooltip>
           <Flex vertical={true} gap={5}>
             <Text>{comment?.message}</Text>
             {
                 comment?.file &&
-                <a href={comment?.file} >
+                <a href={comment?.file}>
                   {extractFilename(comment.file)}
                 </a>
             }
           </Flex>
         </Flex>
-        <Text style={{flexShrink:0, fontSize:'11px'}} type="secondary">{moment(comment.created_at).format('llll')}</Text>
+        <Text style={{flexShrink: 0, fontSize: '11px'}}
+              type="secondary">{moment(comment.created_at).format('llll')}</Text>
       </Flex>
   );
 };
 
 
-
-
-
-export const TaskInnerCard = ({main_task_responsible_user , main_task_deadline , main_task_created_at , taskPercent , main_deadline_status}) => {
-  const { Text } = Typography;
+export const TaskInnerCard = ({
+                                main_task_responsible_user,
+                                main_task_deadline,
+                                main_task_created_at,
+                                taskPercent,
+                                main_deadline_status
+                              }) => {
+  const {Text} = Typography;
   const deadlineColor = useMemo(() => {
     const deadlineStatus = main_deadline_status;
     let color = '#3FA2F6';
@@ -310,10 +410,14 @@ export const TaskInnerCard = ({main_task_responsible_user , main_task_deadline ,
     return color;
   }, [main_deadline_status]);
 
-  console.log(main_deadline_status)
 
-  return(
-     <Card size={"small"}  style={{ borderColor:`${deadlineColor}` , borderTop: '6px', borderStyle: 'solid', borderTopColor:`${deadlineColor}` }}  title="Details" >
+  return (
+      <Card size={"small"} style={{
+        borderColor: `${deadlineColor}`,
+        borderTop: '6px',
+        borderStyle: 'solid',
+        borderTopColor: `${deadlineColor}`
+      }} title="Details">
         <Flex vertical={true} gap={10}>
           <Flex align={'center'} justify={'space-between'}>
 
@@ -328,8 +432,10 @@ export const TaskInnerCard = ({main_task_responsible_user , main_task_deadline ,
                   placement="top"
               >
                 <Avatar
-                    style={{ backgroundColor: '#87d068' }}
-                    icon={main_task_responsible_user?.image ? <img src={main_task_responsible_user?.image} alt={main_task_responsible_user?.full_name} /> : <UserOutlined />}
+                    style={{backgroundColor: '#87d068'}}
+                    icon={main_task_responsible_user?.image ?
+                        <img src={main_task_responsible_user?.image} alt={main_task_responsible_user?.full_name}/> :
+                        <UserOutlined/>}
                 />
               </Tooltip>
             </Flex>
@@ -368,8 +474,8 @@ export const TaskInnerCard = ({main_task_responsible_user , main_task_deadline ,
           {/*</Flex>*/}
         </Flex>
 
-     </Card>
- )
+      </Card>
+  )
 
 }
 

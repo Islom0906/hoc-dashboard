@@ -22,7 +22,6 @@ const TaskList = () => {
   }, [refetchStaffGetTask]);
 
 
-  console.log(staffGetTask)
   return (
       <div>
         <h1>User setting</h1>
@@ -51,7 +50,6 @@ export const TaskCard = ({ task }) => {
       color = '#FF7F3E';
     }
 
-    console.log(task?.main_deadline_status)
     return color;
   }, [task]);
 

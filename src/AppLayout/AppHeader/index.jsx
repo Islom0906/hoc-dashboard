@@ -32,7 +32,9 @@ const AppHeader = () => {
   }
     return (
         <Header className={'app-header'}>
-            <img src={logo} className={'logo'} alt={'logo'}/>
+          <Flex style={{width:'150px'}} align={"center"} justify={"center"}>
+            <img src={logo} className={'logo'} alt={'logo'} style={{width:'100%' , height:'100%' , objectFit:'contain'}}/>
+          </Flex>
           <div className={'content'}>
             <Badge dot className={'notification'} >
               <BellOutlined className={'icon'} />

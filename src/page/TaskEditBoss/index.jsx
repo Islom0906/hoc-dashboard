@@ -1,53 +1,39 @@
 import {Button, Col, Input, Row, Typography, Space, Spin, message} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import apiService from "../../service/apis/api";
-import {useMutation, useQuery} from "react-query";
+import { useQuery} from "react-query";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
-import TaskTable from "./TaskTable";
+import TaskTableBoss from "./TaskTableBoss";
+
 const {Title} = Typography
 
 
-const TaskCreated = () => {
+const TaskEditBoss = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // delete
-  const {
-    mutate,
-    isSuccess,
-    isLoading: deleteLoading,
-  } = useMutation(({url, id}) => apiService.deleteData(url, id));
-
   // get
   const {
     data,
     isLoading: getTaskLoading,
     refetch,
-  } = useQuery('get-task', () => apiService.getData(`/users/tasks/`), {
+  } = useQuery('boss-task-get', () => apiService.getData(`/users/boss-task-get/`), {
     enabled: false,
     onError: (error) => {
       message.error(error.message);
     },
   });
-
   const [search, setSearch] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
-
   useEffect(() => {
     refetch()
-  }, [isSuccess]);
-
-  // delete
-  const deleteHandle = (url, id) => {
-    mutate({url, id});
-  };
-
+  }, []);
   // add
   const addArticle = () => {
     dispatch(editIdQuery(""));
-    navigate('/task/add');
+    navigate('/taskEditBoss/add');
   };
   const searchFunc = (value) => {
     if (value === '') {
@@ -86,10 +72,9 @@ const TaskCreated = () => {
           </Row>
           <Spin
               size='medium'
-              spinning={getTaskLoading || deleteLoading}>
-            <TaskTable
-                data={isSearch ? search : data?.results}
-                deleteHandle={deleteHandle}
+              spinning={getTaskLoading}>
+            <TaskTableBoss
+                data={isSearch ? search : data}
             />
           </Spin>
         </Space>
@@ -97,5 +82,5 @@ const TaskCreated = () => {
   );
 };
 
-export default TaskCreated;
+export default TaskEditBoss;
 
