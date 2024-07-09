@@ -4,7 +4,7 @@ import {DeleteOutlined, EditOutlined, UserOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import moment from  'moment'
+import dayjs from "dayjs";
 const TaskTable = ({data,deleteHandle}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -25,17 +25,17 @@ const TaskTable = ({data,deleteHandle}) => {
       id: 'title',
       render: (title) => <p>{title}</p>,
     },
-    {
-      title: 'данное время',
-      dataIndex: 'created_at',
-      id: 'created_at',
-      render: (text) => <p>{moment(text).format('l')}</p>
-    },
+    // {
+    //   title: 'данное время',
+    //   dataIndex: 'created_at',
+    //   id: 'created_at',
+    //   render: (text) => <p>{moment(text).format('l')}</p>
+    // },
     {
       title: 'крайний срок',
       dataIndex: 'deadline',
       id: 'deadline',
-      render: (text) => <p>{moment(text).format('l')}</p>
+      render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
       title: 'статус задачи',
@@ -54,7 +54,7 @@ const TaskTable = ({data,deleteHandle}) => {
               {
                 users.map(user => (
                     <Tooltip
-                        title={<p><span>{user?.name}</span></p>}
+                        title={<p><span>{user?.full_name}</span></p>}
                         placement="top"
                         key={user?.id}
                     >

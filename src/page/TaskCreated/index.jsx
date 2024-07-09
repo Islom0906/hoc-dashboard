@@ -1,6 +1,5 @@
 import {Button, Col, Input, Row, Typography, Space, Spin, message} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-// import CompanyTable from "./CompanyTable";
 import apiService from "../../service/apis/api";
 import {useMutation, useQuery} from "react-query";
 import {useEffect, useState} from "react";
@@ -58,8 +57,9 @@ const TaskCreated = () => {
       setIsSearch(true);
     }
 
-    const filterData = data?.filter(
-        (data) => data?.results?.title.toLowerCase().includes(value.toLowerCase()));
+    console.log(data)
+    const filterData = data?.results?.filter(
+        (data) => data?.title.toLowerCase().includes(value.toLowerCase()));
     setSearch(filterData);
   };
 

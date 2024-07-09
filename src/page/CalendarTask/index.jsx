@@ -2,6 +2,81 @@ import React, { useState} from 'react';
 import {Alert, Badge, Calendar, Modal, Space} from 'antd';
 import dayjs from 'dayjs';
 
+const birthdays=[
+    {
+        "id": 20,
+        "first_name": "Boss Staff User1",
+        "last_name": "Boss Staff User",
+        "birthday": "09.10.1998",
+        "roles": [
+            {
+                "id": 3,
+                "name": "staff"
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "first_name": "Bobur",
+        "last_name": "Berdiev",
+        "birthday": "10.10.2002",
+        "roles": [
+            {
+                "id": 2,
+                "name": "boss"
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "first_name": "Javlon",
+        "last_name": "Baxtiyorov",
+        "birthday": "09.10.2006",
+        "roles": [
+            {
+                "id": 3,
+                "name": "staff"
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "first_name": "Qudrat",
+        "last_name": "Qudrat",
+        "birthday": "09.10.1999",
+        "roles": [
+            {
+                "id": 1,
+                "name": "admin"
+            }
+        ]
+    },
+    {
+        "id": 25,
+        "first_name": "Islom",
+        "last_name": "Abdugofurov",
+        "birthday": "07.01.2024",
+        "roles": [
+            {
+                "id": 3,
+                "name": "staff"
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "first_name": "Aziz",
+        "last_name": "aziz",
+        "birthday": "04.07.2024",
+        "roles": [
+            {
+                "id": 3,
+                "name": "staff"
+            }
+        ]
+    }
+]
+
 const CalendarTask = () => {
     const [value, setValue] = useState(() => dayjs());
     const [selectedValue, setSelectedValue] = useState(() => dayjs());
@@ -16,50 +91,35 @@ const CalendarTask = () => {
         setValue(newValue);
     };
 
-    // useEffect(() => {
-    //     const socket=new WebSocket(`ws://95.46.96.95:82/hoc/backend/ws/notify`)
-    //
-    //     socket.onopen=(e)=>{
-    //         console.log('Success socket')
-    //     }
-    //
-    //     socket.onerror=(e)=>{
-    //         console.log(e)
-    //     }
-    //
-    //     socket.onmessage = (event) => {
-    //         const data = JSON.parse(event.data);
-    //         console.log(data)
-    //     };
-    // }, []);
+    const birthdayMap = birthdays.reduce((acc, birthday) => {
+        console.log(acc)
+        const date = dayjs(birthday.birthday, 'DD.MM.YYYY'); // convert to moment object
+        const key = date.format('YYYY-MM-DD'); // get the YYYY-MM-DD format
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(birthday);
+        return acc;
+    }, {});
 
-
-    const monthCellRender = (value) => {
-        const num = getMonthData(value);
-        return num ? (
-            <div className="notes-month">
-                <section>{num}</section>
-                <span>Backlog number</span>
-            </div>
-        ) : null;
-    };
     const dateCellRender = (value) => {
-        const listData = getListData(value);
+        const dateStr = value.format('YYYY-MM-DD');
+        const birthdaysOnDate = birthdayMap[dateStr] || [];
         return (
             <ul className="events">
-                {listData.map((item) => (
-                    <li key={item.content}>
-                        <Badge status={item.type} text={item.content} />
+                {birthdaysOnDate.map(birthday => (
+                    <li key={birthday.id}>
+                        <Badge status="success" text={`${birthday.first_name} ${birthday.last_name}`} />
                     </li>
                 ))}
             </ul>
         );
     };
-    const cellRender = (current, info) => {
-        if (info.type === 'date') return dateCellRender(current);
-        if (info.type === 'month') return monthCellRender(current);
-        return info.originNode;
-    };
+
+
+
+
+
 
     return (
         <Space direction={"vertical"} size={20}>
@@ -67,7 +127,7 @@ const CalendarTask = () => {
                 Calendar
             </h1>
             <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`}/>
-            <Calendar value={value} onSelect={onSelect} onPanelChange={onPanelChange} cellRender={cellRender}/>
+            <Calendar value={value} onSelect={onSelect} onPanelChange={onPanelChange} cellRender={dateCellRender}/>
             <DayModalTaskList title={`${selectedValue?.format('YYYY-MM-DD')} daily task list`} isModalOpen={isModalOpen}
                               setIsModalOpen={setIsModalOpen}/>
         </Space>
@@ -92,71 +152,3 @@ export const DayModalTaskList = ({isModalOpen, setIsModalOpen, title}) => {
 }
 export default CalendarTask;
 
-const getListData = (value) => {
-    let listData = []; // Specify the type of listData
-    switch (value.date()) {
-        case 8:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event.',
-                },
-                {
-                    type: 'success',
-                    content: 'This is usual event.',
-                },
-            ];
-            break;
-        case 10:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event.',
-                },
-                {
-                    type: 'success',
-                    content: 'This is usual event.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event.',
-                },
-            ];
-            break;
-        case 15:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event',
-                },
-                {
-                    type: 'success',
-                    content: 'This is very long usual event......',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 1.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 2.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 3.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 4.',
-                },
-            ];
-            break;
-        default:
-    }
-    return listData || [];
-};
-const getMonthData = (value) => {
-    if (value.month() === 8) {
-        return 1394;
-    }
-};

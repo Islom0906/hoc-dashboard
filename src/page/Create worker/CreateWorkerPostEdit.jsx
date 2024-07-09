@@ -4,9 +4,8 @@ import {AppLoader, FormInput, FormInputEmail, FormInputNumber} from "../../compo
 import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
-import moment from "moment";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
-
+import dayjs from "dayjs";
 const initialValueForm = {
     first_name: "",
     last_name: "",
@@ -173,7 +172,7 @@ const CreateWorkerPostEdit = () => {
             const edit = {
                 first_name: editCreateWorkerData?.first_name,
                 last_name: editCreateWorkerData?.last_name,
-                birthday: moment(editCreateWorkerData?.birthday),
+                birthday: dayjs(editCreateWorkerData?.birthday),
                 gender: editCreateWorkerData?.gender,
                 image,
                 phone: editCreateWorkerData?.phone,
@@ -195,7 +194,7 @@ const CreateWorkerPostEdit = () => {
         const data = {
             first_name: value?.first_name,
             last_name: value?.last_name,
-            birthday: moment(value?.birthday).format('DD.MM.YYYY'),
+            birthday: dayjs(value?.birthday).format('DD.MM.YYYY'),
             gender: value?.gender,
             image: fileListProps[0]?.uid,
             phone: value?.phone,
@@ -231,7 +230,7 @@ const CreateWorkerPostEdit = () => {
             setFileListProps(storedValues.image)
             const data = {
                 ...storedValues,
-                birthday: moment(storedValues?.birthday)
+                birthday: dayjs(storedValues?.birthday)
             }
             form.setFieldsValue(data);
         }

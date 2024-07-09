@@ -9,6 +9,13 @@ import {useSelector} from "react-redux";
 import {Routes, Route} from 'react-router-dom';
 import Login from "../page/auth/Login";
 import AuthRoutes from "../page/auth/AuthRoutes";
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import dayjs from "dayjs";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Tashkent');
 
 const AppLayout = () => {
     const {systemMode} = useSelector((state) => state.theme)
@@ -16,7 +23,8 @@ const AppLayout = () => {
 
     const {defaultAlgorithm, darkAlgorithm} = theme
     return (
-        <ConfigProvider theme={{
+        <ConfigProvider
+            theme={{
             algorithm: systemMode === 'dark' ? darkAlgorithm : defaultAlgorithm,
             token: systemMode === 'dark' ? configDark : configLight,
         }}>

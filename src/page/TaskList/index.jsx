@@ -7,7 +7,7 @@ import TaskInner from "./TaskInner";
 import apiService from "../../service/apis/api";
 import {useQuery} from "react-query";
 import {useEffect} from "react";
-import moment from "moment";
+import dayjs from "dayjs";
 
 const TaskList = () => {
   const {data: staffGetTask, refetch: refetchStaffGetTask} = useQuery(
@@ -68,7 +68,7 @@ return(
           <Flex align={'center'} wrap={'nowrap'} gap={8}>
             <CalendarFilled className={'icon'}/>
             <Text type={'secondary'} >Start: </Text>
-            <Text type={'secondary'}>{moment(task?.main_task_created_at).format('l')}</Text>
+            <Text type={'secondary'}>{dayjs(task?.main_task_created_at).format('l')}</Text>
           </Flex>
           <Flex wrap={'nowrap'} align={'center'} gap={8}>
             <FieldTimeOutlined className={'icon'}/>

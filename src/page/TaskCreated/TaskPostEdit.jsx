@@ -4,13 +4,14 @@ import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import apiService from "../../service/apis/api";
-import moment from "moment";
 import {MinusCircleOutlined} from "@ant-design/icons";
 import successCreateAndEdit from "../../hooks/successCreateAndEdit";
 import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
+import dayjs from "dayjs";
 
 const {Title} = Typography
+
 
 const initialValueForm = {
     title: '',
@@ -153,7 +154,7 @@ const TaskPostEdit = () => {
             subTask.push({
                 title: item?.title,
                 text: item?.text,
-                deadline: moment(item?.deadline) || null,
+                deadline: dayjs(item?.deadline) || null,
                 staff: item?.staff,
                 module: item?.module?.id
             })
@@ -193,7 +194,7 @@ const TaskPostEdit = () => {
             const edit = {
                 title: editTaskData?.title,
                 text: editTaskData?.title,
-                deadline: moment(editTaskData?.deadline),
+                deadline: dayjs(editTaskData?.deadline),
                 responsible_user: editTaskData?.responsible_user?.id,
                 company: editTaskData?.company?.id,
                 moduls: editTaskData?.moduls,
@@ -208,7 +209,6 @@ const TaskPostEdit = () => {
     const onFinish = (value) => {
         const selectStaff = []
         const selectModuls = []
-
         value?.allModuls?.map(item => {
             if (item.user) {
                 selectStaff.push(item.user)
@@ -217,14 +217,22 @@ const TaskPostEdit = () => {
                 selectModuls.push(item.moduls)
             }
         })
+       const subTask=value?.sub_tasks?.map((subTask)=>{
+            return{
+                ...subTask,
+                deadline:dayjs(subTask.deadline).utc().tz().format()
+            }
+        })
+        console.log(subTask)
+
         const data = {
             title: value.title,
             text: value.text,
-            deadline: moment(value?.deadline).format('YYYY-MM-DDTHH:mm:ss'),
+            deadline: dayjs(value?.deadline).utc().tz().format(),
             company: value?.company,
             moduls: selectAddSubTask ? [] : selectModuls,
             users: selectAddSubTask ? [] : selectStaff,
-            sub_tasks: value?.sub_tasks ? value?.sub_tasks : [],
+            sub_tasks: value?.sub_tasks ? subTask : [],
             responsible_user: value?.responsible_user
         }
         if (editTaskData) {
@@ -241,7 +249,7 @@ const TaskPostEdit = () => {
             // storedValues.image = []
             const data = {
                 ...storedValues,
-                deadline: moment(storedValues?.deadline)
+                deadline: dayjs(storedValues?.deadline)
             }
             form.setFieldsValue(data);
         }
@@ -279,7 +287,6 @@ const TaskPostEdit = () => {
     }, [getCompany]);
     // option module
     const optionsModules = useMemo(() => {
-        console.log('render module option', getModules)
         return getModules?.results?.map((option) => {
             return {
                 value: option?.id,
@@ -289,7 +296,6 @@ const TaskPostEdit = () => {
     }, [getModules]);
     // option module
     const optionsUserByModules = useMemo(() => {
-        console.log('render user option', getUserByModules)
         return getUserByModules?.results?.map((option) => {
             return {
                 value: option?.id,
@@ -298,8 +304,6 @@ const TaskPostEdit = () => {
         });
     }, [getUserByModules]);
 
-    console.log(optionsUserByModules)
-    console.log(optionsModules)
     const onChangeCompany = (id) => {
         setSelectCompanyID(id)
     }
@@ -334,6 +338,7 @@ const TaskPostEdit = () => {
             refetchGetUserByModules()
         }
     }, [selectModulesID]);
+
 
     return (<div>
         {(postTaskLoading || editTaskLoading || putTaskLoading) ?
@@ -377,7 +382,9 @@ const TaskPostEdit = () => {
                                 required: true, message: 'Укажите день  крайний срок.'
                             }]}
                         >
-                            <DatePicker/>
+                            <DatePicker
+                                showTime
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={24}>
@@ -581,7 +588,9 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                                                 required: true, message: 'Укажите день  крайний срок.'
                                             }]}
                                         >
-                                            <DatePicker/>
+                                            <DatePicker
+                                                showTime
+                                            />
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
