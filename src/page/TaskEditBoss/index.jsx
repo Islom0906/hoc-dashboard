@@ -14,21 +14,36 @@ const {Title} = Typography
 const TaskEditBoss = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [search, setSearch] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
   // get
   const {
-    data,
-    isLoading: getTaskLoading,
-    refetch,
-  } = useQuery('boss-task-get', () => apiService.getData(`/users/boss-task-get/`), {
+    data : dataGetBossNotShared,
+    isLoading: loadingGetBossNotShared,
+    refetch: refetchGetBossNotShared,
+  } = useQuery('boss-task-get-noshared', () => apiService.getData(`/users/boss-task-filter-get/?shared=not_shared`), {
     enabled: false,
     onError: (error) => {
       message.error(error.message);
     },
   });
-  const [search, setSearch] = useState([]);
-  const [isSearch, setIsSearch] = useState(false);
+  const {
+    data : dataGetBossShared,
+    isLoading: loadingGetBossShared,
+    refetch: refetchGetBossShared,
+  } = useQuery('boss-task-get-shared', () => apiService.getData(`/users/boss-task-filter-get/?shared=shared`), {
+    enabled: false,
+    onError: (error) => {
+      message.error(error.message);
+    },
+  });
+
+  console.log('noshared',  dataGetBossNotShared)
+  console.log('shared',  dataGetBossShared)
+
   useEffect(() => {
-    refetch()
+    refetchGetBossNotShared()
+    refetchGetBossShared()
   }, []);
   // add
   const addArticle = () => {
@@ -42,7 +57,7 @@ const TaskEditBoss = () => {
       setIsSearch(true);
     }
 
-    const filterData = data?.filter(
+    const filterData = dataGetBossShared?.filter(
         (data) => data?.results?.title.toLowerCase().includes(value.toLowerCase()));
     setSearch(filterData);
   };
@@ -53,7 +68,7 @@ const TaskEditBoss = () => {
           <Row gutter={20}>
             <Col span={24}>
               <Title level={2}>
-                создайте задачу:
+                Создать задачу
               </Title>
             </Col>
             <Col span={16}>
@@ -72,9 +87,20 @@ const TaskEditBoss = () => {
           </Row>
           <Spin
               size='medium'
-              spinning={getTaskLoading}>
+              spinning={loadingGetBossNotShared}>
             <TaskTableBoss
-                data={isSearch ? search : data}
+                data={isSearch ? search : dataGetBossNotShared?.results}
+            />
+          </Spin>
+
+          <Title>
+            salom
+          </Title>
+          <Spin
+              size='medium'
+              spinning={loadingGetBossShared}>
+            <TaskTableBoss
+                data={isSearch ? search : dataGetBossShared?.results}
             />
           </Spin>
         </Space>

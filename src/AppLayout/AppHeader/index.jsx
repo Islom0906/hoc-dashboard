@@ -6,13 +6,13 @@ import {Header} from "antd/es/layout/layout";
 import {useDispatch, useSelector} from "react-redux";
 import {changeThemeMode} from "../../store/slice/themeSlice";
 import {authData} from "../../store/slice/authSlice";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 
 
 const AppHeader = () => {
     const {systemMode}=useSelector(state => state.theme)
-    const {data:{user}}=useSelector(state => state.auth)
+  const {data:{user}}=useSelector(state => state.auth)
     const dispatch=useDispatch()
   const navigate=useNavigate()
     const isDarkHandle=()=>{
@@ -62,24 +62,16 @@ export  const  UserAccount = ({ user , logOut})=> {
         {
             key: '1',
             label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    changle
-                </a>
+                <Link  rel="noopener noreferrer" to="/user-profile">
+                    Редактировать
+                </Link>
             ),
         },
         {
             key: '2',
             label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    edit
-                </a>
-            ),
-        },
-        {
-            key: '3',
-            label: (
                 <div onClick={logOut}>
-                    quit
+                    Выход
                 </div>
             ),
         },

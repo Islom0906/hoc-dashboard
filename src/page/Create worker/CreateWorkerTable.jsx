@@ -22,7 +22,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
 
     const columns = [
         {
-            title: 'Имя пользователя',
+            title: 'Имя работника',
             dataIndex: 'first_name',
             id: 'first_name',
             render: (text) => <p>{text}</p>,
@@ -34,13 +34,13 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             render: (text) => <p>{text}</p>,
         },
         {
-            title: 'Birthday',
+            title: 'День рождения',
             dataIndex: 'birthday',
             id: 'birthday',
             render: (text) => <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
         },
         {
-            title: 'Позиция',
+            title: 'Позиция ',
             dataIndex: 'position',
             id: 'position',
             render: (text) => <p>{text}</p>,
