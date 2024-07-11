@@ -119,6 +119,7 @@ const TaskEdit = () => {
         }
 
 
+        console.log('dataGetAddSubTask' , dataGetAddSubTask)
     }, [dataGetAddSubTask])
 
     const onFinish = (value) => {
@@ -130,7 +131,7 @@ const TaskEdit = () => {
                     text: item.text,
                     deadline: dayjs(item.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
                     staff:  item.staff,
-                    task: dataGetAddSubTask?.id,
+                    task: dataGetAddSubTask?.main_task_id,
                 })
             })
         }else{
@@ -147,7 +148,10 @@ const TaskEdit = () => {
 
 
         if (dataGetAddSubTask) {
-            putAddSubTaskBoss({url: '/users/boss-created-task-update', data: data, id: editId})
+
+            console.log(data)
+
+            putAddSubTaskBoss({url: '/users/boss-created-task-update', data: {data}, id: editId})
         } else {
         postAddSubTaskBossMutate({url: "/users/boss-task-create", data: data});
         }
