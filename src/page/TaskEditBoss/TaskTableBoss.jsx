@@ -18,31 +18,31 @@ const TaskTableBoss = ({data}) => {
 
   const columns = [
     {
-      title: 'Название задачу',
+      title: 'Название задачи',
       dataIndex: 'title',
       id: 'title',
       render: (title) => <p>{title}</p>,
     },
     {
-      title: 'данное время',
+      title: 'Данное время',
       dataIndex: 'created_at',
       id: 'created_at',
       render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
-      title: 'крайний срок',
+      title: 'Крайний срок',
       dataIndex: 'deadline',
       id: 'deadline',
       render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
-      title: 'статус задачи',
+      title: 'Статус задачи',
       dataIndex: 'task_status',
       id: 'task_status',
       render: (text) => <p>{text}</p>
     },
     {
-      title: 'команда',
+      title: 'Команда',
       dataIndex: ['moduls', 'included_users'],
       id: 'team',
       render: (text, record) => {

@@ -78,29 +78,29 @@ const Login = () => {
                     autoComplete="off"
                 >
                     <Form.Item
-                        label="Email"
+                        label="Электронная почта"
                         name="email"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your email!',
+                                message: 'Please put your email!',
                             },
                         ]}
                     >
-                        <Input placeholder={'Enter email'}/>
+                        <Input placeholder={'Введите адрес электронной почты'}/>
                     </Form.Item>
 
                     <Form.Item
-                        label="Password"
+                        label="Пароль"
                         name="password"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your password!',
+                                message: 'Please put your password!',
                             },
                         ]}
                     >
-                        <Input.Password placeholder={'Enter password'}/>
+                        <Input.Password placeholder={'Напишите свой пароль'}/>
                     </Form.Item>
 
 
@@ -111,7 +111,7 @@ const Login = () => {
                         }}
                     >
                         <Button type="primary" htmlType="submit">
-                            Submit
+                            Вход
                         </Button>
                     </Form.Item>
                 </Form>
