@@ -168,11 +168,10 @@ const CreateWorkerPostEdit = () => {
             //     }
             //     user_roles.push(data)
             // })
-
             const edit = {
                 first_name: editCreateWorkerData?.first_name,
                 last_name: editCreateWorkerData?.last_name,
-                birthday: dayjs(editCreateWorkerData?.birthday),
+                birthday: dayjs(editCreateWorkerData?.birthday,"DD.MM.YYYY"),
                 gender: editCreateWorkerData?.gender,
                 image,
                 phone: editCreateWorkerData?.phone,
@@ -194,7 +193,7 @@ const CreateWorkerPostEdit = () => {
         const data = {
             first_name: value?.first_name,
             last_name: value?.last_name,
-            birthday: dayjs(value?.birthday).format('DD.MM.YYYY'),
+            birthday: dayjs(value?.birthday).utc().tz().format('DD.MM.YYYY'),
             gender: value?.gender,
             image: fileListProps[0]?.uid,
             phone: value?.phone,

@@ -67,7 +67,7 @@ export const samplePagesConfigs = [
         path: '/calendar-task',
         element: CalendarTask,
         permittedRole: ['admin', "boss", 'staff'],
-        isBackground: false
+        isBackground: true
     },
     {
         key: 5,
