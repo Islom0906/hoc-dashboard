@@ -1,4 +1,3 @@
-// import { useQuery } from 'react-query';
 import { Avatar, Button, Card, Col, Divider, Flex, Progress, Row, Space, Tooltip, Typography } from "antd";
 import './index.scss';
 import { CalendarFilled, FieldTimeOutlined, UserOutlined } from "@ant-design/icons";
@@ -7,8 +6,10 @@ import { useQuery } from "react-query";
 import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { MdOutlineReadMore } from "react-icons/md";
+import {useSelector} from "react-redux";
 
 const TaskList = () => {
+  const {data:{user}}=useSelector(state => state.auth)
   const { data: staffGetTask, refetch: refetchStaffGetTask } = useQuery(
       'staff-get-task',
       () => apiService.getData('users/staff-subtasks'),
@@ -16,24 +17,42 @@ const TaskList = () => {
         enabled: false,
       },
   );
+  const { data: bossGetTask, refetch: refetchBossGetTask } = useQuery(
+      'boss-get-task',
+      () => apiService.getData('users/boss-assigned-task-get/'),
+      {
+        enabled: false,
+      },
+  );
 
   useEffect(() => {
-    refetchStaffGetTask();
-  }, [refetchStaffGetTask]);
+    if(user?.roles[0].name === 'boss') {
+      refetchBossGetTask();
+    }else{
+      refetchStaffGetTask()
+    }
+  }, [user]);
 
+
+  console.log(bossGetTask?.results)
+  console.log(staffGetTask?.results)
 
   return (
       <div>
         <h1>User setting</h1>
         <Divider orientation="right"><h4>Completed</h4></Divider>
         <Row gutter={[24, 24]}>
-          {staffGetTask?.results?.map(task => (
+          {staffGetTask &&  staffGetTask?.results?.map(task => (
               <Col key={task?.main_task_id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
                 <TaskCard key={task?.main_task_id} task={task} />
               </Col>
           ))}
+          {bossGetTask?.count > 0 &&  bossGetTask?.results?.map(task => (
+              <Col key={task?.id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
+                {/*<TaskCard key={task?.id} task={task} />*/}
+              </Col>
+          ))}
         </Row>
-        {/* <TaskInner /> */}
       </div>
   );
 };
@@ -49,13 +68,12 @@ export const TaskCard = ({ task }) => {
     } else if (deadlineStatus === 'progress') {
       color = '#FF7F3E';
     }
-
     return color;
   }, [task]);
 
 
   if (!task) {
-    return null; // or a fallback UI if task is null
+    return null;
   }
 
   const { Text } = Typography;
@@ -66,7 +84,7 @@ export const TaskCard = ({ task }) => {
           size={"small"}
           title={task?.main_task_title}
           extra={
-              <Button href={`task-list/${task.main_task_id}`} type={"primary"} size={"small"}>
+              <Button href={`task-list/${task?.main_task_id}`} type={"primary"} size={"small"}>
                 <MdOutlineReadMore />
               </Button>
           }
@@ -76,19 +94,19 @@ export const TaskCard = ({ task }) => {
             <Tooltip title={<p>time start:</p>} placement="top">
               <Flex align={'center'} wrap={'nowrap'} gap={8}>
                 <CalendarFilled className={'icon'} />
-                <Text type={'secondary'}>{dayjs(task?.main_task_created_at).format('l')}</Text>
+                <Text type={'secondary'}>{dayjs(task?.main_task_created_at).format('DD.MM.YYY')}</Text>
               </Flex>
             </Tooltip>
 
             <Tooltip title={<p>time end:</p>} placement="top">
               <Flex wrap={'nowrap'} align={'center'} gap={8}>
                 <FieldTimeOutlined className={'icon'} />
-                <Text type={'secondary'}>{dayjs(task?.main_task_deadline).format('l')}</Text>
+                <Text type={'secondary'}>{dayjs(task?.main_task_deadline).format('DD.MM.YYY:h:mm:ss')}</Text>
               </Flex>
             </Tooltip>
           </Flex>
           <Progress
-              percent={task.done_sub_tasks_count/task.sub_tasks_count * 100}
+              percent={task?.done_sub_tasks_count/task?.sub_tasks_count * 100}
               percentPosition={{
                 align: 'center',
                 type: 'outer',
@@ -120,12 +138,12 @@ export const TaskCard = ({ task }) => {
           <Flex align={'center'} wrap={true} gap={5} justify={'space-between'}>
 
             <Text type={'secondary'}>
-              {dayjs(task?.staff_last_sub_task_updated_at).format('l')}
+              {dayjs(task?.staff_last_sub_task_updated_at).format('DD.MM.YYY')}
             </Text>
 
 
             <Avatar.Group size={"small"}>
-              {task?.included_users.map(user => (
+              {task?.included_users?.map(user => (
                   <Tooltip
                       key={user?.id}
                       title={

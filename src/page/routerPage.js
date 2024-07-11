@@ -98,7 +98,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 121322,
-        label: 'создайте задачу',
+        label: 'распределение задач',
         icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
         path: '/taskEditBoss',
         element: TaskEditBoss,

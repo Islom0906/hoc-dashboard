@@ -1,5 +1,5 @@
-import {Avatar, Button, Popconfirm, Space, Table, Tooltip} from "antd";
-import {DeleteOutlined, EditOutlined, UserOutlined} from "@ant-design/icons";
+import {Avatar, Button, Space, Table, Tooltip} from "antd";
+import { EditOutlined, UserOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -7,13 +7,14 @@ import dayjs  from "dayjs";
 const TaskTableBoss = ({data}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
+
   const Edit = (id) => {
     localStorage.setItem('editDataId',id)
     dispatch(editIdQuery(id))
+    console.log(id)
     navigate('/taskEditBoss/add')
   };
 
-  console.log( 'table boss users' , data?.included_users)
 
   const columns = [
     {
@@ -26,13 +27,13 @@ const TaskTableBoss = ({data}) => {
       title: 'данное время',
       dataIndex: 'created_at',
       id: 'created_at',
-      render: (text) => <p>{dayjs(text).format('l')}</p>
+      render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
       title: 'крайний срок',
       dataIndex: 'deadline',
       id: 'deadline',
-      render: (text) => <p>{dayjs(text).format('l')}</p>
+      render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
       title: 'статус задачи',
