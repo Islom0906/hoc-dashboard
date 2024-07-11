@@ -38,8 +38,6 @@ const TaskEditBoss = () => {
     },
   });
 
-  console.log('noshared',  dataGetBossNotShared)
-  console.log('shared',  dataGetBossShared)
 
   useEffect(() => {
     refetchGetBossNotShared()
