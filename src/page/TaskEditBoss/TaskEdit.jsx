@@ -83,40 +83,52 @@ const TaskEdit = () => {
                 message.error(`${obj}: ${error.response.data[obj][0]}`)
             }
         }
+    // put /users/boss-created-task-update
     });
-    const {
-        isLoading: editBossTaskLoading,
-        data: editBossTaskData,
-        refetch: editBossTaskRefetch,
-        isSuccess: editBossTaskSuccess,
-    } = useQuery(["edit-task", editId], () => apiService.getDataByID("/users/boss-created-task-update/", editId), {
-        enabled: false
-    });
+
     useEffect(() => {
-        console.log(dataGetAddSubTask)
         return () => {
             queryClient.removeQueries()
         }
     }, [])
-    // tasks success
-    //
+
     successCreateAndEdit(postAddSubTaskBossSuccess, putAddSubTaskBossSuccess, '/taskEditBoss')
-    editGetById(editBossTaskRefetch)
+    editGetById(refetchGetAddSubTask)
     setInitialValue(form, initialValueForm)
 
-    console.log(editBossTaskData)
+    useEffect(() => {
+        const comeToEdit =[]
+        dataGetAddSubTask?.sub_tasks?.map(subTask => {
+            comeToEdit.push({
+                title:subTask?.title,
+                text: subTask?.text,
+                deadline: dayjs(subTask?.deadline),
+                staff: subTask?.staff
+            })
+            // dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+        })
+
+
+        const editData = {
+                sub_tasks: comeToEdit
+        }
+        console.log(editData)
+
+        if (successGetAddSubTask) {
+        form.setFieldsValue(editData)
+        }
+
+
+    }, [dataGetAddSubTask])
 
     const onFinish = (value) => {
         const data = []
-
-        console.log()
-
         if(dataGetAddSubTask?.moduls){
             value?.sub_tasks?.map(item => {
                 data.push({
                     title: item.title,
                     text: item.text,
-                    deadline: dayjs(item.deadline),
+                    deadline: dayjs(item.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
                     staff:  item.staff,
                     task: dataGetAddSubTask?.id,
                 })
@@ -134,12 +146,11 @@ const TaskEdit = () => {
         }
 
 
-        // if (editTaskData) {
-        //     putTask({url: '/users/tasks', data: data, id: editId})
-        // } else {
-        // postAddSubTaskBossMutate({url: "/users/boss-task-create", data: data});
-        // }
+        if (dataGetAddSubTask) {
+            putAddSubTaskBoss({url: '/users/boss-created-task-update', data: data, id: editId})
+        } else {
         postAddSubTaskBossMutate({url: "/users/boss-task-create", data: data});
+        }
         form.setFieldsValue(initialValueForm)
     }
 

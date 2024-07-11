@@ -34,8 +34,6 @@ const TaskList = () => {
   }, [user]);
 
 
-  console.log(bossGetTask?.results)
-  console.log(staffGetTask?.results)
 
   return (
       <div>
@@ -48,8 +46,8 @@ const TaskList = () => {
               </Col>
           ))}
           {bossGetTask?.count > 0 &&  bossGetTask?.results?.map(task => (
-              <Col key={task?.id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
-                {/*<TaskCard key={task?.id} task={task} />*/}
+              <Col key={task?.main_task_id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
+                <TaskCard key={task?.main_task_id} task={task} />
               </Col>
           ))}
         </Row>

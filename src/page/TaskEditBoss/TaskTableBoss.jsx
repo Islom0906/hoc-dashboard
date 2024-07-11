@@ -8,6 +8,7 @@ const TaskTableBoss = ({data}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
 
+  console.log(data)
   const Edit = (id) => {
     localStorage.setItem('editDataId',id)
     dispatch(editIdQuery(id))
@@ -19,9 +20,9 @@ const TaskTableBoss = ({data}) => {
   const columns = [
     {
       title: 'Название задачу',
-      dataIndex: 'title',
-      id: 'title',
-      render: (title) => <p>{title}</p>,
+      dataIndex: 'main_task_title',
+      id: 'main_task_title',
+      render: (main_task_title) => <p>{main_task_title}</p>,
     },
     {
       title: 'данное время',
@@ -94,7 +95,7 @@ const TaskTableBoss = ({data}) => {
       render: (_, record ) => (
           <Space size={20}>
             <Button
-                onClick={() => Edit(record.id)}
+                onClick={() => Edit(record.main_task_id)}
                 type='dashed'
                 out
                 icon={<EditOutlined />}/>
