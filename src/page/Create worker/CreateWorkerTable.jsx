@@ -33,6 +33,12 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             render: (text) => <p>{text}</p>,
         },
         {
+            title: 'Birthday',
+            dataIndex: 'birthday',
+            id: 'birthday',
+            render: (text) => <p>{text}</p>,
+        },
+        {
             title: 'Позиция',
             dataIndex: 'position',
             id: 'position',

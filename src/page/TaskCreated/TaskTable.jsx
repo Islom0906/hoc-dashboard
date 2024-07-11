@@ -5,6 +5,7 @@ import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import dayjs from "dayjs";
+
 const TaskTable = ({data,deleteHandle}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -29,7 +30,7 @@ const TaskTable = ({data,deleteHandle}) => {
     //   title: 'данное время',
     //   dataIndex: 'created_at',
     //   id: 'created_at',
-    //   render: (text) => <p>{moment(text).format('l')}</p>
+    //   render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     // },
     {
       title: 'Крайний срок',

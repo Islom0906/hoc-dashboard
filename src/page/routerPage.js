@@ -78,7 +78,7 @@ export const samplePagesConfigs = [
         path: '/calendar-task',
         element: CalendarTask,
         permittedRole: ['admin', "boss", 'staff'],
-        isBackground: false
+        isBackground: true
     },
     {
         key: 5,
@@ -109,8 +109,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 121322,
-        label: 'Создать задачу',
-        icon: <RiPlayListAddLine className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+        label: 'распределение задач',
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: TaskEditBoss,
         permittedRole: ["boss"],

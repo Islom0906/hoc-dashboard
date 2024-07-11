@@ -111,6 +111,7 @@ const TaskPostEdit = () => {
     } = useQuery(["edit-task", editId], () => apiService.getDataByID("/users/tasks", editId), {
         enabled: false
     });
+    // put task
     const {
         mutate: putTask,
         isLoading: putTaskLoading,
@@ -244,26 +245,26 @@ const TaskPostEdit = () => {
 
     // refresh page again get data
     useEffect(() => {
-        const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
-        if (storedValues) {
-            // storedValues.image = []
-            const data = {
-                ...storedValues,
-                deadline: dayjs(storedValues?.deadline)
-            }
-            form.setFieldsValue(data);
-        }
+        // const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
+        // if (storedValues) {
+        //     // storedValues.image = []
+        //     const data = {
+        //         ...storedValues,
+        //         deadline: dayjs(storedValues?.deadline)
+        //     }
+        //     form.setFieldsValue(data);
+        // }
         const handleBeforeUnload = (event) => {
             event.preventDefault()
-            localStorage.setItem(
-                'myFormValues',
-                JSON.stringify(form.getFieldsValue()),
-            );
+            // localStorage.setItem(
+            //     'myFormValues',
+            //     JSON.stringify(form.getFieldsValue()),
+            // );
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => {
             localStorage.removeItem('editDataId')
-            localStorage.removeItem('myFormValues')
+            // localStorage.removeItem('myFormValues')
             window.removeEventListener('beforeunload', handleBeforeUnload);
         }
     }, []);
