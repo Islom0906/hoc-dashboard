@@ -8,7 +8,6 @@ const TaskTableBoss = ({data}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
 
-  console.log(data)
   const Edit = (id) => {
     localStorage.setItem('editDataId',id)
     dispatch(editIdQuery(id))
@@ -19,31 +18,31 @@ const TaskTableBoss = ({data}) => {
 
   const columns = [
     {
-      title: 'Название задачу',
+      title: 'Название задачи',
       dataIndex: 'main_task_title',
       id: 'main_task_title',
       render: (main_task_title) => <p>{main_task_title}</p>,
     },
     {
-      title: 'данное время',
+      title: 'Данное время',
       dataIndex: 'created_at',
       id: 'created_at',
       render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
-      title: 'крайний срок',
+      title: 'Крайний срок',
       dataIndex: 'deadline',
       id: 'deadline',
       render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
-      title: 'статус задачи',
+      title: 'Статус задачи',
       dataIndex: 'task_status',
       id: 'task_status',
       render: (text) => <p>{text}</p>
     },
     {
-      title: 'команда',
+      title: 'Команда',
       dataIndex: ['moduls', 'included_users'],
       id: 'team',
       render: (text, record) => {

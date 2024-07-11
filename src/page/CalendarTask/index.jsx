@@ -26,7 +26,7 @@ const CalendarTask = () => {
         <Spin spinning={getLoading}>
         <Space direction={"vertical"} size={20}>
             <h1>
-                Calendar
+                Календарь
             </h1>
             <CustomCalendar
 

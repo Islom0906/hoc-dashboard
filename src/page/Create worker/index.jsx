@@ -74,7 +74,7 @@ const CreateWorker = () => {
                 <Row gutter={20}>
                     <Col span={24}>
                         <Title level={2}>
-                            Компания
+                            Создать рабочий
                         </Title>
                     </Col>
                     <Col span={16}>
