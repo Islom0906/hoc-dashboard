@@ -3,6 +3,7 @@ import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
+import dayjs from "dayjs";
 
 const CreateWorkerTable = ({data,deleteHandle}) => {
     const navigate=useNavigate()
@@ -36,7 +37,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             title: 'Birthday',
             dataIndex: 'birthday',
             id: 'birthday',
-            render: (text) => <p>{text}</p>,
+            render: (text) => <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
         },
         {
             title: 'Позиция',

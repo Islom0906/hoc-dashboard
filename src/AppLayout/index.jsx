@@ -14,8 +14,8 @@ import timezone from 'dayjs/plugin/timezone';
 import dayjs from "dayjs";
 
 dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('Asia/Tashkent');
+// dayjs.extend(timezone);
+// dayjs.tz.setDefault('Asia/Tashkent');
 
 const AppLayout = () => {
     const {systemMode} = useSelector((state) => state.theme)

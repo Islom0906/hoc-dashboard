@@ -1,39 +1,67 @@
 import React, {useMemo, useState} from 'react';
-import {Badge, Calendar, Col, Row, Select} from "antd";
+import {Badge, Calendar, Col, Row, Select, Space, Typography} from "antd";
 import dayjs from "dayjs";
 import ModalCalendar from "./ModalCalendar";
+import {FaBirthdayCake} from "react-icons/fa";
 
-const CustomCalendar = ({dataBirthDay}) => {
+
+const color={
+    meeting:'#6e6efc'
+}
+
+const {Text} = Typography
+const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting}) => {
     const [value, setValue] = useState(() => dayjs());
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const birthdayMap = useMemo(() => {
         return dataBirthDay?.reduce((acc, birthday) => {
-            const key = dayjs(birthday.birthday).format('YYYY-MM-DD');
-            // const key = date.format('YYYY-MM-DD'); // get the YYYY-MM-DD format
-            if (!acc[key]) {
-                acc[key] = [];
-            }
+            // console.log(acc)
+            const key = dayjs(birthday.birthday).format('MM-DD');
+            // console.log(key,acc[key])
+            acc[key] = acc[key] || [];
             acc[key].push(birthday);
             return acc;
-        }, {})
-    }, [dataBirthDay])
+        }, {});
+    }, [dataBirthDay]);
 
+    const meetingMap = useMemo(() => {
+        return dataMeeting?.reduce((acc, meeting) => {
+            const key = dayjs(meeting.meeting_date).format('YYYY-MM-DD');
+            acc[key] = acc[key] || [];
+            acc[key].push(meeting);
+            return acc;
+        }, {});
+    }, [dataMeeting]);
 
     const dateCellRender = (value) => {
+        const birthdayStr = value.format('MM-DD');
         const dateStr = value.format('YYYY-MM-DD');
+        let meetingsOnDate = []
         let birthdaysOnDate = []
         if (birthdayMap) {
-            birthdaysOnDate = birthdayMap[dateStr] || [];
-
+            birthdaysOnDate = birthdayMap[birthdayStr] || [];
+        }
+        if (meetingMap) {
+            meetingsOnDate = meetingMap[dateStr] || [];
         }
 
         return (
             <ul className="events">
-
                 {birthdaysOnDate.map(birthday => (
-                    <li key={birthday.id}>
-                        <Badge status="success" text={`${birthday.first_name} ${birthday.last_name}`}/>
+                    <li key={birthday.id} >
+
+                        <Text type="warning">
+                            🎉  {birthday.first_name} {birthday.last_name}
+                        </Text>
+
+                    </li>
+                ))}
+                {meetingsOnDate.map((meeting) => (
+                    <li key={`meeting-${meeting.id}`}>
+                        <Text style={{color:color.meeting}}>
+                            📌  {meeting.title}
+                        </Text>
                     </li>
                 ))}
             </ul>
@@ -58,7 +86,8 @@ const CustomCalendar = ({dataBirthDay}) => {
                 cellRender={dateCellRender}
                 onSelect={onSelect}
             />
-            <ModalCalendar value={value} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+            <ModalCalendar refetchMeeting={refetchMeeting} date={value} isModalOpen={isModalOpen}
+                           setIsModalOpen={setIsModalOpen}/>
 
         </>
     );

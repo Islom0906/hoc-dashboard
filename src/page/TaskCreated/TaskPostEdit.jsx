@@ -221,7 +221,7 @@ const TaskPostEdit = () => {
        const subTask=value?.sub_tasks?.map((subTask)=>{
             return{
                 ...subTask,
-                deadline:dayjs(subTask.deadline).utc().tz().format()
+                deadline:dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
             }
         })
         console.log(subTask)
@@ -229,7 +229,7 @@ const TaskPostEdit = () => {
         const data = {
             title: value.title,
             text: value.text,
-            deadline: dayjs(value?.deadline).utc().tz().format(),
+            deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
             company: value?.company,
             moduls: selectAddSubTask ? [] : selectModuls,
             users: selectAddSubTask ? [] : selectStaff,
