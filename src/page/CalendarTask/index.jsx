@@ -124,9 +124,9 @@ const CalendarTask = () => {
     return (
         <Space direction={"vertical"} size={20}>
             <h1>
-                Calendar
+                Календарь
             </h1>
-            <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`}/>
+            <Alert message={`Вы выбрали дату: ${selectedValue?.format('YYYY-MM-DD')}`}/>
             <Calendar value={value} onSelect={onSelect} onPanelChange={onPanelChange} cellRender={dateCellRender}/>
             <DayModalTaskList title={`${selectedValue?.format('YYYY-MM-DD')} daily task list`} isModalOpen={isModalOpen}
                               setIsModalOpen={setIsModalOpen}/>

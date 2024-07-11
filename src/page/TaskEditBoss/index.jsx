@@ -53,7 +53,7 @@ const TaskEditBoss = () => {
           <Row gutter={20}>
             <Col span={24}>
               <Title level={2}>
-                создайте задачу:
+                Создать задачу
               </Title>
             </Col>
             <Col span={16}>

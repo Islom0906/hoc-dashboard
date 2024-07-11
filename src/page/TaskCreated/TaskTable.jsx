@@ -20,7 +20,7 @@ const TaskTable = ({data,deleteHandle}) => {
 
   const columns = [
     {
-      title: 'Название задачу',
+      title: 'Название задачи',
       dataIndex: 'title',
       id: 'title',
       render: (title) => <p>{title}</p>,
@@ -32,19 +32,19 @@ const TaskTable = ({data,deleteHandle}) => {
     //   render: (text) => <p>{moment(text).format('l')}</p>
     // },
     {
-      title: 'крайний срок',
+      title: 'Крайний срок',
       dataIndex: 'deadline',
       id: 'deadline',
       render: (text) => <p>{dayjs(text).format('DD.MM.YYYY')}</p>
     },
     {
-      title: 'статус задачи',
+      title: 'Статус задачи',
       dataIndex: 'task_status',
       id: 'task_status',
       render: (text) => <p>{text}</p>
     },
     {
-      title: 'команда',
+      title: 'Команда',
       dataIndex: ['moduls', 'included_users'],
       id: 'team',
       render: (text, record) => {

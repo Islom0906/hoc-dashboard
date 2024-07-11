@@ -10,7 +10,18 @@ import {
     CompanyPostEdit, CreateWorker, CreateWorkerPostEdit,
     Module,ModulePostEdit
 } from './index'
-import {CalendarOutlined, InboxOutlined, OrderedListOutlined, PieChartOutlined, UserOutlined} from "@ant-design/icons";
+import { PiUserListLight } from "react-icons/pi";
+import { RiPlayListAddLine } from "react-icons/ri";
+import { BsBuildingAdd } from "react-icons/bs";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { VscFileSubmodule } from "react-icons/vsc";
+import { HiOutlineCalendar } from "react-icons/hi2";
+import { RxDashboard } from "react-icons/rx";
+import {
+    InboxOutlined,
+    OrderedListOutlined,
+    UserOutlined
+} from "@ant-design/icons";
 import TaskCreated from "./TaskCreated";
 import TaskPostEdit from "./TaskCreated/TaskPostEdit";
 import TaskEditBoss from "./TaskEditBoss";
@@ -27,18 +38,18 @@ export const authRole = {
 export const samplePagesConfigs = [
     {
         key: 1,
-        icon: <PieChartOutlined className={'icon'} style={{fontSize: 24}}/>,
+        icon: <RxDashboard className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/dashboard',
-        label: 'Dashboard',
+        label: 'Панель',
         element: Dashboard,
         permittedRole: ['admin', 'staff', "boss"],
         isBackground: false
     },
     {
         key: 2,
-        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
+        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/task-list',
-        label: 'Task',
+        label: 'Задача',
         element: TaskList,
         permittedRole: ['staff', 'admin', "boss"],
         isBackground: false
@@ -62,8 +73,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 4,
-        icon: <CalendarOutlined/>,
-        label: 'Calendar',
+        icon: <HiOutlineCalendar className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        label: 'Календарь',
         path: '/calendar-task',
         element: CalendarTask,
         permittedRole: ['admin', "boss", 'staff'],
@@ -71,17 +82,17 @@ export const samplePagesConfigs = [
     },
     {
         key: 5,
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/inbox',
-        label: 'Inbox',
+        label: 'Избранный',
         element: Inbox,
         permittedRole: ['staff', "boss"],
         isBackground: false
     },
     {
         key: 6,
-        label: 'My Applications',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        label: 'Мои заявки',
+        icon: <PiUserListLight className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/my-applications',
         element: MyApplications,
         permittedRole: ['staff', 'admin', "boss"],
@@ -89,8 +100,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 12132,
-        label: 'создайте задачу',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        label: 'Создать задачу',
+        icon: <RiPlayListAddLine className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskCreated',
         element: TaskCreated,
         permittedRole: ["admin"],
@@ -98,8 +109,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 121322,
-        label: 'создайте задачу',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        label: 'Создать задачу',
+        icon: <RiPlayListAddLine className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: TaskEditBoss,
         permittedRole: ["boss"],
@@ -121,8 +132,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 7,
-        label: 'Company',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        label: 'Добавить компанию',
+        icon: <BsBuildingAdd className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/company',
         element: Company,
         permittedRole: ["admin"],
@@ -137,8 +148,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 8,
-        label: 'Create Worker',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        label: 'Создать рабочий',
+        icon: <AiOutlineUsergroupAdd className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/create-worker',
         element: CreateWorker,
         permittedRole: ["admin"],
@@ -153,8 +164,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 89,
-        label: 'Module',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24}}/>,
+        label: 'Модули',
+        icon: <VscFileSubmodule className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/module',
         element: Module,
         permittedRole: ["admin"],
@@ -169,8 +180,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 9,
-        icon: <UserOutlined className={'icon'} style={{fontSize: 24}}/>,
-        label: 'Profile',
+        icon: <UserOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        label: 'Профиль',
         path: '/user-profile',
         element: UserProfile,
         permittedRole: ['admin', 'staff', "boss"],
