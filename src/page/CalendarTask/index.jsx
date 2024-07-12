@@ -54,7 +54,7 @@ const CalendarTask = () => {
         <Spin spinning={getBirthdayLoading||getMeetingLoading||getDeadlineLoading}>
         <Space direction={"vertical"} size={20}>
             <h1>
-                Календарь
+                Календарь и Создать встречу
             </h1>
             <CustomCalendar
                 refetchMeeting={refetchMeeting}
