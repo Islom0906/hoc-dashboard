@@ -51,7 +51,7 @@ export const samplePagesConfigs = [
         path: '/task-list',
         label: 'Задача',
         element: TaskList,
-        permittedRole: ['staff', 'admin', "boss"],
+        permittedRole: ['staff', "boss"],
         isBackground: false
     },
     {
@@ -89,15 +89,15 @@ export const samplePagesConfigs = [
         permittedRole: ['staff', "boss"],
         isBackground: false
     },
-    {
-        key: 6,
-        label: 'Мои заявки',
-        icon: <PiUserListLight className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-        path: '/my-applications',
-        element: MyApplications,
-        permittedRole: ['staff', 'admin', "boss"],
-        isBackground: false
-    },
+    // {
+    //     key: 6,
+    //     label: 'Мои заявки',
+    //     icon: <PiUserListLight className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     path: '/my-applications',
+    //     element: MyApplications,
+    //     permittedRole: ['staff', 'admin', "boss"],
+    //     isBackground: false
+    // },
     {
         key: 12132,
         label: 'Создать задачу',

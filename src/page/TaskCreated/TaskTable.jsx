@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import dayjs from "dayjs";
 
-const TaskTable = ({data,deleteHandle}) => {
+  const TaskTable = ({data,deleteHandle,pagination,setPagination}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const Delete = async (id) => {
@@ -40,8 +40,8 @@ const TaskTable = ({data,deleteHandle}) => {
     },
     {
       title: 'Статус задачи',
-      dataIndex: 'task_status',
-      id: 'task_status',
+      dataIndex: 'deadline_status',
+      id: 'deadline_status',
       render: (text) => <p>{text}</p>
     },
     {
@@ -70,10 +70,11 @@ const TaskTable = ({data,deleteHandle}) => {
         );
       }
     },
-
     {
       title: 'Событие',
       id: 'action',
+      fixed: 'right',
+      width:120,
       render: (_, record ) => (
           <Space size={20}>
             <Button
@@ -91,8 +92,22 @@ const TaskTable = ({data,deleteHandle}) => {
       ),
     },
   ];
+
+  const handleTableChange = (pagination) => {
+    setPagination(pagination)
+  };
+
   return <Table
       columns={columns}
+      pagination={{
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        total: pagination.total,
+      }}
+      scroll={{
+        x: 1500,
+      }}
+      onChange={handleTableChange}
       dataSource={data}
       rowKey={(record) => record.id}
   />

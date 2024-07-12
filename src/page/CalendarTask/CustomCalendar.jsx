@@ -1,24 +1,46 @@
 import React, {useMemo, useState} from 'react';
-import {Badge, Calendar, Col, Row, Select, Space, Typography} from "antd";
+import {Calendar, Col, Popover, Row, Select, Typography} from "antd";
 import dayjs from "dayjs";
 import ModalCalendar from "./ModalCalendar";
-import {FaBirthdayCake} from "react-icons/fa";
+
+import {useDispatch, useSelector} from "react-redux";
+import {editIdQuery} from "../../store/slice/querySlice";
 
 
 const color={
-    meeting:'#6e6efc'
+    meeting:'#6e6efc',
+    deadline:'#e8284d'
+}
+
+const contentPopover=(content)=>{
+    return (
+        <div className={'popover-card'}>
+            <p>Время: {dayjs(content.meeting_date).format("HH:mm:ss")}</p>
+            <p>О чем: {content.text}</p>
+        </div>
+    )
 }
 
 const {Text} = Typography
-const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting}) => {
+const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline}) => {
     const [value, setValue] = useState(() => dayjs());
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const {data: {user}} = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+
+
+    const changeMeeting = (e, id) => {
+        e.stopPropagation()
+        dispatch(editIdQuery(id))
+        if (user?.roles[0]?.name === 'admin'){
+        setIsModalOpen(true)
+
+        }
+    }
 
     const birthdayMap = useMemo(() => {
         return dataBirthDay?.reduce((acc, birthday) => {
-            // console.log(acc)
             const key = dayjs(birthday.birthday).format('MM-DD');
-            // console.log(key,acc[key])
             acc[key] = acc[key] || [];
             acc[key].push(birthday);
             return acc;
@@ -27,23 +49,37 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting}) => {
 
     const meetingMap = useMemo(() => {
         return dataMeeting?.reduce((acc, meeting) => {
+            console.log(acc)
             const key = dayjs(meeting.meeting_date).format('YYYY-MM-DD');
             acc[key] = acc[key] || [];
             acc[key].push(meeting);
             return acc;
         }, {});
     }, [dataMeeting]);
+    const deadlineMap = useMemo(() => {
+        return dataDeadline?.results?.reduce((acc, deadline) => {
+            console.log(acc)
+            const key = dayjs(deadline.deadline).format('YYYY-MM-DD');
+            acc[key] = acc[key] || [];
+            acc[key].push(deadline);
+            return acc;
+        }, {});
+    }, [dataDeadline?.results]);
 
     const dateCellRender = (value) => {
         const birthdayStr = value.format('MM-DD');
         const dateStr = value.format('YYYY-MM-DD');
         let meetingsOnDate = []
         let birthdaysOnDate = []
+        let deadlineOnDate=[]
         if (birthdayMap) {
             birthdaysOnDate = birthdayMap[birthdayStr] || [];
         }
         if (meetingMap) {
             meetingsOnDate = meetingMap[dateStr] || [];
+        }
+        if (deadlineMap){
+            deadlineOnDate=deadlineMap[dateStr]||[]
         }
 
         return (
@@ -54,23 +90,31 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting}) => {
                         <Text type="warning">
                             🎉  {birthday.first_name} {birthday.last_name}
                         </Text>
-
                     </li>
                 ))}
                 {meetingsOnDate.map((meeting) => (
-                    <li key={`meeting-${meeting.id}`}>
+                    <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
+                        <Popover content={contentPopover(meeting)} title={meeting.title}>
                         <Text style={{color:color.meeting}}>
                             📌  {meeting.title}
                         </Text>
+                        </Popover>
+
+                    </li>
+                ))}
+                {deadlineOnDate.map((meeting) => (
+                    <li key={meeting.id}>
+                            <Text style={{color:color.deadline}}>
+                                ⏳  {meeting.title}
+                            </Text>
                     </li>
                 ))}
             </ul>
         );
     };
 
-
     const onSelect = (newValue, info) => {
-        if (info.source === 'date') {
+        if (info.source === 'date' && user?.roles[0]?.name === 'admin') {
             setValue(newValue);
             setIsModalOpen(true)
         }
@@ -86,9 +130,12 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting}) => {
                 cellRender={dateCellRender}
                 onSelect={onSelect}
             />
-            <ModalCalendar refetchMeeting={refetchMeeting} date={value} isModalOpen={isModalOpen}
-                           setIsModalOpen={setIsModalOpen}/>
-
+            <ModalCalendar
+                refetchMeeting={refetchMeeting}
+                date={value}
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+            />
         </>
     );
 };
