@@ -98,7 +98,7 @@ const TaskEditBoss = () => {
               size='medium'
               spinning={loadingGetBossShared}>
             <TaskTableBoss
-                data={isSearch ? search : dataGetBossShared?.results}
+                data={dataGetBossShared?.results}
             />
           </Spin>
         </Space>

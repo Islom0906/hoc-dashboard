@@ -3,7 +3,7 @@ import React, {useMemo} from "react";
 import {UserOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
 
- const TaskInnerCard = ({
+ const TaskInnerCard = ({created_by ,
                                 main_task_responsible_user,
                                 main_task_deadline,
                                 main_task_created_at,
@@ -31,7 +31,7 @@ import dayjs from "dayjs";
         borderTop: '6px',
         borderStyle: 'solid',
         borderTopColor: `${deadlineColor}`
-      }} title="Детали:">
+      }} title="Информация о задании">
         <Flex vertical={true} gap={10}>
           <Flex align={'center'} justify={'space-between'}>
 
@@ -54,8 +54,29 @@ import dayjs from "dayjs";
               </Tooltip>
             </Flex>
           </Flex>
+          <Flex align={'center'} justify={'space-between'}>
+
+            <Text type={'secondary'}> Создатель задач:</Text>
+            <Flex align={"center"} gap={10}>
+              <Tooltip
+                  title={
+                    <p>
+                      <span>{created_by?.full_name}</span>
+                    </p>
+                  }
+                  placement="top"
+              >
+                <Avatar
+                    style={{backgroundColor: '#87d068'}}
+                    icon={created_by?.image ?
+                        <img src={created_by?.image} alt={created_by?.full_name}/> :
+                        <UserOutlined/>}
+                />
+              </Tooltip>
+            </Flex>
+          </Flex>
           {/*<Flex align={'center'} justify={'space-between'}>*/}
-          {/*  <Text type={'secondary'}> Статус:</Text>*/}
+          {/*  <Text type={'secondary'}> Status:</Text>*/}
           {/*  <Text type={'success'}>Active</Text>*/}
           {/*</Flex>*/}
           <Flex align={'center'} justify={'space-between'}>
@@ -66,16 +87,21 @@ import dayjs from "dayjs";
             <Text type={'secondary'}> Крайний срок:</Text>
             <Text type={'success'}>{dayjs(main_task_created_at).format('DD.MM.YYYY')}</Text>
           </Flex>
-          <Flex align={'center'} justify={'space-between'}>
 
-              <Progress percent={taskPercent}
-                        percentPosition={{
-                          type: 'inner',
-                        }}
-                        size={['100%', 12]}
-                        strokeColor="red" className={'progress'}/>
+          {
+            taskPercent &&
+              <Flex align={'center'} justify={'space-between'}>
+                <Progress percent={taskPercent}
+                          percentPosition={{
+                            align: 'center',
+                            type: 'inner',
+                          }}
+                          size={['100%', 12]}
+                          strokeColor="red" className={'progress'}/>
 
-          </Flex>
+              </Flex>
+          }
+
           {/*<Flex align={'left'} gap={2} vertical>*/}
           {/*  <Text type={'secondary'}> Progress:</Text>*/}
           {/*  <p>*/}
