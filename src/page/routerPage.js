@@ -164,7 +164,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 89,
-        label: 'Модули',
+        label: 'Отделы',
         icon: <VscFileSubmodule className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/module',
         element: Module,

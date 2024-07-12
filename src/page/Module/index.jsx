@@ -70,7 +70,7 @@ const CreateWorker = () => {
                 <Row gutter={20}>
                     <Col span={24}>
                         <Title level={2}>
-                            Модули
+                            Отделы
                         </Title>
                     </Col>
                     <Col span={16}>
