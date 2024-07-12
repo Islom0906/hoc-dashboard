@@ -300,7 +300,7 @@ const CreateWorkerPostEdit = () => {
         return userRoleData?.map((option) => {
             return {
                 value: option?.id,
-                label: option?.name,
+                label: option?.name === "boss" ? 'Болим бошлиғи' : 'Ходим',
             };
         });
     }, [userRoleData]);
