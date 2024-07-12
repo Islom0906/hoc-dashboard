@@ -74,7 +74,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
                         <p>{text[0]?.module_name }</p>
                         :
                         <Tag>
-                            {text[0]?.user_role_name==='boss' ? 'Болим бошлиги': text[0]?.user_role_name=== 'staff' ? "Болим бошлиги" : "Админ"}
+                            {text[0]?.user_role_name==='boss' ? 'Болим бошлиги': text[0]?.user_role_name=== 'staff' ? "Ходим" : "Админ"}
                         </Tag>
                     </Space>
                 // ))

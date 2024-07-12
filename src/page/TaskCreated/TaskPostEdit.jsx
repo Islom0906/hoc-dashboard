@@ -9,6 +9,7 @@ import successCreateAndEdit from "../../hooks/successCreateAndEdit";
 import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
 import dayjs from "dayjs";
+const { Text } = Typography;
 
 const {Title} = Typography
 
@@ -364,14 +365,14 @@ const TaskPostEdit = () => {
                 <Row gutter={20}>
                     <Col span={24}>
                         <Title level={2}>
-                            создайте задачу:
+                            Создать задачу:
                         </Title>
                     </Col>
                     <Col span={12}>
                         <FormInput
                             required={true}
-                            required_text={'Требуется название компания'}
-                            label={'Название компания'}
+                            required_text={'Требуется название задачи'}
+                            label={'Название задачи'}
                             name={'title'}
                         />
                     </Col>
@@ -380,7 +381,7 @@ const TaskPostEdit = () => {
                             label="Выберите крайний срок"
                             name={'deadline'}
                             rules={[{
-                                required: true, message: 'Укажите день  крайний срок.'
+                                required: true, message: 'Укажите крайний срок.'
                             }]}
                         >
                             <DatePicker
@@ -391,8 +392,8 @@ const TaskPostEdit = () => {
                     <Col span={24}>
                         <FormTextArea
                             required={true}
-                            required_text={'текст к заданию'}
-                            label={'текст к заданию'}
+                            required_text={'Добавьте комментарий к задаче!'}
+                            label={'Добавьте комментарий к задаче'}
                             name={'text'}
                         />
                     </Col>
@@ -419,11 +420,20 @@ const TaskPostEdit = () => {
                         </Form.Item>
                     </Col>
                     <Col>
-                        <Button type={"primary"} style={{marginBottom: 30}}
-                                onClick={() => setSelectAddSubTask(prev => !prev)}>
-                            добавить подзадачу
-                        </Button>
+                            <Button  type={"primary"} style={{marginBottom: 30}}
+                                     onClick={() => setSelectAddSubTask(prev => !prev)}>
+                                {
+                                    selectAddSubTask ? 'Добавить сотрудника' : '  Добавить подзадачу'
+                                }
+                            </Button>
                     </Col>
+                    <Col>
+                        <div style={{marginTop: '10px'}}>
+                            <Text type="danger" >{ selectAddSubTask ? 'А теперь  вы добавите подзадачу!' : ' Щас вы добавите  сотрудника!'}</Text>
+                        </div>
+                    </Col>
+
+
                     {
                         selectAddSubTask ?
                             <Col span={24}>
@@ -494,8 +504,12 @@ const AddStaff = ({optionsUserByModules, optionsModules, onChangeModules}) => {
                         return (
                             <div key={field.fieldKey} style={{marginBottom: 20}}>
                                 <Row gutter={20}>
+                                    <Col span={20}>
+                                        <Title level={3} style={{marginBottom: '30px'}}>
+                                            Добавить сотрудника:
+                                        </Title>
+                                    </Col>
                                     <Col span={11}>
-
                                         <Form.Item
                                             label={'Выберите департамент'}
                                             name={[field.name, 'moduls']}
@@ -550,7 +564,7 @@ const AddStaff = ({optionsUserByModules, optionsModules, onChangeModules}) => {
                     <Form.Item>
                         <Button type="primary" onClick={() => add()} block
                                 style={{backgroundColor: '#28a745'}}>
-                            добавить сотрудника
+                            Добавить сотрудника
                         </Button>
                     </Form.Item>
 
@@ -572,7 +586,7 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                                 <Row gutter={[20, 10]}>
                                     <Col span={20}>
                                         <Title level={3}>
-                                            Lorem ipsum dolor sit amet.
+                                            Добавить подзадачу:
                                         </Title>
                                     </Col>
                                     <Col span={2}>
@@ -638,14 +652,14 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                                         <Form.Item
                                         >
                                             <FormInput
-                                                label={'Название компания'}
+                                                label={'Название подзадач'}
                                                 name={[field.name, 'title']}
                                             />
                                         </Form.Item>
                                     </Col>
                                     <Col span={24}>
                                         <FormTextArea
-                                            label={'текст к заданию'}
+                                            label={'Добавить коммент'}
                                             name={[field.name, 'text']}
                                         />
                                     </Col>
@@ -657,7 +671,7 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                     <Form.Item>
                         <Button type="primary" onClick={() => add()} block
                                 style={{backgroundColor: '#28a745'}}>
-                            создать подзадачу
+                            Создать подзадачу
                         </Button>
                     </Form.Item>
 

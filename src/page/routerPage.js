@@ -46,15 +46,15 @@ export const samplePagesConfigs = [
     //     permittedRole: ['admin', 'staff', "boss"],
     //     isBackground: false
     // },
-    // {
-    //     key: 2,
-    //     icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-    //     path: '/task-list',
-    //     label: 'Задача',
-    //     element: TaskList,
-    //     permittedRole: ['staff', 'admin', "boss"],
-    //     isBackground: false
-    // },
+    {
+        key: 2,
+        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        path: '/task-list',
+        label: 'Задача',
+        element: TaskList,
+        permittedRole: ['staff'],
+        isBackground: false
+    },
     {
 
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,

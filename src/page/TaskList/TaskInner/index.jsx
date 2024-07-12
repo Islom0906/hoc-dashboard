@@ -62,7 +62,6 @@ const TaskInner = () => {
               {taskInner?.title}
             </h1>
             <Avatar.Group>
-
               {taskInner?.included_users.map(user => (
                   <Tooltip
                       key={user?.id}
@@ -103,7 +102,7 @@ const TaskInner = () => {
                     ))
                     }
                     <Button  type="primary" onClick={() => handleCommentModel(taskInner?.id)}>
-                      Open Modal
+                      Добавить комментарий
                     </Button>
 
                   </Space>
@@ -122,7 +121,7 @@ const TaskInner = () => {
 
         <Modal
             open={open}
-            title="Send Comment"
+            title=" Добавить коммент"
             onCancel={handleCancel}
             footer={null}
         >
@@ -236,13 +235,13 @@ export const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => 
             autoComplete="off"
         >
           <FormTextArea
-              placeholder={'comment'}
+              placeholder={' Добавить коммент'}
               required={true}
               required_message={'текст к заданию'}
               name={'message'}
           />
           <Form.Item
-              label='File'
+              label='Добавить изображение'
               name={'file'}>
             <Upload
                 maxCount={1}
@@ -252,11 +251,11 @@ export const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => 
                 onPreview={onPreviewImage}
                 beforeUpload={() => false}
             >
-              {fileListProps.length > 0 ? "" : "Upload"}
+              {fileListProps.length > 0 ? "" : "Добавить"}
             </Upload>
           </Form.Item>
           <Button htmlType="submit" type={"primary"} >
-            Send
+            Отправить
           </Button>
         </Form>
       </Spin>
@@ -312,8 +311,10 @@ export const TaskList = ({subTask, showModal, setWhichWriteID}) => {
                           title={
                             <Flex gap={10} align={"start"}>
                               <Popconfirm
-                                  title={'Вы уверены, что хотите удалить это?'}
-                                  description={'Удалить'}
+                                  cancelText={'Отменить'}
+                                  okText={'Завершить'}
+                                  title={'Выполнить задачу?'}
+                                  description={'Вы уверены, что хотите выполнить задачу?'}
                                   onConfirm={() =>  onChangeDoneProject(subTask?.id)}
                               >
                                 <Checkbox  checked={!!checkedState[subTask.id]} style={{marginRight: 8}}/>
@@ -323,7 +324,7 @@ export const TaskList = ({subTask, showModal, setWhichWriteID}) => {
                                 <Text>{subTask?.text}</Text>
                               </Flex>
                               <Button  type="primary" onClick={() => clickHandle(subTask?.id)}>
-                                Open Modal
+                                Добавить комментарий
                               </Button>
                             </Flex>
                           }
