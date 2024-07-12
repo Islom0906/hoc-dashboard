@@ -170,6 +170,7 @@ const TaskPostEdit = () => {
 
             subModuleStaff.push(optionSubModuleStaff)
         })
+
         editTaskData?.included_users?.map(included => {
             allModuls.push({
                 moduls: included?.modules?.id,
@@ -634,6 +635,9 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                                         <Form.Item
                                             label={'Выберите сотрудник'}
                                             name={[field.name, 'staff']}
+                                            rules={[{
+                                                required: true, message: 'Выбор обязателен.'
+                                            }]}
                                             wrapperCol={{
                                                 span: 24,
                                             }}

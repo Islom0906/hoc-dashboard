@@ -1,4 +1,4 @@
-import {Button, Col, Input, Row, Typography, Space, Spin, message} from "antd";
+import {Button, Col, Input, message, Row, Space, Spin, Typography} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import apiService from "../../service/apis/api";
 import {useMutation, useQuery} from "react-query";
@@ -7,12 +7,19 @@ import {useDispatch} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import TaskTable from "./TaskTable";
+
 const {Title} = Typography
 
 
 const TaskCreated = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
   // delete
   const {
     mutate,
@@ -23,9 +30,10 @@ const TaskCreated = () => {
   // get
   const {
     data,
-    isLoading: getTaskLoading,
+    isFetching: getTaskLoading,
+    isSuccess: getIsSuccess,
     refetch,
-  } = useQuery('get-task', () => apiService.getData(`/users/tasks/`), {
+  } = useQuery('get-task', () => apiService.getData(`/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}`), {
     enabled: false,
     onError: (error) => {
       message.error(error.message);
@@ -34,11 +42,20 @@ const TaskCreated = () => {
 
   const [search, setSearch] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
-
+  // delete and pagination
   useEffect(() => {
     refetch()
   }, [isSuccess]);
 
+  // get data
+  useEffect(() => {
+    if (getIsSuccess) {
+      setPagination(prevState => ({...prevState, total: data?.count}))
+    }
+  }, [data]);
+  useEffect(() => {
+    refetch()
+  }, [pagination.current,pagination.pageSize]);
   // delete
   const deleteHandle = (url, id) => {
     mutate({url, id});
@@ -49,6 +66,7 @@ const TaskCreated = () => {
     dispatch(editIdQuery(""));
     navigate('/task/add');
   };
+
   const searchFunc = (value) => {
     if (value === '') {
       setIsSearch(false);
@@ -56,7 +74,6 @@ const TaskCreated = () => {
       setIsSearch(true);
     }
 
-    console.log(data)
     const filterData = data?.results?.filter(
         (data) => data?.title.toLowerCase().includes(value.toLowerCase()));
     setSearch(filterData);
@@ -91,6 +108,8 @@ const TaskCreated = () => {
             <TaskTable
                 data={isSearch ? search : data?.results}
                 deleteHandle={deleteHandle}
+                pagination={pagination}
+                setPagination={setPagination}
             />
           </Spin>
         </Space>

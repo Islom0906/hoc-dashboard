@@ -7,6 +7,9 @@ import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { MdOutlineReadMore } from "react-icons/md";
 import {useSelector} from "react-redux";
+import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
+import {Link} from "react-router-dom";
+import {FaRegUserCircle} from "react-icons/fa";
 
 const TaskList = () => {
   const {data:{user}}=useSelector(state => state.auth)
@@ -38,8 +41,8 @@ console.log(bossGetTask)
   return (
       <div>
         <h1>Ваши задачи</h1>
-        <Divider orientation="right"><h4>Выполненные задачи</h4></Divider>
-        <Row gutter={[24, 24]}>
+        {/*<Divider orientation="right"><h4>Выполненные задачи</h4></Divider>*/}
+        <Row gutter={[24, 24]} style={{marginTop:15}}>
           {staffGetTask &&  staffGetTask?.results?.map(task => (
               <Col key={task?.main_task_id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
                 <TaskCard key={task?.main_task_id} task={task} />
@@ -56,18 +59,10 @@ console.log(bossGetTask)
 };
 
 export const TaskCard = ({ task }) => {
-  const deadlineColor = useMemo(() => {
-    const deadlineStatus = task?.main_deadline_status;
-    let color = '#3FA2F6';
-    if (deadlineStatus === 'soon') {
-      color = '#FAFFAF';
-    } else if (deadlineStatus === 'failed') {
-      color = '#C80036';
-    } else if (deadlineStatus === 'progress') {
-      color = '#FF7F3E';
-    }
-    return color;
-  }, [task]);
+
+    console.log(task?.included_users)
+    const deadlineColor= DeadlineStatusColor(task?.main_deadline_status)
+
 
 
   if (!task) {
@@ -82,9 +77,9 @@ export const TaskCard = ({ task }) => {
           size={"small"}
           title={task?.main_task_title}
           extra={
-              <Button href={`task-list/${task?.main_task_id}`} type={"primary"} size={"small"}>
+              <Link to={`/task-list/${task?.main_task_id}`} type={"primary"} size={"small"}>
                 <MdOutlineReadMore />
-              </Button>
+              </Link>
           }
       >
         <Space style={{ width: '100%' }} size={20} direction={'vertical'}>
@@ -119,13 +114,19 @@ export const TaskCard = ({ task }) => {
             </Text>
             <Tooltip
                 title={
-                  <p>
-                    <span>{task?.main_task_responsible_user?.full_name}</span>
-                  </p>
+                    <Flex vertical={true} gap={5} >
+                        <Flex gap={5} align={'center'}>
+                            <FaRegUserCircle />
+                            <p>{task?.main_task_responsible_user?.full_name}</p>
+                        </Flex>
+
+                    </Flex>
+
+
                 }
                 placement="top"
             >
-              <Avatar
+            <Avatar
                   style={{ backgroundColor: '#87d068' }}
                   icon={task?.main_task_responsible_user?.image ? <img src={task?.main_task_responsible_user?.image} alt={task?.main_task_responsible_user?.full_name} /> : <UserOutlined />}
               />

@@ -37,7 +37,8 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             title: 'День рождения',
             dataIndex: 'birthday',
             id: 'birthday',
-            render: (text) => <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
+            render: (text) => <p>{text}</p>
+                // <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
         },
         {
             title: 'Позиция ',

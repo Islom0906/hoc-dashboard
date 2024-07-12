@@ -2,6 +2,7 @@ import {Avatar, Card, Flex, Progress, Tooltip, Typography} from "antd";
 import React, {useMemo} from "react";
 import {UserOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
+import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 
  const TaskInnerCard = ({created_by ,
                                 main_task_responsible_user,
@@ -11,18 +12,8 @@ import dayjs from "dayjs";
                                 main_deadline_status
                               }) => {
   const {Text} = Typography;
-  const deadlineColor = useMemo(() => {
-    const deadlineStatus = main_deadline_status;
-    let color = '#3FA2F6';
-    if (deadlineStatus === 'soon') {
-      color = '#FAFFAF';
-    } else if (deadlineStatus === 'failed') {
-      color = '#C80036';
-    } else if (deadlineStatus === 'progress') {
-      color = '#FF7F3E';
-    }
-    return color;
-  }, [main_deadline_status]);
+
+    const deadlineColor= DeadlineStatusColor(main_deadline_status)
 
 
   return (

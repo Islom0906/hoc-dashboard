@@ -4,7 +4,10 @@ import {FormInput, FormTextArea} from "../../components";
 import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
 import dayjs from "dayjs";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import editGetById from "../../hooks/editGetById";
+import setInitialValue from "../../hooks/setInitialValue";
+import {editIdQuery} from "../../store/slice/querySlice";
 
 const {Title}=Typography
 const initialValueForm={
@@ -18,6 +21,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
     const [isMultipleSelect, setIsMultipleSelect] = useState('show')
+    const dispatch=useDispatch()
     // get-responsibleUser
     const {
         data: requiredUser,
@@ -46,6 +50,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     // put meeting
     const {
         mutate: putMeeting,
+        data:putMeetingDate,
         isLoading: putMeetingLoading,
         isSuccess: putMeetingSuccess
     } = useMutation(({
@@ -62,7 +67,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             }
         }
     });
-    // get-by id
+    // get by-id
     const {
         isLoading: editModalMeetingLoading,
         data: editModalMeetingData,
@@ -72,17 +77,68 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         enabled: false
     });
 
+
     useEffect(() => {
         refetchRequiredUser()
     }, []);
+    useEffect(() => {
+        if (putMeetingDate) {
+            dispatch(editIdQuery(''))
+        }
+        if (postMeetingSuccess||putMeetingDate) {
+            refetchMeeting()
+            setIsModalOpen(false)
+            form.setFieldsValue(initialValueForm)
+        }
+    }, [postMeetingSuccess,putMeetingDate]);
 
+
+    setInitialValue(form,initialValueForm)
+    useEffect(() => {
+        if (putMeetingSuccess){
+            setIsModalOpen(false)
+        }
+    }, [putMeetingSuccess]);
+    editGetById(editModalMeetingRefetch)
+
+    console.log(editId)
+    //edit meeting
+    useEffect(() => {
+        if (editModalMeetingSuccess) {
+            let isAllUser = false
+            if (editModalMeetingSuccess?.users?.length > 0) {
+                setIsMultipleSelect('special')
+                isAllUser = false
+            } else {
+                setIsMultipleSelect('allUser')
+                isAllUser = true
+            }
+            // console.log(editModalMeetingData?.meeting_date)
+            console.log(dayjs(editModalMeetingData?.meeting_date))
+            const edit = {
+                title: editModalMeetingData?.title,
+                text: editModalMeetingData?.text,
+                meeting_date: dayjs(editModalMeetingData?.meeting_date),
+                users: isAllUser > 0 ? [null] : editModalMeetingSuccess?.users
+            }
+            console.log(edit)
+            form.setFieldsValue(edit)
+        }
+
+    }, [editModalMeetingData])
 
     const onFinish = (value) => {
         let allUser = false
+        let formatDate=null
         const meetingDate = date
             .hour(value?.meeting_date.hour())
             .minute(value?.meeting_date.minute())
             .second(value?.meeting_date.second())
+        if (editId){
+            formatDate= dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+        }else{
+            formatDate=dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+        }
         value?.users.map((user) => {
             if (user === null) {
                 allUser = true
@@ -93,7 +149,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         const data = {
             title: value.title,
             text: value.text,
-            meeting_date: dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+            meeting_date: formatDate,
             users: isMultipleSelect==='allUser' ? [] : value?.users
         }
         if (editModalMeetingData) {
@@ -102,14 +158,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             postMeetingMutate({url: "/users/meetings/", data: data});
         }
     }
-
-    useEffect(() => {
-        if (postMeetingSuccess) {
-            refetchMeeting()
-            setIsModalOpen(false)
-            form.setFieldsValue(initialValueForm)
-        }
-    }, [postMeetingSuccess]);
 
 
     const handleCancel = () => {
@@ -174,7 +222,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             footer={null}
         >
             <Spin
-                spinning={postMeetingLoading}
+                spinning={postMeetingLoading || editModalMeetingLoading||putMeetingLoading}
             >
             <Form
                 form={form}

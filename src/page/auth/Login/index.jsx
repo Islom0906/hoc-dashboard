@@ -106,11 +106,10 @@ const Login = () => {
 
                     <Form.Item
                         wrapperCol={{
-                            offset: 8,
-                            span: 16,
+                            span: 24,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" style={{width:'100%'}}>
                             Вход
                         </Button>
                     </Form.Item>

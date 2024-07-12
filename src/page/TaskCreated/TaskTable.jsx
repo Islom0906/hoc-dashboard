@@ -5,8 +5,9 @@ import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import dayjs from "dayjs";
+import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 
-const TaskTable = ({data,deleteHandle}) => {
+  const TaskTable = ({data,deleteHandle,pagination,setPagination}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const Delete = async (id) => {
@@ -17,7 +18,6 @@ const TaskTable = ({data,deleteHandle}) => {
     dispatch(editIdQuery(id))
     navigate('/task/add')
   };
-
 
   const columns = [
     {
@@ -40,9 +40,18 @@ const TaskTable = ({data,deleteHandle}) => {
     },
     {
       title: 'Статус задачи',
-      dataIndex: 'task_status',
-      id: 'task_status',
-      render: (text) => <p>{text}</p>
+      dataIndex: 'deadline_status',
+      id: 'deadline_status',
+      render: (deadline_status) =>{
+        const deadlineColor= DeadlineStatusColor(deadline_status)|| 'black'
+        return ( <div style={{
+          width:'20px',
+          height:'20px',
+          borderRadius:'100%',
+          backgroundColor:deadlineColor
+        }}></div>)
+      }
+
     },
     {
       title: 'Команда',
@@ -70,10 +79,11 @@ const TaskTable = ({data,deleteHandle}) => {
         );
       }
     },
-
     {
       title: 'Событие',
       id: 'action',
+      fixed: 'right',
+      width:120,
       render: (_, record ) => (
           <Space size={20}>
             <Button
@@ -91,10 +101,24 @@ const TaskTable = ({data,deleteHandle}) => {
       ),
     },
   ];
+
+  const handleTableChange = (pagination) => {
+    setPagination(pagination)
+  };
+
   return <Table
       columns={columns}
+      pagination={{
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        total: pagination.total,
+      }}
+      scroll={{
+        x: 1500,
+      }}
+      onChange={handleTableChange}
       dataSource={data}
-      rowKey={(record) => record.id}
+      rowKey={(record) => record?.id}
   />
 
 };

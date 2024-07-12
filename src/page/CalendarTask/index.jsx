@@ -6,6 +6,7 @@ import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 
 const CalendarTask = () => {
+    // birthday
     const {
         data: dataBirthDay,
         isLoading: getBirthdayLoading,
@@ -18,6 +19,7 @@ const CalendarTask = () => {
             // Handle the error
         },
     });
+    // meeting
     const {
         data: dataMeetting,
         isLoading: getMeetingLoading,
@@ -30,13 +32,26 @@ const CalendarTask = () => {
             // Handle the error
         },
     });
+    // meeting
+    const {
+        data: dataDeadline,
+        isLoading: getDeadlineLoading,
+        refetch: refetchDeadline,
+    } = useQuery('deadline-get', () => apiService.getData(`/users/user-deadlines-calendar/`), {
+        enabled: false,
+        onError: (error) => {
 
+            message.error(error.message);
+            // Handle the error
+        },
+    });
     useEffect(() => {
         refetchBirthDay()
         refetchMeeting()
+        refetchDeadline()
     }, []);
     return (
-        <Spin spinning={getBirthdayLoading||getMeetingLoading}>
+        <Spin spinning={getBirthdayLoading||getMeetingLoading||getDeadlineLoading}>
         <Space direction={"vertical"} size={20}>
             <h1>
                 Календарь и Создать встречу
@@ -45,6 +60,7 @@ const CalendarTask = () => {
                 refetchMeeting={refetchMeeting}
                 dataBirthDay={dataBirthDay}
                 dataMeeting={dataMeetting}
+                dataDeadline={dataDeadline}
             />
         </Space>
         </Spin>

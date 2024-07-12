@@ -1,8 +1,9 @@
 import {Content} from "antd/es/layout/layout";
 import './index.scss'
-import { Routes, Route} from 'react-router-dom';
+import {Routes, Route, Navigate} from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import {samplePagesConfigs} from "../../page/routerPage";
+import {initialUrl} from "../../constants/defaultConfig";
 
 const AppPage = () => {
     console.log('render page')
@@ -29,7 +30,7 @@ const AppPage = () => {
                         }
                     />
                 ))}
-                <Route path="*" element={<div>Salom</div>}/>
+                <Route path="/" element={<Navigate to={initialUrl} replace/>}/>
             </Routes>
         </Content>
     );
