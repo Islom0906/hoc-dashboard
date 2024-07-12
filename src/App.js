@@ -10,7 +10,7 @@ function App() {
     return (
         <QueryClientProvider client={queryCLient}>
         <Provider store={store}>
-            <Router>
+            <Router basename={'/admin'}>
                 <AuthProvider>
                         <AppLayout/>
                 </AuthProvider>
