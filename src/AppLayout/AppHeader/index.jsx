@@ -1,7 +1,8 @@
 import './index.scss'
 import {BellOutlined, MoonOutlined, SunOutlined, UserOutlined} from "@ant-design/icons";
 import {Badge, Button, Dropdown, Flex} from "antd";
-import logo from './evolution-logo1.svg'
+import logoLight from './evolution-logo1.svg'
+import logoDark from './evolution-logo1-dark.svg'
 import {Header} from "antd/es/layout/layout";
 import {useDispatch, useSelector} from "react-redux";
 import {changeThemeMode} from "../../store/slice/themeSlice";
@@ -33,12 +34,19 @@ const AppHeader = () => {
     return (
         <Header className={'app-header'}>
           <Flex style={{width:'150px'}} align={"center"} justify={"center"}>
-            <img src={logo} className={'logo'} alt={'logo'} style={{width:'100%' , height:'100%' , objectFit:'contain'}}/>
+              {
+                  systemMode === 'light' ?
+                      <img src={logoDark} className={'logo'} alt={'logo'}
+                           style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+                      :
+                      <img src={logoLight} className={'logo'} alt={'logo'}
+                           style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+              }
           </Flex>
-          <div className={'content'}>
-            <Badge dot className={'notification'} >
-              <BellOutlined className={'icon'} />
-            </Badge>
+            <div className={'content'}>
+                {/*<Badge dot className={'notification'} >*/}
+                {/*  <BellOutlined className={'icon'} />*/}
+            {/*</Badge>*/}
               <div onClick={isDarkHandle}>
                   {
                       systemMode==='light'
