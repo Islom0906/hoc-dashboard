@@ -91,16 +91,16 @@ const TaskEditBoss = () => {
             />
           </Spin>
 
-          <Title>
-            Разделенные задачи
-          </Title>
-          <Spin
-              size='medium'
-              spinning={loadingGetBossShared}>
-            <TaskTableBoss
-                data={dataGetBossShared?.results}
-            />
-          </Spin>
+          {/*<Title>*/}
+          {/*  Разделенные задачи*/}
+          {/*</Title>*/}
+          {/*<Spin*/}
+          {/*    size='medium'*/}
+          {/*    spinning={loadingGetBossShared}>*/}
+          {/*  <TaskTableBoss*/}
+          {/*      data={dataGetBossShared?.results}*/}
+          {/*  />*/}
+          {/*</Spin>*/}
         </Space>
       </div>
   );

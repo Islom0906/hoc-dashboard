@@ -13,7 +13,7 @@ import {Link, useNavigate} from "react-router-dom";
 
 const AppHeader = () => {
     const {systemMode}=useSelector(state => state.theme)
-  const {data:{user}}=useSelector(state => state.auth)
+    const {data:{user}}=useSelector(state => state.auth)
     const dispatch=useDispatch()
   const navigate=useNavigate()
     const isDarkHandle=()=>{

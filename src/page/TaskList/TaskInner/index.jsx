@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import {Checkbox, Input, List} from 'antd';
 import {FormTextArea, TaskInnerCard} from "../../../components";
 import {onPreviewImage} from "../../../hooks";
+import {useSelector} from "react-redux";
 
 const {Text, Title} = Typography;
 
@@ -32,14 +33,25 @@ const TaskInner = () => {
   const [whichWriteID, setWhichWriteID] = useState(null);
   const [whichWriteIDTask, setWhichWriteIDTask] = useState(null);
   const {item} = useParams();
-  const {data: taskInner, refetch: refetchTaskInner, isLoading, isSuccess} = useQuery(["taskInner", item], () =>
+  const {data:{user}}=useSelector(state => state.auth)
+  const {data: taskInner, refetch: refetchTaskInner, isLoading:loadingTaskInner, isSuccess:successTaskInner} = useQuery(["taskInner", item], () =>
       apiService.getDataByID('users/staff-subtask-retrieve', item), {enabled: false}
   );
+  const {data: taskInnerBoss, refetch: refetchTaskInnerBoss, isLoading: loadingTaskInnerBoss, isSuccess:successTaskInnerBoss} = useQuery(["taskInnerBoss", item], () =>
+      apiService.getDataByID('users/boss-tasks-retrieve', item), {enabled: false}
+  );
+  console.log(taskInnerBoss,taskInner)
+const isBoss=user?.roles[0].name === 'boss'
   useEffect(() => {
-    refetchTaskInner()
-  }, [])
+    if(user?.roles[0].name === 'boss') {
+      refetchTaskInnerBoss();
+    }else{
+      refetchTaskInner()
+    }
+  }, [user]);
 
-  console.log(taskInner)
+
+
 
   const showModal = () => {
     setOpen(true);
@@ -59,7 +71,7 @@ const TaskInner = () => {
         <Col span={24}>
           <Flex align={'center'} justify={'space-between'}>
             <h1>
-              {taskInner?.title}
+              {isBoss ?taskInnerBoss?.main_task_title: taskInner?.title}
             </h1>
             <Avatar.Group>
 
@@ -113,11 +125,22 @@ const TaskInner = () => {
 
         </Col>
         <Col span={8}>
-          <TaskInnerCard main_task_responsible_user={taskInner?.main_task_responsible_user}
-                         taskPercent={taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
-                         main_task_deadline={taskInner?.main_task_deadline}
-                         main_task_created_at={taskInner?.main_task_created_at}
-                         main_deadline_status={taskInner?.main_deadline_status}/>
+          {
+            isBoss
+                ?
+
+          <TaskInnerCard main_task_responsible_user={taskInnerBoss?.main_task_responsible_user}
+                         taskPercent={taskInnerBoss?.done_sub_tasks_count / taskInnerBoss?.sub_tasks_count * 100}
+                         main_task_deadline={taskInnerBoss?.main_task_deadline}
+                         main_task_created_at={taskInnerBoss?.main_task_created_at}
+                         main_deadline_status={taskInnerBoss?.main_deadline_status}/>
+                :
+                <TaskInnerCard main_task_responsible_user={taskInner?.main_task_responsible_user}
+                               taskPercent={taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
+                               main_task_deadline={taskInner?.deadline}
+                               main_task_created_at={taskInner?.created_at}
+                               main_deadline_status={taskInner?.deadline_status}/>
+          }
         </Col>
 
         <Modal

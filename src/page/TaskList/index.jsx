@@ -7,6 +7,8 @@ import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { MdOutlineReadMore } from "react-icons/md";
 import {useSelector} from "react-redux";
+import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
+import {Link} from "react-router-dom";
 
 const TaskList = () => {
   const {data:{user}}=useSelector(state => state.auth)
@@ -56,18 +58,9 @@ console.log(bossGetTask)
 };
 
 export const TaskCard = ({ task }) => {
-  const deadlineColor = useMemo(() => {
-    const deadlineStatus = task?.main_deadline_status;
-    let color = '#3FA2F6';
-    if (deadlineStatus === 'soon') {
-      color = '#FAFFAF';
-    } else if (deadlineStatus === 'failed') {
-      color = '#C80036';
-    } else if (deadlineStatus === 'progress') {
-      color = '#FF7F3E';
-    }
-    return color;
-  }, [task]);
+
+    const deadlineColor= DeadlineStatusColor(task?.main_deadline_status)
+
 
 
   if (!task) {
@@ -82,9 +75,9 @@ export const TaskCard = ({ task }) => {
           size={"small"}
           title={task?.main_task_title}
           extra={
-              <Button href={`task-list/${task?.main_task_id}`} type={"primary"} size={"small"}>
+              <Link to={`/task-list/${task?.main_task_id}`} type={"primary"} size={"small"}>
                 <MdOutlineReadMore />
-              </Button>
+              </Link>
           }
       >
         <Space style={{ width: '100%' }} size={20} direction={'vertical'}>

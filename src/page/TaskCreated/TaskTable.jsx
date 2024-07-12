@@ -5,6 +5,7 @@ import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import dayjs from "dayjs";
+import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 
   const TaskTable = ({data,deleteHandle,pagination,setPagination}) => {
   const navigate=useNavigate()
@@ -17,7 +18,6 @@ import dayjs from "dayjs";
     dispatch(editIdQuery(id))
     navigate('/task/add')
   };
-
 
   const columns = [
     {
@@ -42,7 +42,16 @@ import dayjs from "dayjs";
       title: 'Статус задачи',
       dataIndex: 'deadline_status',
       id: 'deadline_status',
-      render: (text) => <p>{text}</p>
+      render: (deadline_status) =>{
+        const deadlineColor= DeadlineStatusColor(deadline_status)|| 'black'
+        return ( <div style={{
+          width:'20px',
+          height:'20px',
+          borderRadius:'100%',
+          backgroundColor:deadlineColor
+        }}></div>)
+      }
+
     },
     {
       title: 'Команда',
@@ -109,7 +118,7 @@ import dayjs from "dayjs";
       }}
       onChange={handleTableChange}
       dataSource={data}
-      rowKey={(record) => record.id}
+      rowKey={(record) => record?.id}
   />
 
 };
