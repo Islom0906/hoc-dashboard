@@ -39,8 +39,8 @@ console.log(bossGetTask)
 
   return (
       <div>
-        <h1>User setting</h1>
-        <Divider orientation="right"><h4>Completed</h4></Divider>
+        <h1>Ваши задачи</h1>
+        <Divider orientation="right"><h4>Выполненные задачи</h4></Divider>
         <Row gutter={[24, 24]}>
           {staffGetTask &&  staffGetTask?.results?.map(task => (
               <Col key={task?.main_task_id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
@@ -85,14 +85,14 @@ export const TaskCard = ({ task }) => {
             <Tooltip title={<p>time start:</p>} placement="top">
               <Flex align={'center'} wrap={'nowrap'} gap={8}>
                 <CalendarFilled className={'icon'} />
-                <Text type={'secondary'}>{dayjs(task?.main_task_created_at).format('DD.MM.YYY')}</Text>
+                <Text type={'secondary'}>{dayjs(task?.main_task_created_at).format('DD.MM.YYYY')}</Text>
               </Flex>
             </Tooltip>
 
             <Tooltip title={<p>time end:</p>} placement="top">
               <Flex wrap={'nowrap'} align={'center'} gap={8}>
                 <FieldTimeOutlined className={'icon'} />
-                <Text type={'secondary'}>{dayjs(task?.main_task_deadline).format('DD.MM.YYY:h:mm:ss')}</Text>
+                <Text type={'secondary'}>{dayjs(task?.main_task_deadline).format('DD.MM.YYYY h:mm:ss')}</Text>
               </Flex>
             </Tooltip>
           </Flex>
@@ -108,8 +108,7 @@ export const TaskCard = ({ task }) => {
           />
           <Flex align={'center'} justify={'space-between'} gap={5}>
             <Text>
-              офицер по назначениям:
-
+                Ответственный человек:
             </Text>
             <Tooltip
                 title={
@@ -129,7 +128,7 @@ export const TaskCard = ({ task }) => {
           <Flex align={'center'} wrap={true} gap={5} justify={'space-between'}>
 
             <Text type={'secondary'}>
-              {dayjs(task?.staff_last_sub_task_updated_at).format('DD.MM.YYY')}
+              {dayjs(task?.staff_last_sub_task_updated_at).format('DD.MM.YYYY')}
             </Text>
 
 

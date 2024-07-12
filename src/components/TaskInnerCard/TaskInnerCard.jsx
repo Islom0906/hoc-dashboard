@@ -26,7 +26,7 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
         <Flex vertical={true} gap={10}>
           <Flex align={'center'} justify={'space-between'}>
 
-            <Text type={'secondary'}> ответственный офицер:</Text>
+            <Text type={'secondary'}> Ответственный человек:</Text>
             <Flex align={"center"} gap={10}>
               <Tooltip
                   title={
@@ -71,11 +71,11 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
           {/*  <Text type={'success'}>Active</Text>*/}
           {/*</Flex>*/}
           <Flex align={'center'} justify={'space-between'}>
-            <Text type={'secondary'}> время начала:</Text>
+            <Text type={'secondary'}> Время начала:</Text>
             <Text type={'success'}>{dayjs(main_task_deadline).format('DD.MM.YYYY')}</Text>
           </Flex>
           <Flex align={'center'} justify={'space-between'}>
-            <Text type={'secondary'}> крайний срок:</Text>
+            <Text type={'secondary'}> Крайний срок:</Text>
             <Text type={'success'}>{dayjs(main_task_created_at).format('DD.MM.YYYY')}</Text>
           </Flex>
 

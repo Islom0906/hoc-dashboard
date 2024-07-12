@@ -52,19 +52,9 @@ export const samplePagesConfigs = [
         path: '/task-list',
         label: 'Задача',
         element: TaskList,
-        permittedRole: ['staff', "boss"],
+        permittedRole: ['staff' ,'boss'],
         isBackground: false
     },
-    // {
-    //
-    //     icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
-    //     path: '/task-list',
-    //     label: 'Task User',
-    //     element: TaskList,
-    //     permittedRole: ["boss","admin"],
-    //     noIndex: true,
-    //     isBackground: false
-    // },
     {
         path: '/task-list/:item',
         element:  TaskInner,
@@ -110,8 +100,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 121322,
-        label: 'распределение задач',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+        label: 'Распределение задач',
+        icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: TaskEditBoss,
         permittedRole: ["boss"],
@@ -165,7 +155,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 89,
-        label: 'Модули',
+        label: 'Отделы',
         icon: <VscFileSubmodule className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/module',
         element: Module,
