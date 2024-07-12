@@ -9,6 +9,7 @@ import { MdOutlineReadMore } from "react-icons/md";
 import {useSelector} from "react-redux";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {Link} from "react-router-dom";
+import {FaRegUserCircle} from "react-icons/fa";
 
 const TaskList = () => {
   const {data:{user}}=useSelector(state => state.auth)
@@ -40,8 +41,8 @@ console.log(bossGetTask)
   return (
       <div>
         <h1>Ваши задачи</h1>
-        <Divider orientation="right"><h4>Выполненные задачи</h4></Divider>
-        <Row gutter={[24, 24]}>
+        {/*<Divider orientation="right"><h4>Выполненные задачи</h4></Divider>*/}
+        <Row gutter={[24, 24]} style={{marginTop:15}}>
           {staffGetTask &&  staffGetTask?.results?.map(task => (
               <Col key={task?.main_task_id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
                 <TaskCard key={task?.main_task_id} task={task} />
@@ -59,6 +60,7 @@ console.log(bossGetTask)
 
 export const TaskCard = ({ task }) => {
 
+    console.log(task?.included_users)
     const deadlineColor= DeadlineStatusColor(task?.main_deadline_status)
 
 
@@ -112,13 +114,19 @@ export const TaskCard = ({ task }) => {
             </Text>
             <Tooltip
                 title={
-                  <p>
-                    <span>{task?.main_task_responsible_user?.full_name}</span>
-                  </p>
+                    <Flex vertical={true} gap={5} >
+                        <Flex gap={5} align={'center'}>
+                            <FaRegUserCircle />
+                            <p>{task?.main_task_responsible_user?.full_name}</p>
+                        </Flex>
+
+                    </Flex>
+
+
                 }
                 placement="top"
             >
-              <Avatar
+            <Avatar
                   style={{ backgroundColor: '#87d068' }}
                   icon={task?.main_task_responsible_user?.image ? <img src={task?.main_task_responsible_user?.image} alt={task?.main_task_responsible_user?.full_name} /> : <UserOutlined />}
               />
