@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.d42fbff8.css",
-    "main.js": "/static/js/main.fe6fea60.js",
-    "static/media/evolution-logo1.svg": "/static/media/evolution-logo1.cf4fa8217db5e0c76c7ab369cdce5292.svg",
-    "static/media/logo.svg": "/static/media/logo.7bc5c5316ecf2128e9ad6b23e1fceec8.svg",
-    "static/media/evolution-logo1-dark.svg": "/static/media/evolution-logo1-dark.a827574524d5919c8bfa6dfcc19aa11a.svg",
-    "static/media/logo-dark.svg": "/static/media/logo-dark.e275bf955e8191d2c45b298ece712599.svg",
-    "index.html": "/index.html",
-    "main.d42fbff8.css.map": "/static/css/main.d42fbff8.css.map",
-    "main.fe6fea60.js.map": "/static/js/main.fe6fea60.js.map"
+    "main.css": "/admin/static/css/main.d42fbff8.css",
+    "main.js": "/admin/static/js/main.8c96ccba.js",
+    "static/media/evolution-logo1.svg": "/admin/static/media/evolution-logo1.cf4fa8217db5e0c76c7ab369cdce5292.svg",
+    "static/media/logo.svg": "/admin/static/media/logo.7bc5c5316ecf2128e9ad6b23e1fceec8.svg",
+    "static/media/evolution-logo1-dark.svg": "/admin/static/media/evolution-logo1-dark.a827574524d5919c8bfa6dfcc19aa11a.svg",
+    "static/media/logo-dark.svg": "/admin/static/media/logo-dark.e275bf955e8191d2c45b298ece712599.svg",
+    "index.html": "/admin/index.html",
+    "main.d42fbff8.css.map": "/admin/static/css/main.d42fbff8.css.map",
+    "main.8c96ccba.js.map": "/admin/static/js/main.8c96ccba.js.map"
   },
   "entrypoints": [
     "static/css/main.d42fbff8.css",
-    "static/js/main.fe6fea60.js"
+    "static/js/main.8c96ccba.js"
   ]
 }
