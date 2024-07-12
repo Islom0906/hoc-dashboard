@@ -15,8 +15,9 @@ import { RiPlayListAddLine } from "react-icons/ri";
 import { BsBuildingAdd } from "react-icons/bs";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { VscFileSubmodule } from "react-icons/vsc";
-import { HiOutlineCalendar } from "react-icons/hi2";
+import { IoCalendarOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
+import { PiShuffleBold } from "react-icons/pi";
 import {
     InboxOutlined,
     OrderedListOutlined,
@@ -36,24 +37,24 @@ export const authRole = {
 
 
 export const samplePagesConfigs = [
-    {
-        key: 1,
-        icon: <RxDashboard className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-        path: '/dashboard',
-        label: 'Панель',
-        element: Dashboard,
-        permittedRole: ['admin', 'staff', "boss"],
-        isBackground: false
-    },
-    {
-        key: 2,
-        icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-        path: '/task-list',
-        label: 'Задача',
-        element: TaskList,
-        permittedRole: ['staff', 'admin', "boss"],
-        isBackground: false
-    },
+    // {
+    //     key: 1,
+    //     icon: <RxDashboard className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     path: '/dashboard',
+    //     label: 'Панель',
+    //     element: Dashboard,
+    //     permittedRole: ['admin', 'staff', "boss"],
+    //     isBackground: false
+    // },
+    // {
+    //     key: 2,
+    //     icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     path: '/task-list',
+    //     label: 'Задача',
+    //     element: TaskList,
+    //     permittedRole: ['staff', 'admin', "boss"],
+    //     isBackground: false
+    // },
     {
 
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24}}/>,
@@ -73,31 +74,31 @@ export const samplePagesConfigs = [
     },
     {
         key: 4,
-        icon: <HiOutlineCalendar className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        icon: <IoCalendarOutline className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         label: 'Календарь',
         path: '/calendar-task',
         element: CalendarTask,
         permittedRole: ['admin', "boss", 'staff'],
         isBackground: true
     },
-    {
-        key: 5,
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-        path: '/inbox',
-        label: 'Избранный',
-        element: Inbox,
-        permittedRole: ['staff', "boss"],
-        isBackground: false
-    },
-    {
-        key: 6,
-        label: 'Мои заявки',
-        icon: <PiUserListLight className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-        path: '/my-applications',
-        element: MyApplications,
-        permittedRole: ['staff', 'admin', "boss"],
-        isBackground: false
-    },
+    // {
+    //     key: 5,
+    //     icon: <InboxOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     path: '/inbox',
+    //     label: 'Избранный',
+    //     element: Inbox,
+    //     permittedRole: ['staff', "boss"],
+    //     isBackground: false
+    // },
+    // {
+    //     key: 6,
+    //     label: 'Мои заявки',
+    //     icon: <PiUserListLight className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     path: '/my-applications',
+    //     element: MyApplications,
+    //     permittedRole: ['staff', 'admin', "boss"],
+    //     isBackground: false
+    // },
     {
         key: 12132,
         label: 'Создать задачу',
@@ -109,8 +110,8 @@ export const samplePagesConfigs = [
     },
     {
         key: 121322,
-        label: 'распределение задач',
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+        label: 'Распределение задач',
+        icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: TaskEditBoss,
         permittedRole: ["boss"],
@@ -164,7 +165,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 89,
-        label: 'Модули',
+        label: 'Отделы',
         icon: <VscFileSubmodule className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/module',
         element: Module,

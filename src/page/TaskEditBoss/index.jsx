@@ -66,7 +66,7 @@ const TaskEditBoss = () => {
           <Row gutter={20}>
             <Col span={24}>
               <Title level={2}>
-                Создать задачу
+                Разделите задачи
               </Title>
             </Col>
             <Col span={16}>
@@ -92,7 +92,7 @@ const TaskEditBoss = () => {
           </Spin>
 
           <Title>
-            salom
+            Разделенные задачи
           </Title>
           <Spin
               size='medium'

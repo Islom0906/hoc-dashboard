@@ -21,7 +21,7 @@ const ModuleTable = ({data,deleteHandle}) => {
 
     const columns = [
         {
-            title: 'Модули',
+            title: 'Отделы',
             dataIndex: 'name',
             id: 'name',
             render: (text) => <p>{text}</p>,

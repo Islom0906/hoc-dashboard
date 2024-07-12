@@ -195,23 +195,23 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                 <Row gutter={20}>
                     <Col span={24}>
                         <Title level={2}>
-                            создайте:
+                            Создать встречу:
                         </Title>
                     </Col>
                     <Col span={12}>
                         <FormInput
                             required={true}
-                            required_text={'Требуется название компания'}
-                            label={'Название компания'}
+                            required_text={'Требуется название встречи'}
+                            label={'Название встречи'}
                             name={'title'}
                         />
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="Выберите крайний срок"
+                            label="Выберите время встречи"
                             name={'meeting_date'}
                             rules={[{
-                                required: true, message: 'Укажите день  крайний срок.'
+                                required: true, message: 'Укажите время встречи.'
                             }]}
                         >
                             <TimePicker format="HH:mm:ss"/>
@@ -220,8 +220,8 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                     <Col span={24}>
                         <FormTextArea
                             required={true}
-                            required_text={'текст к заданию'}
-                            label={'текст к заданию'}
+                            required_text={'Требуется o короткой встрече'}
+                            label={' О короткой встрече'}
                             name={'text'}
                         />
                     </Col>

@@ -232,7 +232,6 @@ const TaskEdit = () => {
                                     {dataGetAddSubTask?.main_task_text}
                                 </Text>
                             </Flex>
-
                             <Text>
                                 {dataGetAddSubTask?.deadline}
                             </Text>
