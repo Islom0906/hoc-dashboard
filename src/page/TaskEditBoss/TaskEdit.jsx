@@ -324,14 +324,14 @@ const CreatSubTask = ({optionsUserByModules, editId, }) => {
                                         <Form.Item
                                         >
                                             <FormInput
-                                                label={'название задания'}
+                                                label={'Название задания'}
                                                 name={[field.name, 'title']}
                                             />
                                         </Form.Item>
                                     </Col>
                                     <Col span={24}>
                                         <FormTextArea
-                                            label={'текст к заданию'}
+                                            label={'Добавить комментарий'}
                                             name={[field.name, 'text']}
                                         />
                                     </Col>
@@ -345,7 +345,7 @@ const CreatSubTask = ({optionsUserByModules, editId, }) => {
                         <Form.Item>
                             <Button type="primary" onClick={() => add()} block
                                     style={{backgroundColor: '#28a745'}}>
-                                создать подзадачу
+                                Создать подзадачу
                             </Button>
                         </Form.Item>
                     }

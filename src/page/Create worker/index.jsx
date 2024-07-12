@@ -78,7 +78,7 @@ const CreateWorker = () => {
                         </Title>
                     </Col>
                     <Col span={16}>
-                        <Input onChange={(e) => searchFunc(e.target.value)}/>
+                        <Input placeholder="Поиск работников" onChange={(e) => searchFunc(e.target.value)} />
                     </Col>
                     <Col span={8}>
                         <Button

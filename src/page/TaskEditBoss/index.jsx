@@ -91,7 +91,7 @@ const TaskEditBoss = () => {
             />
           </Spin>
 
-          <Title>
+          <Title level={2}>
             Разделенные задачи
           </Title>
           <Spin
