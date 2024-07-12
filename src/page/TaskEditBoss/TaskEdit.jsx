@@ -64,8 +64,6 @@ const TaskEdit = () => {
             }
         }
     });
-
-
     const {
         mutate: putAddSubTaskBoss,
         isLoading: putAddSubTaskBossLoading,
@@ -83,19 +81,15 @@ const TaskEdit = () => {
                 message.error(`${obj}: ${error.response.data[obj][0]}`)
             }
         }
-    // put /users/boss-created-task-update
     });
-
     useEffect(() => {
         return () => {
             queryClient.removeQueries()
         }
     }, [])
-
     successCreateAndEdit(postAddSubTaskBossSuccess, putAddSubTaskBossSuccess, '/taskEditBoss')
     editGetById(refetchGetAddSubTask)
     setInitialValue(form, initialValueForm)
-
     useEffect(() => {
         const comeToEdit =[]
         dataGetAddSubTask?.sub_tasks?.map(subTask => {
@@ -105,22 +99,19 @@ const TaskEdit = () => {
                 deadline: dayjs(subTask?.deadline),
                 staff: subTask?.staff
             })
-            // dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
         })
 
 
         const editData = {
                 sub_tasks: comeToEdit
         }
-        console.log(editData)
 
         if (successGetAddSubTask) {
         form.setFieldsValue(editData)
         }
-
-
         console.log('dataGetAddSubTask' , dataGetAddSubTask)
     }, [dataGetAddSubTask])
+
 
     const onFinish = (value) => {
         const data = []
@@ -148,9 +139,6 @@ const TaskEdit = () => {
 
 
         if (dataGetAddSubTask) {
-
-            console.log(data)
-
             putAddSubTaskBoss({url: '/users/boss-created-task-update', data: {data}, id: editId})
         } else {
         postAddSubTaskBossMutate({url: "/users/boss-task-create", data: data});
@@ -172,7 +160,6 @@ const TaskEdit = () => {
     useEffect(() => {
         const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
         if (storedValues) {
-            // storedValues.image = []
             const data = {
                 ...storedValues,
                 deadline: dayjs(storedValues?.deadline)
@@ -214,7 +201,7 @@ const TaskEdit = () => {
 
 
     return (<div>
-        {(postAddSubTaskBossLoading || loadingGetAddSubTask ) ?
+        {(postAddSubTaskBossLoading || loadingGetAddSubTask || putAddSubTaskBossLoading ) ?
             <AppLoader/> :
             <Form
                 form={form}
@@ -238,10 +225,11 @@ const TaskEdit = () => {
                         <Flex justify={"space-between"} align={"start"} style={{marginBottom:'20px'}}>
                             <Flex vertical={true} gap={1}>
                                 <Title level={2}>
-                                    {dataGetAddSubTask?.title}
+                                    {dataGetAddSubTask?.main_task_title
+                                    }
                                 </Title>
                                 <Text>
-                                    {dataGetAddSubTask?.text}
+                                    {dataGetAddSubTask?.main_task_text}
                                 </Text>
                             </Flex>
 
@@ -267,7 +255,9 @@ const TaskEdit = () => {
                     {
                         editId &&
                     <Col span={8}>
-                        <TaskInnerCard  main_task_deadline={dataGetAddSubTask?.deadline} />
+                        <TaskInnerCard created_by={dataGetAddSubTask?.created_by}  main_task_deadline={dataGetAddSubTask?.deadline} main_task_created_at={dataGetAddSubTask?.main_task_created_at} main_task_responsible_user={dataGetAddSubTask?.responsible_user}
+
+                        />
                     </Col>
                     }
                 </Row>

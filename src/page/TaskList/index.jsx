@@ -33,7 +33,7 @@ const TaskList = () => {
     }
   }, [user]);
 
-
+console.log(bossGetTask)
 
   return (
       <div>
