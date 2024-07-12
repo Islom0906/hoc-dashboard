@@ -70,7 +70,7 @@ export  const  UserAccount = ({ user , logOut})=> {
         {
             key: '1',
             label: (
-                <Link  rel="noopener noreferrer" to="/user-profile">
+                <Link  rel="noopener noreferrer" to="/">
                     Редактировать
                 </Link>
             ),
