@@ -76,6 +76,16 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     } = useQuery(["edit-meeting", editId], () => apiService.getDataByID("/users/meetings", editId), {
         enabled: false
     });
+    // delete meeting
+    const {
+        mutate:deleteMeetingMutate,
+        isSuccess:deleteMeetingSuccess,
+        isLoading: deleteMeetingLoading,
+    } = useMutation(({url, id}) => apiService.deleteData(url, id),{
+        onSuccess:()=>{
+            message.success('Успешно')
+        }
+    });
 
 
     useEffect(() => {
@@ -85,12 +95,12 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         if (putMeetingDate) {
             dispatch(editIdQuery(''))
         }
-        if (postMeetingSuccess||putMeetingDate) {
+        if (postMeetingSuccess||putMeetingDate||deleteMeetingSuccess) {
             refetchMeeting()
             setIsModalOpen(false)
             form.setFieldsValue(initialValueForm)
         }
-    }, [postMeetingSuccess,putMeetingDate]);
+    }, [postMeetingSuccess,putMeetingDate,deleteMeetingSuccess]);
 
 
     setInitialValue(form,initialValueForm)
@@ -101,7 +111,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     }, [putMeetingSuccess]);
     editGetById(editModalMeetingRefetch)
 
-    console.log(editId)
     //edit meeting
     useEffect(() => {
         if (editModalMeetingSuccess) {
@@ -113,15 +122,12 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                 setIsMultipleSelect('allUser')
                 isAllUser = true
             }
-            // console.log(editModalMeetingData?.meeting_date)
-            console.log(dayjs(editModalMeetingData?.meeting_date))
             const edit = {
                 title: editModalMeetingData?.title,
                 text: editModalMeetingData?.text,
                 meeting_date: dayjs(editModalMeetingData?.meeting_date),
                 users: isAllUser > 0 ? [null] : editModalMeetingSuccess?.users
             }
-            console.log(edit)
             form.setFieldsValue(edit)
         }
 
@@ -165,6 +171,13 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         setIsModalOpen(false);
     };
 
+    const deleteMeetingHandle=()=>{
+        if (editId){
+
+        deleteMeetingMutate({url:'/users/meetings', id: editId})
+        }
+    }
+
     // option Company
     const optionsResponsibleUser = useMemo(() => {
 
@@ -202,7 +215,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     }, [requiredUser, isMultipleSelect]);
 
     const onChangeSelect = (value) => {
-        console.log(value)
         if (!value.length>0){
             setIsMultipleSelect('show')
         }
@@ -222,7 +234,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             footer={null}
         >
             <Spin
-                spinning={postMeetingLoading || editModalMeetingLoading||putMeetingLoading}
+                spinning={postMeetingLoading || editModalMeetingLoading||putMeetingLoading||deleteMeetingLoading}
             >
             <Form
                 form={form}
@@ -307,6 +319,9 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                     {editModalMeetingSuccess ? 'Изменить' : 'Создать'}
                 </Button>
             </Form>
+                <Button  type="primary" danger htmlType="button" style={{width: "100%", marginTop: "20px"}} onClick={deleteMeetingHandle}>
+                    Удалить встречу
+                </Button>
             </Spin>
         </Modal>
 

@@ -22,7 +22,7 @@ const contentPopover=(content)=>{
 }
 
 const {Text} = Typography
-const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline}) => {
+const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline,colorMeeting}) => {
     const [value, setValue] = useState(() => dayjs());
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {data: {user}} = useSelector(state => state.auth)
@@ -87,26 +87,31 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline}
                 {birthdaysOnDate.map(birthday => (
                     <li key={birthday.id} >
 
-                        <Text type="warning">
-                            🎉  {birthday.first_name} {birthday.last_name}
+                            <div className={'color-badge'} style={{backgroundColor:colorMeeting.birthday}}></div>
+                        <Text type="warning" className={''}>
+
+                            {birthday.first_name} {birthday.last_name}
                         </Text>
                     </li>
                 ))}
                 {meetingsOnDate.map((meeting) => (
                     <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
+                        <div className={'color-badge'} style={{backgroundColor: colorMeeting.meeting}}></div>
                         <Popover content={contentPopover(meeting)} title={meeting.title}>
-                        <Text style={{color:color.meeting}}>
-                            📌  {meeting.title}
-                        </Text>
+
+                            <Text style={{color: color.meeting}}>
+                                 {meeting.title}
+                            </Text>
                         </Popover>
 
                     </li>
                 ))}
                 {deadlineOnDate.map((meeting) => (
                     <li key={meeting.id}>
-                            <Text style={{color:color.deadline}}>
-                                ⏳  {meeting.title}
-                            </Text>
+                        <div className={'color-badge'} style={{backgroundColor: colorMeeting.deadline}}></div>
+                        <Text style={{color: color.deadline}}>
+                             {meeting.title}
+                        </Text>
                     </li>
                 ))}
             </ul>

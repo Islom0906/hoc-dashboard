@@ -5,6 +5,12 @@ import apiService from "../../service/apis/api";
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 
+const colorMeeting={
+    meeting:'#1b1ba1',
+    birthday:'#dde01b',
+    deadline:'#e01b2b'
+}
+
 const CalendarTask = () => {
     // birthday
     const {
@@ -57,6 +63,7 @@ const CalendarTask = () => {
                 Календарь и Создать встречу
             </h1>
             <CustomCalendar
+                colorMeeting={colorMeeting}
                 refetchMeeting={refetchMeeting}
                 dataBirthDay={dataBirthDay}
                 dataMeeting={dataMeetting}

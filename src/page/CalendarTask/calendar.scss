@@ -22,6 +22,25 @@
   }
 }
 
+.events {
+  li {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .color-badge {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+    }
+    span{
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+    }
+  }
+}
 .popover-card{
   display: flex;
   flex-direction: column;
