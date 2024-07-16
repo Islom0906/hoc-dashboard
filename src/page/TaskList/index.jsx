@@ -10,6 +10,7 @@ import {useSelector} from "react-redux";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {Link} from "react-router-dom";
 import {FaRegUserCircle} from "react-icons/fa";
+import {VscFileSubmodule} from "react-icons/vsc";
 
 const TaskList = () => {
   const {data:{user}}=useSelector(state => state.auth)
@@ -60,7 +61,7 @@ console.log(bossGetTask)
 
 export const TaskCard = ({ task }) => {
 
-    console.log(task?.included_users)
+    // console.log(task?.included_users?.modules[0].name)
     const deadlineColor= DeadlineStatusColor(task?.main_deadline_status)
 
 
@@ -119,7 +120,10 @@ export const TaskCard = ({ task }) => {
                             <FaRegUserCircle />
                             <p>{task?.main_task_responsible_user?.full_name}</p>
                         </Flex>
-
+                      {/*<Flex gap={2} align={'center'}>*/}
+                      {/*  <VscFileSubmodule />*/}
+                      {/*  <p>{task?.main_task_responsible_user?.modules[0]?.name}</p>*/}
+                      {/*</Flex>*/}
                     </Flex>
 
 
