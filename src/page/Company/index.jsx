@@ -75,7 +75,7 @@ const Company = () => {
                         </Title>
                     </Col>
                     <Col span={16}>
-                        <Input onChange={(e) => searchFunc(e.target.value)}/>
+                        <Input placeholder="Поиск компаний" onChange={(e) => searchFunc(e.target.value)}/>
                     </Col>
                     <Col span={8}>
                         <Button

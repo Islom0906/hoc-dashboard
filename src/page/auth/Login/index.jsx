@@ -70,9 +70,13 @@ const Login = () => {
                     style={{
                         maxWidth: 600,
                     }}
+                    // initialValues={{
+                    //     email: 'sirofim012@gmail.com',
+                    //     password: 'admin001'
+                    // }}
                     initialValues={{
-                        email: 'sirofim012@gmail.com',
-                        password: 'admin001'
+                        email: '',
+                        password: ''
                     }}
                     onFinish={onFinish}
                     autoComplete="off"

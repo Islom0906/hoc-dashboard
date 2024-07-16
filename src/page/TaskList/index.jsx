@@ -79,20 +79,20 @@ export const TaskCard = ({ task }) => {
           title={task?.main_task_title}
           extra={
               <Link to={`/task-list/${task?.main_task_id}`} type={"primary"} size={"small"}>
-                <MdOutlineReadMore />
+                <MdOutlineReadMore style={{fontSize: '27px'}}/>
               </Link>
           }
       >
         <Space style={{ width: '100%' }} size={20} direction={'vertical'}>
           <Flex wrap={true} justify={'space-between'} gap={5} align={'center'}>
-            <Tooltip title={<p>time start:</p>} placement="top">
+            <Tooltip title={<p>Начало времени:</p>} placement="top">
               <Flex align={'center'} wrap={'nowrap'} gap={8}>
                 <CalendarFilled className={'icon'} />
                 <Text type={'secondary'}>{dayjs(task?.main_task_created_at).format('DD.MM.YYYY')}</Text>
               </Flex>
             </Tooltip>
 
-            <Tooltip title={<p>time end:</p>} placement="top">
+            <Tooltip title={<p>Окончание срока:</p>} placement="top">
               <Flex wrap={'nowrap'} align={'center'} gap={8}>
                 <FieldTimeOutlined className={'icon'} />
                 <Text type={'secondary'}>{dayjs(task?.main_task_deadline).format('DD.MM.YYYY h:mm:ss')}</Text>
