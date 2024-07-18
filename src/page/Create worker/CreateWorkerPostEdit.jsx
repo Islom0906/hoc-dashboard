@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Col, DatePicker, Form, message, Row, Select, Upload} from "antd";
+import {Button, Col, DatePicker, Form, Row, Select, Upload} from "antd";
 import {AppLoader, FormInput, FormInputEmail, FormInputNumber} from "../../components";
 import {useSelector} from "react-redux";
-import {useMutation, useQuery} from "react-query";
-import apiService from "../../service/apis/api";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 import dayjs from "dayjs";
+import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
+
 const initialValueForm = {
     first_name: "",
     last_name: "",
@@ -29,106 +29,47 @@ const CreateWorkerPostEdit = () => {
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
     const [fileListProps, setFileListProps] = useState([]);
-    // const dispatch = useDispatch()
-    // const navigate = useNavigate()
 
     // query-company-get
-    const {data: companyData, refetch: companyFetch} = useQuery(
-        'get-company',
-        () => apiService.getData('/users/companies'),
-        {
-            enabled: false,
-        },
-    );
+    const {data: companyData, refetch: companyFetch} = useGetQuery(false, 'get-company', '/users/companies', false)
     // query-user-roles-get
-    const {data: userRoleData, refetch: userRoleFetch} = useQuery(
-        'get-user-roles',
-        () => apiService.getData('/users/roles'),
-        {
-            enabled: false,
-        },
-    );
+    const {data: userRoleData, refetch: userRoleFetch} = useGetQuery(false, 'get-user-roles', '/users/roles', false)
     // query-module-get
-    const {data: moduleData, refetch: moduleFetch} = useQuery(
-        'get-module',
-        () => apiService.getData('/users/modules'),
-        {
-            enabled: false,
-        },
-    );
-
-
+    const {data: moduleData, refetch: moduleFetch} = useGetQuery(false, 'get-module', '/users/modules', false)
     // query-image
     const {
         mutate: imagesUploadMutate,
-        data: imagesUpload,
-        isLoading: imagesUploadLoading,
         isSuccess: imagesUploadSuccess,
-    } = useMutation(({url, formData}) => apiService.postData(url, formData), {
-
-        onSuccess: () => {
-
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
-
+        isLoading: imagesUploadLoading,
+        data: imagesUpload
+    } = usePostQuery()
 
     // query-create-worker
     const {
         mutate: postCreateWorkerMutate,
         isLoading: postCreateWorkerLoading,
-        isSuccess: postCreateWorkerSuccess,
-    } = useMutation(({url, data}) => apiService.postData(url, data), {
-        onSuccess: () => {
-
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+        isSuccess: postCreateWorkerSuccess
+    } = usePostQuery()
 
     // query-edit
     const {
         isLoading: editCreateWorkerLoading,
         data: editCreateWorkerData,
         refetch: editCreateWorkerRefetch,
-        isSuccess: editCreateWorkerSuccess,
-    } = useQuery(["edit-create-worker", editId], () => apiService.getDataByID("/users/users", editId), {
-        enabled: false
-    });
+        isSuccess: editCreateWorkerSuccess
+    } = useGetByIdQuery(false, "edit-create-worker", editId, '/users/users')
+
+
     // put-query
     const {
         mutate: putCreateWorker,
         isLoading: putCreateWorkerLoading,
         isSuccess: putCreateWorkerSuccess
-    } = useMutation(({
-                         url,
-                         data,
-                         id
-                     }) => apiService.editData(url, data, id), {
-        onSuccess: () => {
-            message.success('Success')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
-    // delete image
+    } = useEditQuery()
 
-    const {mutate: imagesDeleteMutate} = useMutation(({url, id}) => apiService.deleteData(url, id), {
-        onSuccess: () => message.success('Success'),
-        onError: (error) => message.error(error.message)
-    });
+    // delete image
+    const {mutate: imagesDeleteMutate} = useDeleteQuery()
+
     // ================================ useEffect =============================
 
 
@@ -281,7 +222,7 @@ const CreateWorkerPostEdit = () => {
             setFileListProps([])
         } else if (newFileList.length !== 0) {
             formData.append("image", newFileList[0].originFileObj);
-            imagesUploadMutate({url: "/users/images/", formData});
+            imagesUploadMutate({url: "/users/images/", data: formData});
         }
     };
 

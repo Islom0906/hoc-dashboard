@@ -6,6 +6,7 @@ import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
 import {useNavigate} from "react-router-dom";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
+import {useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Queries";
 
 
 const initialValueForm = {
@@ -20,50 +21,23 @@ const CompanyPostEdit = () => {
     // query-company
     const {
         mutate: postCompanyMutate,
-        data: postCompany,
         isLoading: postCompanyLoading,
-        isSuccess: postCompanySuccess,
-    } = useMutation(({url, data}) => apiService.postData(url, data), {
-        onSuccess: () => {
-
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
-
+        isSuccess: postCompanySuccess
+    } = usePostQuery()
     // query-edit
     const {
         isLoading: editCompanyLoading,
         data: editCompanyData,
         refetch: editCompanyRefetch,
-        isSuccess: editCompanySuccess,
-    } = useQuery(["edit-company", editId], () => apiService.getDataByID("/users/companies", editId), {
-        enabled: false
-    });
+        isSuccess: editCompanySuccess
+    } = useGetByIdQuery(false, "edit-company", editId, '/users/companies')
     // put-query
     const {
         mutate: putCompany,
         isLoading: putCompanyLoading,
-        data: putData,
         isSuccess: putCompanySuccess
-    } = useMutation(({
-                         url,
-                         data,
-                         id
-                     }) => apiService.editData(url, data, id), {
-        onSuccess: () => {
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+    } = useEditQuery()
+
     // ================================ useEffect =============================
     // company success
     SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')

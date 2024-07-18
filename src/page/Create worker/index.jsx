@@ -1,48 +1,27 @@
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {useMutation, useQuery} from "react-query";
-import apiService from "../../service/apis/api";
-import {Button, Col, Input, message, Row, Space, Spin,Typography} from "antd";
+import {Button, Col, Input,  Row, Space, Spin,Typography} from "antd";
 import {useEffect, useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import CreateWorkerTable from "./CreateWorkerTable";
+import {  useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 const {Title}=Typography
 
 
 const CreateWorker = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
+    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'create-worker-get','/users/users/')
     // delete
-    const {
-        mutate,
-        isSuccess,
-        isLoading: deleteLoading,
-    } = useMutation(({url, id}) => apiService.deleteData(url, id),{
-        onSuccess:()=>{
-            message.success('Успешно')
-        }
-    });
-
-    // get
-    const {
-        data,
-        isLoading: getLoading,
-        refetch,
-    } = useQuery('create-worker-get', () => apiService.getData(`/users/users/`), {
-        enabled: false,
-        onError: (error) => {
-
-            message.error(error.message);
-            // Handle the error
-        },
-    });
 
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
         refetch()
+        console.log('render')
     }, [isSuccess]);
 
     // delete

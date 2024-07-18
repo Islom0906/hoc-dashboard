@@ -88,6 +88,9 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             render: (image) => {
                 return (
                     <Image
+                        style={{
+                            objectFit:'cover'
+                        }}
                         width={50}
                         height={50}
                         src={image?.image}
@@ -118,7 +121,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
     return <Table
         columns={columns}
         scroll={{
-            x: 1000,
+            x: 1700,
         }}
         dataSource={data}
         rowKey={(record) => record.id}

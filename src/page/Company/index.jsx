@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
+import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 
 const {Title} = Typography
 
@@ -15,25 +16,11 @@ const Company = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     // delete
-    const {
-        mutate,
-        isSuccess,
-        isLoading: deleteLoading,
-    } = useMutation(({url, id}) => apiService.deleteData(url, id));
-
+    const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     // get
-    const {
-        data,
-        isLoading: getCompanyLoading,
-        refetch,
-    } = useQuery('company-get', () => apiService.getData(`/users/companies/`), {
-        enabled: false,
-        onError: (error) => {
+    const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get','/users/companies/')
 
-            message.error(error.message);
-            // Handle the error
-        },
-    });
+
 
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
