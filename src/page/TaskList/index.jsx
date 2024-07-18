@@ -11,17 +11,18 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {Link} from "react-router-dom";
 import {FaRegUserCircle} from "react-icons/fa";
 import {VscFileSubmodule} from "react-icons/vsc";
+import {ProfileHoverActive} from "../../components";
 
 const TaskList = () => {
   const {data:{user}}=useSelector(state => state.auth)
-  const { data: staffGetTask, refetch: refetchStaffGetTask } = useQuery(
+  const { data: staffGetTask, refetch: refetchStaffGetTask , isSuccess:isSuccessStaffGetTask } = useQuery(
       'staff-get-task',
       () => apiService.getData('users/staff-subtasks'),
       {
         enabled: false,
       },
   );
-  const { data: bossGetTask, refetch: refetchBossGetTask } = useQuery(
+  const { data: bossGetTask, refetch: refetchBossGetTask  ,isSuccess:isSuccessBossGetTask  } = useQuery(
       'boss-get-task',
       () => apiService.getData('users/boss-assigned-task-get/'),
       {
@@ -44,7 +45,7 @@ console.log(bossGetTask)
         <h1>Ваши задачи</h1>
         {/*<Divider orientation="right"><h4>Выполненные задачи</h4></Divider>*/}
         <Row gutter={[24, 24]} style={{marginTop:15}}>
-          {staffGetTask &&  staffGetTask?.results?.map(task => (
+          {staffGetTask?.count > 0 &&  staffGetTask?.results?.map(task => (
               <Col key={task?.main_task_id} className="gutter-row" xs={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
                 <TaskCard key={task?.main_task_id} task={task} />
               </Col>
@@ -60,16 +61,11 @@ console.log(bossGetTask)
 };
 
 export const TaskCard = ({ task }) => {
-
-    // console.log(task?.included_users?.modules[0].name)
-    const deadlineColor= DeadlineStatusColor(task?.main_deadline_status)
-
-
-
+  const deadlineColor= DeadlineStatusColor(task?.main_deadline_status)
+  console.log(task)
   if (!task) {
     return null;
   }
-
   const { Text } = Typography;
   return (
       <Card
@@ -120,13 +116,11 @@ export const TaskCard = ({ task }) => {
                             <FaRegUserCircle />
                             <p>{task?.main_task_responsible_user?.full_name}</p>
                         </Flex>
-                      {/*<Flex gap={2} align={'center'}>*/}
-                      {/*  <VscFileSubmodule />*/}
-                      {/*  <p>{task?.main_task_responsible_user?.modules[0]?.name}</p>*/}
-                      {/*</Flex>*/}
+                      <Flex gap={2} align={'center'}>
+                        <VscFileSubmodule />
+                        <p>{task?.main_task_responsible_user?.modules[0]?.name}</p>
+                      </Flex>
                     </Flex>
-
-
                 }
                 placement="top"
             >
@@ -148,16 +142,18 @@ export const TaskCard = ({ task }) => {
               {task?.included_users?.map(user => (
                   <Tooltip
                       key={user?.id}
-                      title={
-                        <p>
-                          <span>{user?.full_name}</span>
-                          <br />
-                          <span>
-                      {user?.roles[0]?.name}
-                            {user?.roles[1]?.name}
-                    </span>
-                        </p>
-                      }
+                      // title={<ProfileHoverActive full_name={user?.full_name}  />}
+
+                    //   title={
+                    //     <p>
+                    //       <span>{user?.full_name}</span>
+                    //       <br />
+                    //       <span>
+                    //   {user?.roles[0]?.name}
+                    //         {user?.roles[1]?.name}
+                    // </span>
+                    //     </p>
+                    //   }
                       placement="top"
                   >
                     <Avatar
