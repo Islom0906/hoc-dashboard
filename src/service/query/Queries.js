@@ -9,6 +9,7 @@ export const useGetQuery=(isEnabled=true,key,url,isNotification=true)=>{
         isLoading,
         refetch,
         isSuccess,
+        isFetching
     } = useQuery(key, () => apiService.getData(url), {
         enabled: isEnabled,
         onError: (error) => {
@@ -24,7 +25,7 @@ export const useGetQuery=(isEnabled=true,key,url,isNotification=true)=>{
         },
     });
 
-    return {data,isLoading,refetch,isSuccess}
+    return {data, isLoading, refetch, isSuccess, isFetching}
 }
 
 export const useGetByIdQuery=(isEnabled=true,key,editId,url)=>{
@@ -33,11 +34,12 @@ export const useGetByIdQuery=(isEnabled=true,key,editId,url)=>{
         data,
         refetch,
         isSuccess,
+        isFetching
     } = useQuery([key, editId], () => apiService.getDataByID(url, editId), {
         enabled: isEnabled
     });
 
-    return {isSuccess,isLoading,data,refetch}
+    return {isSuccess, isLoading, data, refetch, isFetching}
 }
 
 export const usePostQuery=()=>{
@@ -64,7 +66,8 @@ export const useEditQuery=()=>{
     const {
         mutate,
         isLoading,
-        isSuccess
+        isSuccess,
+        data
     } = useMutation(({
                          url,
                          data,
@@ -79,7 +82,29 @@ export const useEditQuery=()=>{
             }
         }
     });
-    return {mutate,isSuccess,isLoading}
+    return {mutate, isSuccess, isLoading, data}
+}
+export const useEditPatchQuery = () => {
+    const {
+        mutate,
+        isLoading,
+        isSuccess,
+        data
+    } = useMutation(({
+                         url,
+                         data,
+                         id
+                     }) => apiService.editDataPatch(url, data, id), {
+        onSuccess: () => {
+            message.success('Успешно')
+        },
+        onError: (error) => {
+            for (let obj in error.response.data) {
+                message.error(`${obj}: ${error.response.data[obj][0]}`)
+            }
+        }
+    });
+    return {mutate, isSuccess, isLoading, data}
 }
 
 export const useDeleteQuery=()=>{

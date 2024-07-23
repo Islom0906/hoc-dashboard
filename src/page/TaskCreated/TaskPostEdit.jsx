@@ -1,14 +1,15 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Card, Col, DatePicker, Flex, Form, message, Row, Select, Typography} from "antd";
+import {Button, Card, Col, DatePicker, Flex, Form, Row, Select, Typography} from "antd";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
-import {useMutation, useQuery, useQueryClient} from "react-query";
-import apiService from "../../service/apis/api";
+import {useQueryClient} from "react-query";
 import {MinusCircleOutlined} from "@ant-design/icons";
 import successCreateAndEdit from "../../hooks/successCreateAndEdit";
 import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
 import dayjs from "dayjs";
+import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
+
 const { Text } = Typography;
 
 const {Title} = Typography
@@ -51,86 +52,54 @@ const TaskPostEdit = () => {
     // get-responsibleUser
     const {
         data: responsibleUser,
-        refetch: refetchResponsibleUser,
-    } = useQuery('get-responsibleUser', () => apiService.getData(`users/user-filter-by-company?company_id=${selectCompanyID}`), {
-        enabled: false,
-        onError: (error) => {
-            message.error(error.message);
-        },
-    });
+        refetch: refetchResponsibleUser
+    } = useGetQuery(false, 'get-responsibleUser', `users/user-filter-by-company?company_id=${selectCompanyID}`, false)
+
 
     // get-company
     const {
         data: getCompany,
-        refetch: refetchGetCompany,
-    } = useQuery('get-company', () => apiService.getData(`/users/companies/`), {
-        enabled: false,
-        onError: (error) => {
-            message.error(error.message);
-        },
-    });
+        refetch: refetchGetCompany
+    } = useGetQuery(false, 'get-company', '/users/companies/', false)
 
+
+    // get modules
     const {
         data: getModules,
-        refetch: refetchGetModules,
-    } = useQuery('get-modules', () => apiService.getData(`/users/module-filter?company_id=${selectCompanyID}`), {
-        enabled: false,
-        onError: (error) => {
-            message.error(error.message);
-        },
-    });
+        refetch: refetchGetModules
+    } = useGetQuery(false, 'get-modules', `/users/module-filter?company_id=${selectCompanyID}`, false)
+
+
     // get-user
     const {
         data: getUserByModules,
-        refetch: refetchGetUserByModules,
-    } = useQuery('get-user', () => apiService.getData(`/users/user-filter?module_id=${selectModulesID}`), {
-        enabled: false,
-        onError: (error) => {
-            message.error(error.message);
-        },
-    });
+        refetch: refetchGetUserByModules
+    } = useGetQuery(false, 'get-user', `/users/user-filter?module_id=${selectModulesID}`, false)
+
+
     // post task
     const {
         mutate: postTaskMutate,
         isLoading: postTaskLoading,
-        isSuccess: postTaskSuccess,
-    } = useMutation(({url, data}) => apiService.postData(url, data), {
-        onSuccess: () => {
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+        isSuccess: postTaskSuccess
+    } = usePostQuery()
+
+    // get by id
     const {
         isLoading: editTaskLoading,
         data: editTaskData,
         refetch: editTaskRefetch,
-        isSuccess: editTaskSuccess,
-    } = useQuery(["edit-task", editId], () => apiService.getDataByID("/users/tasks", editId), {
-        enabled: false
-    });
+        isSuccess: editTaskSuccess
+    } = useGetByIdQuery(false, "edit-task", editId, '/users/tasks')
+
+
     // put task
     const {
         mutate: putTask,
         isLoading: putTaskLoading,
         isSuccess: putTaskSuccess
-    } = useMutation(({
-                         url,
-                         data,
-                         id
-                     }) => apiService.editData(url, data, id), {
-        onSuccess: () => {
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+    } = useEditQuery()
+
 
     useEffect(() => {
         refetchGetCompany()
@@ -226,7 +195,6 @@ const TaskPostEdit = () => {
                 deadline:dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
             }
         })
-        console.log(subTask)
 
         const data = {
             title: value.title,

@@ -49,7 +49,6 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline,
 
     const meetingMap = useMemo(() => {
         return dataMeeting?.reduce((acc, meeting) => {
-            console.log(acc)
             const key = dayjs(meeting.meeting_date).format('YYYY-MM-DD');
             acc[key] = acc[key] || [];
             acc[key].push(meeting);
@@ -58,7 +57,6 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline,
     }, [dataMeeting]);
     const deadlineMap = useMemo(() => {
         return dataDeadline?.results?.reduce((acc, deadline) => {
-            console.log(acc)
             const key = dayjs(deadline.deadline).format('YYYY-MM-DD');
             acc[key] = acc[key] || [];
             acc[key].push(deadline);

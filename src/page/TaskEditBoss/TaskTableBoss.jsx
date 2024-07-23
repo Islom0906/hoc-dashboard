@@ -11,7 +11,6 @@ const TaskTableBoss = ({data}) => {
   const Edit = (id) => {
     localStorage.setItem('editDataId',id)
     dispatch(editIdQuery(id))
-    console.log(id)
     navigate('/taskEditBoss/add')
   };
 

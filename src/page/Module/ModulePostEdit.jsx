@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import {useMutation, useQuery} from "react-query";
 import apiService from "../../service/apis/api";
 import {EditGetById,  SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
+import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 
 const initialValueForm = {
     name: "",
@@ -17,60 +18,34 @@ const ModulePostEdit = () => {
     const {editId} = useSelector(state => state.query)
 
     // query-company-get
-    const {data: companyData, refetch: companyFetch} = useQuery(
-        'get-company',
-        () => apiService.getData('/users/companies'),
-        {
-            enabled: false,
-        },
-    );
+    const {data: companyData, refetch: companyFetch} = useGetQuery(false, 'get-company', '/users/companies', false)
+
 
 
     // query-module
     const {
         mutate: postModuleMutate,
         isLoading: postModuleLoading,
-        isSuccess: postModuleSuccess,
-    } = useMutation(({url, data}) => apiService.postData(url, data), {
-        onSuccess: () => {
-
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+        isSuccess: postModuleSuccess
+    } = usePostQuery()
+    ;
 
     // query-edit
     const {
         isLoading: editModuleLoading,
         data: editModuleData,
         refetch: editModuleRefetch,
-        isSuccess: editModuleSuccess,
-    } = useQuery(["edit-module", editId], () => apiService.getDataByID("/users/modules", editId), {
-        enabled: false
-    });
+        isSuccess: editModuleSuccess
+    } = useGetByIdQuery(false, "edit-module", editId, '/users/modules')
+
+
     // put-query
     const {
         mutate: putModule,
         isLoading: putModuleLoading,
         isSuccess: putModuleSuccess
-    } = useMutation(({
-                         url,
-                         data,
-                         id
-                     }) => apiService.editData(url, data, id), {
-        onSuccess: () => {
-            message.success('Success')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+    } = useEditQuery()
+
 
     // ================================ useEffect =============================
 

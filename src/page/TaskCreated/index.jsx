@@ -1,12 +1,11 @@
-import {Button, Col, Input, message, Row, Space, Spin, Typography} from "antd";
+import {Button, Col, Input, Row, Space, Spin, Typography} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-import apiService from "../../service/apis/api";
-import {useMutation, useQuery} from "react-query";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import TaskTable from "./TaskTable";
+import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 
 const {Title} = Typography
 
@@ -21,24 +20,13 @@ const TaskCreated = () => {
     total: 0,
   });
   // delete
-  const {
-    mutate,
-    isSuccess,
-    isLoading: deleteLoading,
-  } = useMutation(({url, id}) => apiService.deleteData(url, id));
+  const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
+
 
   // get
-  const {
-    data,
-    isFetching: getTaskLoading,
-    isSuccess: getIsSuccess,
-    refetch,
-  } = useQuery('get-task', () => apiService.getData(`/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}`), {
-    enabled: false,
-    onError: (error) => {
-      message.error(error.message);
-    },
-  });
+  const {data,isLoading:getTaskLoading,refetch,isSuccess:getIsSuccess}=useGetQuery(false,'get-task',`/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}`,false)
+
+
 
   const [search, setSearch] = useState([]);
   const [isSearch, setIsSearch] = useState(false);

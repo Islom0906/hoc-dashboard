@@ -12,16 +12,16 @@ const {Title}=Typography
 const CreateWorker = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
-    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'create-worker-get','/users/users/')
     // delete
+    const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
+    // get
+    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'create-worker-get','/users/users/')
 
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
         refetch()
-        console.log('render')
     }, [isSuccess]);
 
     // delete

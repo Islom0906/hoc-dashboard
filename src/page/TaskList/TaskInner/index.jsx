@@ -40,7 +40,6 @@ const TaskInner = () => {
   const {data: taskInnerBoss, refetch: refetchTaskInnerBoss, isLoading: loadingTaskInnerBoss, isSuccess:successTaskInnerBoss} = useQuery(["taskInnerBoss", item], () =>
       apiService.getDataByID('users/boss-tasks-retrieve', item), {enabled: false}
   );
-  console.log(taskInnerBoss,taskInner)
 const isBoss=user?.roles[0].name === 'boss'
   useEffect(() => {
     if(user?.roles[0].name === 'boss') {
@@ -224,7 +223,6 @@ export const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => 
   };
   // delete image
   const onFinishFailed = value => {
-    console.log(value)
   }
   const onFinish = (value) => {
     const data = {

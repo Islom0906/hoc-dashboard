@@ -6,7 +6,6 @@ import {samplePagesConfigs} from "../../page/routerPage";
 import {initialUrl} from "../../constants/defaultConfig";
 
 const AppPage = () => {
-    console.log('render page')
 
 
     return (

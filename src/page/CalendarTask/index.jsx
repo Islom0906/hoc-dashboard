@@ -4,6 +4,7 @@ import {useQuery} from "react-query";
 import apiService from "../../service/apis/api";
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
+import {useGetQuery} from "../../service/query/Queries";
 
 const colorMeeting={
     meeting:'#1b1ba1',
@@ -15,42 +16,28 @@ const CalendarTask = () => {
     // birthday
     const {
         data: dataBirthDay,
-        isLoading: getBirthdayLoading,
-        refetch: refetchBirthDay,
-    } = useQuery('birthDay-get', () => apiService.getData(`/users/user-birthdays/`), {
-        enabled: false,
-        onError: (error) => {
+        isLoading:getBirthdayLoading,
+        refetch: refetchBirthDay
+    } = useGetQuery(false, 'birthDay-get', '/users/user-birthdays/', false)
 
-            message.error(error.message);
-            // Handle the error
-        },
-    });
+
     // meeting
     const {
         data: dataMeetting,
-        isLoading: getMeetingLoading,
-        refetch: refetchMeeting,
-    } = useQuery('meeting-get', () => apiService.getData(`/users/meetings/`), {
-        enabled: false,
-        onError: (error) => {
+        isFetching:getMeetingLoading,
+        refetch: refetchMeeting
+    } = useGetQuery(false, 'meeting-get', '/users/meetings/', false)
 
-            message.error(error.message);
-            // Handle the error
-        },
-    });
-    // meeting
+
+    // deadline
     const {
         data: dataDeadline,
-        isLoading: getDeadlineLoading,
-        refetch: refetchDeadline,
-    } = useQuery('deadline-get', () => apiService.getData(`/users/user-deadlines-calendar/`), {
-        enabled: false,
-        onError: (error) => {
+        isLoading:getDeadlineLoading,
+        refetch: refetchDeadline
+    } = useGetQuery(false, 'deadline-get', '/users/user-deadlines-calendar/', false)
 
-            message.error(error.message);
-            // Handle the error
-        },
-    });
+
+
     useEffect(() => {
         refetchBirthDay()
         refetchMeeting()

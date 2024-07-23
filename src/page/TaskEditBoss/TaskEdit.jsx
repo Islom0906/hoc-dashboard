@@ -83,7 +83,6 @@ const TaskEdit = () => {
         }
     });
 
-    console.log(dataGetAddSubTask)
     useEffect(() => {
         return () => {
             queryClient.removeQueries()
@@ -111,7 +110,6 @@ const TaskEdit = () => {
         if (successGetAddSubTask) {
         form.setFieldsValue(editData)
         }
-        console.log('dataGetAddSubTask' , dataGetAddSubTask)
     }, [dataGetAddSubTask])
 
 

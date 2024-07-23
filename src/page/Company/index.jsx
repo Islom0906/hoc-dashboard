@@ -18,7 +18,7 @@ const Company = () => {
     // delete
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     // get
-    const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get','/users/companies/')
+    const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get','/users/companies/',false)
 
 
 

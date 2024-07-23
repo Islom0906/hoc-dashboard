@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import ModuleTable from "./ModuleTable";
+import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 const {Title}=Typography
 
 
@@ -14,28 +15,9 @@ const CreateWorker = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     // delete
-    const {
-        mutate,
-        isSuccess,
-        isLoading: deleteLoading,
-    } = useMutation(({url, id}) => apiService.deleteData(url, id),{
-        onSuccess:()=>{
-            message.success('Успешно')
-        }
-    });
-
+    const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     // get
-    const {
-        data,
-        isLoading: getLoading,
-        refetch,
-    } = useQuery('module-get', () => apiService.getData(`/users/modules/`), {
-        enabled: false,
-        onError: (error) => {
-            message.error(error.message);
-            // Handle the error
-        },
-    });
+    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'module-get','/users/modules/',false)
 
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
