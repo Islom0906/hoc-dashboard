@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Col, Form, message, Row, Upload} from "antd";
+import {Button, Col, Form,  Row, Upload} from "antd";
 import {AppLoader, FormInput} from "../../components";
-import {useDispatch, useSelector} from "react-redux";
-import {useMutation, useQuery} from "react-query";
-import apiService from "../../service/apis/api";
-import {useNavigate} from "react-router-dom";
+import { useSelector} from "react-redux";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 import {useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Queries";
 

@@ -1,8 +1,7 @@
-import {Avatar, Card, Flex, Progress, Tooltip, Typography} from "antd";
-import React, {useMemo} from "react";
-import {UserOutlined} from "@ant-design/icons";
+import { Card, Flex, Progress,  Typography} from "antd";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
+import {AvatarUserProfile} from "../index";
 
  const TaskInnerCard = ({created_by ,
                                 main_task_responsible_user,
@@ -25,45 +24,16 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
       }} title="Информация о задании">
         <Flex vertical={true} gap={10}>
           <Flex align={'center'} justify={'space-between'}>
-
             <Text type={'secondary'}> Ответственный человек:</Text>
             <Flex align={"center"} gap={10}>
-              <Tooltip
-                  title={
-                    <p>
-                      <span>{main_task_responsible_user?.full_name}</span>
-                    </p>
-                  }
-                  placement="top"
-              >
-                <Avatar
-                    style={{backgroundColor: '#87d068'}}
-                    icon={main_task_responsible_user?.image ?
-                        <img src={main_task_responsible_user?.image} alt={main_task_responsible_user?.full_name}/> :
-                        <UserOutlined/>}
-                />
-              </Tooltip>
+              <AvatarUserProfile key={main_task_responsible_user?.id} full_name={main_task_responsible_user?.full_name} image={main_task_responsible_user?.image}/>
             </Flex>
           </Flex>
           <Flex align={'center'} justify={'space-between'}>
 
             <Text type={'secondary'}> Создатель задач:</Text>
             <Flex align={"center"} gap={10}>
-              <Tooltip
-                  title={
-                    <p>
-                      <span>{created_by?.full_name}</span>
-                    </p>
-                  }
-                  placement="top"
-              >
-                <Avatar
-                    style={{backgroundColor: '#87d068'}}
-                    icon={created_by?.image ?
-                        <img src={created_by?.image} alt={created_by?.full_name}/> :
-                        <UserOutlined/>}
-                />
-              </Tooltip>
+              <AvatarUserProfile key={created_by?.id} full_name={created_by?.full_name}  image={created_by?.image}/>
             </Flex>
           </Flex>
           {/*<Flex align={'center'} justify={'space-between'}>*/}

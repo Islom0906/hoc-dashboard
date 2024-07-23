@@ -1,8 +1,6 @@
-import {Button, Col, Input, Row, Typography, Space, Spin, message} from "antd";
+import {Button, Col, Input, Row, Typography, Space, Spin} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import CompanyTable from "./CompanyTable";
-import apiService from "../../service/apis/api";
-import {useMutation, useQuery} from "react-query";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";

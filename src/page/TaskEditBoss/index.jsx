@@ -1,12 +1,11 @@
-import {Button, Col, Input, Row, Typography, Space, Spin, message} from "antd";
+import {Button, Col, Input, Row, Typography, Space, Spin} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-import apiService from "../../service/apis/api";
-import { useQuery} from "react-query";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import TaskTableBoss from "./TaskTableBoss";
+import {useGetQuery} from "../../service/query/Queries";
 
 const {Title} = Typography
 
@@ -16,38 +15,36 @@ const TaskEditBoss = () => {
   const navigate = useNavigate()
   const [search, setSearch] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
   // get
-  const {
-    data : dataGetBossNotShared,
+  const {data : dataGetBossNotShared,
     isLoading: loadingGetBossNotShared,
-    refetch: refetchGetBossNotShared,
-  } = useQuery('boss-task-get-noshared', () => apiService.getData(`/users/boss-task-filter-get/?shared=not_shared`), {
-    enabled: false,
-    onError: (error) => {
-      message.error(error.message);
-    },
-  });
-  const {
-    data : dataGetBossShared,
-    isLoading: loadingGetBossShared,
-    refetch: refetchGetBossShared,
-  } = useQuery('boss-task-get-shared', () => apiService.getData(`/users/boss-task-filter-get/?shared=shared`), {
-    enabled: false,
-    onError: (error) => {
-      message.error(error.message);
-    },
-  });
+    refetch: refetchGetBossNotShared, isSuccess:isSuccessGetBossNotShared}=useGetQuery(false,'boss-task-get-noshared',`/users/boss-task-filter-get/?page=${pagination.current}&page_size=${pagination.pageSize}&shared=not_shared`)
+  // const { data : dataGetBossShared,
+  //   isLoading: loadingGetBossShared,
+  //   refetch: refetchGetBossShared,}=useGetQuery(false,'boss-task-get-shared',`/users/boss-task-filter-get/?shared=shared?page=${pagination.current}&page_size=${pagination.pageSize}`)
+  //
 
 
   useEffect(() => {
     refetchGetBossNotShared()
-    refetchGetBossShared()
+
+    // refetchGetBossShared()
   }, []);
   // add
   const addArticle = () => {
     dispatch(editIdQuery(""));
     navigate('/taskEditBoss/add');
   };
+  useEffect(() => {
+    if (isSuccessGetBossNotShared) {
+      setPagination(prevState => ({...prevState, total: dataGetBossNotShared?.count}))
+    }
+  }, [dataGetBossNotShared]);
   const searchFunc = (value) => {
     if (value === '') {
       setIsSearch(false);
@@ -55,9 +52,9 @@ const TaskEditBoss = () => {
       setIsSearch(true);
     }
 
-    const filterData = dataGetBossShared?.filter(
-        (data) => data?.results?.title.toLowerCase().includes(value.toLowerCase()));
-    setSearch(filterData);
+    // const filterData = dataGetBossShared?.filter(
+    //     (data) => data?.results?.title.toLowerCase().includes(value.toLowerCase()));
+    // setSearch(filterData);
   };
 
   return (
@@ -81,16 +78,16 @@ const TaskEditBoss = () => {
                 Добавить
               </Button>
             </Col>
-
           </Row>
           <Spin
               size='medium'
               spinning={loadingGetBossNotShared}>
             <TaskTableBoss
                 data={isSearch ? search : dataGetBossNotShared?.results}
+                pagination={pagination}
+                setPagination={setPagination}
             />
           </Spin>
-
           {/*<Title>*/}
           {/*  Разделенные задачи*/}
           {/*</Title>*/}

@@ -1,8 +1,5 @@
 import {
     Company,
-    Dashboard,
-    Inbox,
-    MyApplications,
     TaskList,
     UserProfile,
     CalendarTask,
@@ -10,18 +7,14 @@ import {
     CompanyPostEdit, CreateWorker, CreateWorkerPostEdit,
     Module,ModulePostEdit
 } from './index'
-import { PiUserListLight } from "react-icons/pi";
 import { RiPlayListAddLine } from "react-icons/ri";
 import { BsBuildingAdd } from "react-icons/bs";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { VscFileSubmodule } from "react-icons/vsc";
 import { IoCalendarOutline } from "react-icons/io5";
-import { RxDashboard } from "react-icons/rx";
 import { PiShuffleBold } from "react-icons/pi";
 import {
-    InboxOutlined,
     OrderedListOutlined,
-    UserOutlined
 } from "@ant-design/icons";
 import TaskCreated from "./TaskCreated";
 import TaskPostEdit from "./TaskCreated/TaskPostEdit";
