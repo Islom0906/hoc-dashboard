@@ -1,6 +1,4 @@
-import {Avatar, Card, Flex, Progress, Tooltip, Typography} from "antd";
-import React, {useMemo} from "react";
-import {UserOutlined} from "@ant-design/icons";
+import { Card, Flex, Progress,  Typography} from "antd";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile} from "../index";

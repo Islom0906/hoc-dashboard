@@ -1,4 +1,4 @@
-import {Button, Col, Input, Row, Typography, Space, Spin, message} from "antd";
+import {Button, Col, Input, Row, Typography, Space, Spin} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import CompanyTable from "./CompanyTable";
 import {useEffect, useState} from "react";

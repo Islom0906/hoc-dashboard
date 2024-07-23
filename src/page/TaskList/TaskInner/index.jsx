@@ -5,23 +5,17 @@ import {
   Col,
   Flex,
   Form,
-  message,
-  Progress,
   Row,
   Space,
   Spin,
-  Tooltip,
   Typography,
   Upload,
   Modal, Popconfirm
 } from "antd";
-import {UserOutlined} from "@ant-design/icons";
 import {useParams} from "react-router-dom";
-import apiService from "../../../service/apis/api";
-import {useMutation, useQuery} from "react-query";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect,  useState} from "react";
 import dayjs from "dayjs";
-import {Checkbox, Input, List} from 'antd';
+import {Checkbox,  List} from 'antd';
 import {AvatarUserProfile, FormTextArea, TaskInnerCard} from "../../../components";
 import {onPreviewImage} from "../../../hooks";
 import {useSelector} from "react-redux";

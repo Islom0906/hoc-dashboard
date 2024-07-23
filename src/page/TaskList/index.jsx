@@ -1,9 +1,7 @@
 import {
   Avatar,
-  Button,
   Card,
   Col,
-  Divider,
   Flex,
   Progress,
   Row,
@@ -15,17 +13,14 @@ import "./index.scss";
 import {
   CalendarFilled,
   FieldTimeOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { MdOutlineReadMore } from "react-icons/md";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import { Link } from "react-router-dom";
-import { FaRegUserCircle } from "react-icons/fa";
-import { VscFileSubmodule } from "react-icons/vsc";
-import {AvatarUserProfile, ProfileHoverActive} from "../../components";
+import {AvatarUserProfile} from "../../components";
 import { useGetQuery } from "../../service/query/Queries";
 
 const TaskList = () => {

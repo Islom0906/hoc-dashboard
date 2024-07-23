@@ -1,5 +1,5 @@
-import {Avatar, Button, Space, Table, Tooltip} from "antd";
-import { EditOutlined, UserOutlined} from "@ant-design/icons";
+import {Avatar, Button, Space, Table} from "antd";
+import { EditOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
