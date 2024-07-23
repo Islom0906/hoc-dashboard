@@ -1,11 +1,11 @@
-import React from 'react';
-import {Avatar, Button, Popconfirm, Space, Table, Tooltip} from "antd";
-import {DeleteOutlined, EditOutlined, UserOutlined} from "@ant-design/icons";
+import {Avatar, Button, Popconfirm, Space, Table} from "antd";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
+import {AvatarUserProfile} from "../../components";
 
   const TaskTable = ({data,deleteHandle,pagination,setPagination}) => {
   const navigate=useNavigate()
@@ -63,16 +63,7 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
             <Avatar.Group size={"small"}>
               {
                 users.map(user => (
-                    <Tooltip
-                        title={<p><span>{user?.full_name}</span></p>}
-                        placement="top"
-                        key={user?.id}
-                    >
-                      <Avatar
-                          style={{ backgroundColor: '#87d068' }}
-                          icon={user?.image ? <img src={user?.image} alt={user?.name} /> : <UserOutlined />}
-                      />
-                    </Tooltip>
+                    <AvatarUserProfile key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image}/>
                 ))
               }
             </Avatar.Group>

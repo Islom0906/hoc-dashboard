@@ -1,15 +1,15 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Card, Col, DatePicker, Flex, Form, message, Row, Select, Typography} from "antd";
+import {Button, Card, Col, DatePicker, Flex, Form, Row, Select, Typography} from "antd";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
-import {useMutation, useQuery, useQueryClient} from "react-query";
-import apiService from "../../service/apis/api";
+import { useQueryClient} from "react-query";
 import dayjs from "dayjs";
 import {MinusCircleOutlined} from "@ant-design/icons";
 import successCreateAndEdit from "../../hooks/successCreateAndEdit";
 import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
 import TaskInnerCard from "../../components/TaskInnerCard/TaskInnerCard";
+import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 const {Title , Text} = Typography
 
 const initialValueForm = {
@@ -32,58 +32,27 @@ const TaskEdit = () => {
     const {editId} = useSelector(state => state.query)
 
     // get-user
+    const { data: getUserByModules,
+        refetch: refetchGetUserByModules} = useGetQuery(false , 'get-user' ,`/users/user-filter?module_id=${user?.modules[0].id}`)
+
     const {
-        data: getUserByModules,
-        refetch: refetchGetUserByModules,
-    } = useQuery('get-user', () => apiService.getData(`/users/user-filter?module_id=${user?.modules[0].id}`), {
-        enabled: false,
-        onError: (error) => {
-            message.error(error.message);
-        },
-    });
-    const {
-        isLoading: loadingGetAddSubTask,
-        data: dataGetAddSubTask,
-        refetch: refetchGetAddSubTask,
-        isSuccess: successGetAddSubTask,
-    } = useQuery(["edit-add-subTask", editId], () => apiService.getDataByID("/users/boss-tasks-retrieve", editId), {
-        enabled: false
-    });
+       isLoading: loadingGetAddSubTask,
+            data: dataGetAddSubTask,
+            refetch: refetchGetAddSubTask,
+            isSuccess: successGetAddSubTask
+    } = useGetByIdQuery(false, "edit-add-subTask", editId, '/users/boss-tasks-retrieve')
 
     const {
         mutate: postAddSubTaskBossMutate,
         isLoading: postAddSubTaskBossLoading,
         isSuccess: postAddSubTaskBossSuccess,
-    } = useMutation(({url, data}) => apiService.postData(url, data), {
-        onSuccess: () => {
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+    } = usePostQuery()
     const {
         mutate: putAddSubTaskBoss,
         isLoading: putAddSubTaskBossLoading,
         isSuccess: putAddSubTaskBossSuccess
-    } = useMutation(({
-                         url,
-                         data,
-                         id
-                     }) => apiService.editData(url, data, id), {
-        onSuccess: () => {
-            message.success('Успешно')
-        },
-        onError: (error) => {
-            for (let obj in error.response.data) {
-                message.error(`${obj}: ${error.response.data[obj][0]}`)
-            }
-        }
-    });
+    } = useEditQuery()
 
-    console.log(dataGetAddSubTask)
     useEffect(() => {
         return () => {
             queryClient.removeQueries()
@@ -102,12 +71,9 @@ const TaskEdit = () => {
                 staff: subTask?.staff
             })
         })
-
-
         const editData = {
                 sub_tasks: comeToEdit
         }
-
         if (successGetAddSubTask) {
         form.setFieldsValue(editData)
         }

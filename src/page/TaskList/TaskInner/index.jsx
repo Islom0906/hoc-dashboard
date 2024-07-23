@@ -22,9 +22,10 @@ import {useMutation, useQuery} from "react-query";
 import React, {useEffect, useMemo, useState} from "react";
 import dayjs from "dayjs";
 import {Checkbox, Input, List} from 'antd';
-import {FormTextArea, TaskInnerCard} from "../../../components";
+import {AvatarUserProfile, FormTextArea, TaskInnerCard} from "../../../components";
 import {onPreviewImage} from "../../../hooks";
 import {useSelector} from "react-redux";
+import {useDeleteQuery, useEditQuery, useGetByIdQuery, usePostQuery} from "../../../service/query/Queries";
 
 const {Text, Title} = Typography;
 
@@ -34,12 +35,12 @@ const TaskInner = () => {
   const [whichWriteIDTask, setWhichWriteIDTask] = useState(null);
   const {item} = useParams();
   const {data:{user}}=useSelector(state => state.auth)
-  const {data: taskInner, refetch: refetchTaskInner, isLoading:loadingTaskInner, isSuccess:successTaskInner} = useQuery(["taskInner", item], () =>
-      apiService.getDataByID('users/staff-subtask-retrieve', item), {enabled: false}
-  );
-  const {data: taskInnerBoss, refetch: refetchTaskInnerBoss, isLoading: loadingTaskInnerBoss, isSuccess:successTaskInnerBoss} = useQuery(["taskInnerBoss", item], () =>
-      apiService.getDataByID('users/boss-tasks-retrieve', item), {enabled: false}
-  );
+  const {
+    data: taskInner, refetch: refetchTaskInner, isLoading:loadingTaskInner, isSuccess:successTaskInner} = useGetByIdQuery(false, "taskInner", item, 'users/staff-subtask-retrieve')
+  const {
+    data: taskInnerBoss, refetch: refetchTaskInnerBoss, isLoading: loadingTaskInnerBoss, isSuccess:successTaskInnerBoss
+  } = useGetByIdQuery(false, "taskInnerBoss", item, 'users/boss-tasks-retrieve')
+
   console.log(taskInnerBoss,taskInner)
 const isBoss=user?.roles[0].name === 'boss'
   useEffect(() => {
@@ -50,9 +51,6 @@ const isBoss=user?.roles[0].name === 'boss'
     }
   }, [user]);
 
-
-
-
   const showModal = () => {
     setOpen(true);
   };
@@ -61,7 +59,6 @@ const isBoss=user?.roles[0].name === 'boss'
     showModal()
     setWhichWriteIDTask(id)
   }
-
 
   const handleCancel = () => {
     setOpen(false);
@@ -75,25 +72,7 @@ const isBoss=user?.roles[0].name === 'boss'
             </h1>
             <Avatar.Group>
               {taskInner?.included_users.map(user => (
-                  <Tooltip
-                      key={user?.id}
-                      title={
-                        <p>
-                          <span>{user?.full_name}</span>
-                          <br/>
-                          <span>
-                      {user?.roles[0]?.name}
-                            {user?.roles[1]?.name}
-                    </span>
-                        </p>
-                      }
-                      placement="top"
-                  >
-                    <Avatar
-                        style={{backgroundColor: '#87d068'}}
-                        icon={user?.image ? <img src={user?.image} alt={user?.full_name}/> : <UserOutlined/>}
-                    />
-                  </Tooltip>
+                  <AvatarUserProfile key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image}/>
               ))}
 
             </Avatar.Group>
@@ -116,7 +95,6 @@ const isBoss=user?.roles[0].name === 'boss'
                     <Button  type="primary" onClick={() => handleCommentModel(taskInner?.id)}>
                       Добавить комментарий
                     </Button>
-
                   </Space>
           }
 
@@ -124,21 +102,13 @@ const isBoss=user?.roles[0].name === 'boss'
 
         </Col>
         <Col span={8}>
-          {
-            isBoss
-                ?
 
-          <TaskInnerCard main_task_responsible_user={taskInnerBoss?.main_task_responsible_user}
-                         taskPercent={taskInnerBoss?.done_sub_tasks_count / taskInnerBoss?.sub_tasks_count * 100}
-                         main_task_deadline={taskInnerBoss?.main_task_deadline}
-                         main_task_created_at={taskInnerBoss?.main_task_created_at}
-                         main_deadline_status={taskInnerBoss?.main_deadline_status}/>
-                :
-                <TaskInnerCard main_task_responsible_user={taskInner?.main_task_responsible_user}
-                               taskPercent={taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
-                               main_task_deadline={taskInner?.deadline}
-                               main_task_created_at={taskInner?.created_at}
-                               main_deadline_status={taskInner?.deadline_status}/>
+          {
+            <TaskInnerCard main_task_responsible_user={taskInnerBoss?.main_task_responsible_user || taskInner?.main_task_responsible_user }
+                           taskPercent={taskInnerBoss?.done_sub_tasks_count / taskInnerBoss?.sub_tasks_count * 100 || taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
+                           main_task_deadline={taskInnerBoss?.main_task_deadline ||taskInner?.deadline}
+                           main_task_created_at={taskInnerBoss?.main_task_created_at || taskInner?.created_at}
+                           main_deadline_status={taskInnerBoss?.main_deadline_status ||taskInner?.deadline_status} />
           }
         </Col>
 
@@ -154,49 +124,32 @@ const isBoss=user?.roles[0].name === 'boss'
   );
 };
 
-export const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => {
+ const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => {
   const [fileListProps, setFileListProps] = useState([]);
   const [form] = Form.useForm();
   const initialValueForm = {
     message: '',
     file: []
   }
+
   const {
     mutate: postCommentMutate,
     isLoading: postCommentLoading,
     isSuccess: postCommentSuccess,
-  } = useMutation(({url, data}) => apiService.postData(url, data), {
-    onSuccess: () => {
-      message.success('Успешно')
-    },
-    onError: (error) => {
-      for (let obj in error.response.data) {
-        message.error(`${obj}: ${error.response.data[obj][0]}`)
-      }
-    }
-  });
+  } = usePostQuery()
 
+  const {
+    mutate: imagesDeleteMutate
+  } = useDeleteQuery()
 
-  const {mutate: imagesDeleteMutate} = useMutation(({url, id}) => apiService.deleteData(url, id), {
-    onSuccess: () => message.success('Успешно'),
-    onError: (error) => message.error(error.message)
-  });
   // query-image
   const {
     mutate: imagesUploadMutate,
     data: imagesUpload,
     isLoading: imagesUploadLoading,
     isSuccess: imagesUploadSuccess,
-  } = useMutation(({url, formData}) => apiService.postData(url, formData), {
-    onSuccess: () => {
-      message.success('Успешно')
-    },
-    onError: (error) => {
-      for (let obj in error.response.data) {
-        message.error(`${obj}: ${error.response.data[obj][0]}`)
-      }
-    }
-  });
+  } = useEditQuery()
+
   useEffect(() => {
     if (imagesUploadSuccess) {
       const uploadImg = [{
@@ -219,7 +172,7 @@ export const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => 
       setFileListProps([])
     } else if (newFileList.length !== 0) {
       formData.append("image", newFileList[0].originFileObj);
-      imagesUploadMutate({url: "/users/files/", formData});
+      imagesUploadMutate({url: "/users/files/", data: formData});
     }
   };
   // delete image
@@ -285,7 +238,7 @@ export const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask}) => 
   )
 }
 
-export const TaskList = ({subTask, showModal, setWhichWriteID}) => {
+ const TaskList = ({subTask, showModal, setWhichWriteID}) => {
   const [checkedState, setCheckedState] = useState({});
   const clickHandle = (id) => {
     setWhichWriteID(id)
@@ -295,21 +248,7 @@ export const TaskList = ({subTask, showModal, setWhichWriteID}) => {
     mutate: putProjectDone,
     isLoading: putProjectDoneLoading,
     isSuccess: putProjectDoneSuccess
-  } = useMutation(({
-                     url,
-                     data,
-                     id
-                   }) => apiService.editData(url, data, id), {
-    onSuccess: () => {
-      message.success('Успешно')
-    },
-    onError: (error) => {
-      for (let obj in error.response.data) {
-        message.error(`${obj}: ${error.response.data[obj][0]}`)
-      }
-    }
-  });
-
+  } = useEditQuery()
   const onChangeDoneProject = (id) => {
     putProjectDone({url: `/users/staff-subtasks`, data:{task_status: 'done'}, id})
     setCheckedState((prevState) => ({ ...prevState, [id]: true }));
@@ -371,7 +310,7 @@ export const TaskList = ({subTask, showModal, setWhichWriteID}) => {
 };
 
 
-export const Comment = ({comment}) => {
+const Comment = ({comment}) => {
   const extractFilename = (url) => {
     return url.substring(url.lastIndexOf('/') + 1);
   };
@@ -379,23 +318,8 @@ export const Comment = ({comment}) => {
       <Flex align={"start"} justify={"space-between"} gap={15} style={{width: '100%',padding:'10px 5px',
         border:'1px dashed #ffffff70' , borderRadius:'5px'}}>
         <Flex align={"start"} gap={10} style={{width: '100%'}}>
-          <Tooltip
-              key={comment?.created_user?.id}
-              title={
-                <p>
-                  <span>{comment?.created_user?.full_name}</span>
-                  <br/>
-                  <span>
-                    {comment?.created_user?.position}
-                  </span>
-                </p>
-              }
-              placement="top"
-          >
-            <Avatar style={{flexShrink: 0}} icon={comment?.created_user?.images?.image ?
-                <img src={comment?.created_user?.images.image} alt={comment?.created_user?.full_name}/> :
-                <UserOutlined/>}/>
-          </Tooltip>
+
+          <AvatarUserProfile key={comment?.created_user?.id} full_name={comment?.created_user?.full_name} moduls={comment?.created_user?.position} image={comment?.created_user?.images.image} />
           <Flex vertical={true} gap={5}>
             <Text>{comment?.message}</Text>
             {
@@ -407,7 +331,7 @@ export const Comment = ({comment}) => {
           </Flex>
         </Flex>
         <Text style={{flexShrink: 0, fontSize: '11px'}}
-              type="secondary">{dayjs(comment.created_at).format('llll')}</Text>
+              type="secondary">{dayjs(comment.created_at).format("DD.MM.YYYY")}</Text>
       </Flex>
   );
 };

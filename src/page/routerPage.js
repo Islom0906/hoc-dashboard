@@ -98,22 +98,22 @@ export const samplePagesConfigs = [
         permittedRole: ["admin"],
         isBackground: true
     },
-    // {
-    //     key: 121322,
-    //     label: 'Распределение задач',
-    //     icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
-    //     path: '/taskEditBoss',
-    //     element: TaskEditBoss,
-    //     permittedRole: ["boss"],
-    //     isBackground: true
-    // },
-    // {
-    //     path: '/taskEditBoss/add',
-    //     element: TaskEdit,
-    //     permittedRole: ["boss"],
-    //     isBackground: true,
-    //     noIndex: true
-    // },
+    {
+        key: 121322,
+        label: 'Распределение задач',
+        icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+        path: '/taskEditBoss',
+        element: TaskEditBoss,
+        permittedRole: ["boss"],
+        isBackground: true
+    },
+    {
+        path: '/taskEditBoss/add',
+        element: TaskEdit,
+        permittedRole: ["boss"],
+        isBackground: true,
+        noIndex: true
+    },
     {
         path: '/task/add',
         element: TaskPostEdit,

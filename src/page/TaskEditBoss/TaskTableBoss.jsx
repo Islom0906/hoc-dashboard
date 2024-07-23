@@ -4,6 +4,7 @@ import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import dayjs  from "dayjs";
+import AvatarUserProfile from "../../components/AvatarUserProfile/AvatarUserProfile";
 const TaskTableBoss = ({data}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -11,7 +12,6 @@ const TaskTableBoss = ({data}) => {
   const Edit = (id) => {
     localStorage.setItem('editDataId',id)
     dispatch(editIdQuery(id))
-    console.log(id)
     navigate('/taskEditBoss/add')
   };
 
@@ -53,32 +53,16 @@ const TaskTableBoss = ({data}) => {
               <Avatar.Group size={"small"}>
                 {
                   users.map(user => (
-                      <Tooltip
-                          title={<p><span>{user?.full_name}</span></p>}
-                          placement="top"
-                          key={user?.id}
-                      >
-                        <Avatar
-                            style={{ backgroundColor: '#87d068' }}
-                            icon={user?.image ? <img src={user?.image} alt={user?.full_name} /> : <UserOutlined />}
-                        />
-                      </Tooltip>
+                      <AvatarUserProfile key={user?.id} full_name={user?.full_name} image={user?.image} />
+
                   ))
                 }
               </Avatar.Group>
               <Avatar.Group size={"small"}>
                 {
                   record?.moduls.map(company => (
-                      <Tooltip
-                          title={<p><span>{company?.name}</span></p>}
-                          placement="top"
-                          key={company?.id}
-                      >
-                        <Avatar
-                            style={{ backgroundColor: '#87d068' }}
-                            icon={company?.image ? <img src={company?.image} alt={company?.name} /> : <UserOutlined />}
-                        />
-                      </Tooltip>
+                      <AvatarUserProfile key={company?.id} full_name={company?.name} image={company?.image} />
+
                   ))
                 }
               </Avatar.Group>
@@ -87,7 +71,6 @@ const TaskTableBoss = ({data}) => {
         );
       }
     },
-
     {
       title: 'Событие',
       id: 'action',
