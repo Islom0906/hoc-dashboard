@@ -14,7 +14,7 @@ import { VscFileSubmodule } from "react-icons/vsc";
 import { IoCalendarOutline } from "react-icons/io5";
 import { PiShuffleBold } from "react-icons/pi";
 import {
-    OrderedListOutlined,
+    OrderedListOutlined, UserOutlined,
 } from "@ant-design/icons";
 import TaskCreated from "./TaskCreated";
 import TaskPostEdit from "./TaskCreated/TaskPostEdit";
