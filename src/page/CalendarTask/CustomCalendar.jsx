@@ -1,22 +1,19 @@
-import React, {useMemo, useState} from 'react';
-import {Calendar, Col, Popover, Row, Select, Typography} from "antd";
+import {useMemo, useState} from 'react';
+import {Button, Calendar, Col, Flex, Popover, Row, Select,  Typography} from "antd";
 import dayjs from "dayjs";
 import ModalCalendar from "./ModalCalendar";
-
 import {useDispatch, useSelector} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
-
-
-const color={
-    meeting:'#6e6efc',
-    deadline:'#e8284d'
-}
+import {FaExternalLinkAlt} from "react-icons/fa";
+const {Title} =Typography
 
 const contentPopover=(content)=>{
     return (
         <div className={'popover-card'}>
-            <p>Время: {dayjs(content.meeting_date).format("HH:mm:ss")}</p>
-            <p>О чем: {content.text}</p>
+            {content.meeting_date &&
+            <p>Время: {dayjs(content.meeting_date).format("HH:mm:ss")}</p>}
+            {content.text &&
+            <p>О чем: {content.text}</p>}
         </div>
     )
 }
@@ -24,17 +21,15 @@ const contentPopover=(content)=>{
 const {Text} = Typography
 const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline,colorMeeting}) => {
     const [value, setValue] = useState(() => dayjs());
+    const [filterForColor, setFilterForColor] = useState('all');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {data: {user}} = useSelector(state => state.auth)
     const dispatch = useDispatch()
-
-
     const changeMeeting = (e, id) => {
         e.stopPropagation()
         dispatch(editIdQuery(id))
         if (user?.roles[0]?.name === 'admin'){
         setIsModalOpen(true)
-
         }
     }
 
@@ -70,48 +65,94 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline,
         let meetingsOnDate = []
         let birthdaysOnDate = []
         let deadlineOnDate=[]
-        if (birthdayMap) {
-            birthdaysOnDate = birthdayMap[birthdayStr] || [];
+        if (filterForColor === 'all') {
+            if (birthdayMap) {
+                birthdaysOnDate = birthdayMap[birthdayStr] || [];
+            }
+            if (meetingMap) {
+                meetingsOnDate = meetingMap[dateStr] || [];
+            }
+            if (deadlineMap) {
+                deadlineOnDate = deadlineMap[dateStr] || []
+            }
+        } else {
+            if (birthdayMap && colorMeeting.birthday.name === filterForColor) {
+                birthdaysOnDate = birthdayMap[birthdayStr] || [];
+            }
+            if (meetingMap && colorMeeting.meeting.name === filterForColor) {
+                meetingsOnDate = meetingMap[dateStr] || [];
+            }
+            if (deadlineMap && colorMeeting.deadline.name === filterForColor) {
+                deadlineOnDate = deadlineMap[dateStr] || []
+            }
         }
-        if (meetingMap) {
-            meetingsOnDate = meetingMap[dateStr] || [];
-        }
-        if (deadlineMap){
-            deadlineOnDate=deadlineMap[dateStr]||[]
-        }
+
 
         return (
             <ul className="events">
-                {birthdaysOnDate.map(birthday => (
-                    <li key={birthday.id} >
-
-                            <div className={'color-badge'} style={{backgroundColor:colorMeeting.birthday}}></div>
-                        <Text type="warning" className={''}>
-
-                            {birthday.first_name} {birthday.last_name}
-                        </Text>
+                {birthdaysOnDate?.map(birthday => (
+                    <li key={birthday.id}>
+                        <Popover key={birthday?.id}  content={contentPopover(birthday)}
+                                 title={ `День рождения: ${birthday.first_name} ${birthday.last_name}` }
+                                 style={{border: `1px , solid ${colorMeeting.birthday.color}`}}>
+                            <Flex gap={2} align={"center"}>
+                                <div className={'color-badge'}
+                                     style={{backgroundColor: colorMeeting.birthday.color, borderRadius: '100%'}}/>
+                                <Text type="warning" >
+                                    {birthday.first_name} {birthday.last_name}
+                                </Text>
+                            </Flex>
+                        </Popover>
                     </li>
-                ))}
-                {meetingsOnDate.map((meeting) => (
-                    <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
-                        <div className={'color-badge'} style={{backgroundColor: colorMeeting.meeting}}></div>
-                        <Popover content={contentPopover(meeting)} title={meeting.title}>
 
-                            <Text style={{color: color.meeting}}>
-                                 {meeting.title}
-                            </Text>
+                ))}
+                {meetingsOnDate?.map((meeting) => (
+                    <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
+                        <Popover content={contentPopover(meeting)} title={`Ассамблея: ${meeting.title}`}
+                                 style={{border: `1px , solid ${colorMeeting.meeting.color}`}}>
+                            <Flex gap={2} align={"center"}>
+                                <div className={'color-badge'}
+                                     style={{backgroundColor: colorMeeting.meeting.color, borderRadius: '100%'}}/>
+                                <Text style={{color: colorMeeting.meeting.color}}>
+                                    {meeting.title}
+                                </Text>
+                            </Flex>
+
                         </Popover>
 
                     </li>
                 ))}
-                {deadlineOnDate.map((meeting) => (
-                    <li key={meeting.id}>
-                        <div className={'color-badge'} style={{backgroundColor: colorMeeting.deadline}}></div>
-                        <Text style={{color: color.deadline}}>
-                             {meeting.title}
-                        </Text>
-                    </li>
-                ))}
+                {deadlineOnDate?.map((deadline) => {
+
+                    console.log(deadline)
+
+                    return (
+                        <li key={deadline.id}>
+                            <Popover key={deadline?.id} content={contentPopover(deadline)}
+                                     title={<div>
+                                         <Title level={5}>
+                                             {deadline?.title}
+                                         </Title>
+                                         <Text style={{fontSize:'11px'}} type={"secondary"}>
+                                             срок: {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}
+                                         </Text>
+                                         <Button type={'success'} href={`/task-list/${deadline?.id}`}>
+                                             <FaExternalLinkAlt />
+                                         </Button>
+                                     </div>}
+                                     style={{border: `1px , solid ${colorMeeting.deadline.color}`}}>
+                                <Flex gap={2} align={"center"}>
+                                    <div className={'color-badge'}
+                                         style={{backgroundColor: colorMeeting.deadline.color, borderRadius: '100%'}}/>
+                                    <Text style={{color: colorMeeting.deadline.color}}>
+                                        {deadline.title}
+                                    </Text>
+                                </Flex>
+                            </Popover>
+                        </li>
+                    )
+
+                })}
             </ul>
         );
     };
@@ -122,13 +163,12 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline,
             setIsModalOpen(true)
         }
     };
-
-
     return (
         <>
             <Calendar
                 headerRender={({value, onChange}) => (
-                    <CustomHeader value={value} onChange={onChange}/>
+                    <CustomHeader setFilterForColor={setFilterForColor} filterForColor={filterForColor}
+                                  colorMeeting={colorMeeting} value={value} onChange={onChange}/>
                 )}
                 cellRender={dateCellRender}
                 onSelect={onSelect}
@@ -145,7 +185,7 @@ const CustomCalendar = ({dataBirthDay, dataMeeting, refetchMeeting,dataDeadline,
 
 export default CustomCalendar;
 
-const CustomHeader = ({value, onChange}) => {
+const CustomHeader = ({value, onChange, colorMeeting, setFilterForColor, filterForColor}) => {
     const year = value.year();
     const month = value.month();
     const yearRange = Array.from({length: 2030 - 1950 + 1}, (_, i) => 1950 + i);
@@ -153,46 +193,62 @@ const CustomHeader = ({value, onChange}) => {
         const newValue = value.year(newYear);
         onChange(newValue);
     };
-
     const handleMonthChange = (newMonth) => {
         const newValue = value.month(newMonth);
         onChange(newValue);
     };
+    const selectFilter = (btn) => {
+        setFilterForColor(btn)
+    }
+
+    const showBtnSelected = useMemo(() => {
+        return Object.entries(colorMeeting).map(([key, obj]) => (
+            <Button type={filterForColor === obj?.name ? 'primary' : 'default'} key={key}
+                    onClick={() => selectFilter(obj?.name)}>
+                {obj?.name}
+            </Button>));
+    }, [colorMeeting, filterForColor]);
 
     return (
         <div style={{padding: 10}}>
-            <Row gutter={8}>
-                <Col offset={20} span={2}>
-                    <Select
-                        style={{
-                            width: '100%'
-                        }}
-                        className="my-year-select"
-                        value={String(year)}
-                        onChange={(newYear) => handleYearChange(Number(newYear))}
-                    >
-                        {yearRange.map(year => (
-                            <Select.Option key={year} value={String(year)}>
-                                {year}
-                            </Select.Option>
-                        ))}
-                    </Select>
-                </Col>
-                <Col span={2}>
-                    <Select
-                        style={{
-                            width: '100%'
-                        }}
-                        value={String(month)}
-                        onChange={(newMonth) => handleMonthChange(Number(newMonth))}
-                    >
-                        {Array.from({length: 12}, (_, i) => i).map(month => (
-                            <Select.Option key={month} value={String(month)}>
-                                {dayjs().month(month).format('MMM')}
-                            </Select.Option>
-                        ))}
-                    </Select>
-                </Col>
+            <Row justify={"space-between"}>
+                <Flex gap={10}>
+                    <Button type={filterForColor === 'all' ? 'primary' : 'default'} onClick={() => selectFilter('all')}>
+                        Все
+                    </Button>
+                    {showBtnSelected}
+
+                </Flex>
+                <Row gutter={10}>
+                    <Col>
+                        <Select
+                            style={{
+                                width: '100%'
+                            }}
+                            className="my-year-select"
+                            value={String(year)}
+                            onChange={(newYear) => handleYearChange(Number(newYear))}
+                        >
+                            {yearRange.map(year => (<Select.Option key={year} value={String(year)}>
+                                    {year}
+                                </Select.Option>))}
+                        </Select>
+                    </Col>
+                    <Col>
+                        <Select
+                            style={{
+                                width: '100px'
+                            }}
+                            value={String(month)}
+                            onChange={(newMonth) => handleMonthChange(Number(newMonth))}
+                        >
+                            {Array.from({length: 12}, (_, i) => i).map(month => (
+                                <Select.Option key={month} value={String(month)}>
+                                    {dayjs().month(month).format('MMM')}
+                                </Select.Option>))}
+                        </Select>
+                    </Col>
+                </Row>
             </Row>
         </div>
     );

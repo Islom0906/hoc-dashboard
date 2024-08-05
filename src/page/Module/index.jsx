@@ -1,7 +1,5 @@
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {useMutation, useQuery} from "react-query";
-import apiService from "../../service/apis/api";
 import {Button, Col, Input, message, Row, Space, Spin,Typography} from "antd";
 import {useEffect, useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";

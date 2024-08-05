@@ -8,13 +8,15 @@ import {useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Q
 
 const initialValueForm = {
     name: "",
-    image: []
+    image_dark: [],
+    image_light: []
 };
 
 const CompanyPostEdit = () => {
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
-    const [fileListProps, setFileListProps] = useState([]);
+    const [fileListPropsDark, setFileListPropsDark] = useState([]);
+    const [fileListPropsLight, setFileListPropsLight] = useState([]);
     // query-company
     const {
         mutate: postCompanyMutate,
@@ -49,20 +51,25 @@ const CompanyPostEdit = () => {
     useEffect(() => {
         if (editCompanySuccess) {
 
-            const image = [{
+            const image_dark = [{
                 uid: editCompanyData.id,
                 name: editCompanyData.id,
                 status: "done",
-                url: editCompanyData.image
+                url: editCompanyData.image_dark
             }];
 
+            const image_light = [{
+                uid: editCompanyData.id,
+                name: editCompanyData.id,
+                status: "done",
+                url: editCompanyData.image_light
+            }];
             const edit = {
-                image,
+                image_light,image_dark,
                 title: editCompanyData?.title
             }
-
-
-            setFileListProps(image)
+            setFileListPropsDark(image_dark)
+            setFileListPropsLight(image_light)
             form.setFieldsValue(edit)
         }
 
@@ -70,19 +77,19 @@ const CompanyPostEdit = () => {
 
     const onFinish = (value) => {
         const formData = new FormData();
+        console.log(fileListPropsDark)
         formData.append('title', value.title);
-
-        if (fileListProps[0]?.originFileObj) {
-            formData.append('image', fileListProps[0]?.originFileObj);
+        if (fileListPropsDark[0]?.originFileObj) {
+            formData.append('image_dark', fileListPropsDark[0]?.originFileObj);
         }
-
+        if (fileListPropsLight[0]?.originFileObj) {
+            formData.append('image_light', fileListPropsLight[0]?.originFileObj);
+        }
         if (editCompanyData) {
             putCompany({url: '/users/companies', data: formData, id: editId})
         } else {
             postCompanyMutate({url: "/users/companies/", data: formData});
         }
-
-
     }
 
 
@@ -90,12 +97,12 @@ const CompanyPostEdit = () => {
     useEffect(() => {
         const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
         if (storedValues) {
-            storedValues.image = []
+            console.log(storedValues)
+            // storedValues.image = []
             form.setFieldsValue(storedValues);
         }
 
         const handleBeforeUnload = () => {
-
             localStorage.setItem(
                 'myFormValues',
                 JSON.stringify(form.getFieldsValue()),
@@ -113,10 +120,13 @@ const CompanyPostEdit = () => {
 
 
     // image
-    const onChangeImage = ({fileList: newFileList}) => {
-        setFileListProps(newFileList);
-        form.setFieldsValue({image: newFileList});
+    const onChangeImageLight = ({fileList: newFileList } ) => {
+        setFileListPropsLight(newFileList);
     };
+    const onChangeImageDark = ({fileList: newFileList } ) => {
+        setFileListPropsDark(newFileList);
+    };
+
 
     return (<div>
         {(postCompanyLoading || editCompanyLoading || putCompanyLoading) ?
@@ -138,29 +148,48 @@ const CompanyPostEdit = () => {
                 autoComplete="off"
             >
                 <Row gutter={20}>
-                    <Col span={12}>
+                    <Col span={24}>
                         <FormInput
                             required={true}
-                            required_text={'Требуется название компания'}
-                            label={'Название компания'}
+                            required_text={'Требуется название компании'}
+                            label={'Название компании'}
                             name={'title'}
                         />
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label='Изображение'
-                            name={'image'}
+                            label='Логотип для тёмной темы:'
+                            name={'image_dark'}
                             rules={[{required: true, message: 'Требуется изображение'}]}>
                             {/*<ImgCrop>*/}
                             <Upload
                                 maxCount={1}
-                                fileList={fileListProps}
+                                fileList={fileListPropsDark}
                                 listType='picture-card'
-                                onChange={onChangeImage}
+                                onChange={onChangeImageDark}
                                 onPreview={onPreviewImage}
                                 beforeUpload={() => false}
                             >
-                                {fileListProps.length > 0 ? "" : "Upload"}
+                                {fileListPropsDark.length > 0 ? "" : "Upload"}
+                            </Upload>
+                            {/*</ImgCrop>*/}
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label='Логотип для светлой темы:'
+                            name={'image_light'}
+                            rules={[{required: true, message: 'Требуется изображение'}]}>
+                            {/*<ImgCrop>*/}
+                            <Upload
+                                maxCount={1}
+                                fileList={fileListPropsLight}
+                                listType='picture-card'
+                                onChange={onChangeImageLight}
+                                onPreview={onPreviewImage}
+                                beforeUpload={() => false}
+                            >
+                                {fileListPropsLight.length > 0 ? "" : "Upload"}
                             </Upload>
                             {/*</ImgCrop>*/}
                         </Form.Item>
@@ -169,7 +198,7 @@ const CompanyPostEdit = () => {
 
 
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-                    {editCompanySuccess ? 'Изменить' : 'Создать'}
+                    {editCompanySuccess ? 'Редактировать' : 'Создать'}
                 </Button>
             </Form>}
     </div>);

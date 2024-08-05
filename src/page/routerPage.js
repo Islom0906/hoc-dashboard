@@ -5,21 +5,20 @@ import {
     CalendarTask,
     TaskInner,
     CompanyPostEdit, CreateWorker, CreateWorkerPostEdit,
-    Module,ModulePostEdit
+    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask
 } from './index'
 import { RiPlayListAddLine } from "react-icons/ri";
 import { BsBuildingAdd } from "react-icons/bs";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { VscFileSubmodule } from "react-icons/vsc";
-import { IoCalendarOutline } from "react-icons/io5";
+import {IoCalendarOutline, IoCheckmarkDoneOutline} from "react-icons/io5";
 import { PiShuffleBold } from "react-icons/pi";
 import {
     OrderedListOutlined, UserOutlined,
 } from "@ant-design/icons";
-import TaskCreated from "./TaskCreated";
-import TaskPostEdit from "./TaskCreated/TaskPostEdit";
-import TaskEditBoss from "./TaskEditBoss";
-import TaskEdit from "./TaskEditBoss/TaskEdit";
+// import TaskEditBoss from "./TaskEditBoss";
+// import TaskEdit from "./TaskEditBoss/TaskEdit";
+// import {CgController} from "react-icons/cg";
 
 
 export const authRole = {
@@ -43,17 +42,33 @@ export const samplePagesConfigs = [
         key: 2,
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/task-list',
-        label: 'Задача',
+        label: 'Задачи',
         element: TaskList,
         permittedRole: ['staff' ,'boss'],
-        isBackground: false
+        isBackground: true
     },
     {
         path: '/task-list/:item',
         element:  TaskInner,
         noIndex: true,
-        permittedRole: ["boss" , "staff"],
-        isBackground: false
+        permittedRole: ["boss" , "staff" , "admin"],
+        isBackground: true
+    },
+    {
+        path: '/success-task/:item',
+        element:  TaskInner,
+        noIndex: true,
+        permittedRole: ["boss" , "staff" , "admin"],
+        isBackground: true
+    },
+    {
+        key: 223212434223,
+        icon: <IoCheckmarkDoneOutline className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        path: '/success-task',
+        label: 'Выполненные задачи',
+        element: SuccessTask,
+        permittedRole: ['staff' ,'boss'],
+        isBackground: true
     },
     {
         key: 4,
@@ -84,29 +99,38 @@ export const samplePagesConfigs = [
     // },
     {
         key: 12132,
-        label: 'Создать задачу',
+        label: 'Задачи',
         icon: <RiPlayListAddLine className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskCreated',
         element: TaskCreated,
         permittedRole: ["admin"],
         isBackground: true
     },
+    // {
+    //     key: 121325,
+    //     label: 'Панель контроллера',
+    //     icon: <CgController className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+    //     path: '/controllerPanel',
+    //     element: ControllerPanel,
+    //     permittedRole: ["admin", "boss"],
+    //     isBackground: true
+    // },
     {
         key: 121322,
-        label: 'Распределение задач',
+        label: 'Контроль задач в отделе',
         icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
-        element: TaskEditBoss,
+        element: BossTracking,
         permittedRole: ["boss"],
         isBackground: true
     },
-    {
-        path: '/taskEditBoss/add',
-        element: TaskEdit,
-        permittedRole: ["boss"],
-        isBackground: true,
-        noIndex: true
-    },
+    // {
+    //     path: '/taskEditBoss/add',
+    //     element: TaskEdit,
+    //     permittedRole: ["boss"],
+    //     isBackground: true,
+    //     noIndex: true
+    // },
     {
         path: '/task/add',
         element: TaskPostEdit,
@@ -116,7 +140,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 7,
-        label: 'Добавить компанию',
+        label: 'Компании',
         icon: <BsBuildingAdd className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/company',
         element: Company,
@@ -132,7 +156,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 8,
-        label: 'Создать рабочий',
+        label: 'Сотрудники',
         icon: <AiOutlineUsergroupAdd className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/create-worker',
         element: CreateWorker,

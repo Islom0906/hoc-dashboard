@@ -13,13 +13,8 @@ const {Title} = Typography
 const Company = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // delete
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
-    // get
     const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get','/users/companies/',false)
-
-
-
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 
@@ -60,7 +55,7 @@ const Company = () => {
                         </Title>
                     </Col>
                     <Col span={16}>
-                        <Input placeholder="Поиск компаний" onChange={(e) => searchFunc(e.target.value)}/>
+                        <Input placeholder="Поиск компании" onChange={(e) => searchFunc(e.target.value)}/>
                     </Col>
                     <Col span={8}>
                         <Button

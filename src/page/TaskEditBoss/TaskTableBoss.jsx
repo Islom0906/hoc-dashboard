@@ -9,6 +9,7 @@ const TaskTableBoss = ({data}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
 
+
   const Edit = (id) => {
     localStorage.setItem('editDataId',id)
     dispatch(editIdQuery(id))
@@ -53,8 +54,7 @@ const TaskTableBoss = ({data}) => {
               <Avatar.Group size={"small"}>
                 {
                   users.map(user => (
-                      <AvatarUserProfile key={user?.id} full_name={user?.full_name} image={user?.image} />
-
+                      <AvatarUserProfile key={user?.id} full_name={user?.full_name} image={user?.image}   />
                   ))
                 }
               </Avatar.Group>

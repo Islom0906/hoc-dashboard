@@ -8,19 +8,21 @@ import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
+import company from "../Company";
 
 const {Title}=Typography
 const initialValueForm={
     title: "",
     text: "",
     meeting_date: "",
+    company: '',
     users: []
 }
-
 const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}) => {
     const queryClient = useQueryClient()
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
+    const [selectCompany , setSelectCompany] = useState('')
     const [isMultipleSelect, setIsMultipleSelect] = useState('show')
     const dispatch=useDispatch()
 
@@ -29,8 +31,13 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     const {
         data: requiredUser,
         refetch: refetchRequiredUser
-    } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company`, false)
+    } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company?company_id=${selectCompany}`, false)
 
+    // get-company
+    const {
+        data: getCompany,
+        refetch: refetchGetCompany
+    } = useGetQuery(false, 'get-company', '/users/companies', false)
 
     // post meeting
     const {
@@ -66,7 +73,13 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
 
     useEffect(() => {
         refetchRequiredUser()
-    }, []);
+    }, [selectCompany]);
+    useEffect(() => {
+        refetchGetCompany()
+        return () => {
+            queryClient.removeQueries()
+        }
+    }, [])
     useEffect(() => {
         if (putMeetingDate) {
             dispatch(editIdQuery(''))
@@ -124,6 +137,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             const edit = {
                 title: editModalMeetingData?.title,
                 text: editModalMeetingData?.text,
+                company: editModalMeetingData?.company,
                 meeting_date: dayjs(editModalMeetingData?.meeting_date),
                 users: isAllUser > 0 ? [""] : editModalMeetingData?.users
             }
@@ -139,21 +153,20 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             .minute(value?.meeting_date.minute())
             .second(value?.meeting_date.second())
         if (editId){
-            formatDate= dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+            formatDate= dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss.SSS')
         }else{
-            formatDate=dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+            formatDate=dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
         }
         value?.users.map((user) => {
             if (user === "") {
                 allUser = true
             }
         })
-
-
         const data = {
             title: value.title,
             text: value.text,
             meeting_date: formatDate,
+            company:value.company,
             users: isMultipleSelect==='allUser' ? [] : value?.users
         }
         if (editModalMeetingData) {
@@ -162,56 +175,56 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             postMeetingMutate({url: "/users/meetings/", data: data});
         }
     }
-
-
     const handleCancel = () => {
-
         setIsModalOpen(false);
     };
 
     const deleteMeetingHandle=()=>{
         if (editId){
-
         deleteMeetingMutate({url:'/users/meetings', id: editId})
         }
     }
-
     // option Company
     const optionsResponsibleUser = useMemo(() => {
-
-        const requiredUserData = []
-
-
-        if (isMultipleSelect === 'show') {
-            requiredUserData.push({
-                value: "",
-                label: `Все сотрудники`,
-            })
-            requiredUser?.results?.map((option) => {
+        if(selectCompany) {
+            const requiredUserData = []
+            if (isMultipleSelect === 'show') {
                 requiredUserData.push({
-                    value: option?.id,
-                    label: `${option?.full_name}(${option?.position})`,
+                    value: "",
+                    label: `Все сотрудники`,
                 })
-            });
-            return requiredUserData
-        } else if (isMultipleSelect === 'special') {
-            requiredUser?.results?.map((option) => {
+                requiredUser?.results?.map((option) => {
+                    requiredUserData.push({
+                        value: option?.id,
+                        label: `${option?.full_name}(${option?.position})`,
+                    })
+                });
+                return requiredUserData
+            } else if (isMultipleSelect === 'special') {
+                requiredUser?.results?.map((option) => {
+                    requiredUserData.push({
+                        value: option?.id,
+                        label: `${option?.full_name}(${option?.position})`,
+                    })
+                });
+                return requiredUserData
+            } else if (isMultipleSelect === 'allUser') {
                 requiredUserData.push({
-                    value: option?.id,
-                    label: `${option?.full_name}(${option?.position})`,
+                    value: "",
+                    label: `Все сотрудники`,
                 })
-            });
-            return requiredUserData
-        } else if (isMultipleSelect === 'allUser') {
-            requiredUserData.push({
-                value: "",
-                label: `Все сотрудники`,
-            })
-            return requiredUserData
+                return requiredUserData
+            }
         }
-
-    }, [requiredUser, isMultipleSelect]);
-
+    }, [requiredUser, isMultipleSelect ]);
+    const optionsCompany = useMemo(() => {
+        return getCompany?.map((option) => {
+            return {
+                value: option?.id,
+                label: option?.title,
+            };
+        });
+    }, [getCompany]);
     const onChangeSelect = (value) => {
         if (!value.length>0){
             setIsMultipleSelect('show')
@@ -223,6 +236,10 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                     setIsMultipleSelect('special')
                 }
             })
+    }
+
+    const onChangeCompany = (id) => {
+        setSelectCompany(id)
     }
 
     return (<Modal
@@ -278,20 +295,41 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                     <Col span={24}>
                         <FormTextArea
                             required={true}
-                            required_text={'Требуется o короткой встрече'}
-                            label={' О короткой встрече'}
+                            required_text={'Требуется Повестка'}
+                            label={'Повестка'}
                             name={'text'}
                         />
                     </Col>
 
-
-
                     <Col span={24}>
                         <Form.Item
-                            label={'Ответственный человек'}
+                            label={'Выберите компанию'}
+                            name={'company'}
+                            rules={[{
+                                required: true, message: 'Выберите компанию'
+                            }]}
+                            wrapperCol={{
+                                span: 24,
+                            }}
+                        >
+                            <Select
+                                style={{
+                                    width: '100%',
+                                }}
+                                // onChange={onChangeSelect}
+                                placeholder='Выберите компанию'
+                                optionLabelProp='label'
+                                options={optionsCompany}
+                                onChange={onChangeCompany}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Item
+                            label={'Участники'}
                             name={'users'}
                             rules={[{
-                                required: true, message: 'Выберите человек'
+                                required: true, message: 'Выберите участников'
                             }]}
                             wrapperCol={{
                                 span: 24,
@@ -303,7 +341,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                                 }}
                                 onChange={onChangeSelect}
                                 mode={'multiple'}
-                                placeholder='Выберите человек'
+                                placeholder='Выберите участников'
                                 optionLabelProp='label'
                                 options={optionsResponsibleUser}
                                 // onChange={onChangeCompany}

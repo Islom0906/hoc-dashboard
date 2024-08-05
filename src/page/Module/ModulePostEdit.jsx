@@ -94,9 +94,6 @@ const ModulePostEdit = () => {
 
     }
 
-    const onFinishFailed = (value) => {
-        console.log(value)
-    }
 
     // refresh page again get data
     useEffect(() => {
@@ -150,7 +147,6 @@ const ModulePostEdit = () => {
                 style={{
                     maxWidth: "100%"
                 }}
-                onFinishFailed={onFinishFailed}
                 initialValues={initialValueForm}
                 onFinish={onFinish}
                 autoComplete="off"
@@ -159,18 +155,18 @@ const ModulePostEdit = () => {
                     <Col span={12}>
                         <FormInput
                             required={true}
-                            required_text={'Требуется модуль'}
-                            label={'Модуль'}
+                            required_text={'Укажите название'}
+                            label={'Название'}
                             name={'name'}
                         />
                     </Col>
 
                     <Col span={12}>
                         <Form.Item
-                            label={'Выберите компания'}
+                            label={'Компания'}
                             name={'company'}
                             rules={[{
-                                required: true, message: 'Вы должны компания'
+                                required: true, message: 'Выберите компанию'
                             }]}
                             wrapperCol={{
                                 span: 24,
@@ -180,7 +176,7 @@ const ModulePostEdit = () => {
                                 style={{
                                     width: '100%',
                                 }}
-                                placeholder='Выберите одну компания'
+                                placeholder='Выберите компанию'
                                 optionLabelProp='label'
                                 options={optionsCompany}
                             />
@@ -188,7 +184,7 @@ const ModulePostEdit = () => {
                     </Col>
                 </Row>
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-                    {editModuleSuccess ? 'Изменить' : 'Создать'}
+                    {editModuleSuccess ? 'Редактировать' : 'Создать'}
                 </Button>
             </Form>}
     </div>);

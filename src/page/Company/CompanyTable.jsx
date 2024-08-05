@@ -28,20 +28,33 @@ const CompanyTable = ({data,deleteHandle}) => {
             render: (text) => <p>{text}</p>,
         },
         {
-            title: 'Изображение',
-            dataIndex: 'image',
-            id: 'image',
-            render: (image) => {
+            title: 'Логотип тёмный',
+            dataIndex: 'image_dark',
+            id: 'image_dark',
+            render: (image_dark) => {
                 return (
                     <Image
                         width={50}
                         height={50}
-                        src={image}
+                        src={image_dark}
                     />
                 )},
         },
         {
-            title: 'Событие',
+            title: 'Логотип светлый',
+            dataIndex: 'image_light',
+            id: 'image_light',
+            render: (image_light) => {
+                return (
+                    <Image
+                        width={50}
+                        height={50}
+                        src={image_light}
+                    />
+                )},
+        },
+        {
+            title: 'Редактировать',
             id: 'action',
             render: (_, record) => (
                 <Space size={20}>

@@ -40,9 +40,9 @@ const ChangePassword = ({setCheckInfo}) => {
     return (
         <Spin spinning={putChangePasswordLoading}>
 
-            <Space direction={"vertical"}  >
+            <Space direction={"vertical"} style={{width:'100%'}}  >
                 <h1>
-                    Пользовательские настройки
+                    Установить новый пароль
                 </h1>
                 <Form
                     form={form}
@@ -64,24 +64,23 @@ const ChangePassword = ({setCheckInfo}) => {
                         <Col span={12}>
                             <FormInput
                                 required={true}
-                                required_text={'Требуется название имя'}
-                                label={'Имя сотрудника'}
+                                required_text={'Укажите старый пароль'}
+                                label={'Старый пароль'}
                                 name={'old_password'}
                             />
                         </Col>
                         <Col span={12}>
                             <FormInput
                                 required={true}
-                                required_text={'Требуется название фамилия'}
-                                label={'Фамилия сотрудника'}
+                                required_text={'Укажите новый пароль'}
+                                label={'Новый пароль'}
                                 name={'new_password'}
                             />
                         </Col>
 
                     </Row>
-
-                    <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-                         Изменить
+                    <Button type="primary" htmlType="submit" style={{width: "100%"}}>
+                        Редактировать
                     </Button>
                 </Form>
 

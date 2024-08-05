@@ -35,7 +35,7 @@ const ModuleTable = ({data,deleteHandle}) => {
         },
 
         {
-            title: 'Событие',
+            title: 'Редактировать',
             id: 'action',
             fixed: 'right',
             render: (_, record) => (

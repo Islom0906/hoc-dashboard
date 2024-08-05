@@ -1,4 +1,13 @@
 .ant-picker-calendar {
+  th {
+    font-size: 14px !important;
+  }
+
+  .ant-picker-calendar-date-content {
+    height: 50px !important;
+
+  }
+
   ::-webkit-scrollbar {
     width: 3px;
     height: 3px;
@@ -22,6 +31,10 @@
   }
 }
 
+.ant-picker-calendar-date-value {
+  font-size: 12px !important;
+}
+
 .events {
   li {
     display: flex;
@@ -29,8 +42,8 @@
     gap: 5px;
 
     .color-badge {
-      width: 10px;
-      height: 10px;
+      width: 5px;
+      height: 5px;
       flex-shrink: 0;
     }
     span{
@@ -38,6 +51,7 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 1;
+      font-size: 12px;
     }
   }
 }
@@ -45,7 +59,6 @@
   display: flex;
   flex-direction: column;
   p{
-    font-size: 12px;
-
+    font-size: 11px;
   }
 }

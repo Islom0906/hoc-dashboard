@@ -3,18 +3,13 @@ import {Button, Card, Col, DatePicker, Flex, Form, Row, Select, Typography} from
 import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
 import {useQueryClient} from "react-query";
-import {MinusCircleOutlined} from "@ant-design/icons";
 import successCreateAndEdit from "../../hooks/successCreateAndEdit";
 import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
 import dayjs from "dayjs";
 import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
-
-const { Text } = Typography;
-
+import CreatSubTask from "./CreatSubTask";
 const {Title} = Typography
-
-
 const initialValueForm = {
     title: '',
     text: '',
@@ -39,8 +34,6 @@ const initialValueForm = {
         }
     ]
 }
-
-
 const TaskPostEdit = () => {
     const queryClient = useQueryClient()
     const [form] = Form.useForm();
@@ -54,15 +47,11 @@ const TaskPostEdit = () => {
         data: responsibleUser,
         refetch: refetchResponsibleUser
     } = useGetQuery(false, 'get-responsibleUser', `users/user-filter-by-company?company_id=${selectCompanyID}`, false)
-
-
     // get-company
     const {
         data: getCompany,
         refetch: refetchGetCompany
     } = useGetQuery(false, 'get-company', '/users/companies/', false)
-
-
     // get modules
     const {
         data: getModules,
@@ -103,8 +92,6 @@ const TaskPostEdit = () => {
 
     useEffect(() => {
         refetchGetCompany()
-
-
         return () => {
             queryClient.removeQueries()
         }
@@ -192,14 +179,13 @@ const TaskPostEdit = () => {
        const subTask=value?.sub_tasks?.map((subTask)=>{
             return{
                 ...subTask,
-                deadline:dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+                deadline:dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS')
             }
         })
-
         const data = {
             title: value.title,
             text: value.text,
-            deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+            deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS'),
             company: value?.company,
             moduls: selectAddSubTask ? [] : selectModuls,
             users: selectAddSubTask ? [] : selectStaff,
@@ -243,7 +229,7 @@ const TaskPostEdit = () => {
         return responsibleUser?.results?.map((option) => {
             return {
                 value: option?.id,
-                label: `${option?.full_name}(${option?.position})`,
+                label: `${option?.full_name}  Позиция- (${option?.position})`,
             };
         });
     }, [responsibleUser]);
@@ -291,13 +277,6 @@ const TaskPostEdit = () => {
             form.setFieldsValue({allModuls: getValueModules})
         }
     }
-
-
-    const onFinishFailed = value => {
-        console.log(value)
-    }
-
-
     useEffect(() => {
         if (selectCompanyID) {
             refetchGetModules()
@@ -328,7 +307,6 @@ const TaskPostEdit = () => {
                 }}
                 initialValues={initialValueForm}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 <Row gutter={20}>
@@ -361,14 +339,14 @@ const TaskPostEdit = () => {
                     <Col span={24}>
                         <FormTextArea
                             required={true}
-                            required_text={'Добавьте комментарий к задаче!'}
-                            label={'Добавьте комментарий к задаче'}
+                            required_text={'Подробно о подзадаче'}
+                            label={'Подробно о подзадаче'}
                             name={'text'}
                         />
                     </Col>
                     <Col span={24}>
                         <Form.Item
-                            label={'Выберите компания'}
+                            label={'Выберите компанию'}
                             name={'company'}
                             rules={[{
                                 required: true, message: 'Выберите компания'
@@ -381,57 +359,66 @@ const TaskPostEdit = () => {
                                 style={{
                                     width: '100%',
                                 }}
-                                placeholder='Выберите компания'
+                                placeholder='Выберите компанию'
                                 optionLabelProp='label'
                                 options={optionsCompany}
                                 onChange={onChangeCompany}
                             />
                         </Form.Item>
                     </Col>
-                    <Col>
-                            <Button  type={"primary"} style={{marginBottom: 30}}
-                                     onClick={() => setSelectAddSubTask(prev => !prev)}>
-                                {
-                                    selectAddSubTask ? 'Добавить сотрудника' : '  Добавить подзадачу'
-                                }
-                            </Button>
+                    {/*<Col>*/}
+                    {/*        <Button  type={"primary"} style={{marginBottom: 30}}*/}
+                    {/*                 onClick={() => setSelectAddSubTask(prev => !prev)}>*/}
+                    {/*            {*/}
+                    {/*                selectAddSubTask ? 'Добавить сотрудника' : '  Добавить подзадачу'*/}
+                    {/*            }*/}
+                    {/*        </Button>*/}
+                    {/*</Col>*/}
+                    {/*<Col>*/}
+                    {/*    <div style={{marginTop: '10px'}}>*/}
+                    {/*        <Text type="danger" >{ selectAddSubTask ? 'А теперь  вы добавите подзадачу!' : ' Щас вы добавите  сотрудника!'}</Text>*/}
+                    {/*    </div>*/}
+                    {/*</Col>*/}
+                    <Col span={24}>
+                        <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
+                            <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
+                                <CreatSubTask onChangeModules={onChangeModules} optionsModules={optionsModules}
+                                              optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
+
+                                />
+                            </Flex>
+                        </Card>
                     </Col>
-                    <Col>
-                        <div style={{marginTop: '10px'}}>
-                            <Text type="danger" >{ selectAddSubTask ? 'А теперь  вы добавите подзадачу!' : ' Щас вы добавите  сотрудника!'}</Text>
-                        </div>
-                    </Col>
 
+                    {/*{*/}
+                    {/*    selectAddSubTask ?*/}
+                    {/*        <Col span={24}>*/}
+                    {/*            <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>*/}
+                    {/*                <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>*/}
+                    {/*                    <CreatSubTask onChangeModules={onChangeModules} optionsModules={optionsModules}*/}
+                    {/*                                  optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}*/}
 
-                    {
-                        selectAddSubTask ?
-                            <Col span={24}>
-                                <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
-                                    <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
-                                        <CreatSubTask onChangeModules={onChangeModules} optionsModules={optionsModules}
-                                                      optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
+                    {/*                    />*/}
+                    {/*                </Flex>*/}
+                    {/*            </Card>*/}
 
-                                        />
-                                    </Flex>
-                                </Card>
+                    {/*        </Col>*/}
+                    {/*        :*/}
+                    {/*        <Col span={24}>*/}
+                    {/*            <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>*/}
+                    {/*                <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>*/}
+                    {/*                    <AddStaffTask optionsModules={optionsModules}*/}
+                    {/*                              optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}*/}
+                    {/*                              onChangeModules={onChangeModules}*/}
 
-                            </Col>
-                            :
-                            <Col span={24}>
-                                <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
-                                    <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
-                                        <AddStaff optionsModules={optionsModules}
-                                                  optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
-                                                  onChangeModules={onChangeModules}
-
-                                        />
-                                    </Flex>
-                                </Card>
-                            </Col>
-                    }
+                    {/*                    />*/}
+                    {/*                </Flex>*/}
+                    {/*            </Card>*/}
+                    {/*        </Col>*/}
+                    {/*}*/}
                     <Col span={24}>
                         <Form.Item
-                            label={'Ответственный человек'}
+                            label={'Ответственный'}
                             name={'responsible_user'}
                             rules={[{
                                 required: true, message: 'Выберите человек'
@@ -455,200 +442,10 @@ const TaskPostEdit = () => {
 
                 </Row>
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-                    {editTaskSuccess ? 'Изменить' : 'Создать'}
+                    {editTaskSuccess ? 'Редактировать' : 'Создать'}
                 </Button>
             </Form>}
     </div>);
 };
 
 export default TaskPostEdit;
-
-const AddStaff = ({optionsUserByModules, optionsModules, onChangeModules}) => {
-
-    return (
-        <Form.List name="allModuls">
-            {(fields, {add, remove}) => (
-                <>
-                    {fields.map((field, index) => {
-                        return (
-                            <div key={field.fieldKey} style={{marginBottom: 20}}>
-                                <Row gutter={20}>
-                                    <Col span={20}>
-                                        <Title level={3} style={{marginBottom: '30px'}}>
-                                            Добавить сотрудника:
-                                        </Title>
-                                    </Col>
-                                    <Col span={11}>
-                                        <Form.Item
-                                            label={'Выберите департамент'}
-                                            name={[field.name, 'moduls']}
-                                            rules={[{
-                                                required: true,
-                                                message: 'Выберите департамент'
-                                            }]}
-                                            wrapperCol={{
-                                                span: 24,
-                                            }}
-                                        >
-                                            <Select
-                                                style={{
-                                                    width: '100%',
-                                                }}
-                                                placeholder='Выберите департамент'
-                                                optionLabelProp='label'
-                                                options={optionsModules}
-                                                onChange={(id) => onChangeModules(id, index)}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={11}>
-                                        <Form.Item
-                                            label={'Выберите сотрудник'}
-                                            name={[field.name, 'user']}
-                                            wrapperCol={{
-                                                span: 24,
-                                            }}
-                                        >
-                                            <Select
-                                                style={{
-                                                    width: '100%',
-                                                }}
-                                                placeholder='Выберите сотрудник'
-                                                optionLabelProp='label'
-                                                options={optionsUserByModules && optionsUserByModules[0]?.length > 0 ? optionsUserByModules[index] : optionsUserByModules}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={2}>
-                                        <Button type={"dashed"} danger onClick={() => remove(field.name)}
-                                                style={{marginTop: 10}}>
-                                            <MinusCircleOutlined
-                                            />
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </div>
-                        );
-                    })}
-                    <Form.Item>
-                        <Button type="primary" onClick={() => add()} block
-                                style={{backgroundColor: '#28a745'}}>
-                            Добавить сотрудника
-                        </Button>
-                    </Form.Item>
-
-                </>
-            )}
-        </Form.List>
-    )
-}
-
-
-const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) => {
-    return (
-        <Form.List name="sub_tasks">
-            {(fields, {add, remove}) => (
-                <>
-                    {fields.map((field, index) => {
-                        return (
-                            <div key={field.fieldKey} style={{marginBottom: 10}}>
-                                <Row gutter={[20, 10]}>
-                                    <Col span={20}>
-                                        <Title level={3}>
-                                            Добавить подзадачу:
-                                        </Title>
-                                    </Col>
-                                    <Col span={2}>
-                                        <Button type={"dashed"} danger onClick={() => remove(field.name)}>
-                                            <MinusCircleOutlined
-                                            />
-                                        </Button>
-                                    </Col>
-                                    <Col span={24}>
-                                        <Form.Item
-                                            label="Выберите крайний срок"
-                                            name={[field.name, 'deadline']}
-                                            rules={[{
-                                                required: true, message: 'Укажите день  крайний срок.'
-                                            }]}
-                                        >
-                                            <DatePicker
-                                                showTime
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item
-                                            label={'Выберите департамент'}
-                                            name={[field.name, 'module']}
-                                            rules={[{
-                                                required: true, message: 'Выберите департамент'
-                                            }]}
-                                            wrapperCol={{
-                                                span: 24,
-                                            }}
-                                        >
-                                            <Select
-                                                style={{
-                                                    width: '100%',
-                                                }}
-                                                placeholder='Выберите департамент'
-                                                optionLabelProp='label'
-                                                options={optionsModules}
-                                                onChange={(id) => onChangeModules(id, index)}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item
-                                            label={'Выберите сотрудник'}
-                                            name={[field.name, 'staff']}
-                                            rules={[{
-                                                required: true, message: 'Выбор обязателен.'
-                                            }]}
-                                            wrapperCol={{
-                                                span: 24,
-                                            }}
-                                        >
-                                            <Select
-                                                style={{
-                                                    width: '100%',
-                                                }}
-                                                placeholder='Выберите сотрудник'
-                                                optionLabelProp='label'
-                                                options={optionsUserByModules && optionsUserByModules[0]?.length > 0 ? optionsUserByModules[index] : optionsUserByModules}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item
-                                        >
-                                            <FormInput
-                                                label={'Название подзадач'}
-                                                name={[field.name, 'title']}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={24}>
-                                        <FormTextArea
-                                            label={'Добавить коммент'}
-                                            name={[field.name, 'text']}
-                                        />
-                                    </Col>
-                                </Row>
-                            </div>
-
-                        );
-                    })}
-                    <Form.Item>
-                        <Button type="primary" onClick={() => add()} block
-                                style={{backgroundColor: '#28a745'}}>
-                            Создать подзадачу
-                        </Button>
-                    </Form.Item>
-
-                </>
-            )}
-        </Form.List>
-    )
-}

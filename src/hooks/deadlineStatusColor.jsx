@@ -1,12 +1,16 @@
+import {deadlineColor} from "../constants/deadlineColor";
+
 const DeadlineStatusColor = (statusDeadline) => {
         const deadlineStatus = statusDeadline;
-        let color = '#3FA2F6';
+        let color = deadlineColor.started.color;
         if (deadlineStatus === 'soon') {
-            color = '#FAFFAF';
+            color = deadlineColor.soon.color;
         } else if (deadlineStatus === 'failed') {
-            color = '#C80036';
+            color =  deadlineColor.failed.color;
         } else if (deadlineStatus === 'progress') {
-            color = '#FF7F3E';
+            color =  deadlineColor.progress.color;
+        }else if (deadlineStatus === 'done') {
+          color =  deadlineColor.done.color;
         }
         return color;
 };

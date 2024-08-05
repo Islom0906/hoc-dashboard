@@ -3,7 +3,7 @@ import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import dayjs from "dayjs";
+import {IoLinkOutline} from "react-icons/io5";
 
 const CreateWorkerTable = ({data,deleteHandle}) => {
     const navigate=useNavigate()
@@ -11,79 +11,17 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
     const Delete = async (id) => {
         deleteHandle('/users/users',id)
     };
-
-
     const Edit = (id) => {
         localStorage.setItem('editDataId',id)
         dispatch(editIdQuery(id))
         navigate('/create-worker/add')
     };
 
-
     const columns = [
-        {
-            title: 'Имя работника',
-            dataIndex: 'first_name',
-            id: 'first_name',
-            render: (text) => <p>{text}</p>,
-        },
-        {
-            title: 'Электронная почта',
-            dataIndex: 'email',
-            id: 'email',
-            render: (text) => <p>{text}</p>,
-        },
-        {
-            title: 'День рождения',
-            dataIndex: 'birthday',
-            id: 'birthday',
-            render: (text) => <p>{text}</p>
-                // <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
-        },
-        {
-            title: 'Позиция ',
-            dataIndex: 'position',
-            id: 'position',
-            render: (text) => <p>{text}</p>,
-        },
-        {
-            title: 'Телефон',
-            dataIndex: 'phone',
-            id: 'phone',
-            render: (text) => <p>{text}</p>,
-        },
-        {
-            title: 'Компания',
-            dataIndex: 'companies',
-            id: 'companies',
-            render: (text) => (
-                text?.map(company=> (
-                    <Space key={company?.id} direction={"vertical"} size={"small"}>
-                    <p>{company?.title}</p>
-
-                    </Space>
-                ))
-            ),
-        },
-        {
-            title: 'Роль сотрудника',
-            dataIndex: 'user_roles',
-            id: 'user_roles',
-            render: (text) => (
-                // text?.map(company=> (
-                    <Space key={text[0]?.id} direction={"horizontal"} size={"small"}>
-                        <p>{text[0]?.module_name }</p>
-                        :
-                        <Tag>
-                            {text[0]?.user_role_name==='boss' ? 'Болим бошлиги': text[0]?.user_role_name=== 'staff' ? "Ходим" : "Админ"}
-                        </Tag>
-                    </Space>
-                // ))
-            ),
-        },
         {
             title: 'Изображение',
             dataIndex: 'images',
+            width:125,
             id: 'images',
             render: (image) => {
                 return (
@@ -96,6 +34,75 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
                         src={image?.image}
                     />
                 )},
+        },
+        {
+            title: 'Ф.И.О',
+            dataIndex: 'first_name',
+            id: 'first_name',
+            render: (text , record) => <p>{record?.first_name} {record?.last_name}</p>,
+        },
+        {
+            title: 'Роль',
+            dataIndex: 'user_roles',
+            id: 'user_roles',
+            render: (text) => (
+                // text?.map(company=> (
+                <Space key={text[0]?.id} direction={"horizontal"} size={"small"}>
+                    <p>{text[0]?.module_name }</p>
+                    :
+                    <Tag color={'success'}>
+                        {text[0]?.user_role_name==='boss' ? 'Болим бошлиги':  "Ходим" }
+                    </Tag>
+                </Space>
+                // ))
+            ),
+        },
+        {
+            title: 'Должность ',
+            dataIndex: 'position',
+            id: 'position',
+            render: (text) => <p>{text}</p>,
+        },
+        {
+            title: 'Электронная почта',
+            dataIndex: 'email',
+            id: 'email',
+            render: (text) => <p>{text}</p>,
+        },
+
+
+        {
+            title: 'Телефон',
+            dataIndex: 'phone',
+            id: 'phone',
+            render: (text) => <p>{text}</p>,
+        },
+        {
+            title: 'Социальная сеть',
+            dataIndex: 'messenger_link1',
+            id: 'messenger_link1',
+            render: (text , record) => <Tag color={"blue"} icon={<IoLinkOutline />} style={{display:"flex" , alignItems:"center" , gap:5}}>{record?.messenger_link1}</Tag>,
+        },
+        // {
+        //     title: 'Компания',
+        //     dataIndex: 'companies',
+        //     id: 'companies',
+        //     render: (text) => (
+        //         text?.map(company=> (
+        //             <Space key={company?.id} direction={"vertical"} size={"small"}>
+        //             <p>{company?.title}</p>
+        //
+        //             </Space>
+        //         ))
+        //     ),
+        // },
+
+        {
+            title: 'День рождения',
+            dataIndex: 'birthday',
+            id: 'birthday',
+            render: (text) => <p>{text}</p>
+            // <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
         },
         {
             title: 'Событие',
@@ -121,7 +128,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
     return <Table
         columns={columns}
         scroll={{
-            x: 1700,
+            x: 1500,
         }}
         dataSource={data}
         rowKey={(record) => record.id}

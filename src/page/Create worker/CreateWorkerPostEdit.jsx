@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 import dayjs from "dayjs";
 import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
+import {CiSquarePlus} from "react-icons/ci";
 
 const initialValueForm = {
     first_name: "",
@@ -156,9 +157,6 @@ const CreateWorkerPostEdit = () => {
 
     }
 
-    const onFinishFailed = (value) => {
-        console.log(value)
-    }
 
     // refresh page again get data
     useEffect(() => {
@@ -286,7 +284,6 @@ const CreateWorkerPostEdit = () => {
                 style={{
                     maxWidth: "100%"
                 }}
-                onFinishFailed={onFinishFailed}
                 initialValues={initialValueForm}
                 onFinish={onFinish}
                 autoComplete="off"
@@ -295,25 +292,25 @@ const CreateWorkerPostEdit = () => {
                     <Col span={12}>
                         <FormInput
                             required={true}
-                            required_text={'Требуется название имя'}
-                            label={'Имя сотрудника'}
+                            required_text={'Укажите имя'}
+                            label={'Имя'}
                             name={'first_name'}
                         />
                     </Col>
                     <Col span={12}>
                         <FormInput
                             required={true}
-                            required_text={'Требуется название фамилия'}
-                            label={'Фамилия сотрудника'}
+                            required_text={'Укажите фамилию'}
+                            label={'Фамилия'}
                             name={'last_name'}
                         />
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="День рождения сотрудника"
+                            label="Дата рождения"
                             name={'birthday'}
                             rules={[{
-                                required: true, message: 'Укажите день рождения.'
+                                required: true, message: 'Укажите дату'
                             }]}
                         >
                             <DatePicker/>
@@ -322,10 +319,10 @@ const CreateWorkerPostEdit = () => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label={'Выберите пол'}
+                            label={'Пол'}
                             name={'gender'}
                             rules={[{
-                                required: true, message: 'Вы должны пол'
+                                required: true, message: 'Укажите пол '
                             }]}
                             wrapperCol={{
                                 span: 24,
@@ -344,7 +341,7 @@ const CreateWorkerPostEdit = () => {
                     <Col span={12}>
                         <FormInputNumber
                             required={true}
-                            required_text={'Требуется номер телефона'}
+                            required_text={'Укажите номер телефона'}
                             label={'Номер телефона'}
                             name={'phone'}
                         />
@@ -353,15 +350,15 @@ const CreateWorkerPostEdit = () => {
                     <Col span={12}>
                         <FormInput
                             required={true}
-                            required_text={'Требуется позиция'}
-                            label={'Позиция'}
+                            required_text={'Укажите должность'}
+                            label={'Должность'}
                             name={'position'}
                         />
                     </Col>
                     <Col span={12}>
                         <FormInputEmail
                             required={true}
-                            required_text={'Требуется электронная почта'}
+                            required_text={'Укажите электронную почту'}
                             label={'Электронная почта'}
                             name={'email'}
                         />
@@ -370,17 +367,17 @@ const CreateWorkerPostEdit = () => {
                         <FormInput
                             disabled={editCreateWorkerSuccess}
                             required={!editCreateWorkerSuccess}
-                            required_text={'Требуется пароль'}
+                            required_text={'Укажите пароль'}
                             label={'Пароль'}
                             name={'password'}
                         />
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label={'Выберите компания'}
+                            label={'Компания'}
                             name={'company'}
                             rules={[{
-                                required: true, message: 'Вы должны компания'
+                                required: true, message: 'Выберите компанию'
                             }]}
                             wrapperCol={{
                                 span: 24,
@@ -400,7 +397,7 @@ const CreateWorkerPostEdit = () => {
                         <Form.Item
                             label='Изображение'
                             name={'image'}
-                            rules={[{required: true, message: 'Требуется изображение'}]}>
+                            rules={[{required: true, message: 'Загрузите изображение'}]}>
                             {/*<ImgCrop>*/}
                             <Upload
                                 maxCount={1}
@@ -410,7 +407,7 @@ const CreateWorkerPostEdit = () => {
                                 onPreview={onPreviewImage}
                                 beforeUpload={() => false}
                             >
-                                {fileListProps.length > 0 ? "" : "Upload"}
+                                {fileListProps.length > 0 ? "" : <CiSquarePlus style={{fontSize:'30px'}}  />}
                             </Upload>
                             {/*</ImgCrop>*/}
                         </Form.Item>
@@ -426,10 +423,10 @@ const CreateWorkerPostEdit = () => {
 
                                             <Col span={12}>
                                                 <Form.Item
-                                                    label={'Выберите раздел'}
+                                                    label={'Отдел'}
                                                     name={[field.name, 'module']}
                                                     rules={[{
-                                                        required: true, message: 'Вы должны раздел'
+                                                        required: true, message: 'Укажите отдел'
                                                     }]}
                                                     wrapperCol={{
                                                         span: 24,
@@ -439,7 +436,7 @@ const CreateWorkerPostEdit = () => {
                                                         style={{
                                                             width: '100%',
                                                         }}
-                                                        placeholder='Выберите одну раздел'
+                                                        placeholder='Укажите только один отдел'
                                                         optionLabelProp='label'
                                                         options={optionsModule}
                                                     />
@@ -448,10 +445,10 @@ const CreateWorkerPostEdit = () => {
                                             </Col>
                                             <Col span={12}>
                                                 <Form.Item
-                                                    label={'Выберите роль сотрудника'}
+                                                    label={'Роль'}
                                                     name={[field.name, 'user_role']}
                                                     rules={[{
-                                                        required: true, message: 'Вы должны роль сотрудника'
+                                                        required: true, message: 'Укажите роль'
                                                     }]}
                                                     wrapperCol={{
                                                         span: 24,
@@ -461,7 +458,7 @@ const CreateWorkerPostEdit = () => {
                                                         style={{
                                                             width: '100%',
                                                         }}
-                                                        placeholder='Выберите роль сотрудника'
+                                                        placeholder='Укажите только одну роль'
                                                         optionLabelProp='label'
                                                         options={optionsUserRole}
                                                     />

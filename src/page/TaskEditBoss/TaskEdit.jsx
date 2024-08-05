@@ -87,7 +87,7 @@ const TaskEdit = () => {
                 data.push({
                     title: item.title,
                     text: item.text,
-                    deadline: dayjs(item.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+                    deadline: dayjs(item.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS'),
                     staff:  item.staff,
                     task: dataGetAddSubTask?.main_task_id,
                 })
@@ -149,9 +149,6 @@ const TaskEdit = () => {
     }, []);
 
 
-    const onFinishFailed = value => {
-        console.log(value)
-    }
 
     useEffect(() => {
         if(editId){
@@ -184,7 +181,6 @@ const TaskEdit = () => {
                 }}
                 initialValues={initialValueForm}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 <Row gutter={20}>

@@ -5,6 +5,7 @@ import React, {useEffect, useState} from "react";
 import dayjs from "dayjs";
 import {FormInput, FormInputNumber} from "../../components";
 import {onPreviewImage, SuccessCreateAndEdit} from "../../hooks";
+import {CiSquarePlus} from "react-icons/ci";
 
 const initialValueForm = {
   first_name: "",
@@ -13,6 +14,8 @@ const initialValueForm = {
   gender: "",
   image: [],
   phone: "",
+  messegerLink1:"",
+  messegerLink2:""
 
 };
 const PersonalInfo = () => {
@@ -84,6 +87,8 @@ const PersonalInfo = () => {
         gender: editProfileData?.gender,
         image,
         phone: editProfileData?.phone,
+        messenger_link1: editProfileData?.messenger_link1,
+        messenger_link2: editProfileData?.messenger_link2,
       }
 
       setFileListProps(image)
@@ -93,7 +98,6 @@ const PersonalInfo = () => {
   }, [editProfileData])
 
   const onFinish = (value) => {
-
     const data = {
       first_name: value?.first_name,
       last_name: value?.last_name,
@@ -101,7 +105,8 @@ const PersonalInfo = () => {
       gender: value?.gender,
       image: fileListProps[0]?.uid,
       phone: value?.phone,
-
+      messenger_link1: value?.messenger_link1,
+      messenger_link2: value?.messenger_link2,
     }
 
     if (editProfileData) {
@@ -199,28 +204,47 @@ const PersonalInfo = () => {
               autoComplete="off"
         >
             <Row gutter={20}>
+              <Col span={24}>
+                <Form.Item
+                    label='Изображение'
+                    name={'image'}
+                    rules={[{required: true, message: 'Требуется изображение'}]}>
+                  {/*<ImgCrop>*/}
+                  <Upload
+                      maxCount={1}
+                      fileList={fileListProps}
+                      listType='picture-card'
+                      onChange={onChangeImage}
+                      onPreview={onPreviewImage}
+                      beforeUpload={() => false}
+                  >
+                    {fileListProps.length > 0 ? "" : <CiSquarePlus style={{fontSize:'30px'}} />}
+                  </Upload>
+                  {/*</ImgCrop>*/}
+                </Form.Item>
+              </Col>
               <Col span={12}>
                 <FormInput
                     required={true}
-                    required_text={'Требуется название имя'}
-                    label={'Имя сотрудника'}
+                    required_text={'Укажите имя'}
+                    label={'Имя '}
                     name={'first_name'}
                 />
             </Col>
               <Col span={12}>
                 <FormInput
                     required={true}
-                    required_text={'Требуется название фамилия'}
-                    label={'Фамилия сотрудника'}
+                    required_text={'Укажите фамилию'}
+                    label={'Фамилия '}
                     name={'last_name'}
                 />
             </Col>
               <Col span={12}>
                 <Form.Item
-                    label="День рождения сотрудника"
+                    label="Дата рождения "
                     name={'birthday'}
                     rules={[{
-                      required: true, message: 'Укажите день рождения.'
+                      required: true, message: 'Укажите дату рождения'
                     }]}
                 >
                   <DatePicker/>
@@ -238,28 +262,23 @@ const PersonalInfo = () => {
 
               </Col>
               <Col span={12}>
-                <Form.Item
-                    label='Изображение'
-                    name={'image'}
-                    rules={[{required: true, message: 'Требуется изображение'}]}>
-                  {/*<ImgCrop>*/}
-                  <Upload
-                      maxCount={1}
-                      fileList={fileListProps}
-                      listType='picture-card'
-                      onChange={onChangeImage}
-                      onPreview={onPreviewImage}
-                      beforeUpload={() => false}
-                  >
-                    {fileListProps.length > 0 ? "" : "Upload"}
-                  </Upload>
-                  {/*</ImgCrop>*/}
-              </Form.Item>
-            </Col>
+                <FormInput
+                    label={'Мессенджер 1'}
+                    name={'messenger_link1'}
+                />
+
+              </Col>
+              <Col span={12}>
+                <FormInput
+                    label={'Мессенджер 2'}
+                    name={'messenger_link2'}
+                />
+              </Col>
+
           </Row>
 
             <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-              {editProfileSuccess ? 'Изменить' : 'Создать'}
+              {editProfileSuccess ? 'Редактировать' : 'Создать'}
             </Button>
         </Form>
 
