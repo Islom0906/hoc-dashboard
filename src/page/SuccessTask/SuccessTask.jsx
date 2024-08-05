@@ -43,6 +43,7 @@ const SuccessTask = () => {
                     key={task?.main_task_id}
                     className="gutter-row"
                     xs={{ span: 12 }}
+
                     md={{ span: 8 }}
                     xl={{ span: 6 }}
                 >
