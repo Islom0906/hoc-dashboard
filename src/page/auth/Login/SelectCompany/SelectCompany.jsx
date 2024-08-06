@@ -19,10 +19,10 @@ const SelectCompany = () => {
   }
   return(
         <Spin spinning={getCompaniesLoading}>
-          <Flex vertical={true} style={{minHeight:'100vh' , padding:'70px'}}>
+          <Flex  vertical={true} style={{minHeight:'100vh' , padding:'70px' , width:'100%'}}>
             <Flex justify={"center"} style={{marginBottom:'10%'}}>
               <Title level={1} style={{textAlign:"center"}}>
-                Приветствуем «Руководитель компании»
+                Head of Companies
               </Title>
             </Flex>
             <Flex justify={"space-between"} wrap={true}  >

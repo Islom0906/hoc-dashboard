@@ -86,8 +86,6 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
                         </Button>
                       </Flex>
                     </Flex>
-
-
                     {task?.messages.length > 0 && <Divider plain>Комментарии</Divider>}
                     <Space size={'large'} direction={"vertical"} style={{ width: '100%' }}>
                       {task?.messages?.map((message) => (

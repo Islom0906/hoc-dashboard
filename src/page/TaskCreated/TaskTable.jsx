@@ -105,6 +105,8 @@ const TaskTable = ({ data, deleteHandle, pagination, setPagination, handleTableC
       id: "team",
       render: (text, record) => {
         const users = [...(record.included_users || [])];
+
+
         return (
             <Avatar.Group size={"small"}>
               {users.map((user) => (
@@ -135,7 +137,7 @@ const TaskTable = ({ data, deleteHandle, pagination, setPagination, handleTableC
                   key={responsible_user?.id}
                   full_name={responsible_user?.full_name}
                   moduls={responsible_user?.roles?.[0]?.name}
-                  image={responsible_user?.image?.image}
+                  image={responsible_user?.image}
               />
             </Avatar.Group>
         );

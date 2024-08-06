@@ -32,7 +32,7 @@ const PrivateRoute = ({component: Component, permittedRoles, isBackground}) => {
             <Component/>
 
     ) : (
-        <div>Salom</div>
+        <div>404 </div>
     );
 };
 
