@@ -37,7 +37,7 @@ const TaskTable = ({ data, deleteHandle, pagination, setPagination, handleTableC
       id: "process",
       render: (text, record) => {
         return(
-        <Progress size={50} type="circle" percent={record?.done_sub_tasks_count / record?.sub_tasks_count * 100
+        <Progress size={50} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
         }/>)
       },
     },

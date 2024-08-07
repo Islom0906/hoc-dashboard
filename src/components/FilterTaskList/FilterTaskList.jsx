@@ -51,6 +51,26 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert }) 
   };
   return (
       <>
+        {deadlineColorAlert && (
+            <Col span={24}>
+              <p style={{ marginBottom: 15,}}>Ситуации задач:</p>
+              <Flex gap={10} >
+                {deadlineColorArray?.map((colorName) => (
+                    <Flex key={colorName.label} gap={5} align={'start'}>
+                      <div
+                          style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: '100%',
+                            backgroundColor: colorName.color,
+                          }}
+                      />
+                      <p>{colorName?.label}</p>
+                    </Flex>
+                ))}
+              </Flex>
+            </Col>
+        )}
         <Col span={6}>
           <label htmlFor="deadlineTimeSelect">
             <p style={{ fontSize: '14px', marginBottom: 10 }}>по времени Крайнего срока:</p>
@@ -80,26 +100,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert }) 
               // dropdownRender={dropdownRender}
           />
         </Col>
-        {deadlineColorAlert && (
-            <Col span={12}>
-              <p style={{ marginBottom: 15, textAlign: "end" }}>Ситуации задач:</p>
-              <Flex gap={10} justify={"end"}>
-                {deadlineColorArray?.map((colorName) => (
-                    <Flex key={colorName.label} gap={5} align={'start'}>
-                      <div
-                          style={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: '100%',
-                            backgroundColor: colorName.color,
-                          }}
-                      />
-                      <p>{colorName?.label}</p>
-                    </Flex>
-                ))}
-              </Flex>
-            </Col>
-        )}
+
       </>
   );
 };

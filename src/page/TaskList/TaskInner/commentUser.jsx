@@ -17,7 +17,10 @@ const CommentUser = ({comment}) => {
           <div style={{flexShrink:0 , display:'flex' , flexDirection:'column' , gap:10}}>
             <Text style={{flexShrink: 0, fontSize: '11px'}}
                   type="secondary">{dayjs(comment.created_at).format("DD.MM.YYYY hh:mm")}</Text>
+            <div style={{width:40 , height:40}}>
           <AvatarUserProfile key={comment?.created_user?.id} full_name={comment?.created_user?.full_name} moduls={comment?.created_user?.position} image={comment?.created_user?.images.image} messenger2={comment?.created_user?.messenger_link2} messenger1={comment?.created_user?.messenger_link1} />
+
+            </div>
 
           </div>
           <Flex vertical={true} gap={5}>

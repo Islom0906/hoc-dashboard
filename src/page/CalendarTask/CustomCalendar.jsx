@@ -115,7 +115,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
                 ))}
                 {meetingsOnDate?.map((meeting) => (
                     <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
-                        <Popover content={contentPopover(meeting)} title={`Ассамблея: ${meeting.title}`}
+                        <Popover content={contentPopover(meeting)} title={`Встреча: ${meeting.title}`}
                                  style={{ border: `1px , solid ${colorMeeting.meeting.color}` }}>
                             <Flex gap={2} align={"center"}>
                                 <div className={'color-badge'}

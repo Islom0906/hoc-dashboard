@@ -35,7 +35,7 @@ const AppHeader = () => {
   }
     return (
         <Header className={'app-header'}>
-          <Flex style={{width:'250px' ,height:70 }} align={"center"} justify={"center"}>
+          <Flex style={{width:150 ,height:70 }} align={"center"} justify={"center"}>
               {
                   systemMode === 'light' ?
                       <img src={company?.image_light} className={'logo'} alt={'logo'}
@@ -92,7 +92,7 @@ export  const  UserAccount = ({ user , logOut})=> {
         <Button>
           {
             user?.image ?
-          <img src={user?.image} alt="icon"/>
+          <img src={user?.image}  style={{width:40 , height:40 , objectFit:"contain"}} alt="icon"/>
                 :
                 <UserOutlined className={'icon'} />
           }

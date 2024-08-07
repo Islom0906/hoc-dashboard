@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import {Col, Row, Spin, Pagination, Flex} from "antd";
-import { TaskCardForBoss } from "../../components";
+import {FilterTaskList, TaskCardForBoss} from "../../components";
 import { useGetQuery } from "../../service/query/Queries";
-import FilterTaskList from "./FilterTaskList/FilterTaskList";
+// import FilterTaskList from "./FilterTaskList/FilterTaskList";
 
 
 const BossTracking = () => {
@@ -34,7 +34,7 @@ const BossTracking = () => {
           <Col span={24}>
               <h1>Контроль задач в отделе</h1>
           </Col>
-        <FilterTaskList setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
+        <FilterTaskList  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>

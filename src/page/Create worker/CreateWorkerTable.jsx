@@ -126,9 +126,10 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
         },
     ];
     return <Table
+        size={'small'}
         columns={columns}
         scroll={{
-            x: 1500,
+            x: 1800,
         }}
         dataSource={data}
         rowKey={(record) => record.id}

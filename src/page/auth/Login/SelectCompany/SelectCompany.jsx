@@ -38,7 +38,7 @@ const SelectCompany = () => {
                               <img src={company?.image_dark} className={'logo'} alt={'company dark'}
                                    style={{width: '200px', height: '200px', objectFit: 'contain'}}/>
                         }
-                        <Text style={{textAlign:"center"}}>
+                        <Text style={{textAlign: "center"}}>
                           {
                             company?.title
                           }

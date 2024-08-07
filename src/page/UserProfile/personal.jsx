@@ -51,6 +51,9 @@ const PersonalInfo = () => {
   // ================================ useEffect =============================
 
 
+
+  console.log(editProfileData)
+
   useEffect(() => {
     if (user) {
       editProfileRefetch()

@@ -33,7 +33,7 @@ const TaskList = () => {
         <FilterTaskList setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
-          <Row gutter={[24, 24]} style={{ marginTop: 15 }}>
+          <Row gutter={[12, 12]} style={{ marginTop: 15 }}>
             {taskData?.results?.map((task) => (
                 <Col
                     key={task?.main_task_id}

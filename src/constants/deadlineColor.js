@@ -5,7 +5,7 @@ export const deadlineColor = {
     text:'Просроченные',
   },
   soon: {
-    color:'#FAFFAF',
+    color:'#d9e814',
     name: 'soon',
     text:'Ожидающие',
   },

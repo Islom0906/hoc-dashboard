@@ -5,6 +5,7 @@ import {FaUser} from "react-icons/fa";
 import {RiLockPasswordFill} from "react-icons/ri";
 import {useState} from "react";
 import ChangePassword from "./ChangePassword";
+import ReadingPresonalData from "./readingPresonalData";
 
 const UserProfile = () => {
     const [checkInfo, setCheckInfo] = useState('personal')
@@ -28,18 +29,20 @@ const UserProfile = () => {
                         onClick={({key}) => handleMenu(key)}
                     >
                         <Menu.Item key="personal" icon={<FaUser/>}>Личная информация</Menu.Item>
-                        <Menu.Item key="password" icon={<RiLockPasswordFill/>}>Пароль</Menu.Item>
+                        {/*<Menu.Item key="password" icon={<RiLockPasswordFill/>}>Пароль</Menu.Item>*/}
                     </Menu>
 
                 </div>
             </Col>
             <Col span={16}>
                 <div className={'card-personal'} style={{backgroundColor: contentBg}}>
-                    {
-                        checkInfo === 'personal' ?
-                            <Personal/> :
-                            <ChangePassword setCheckInfo={setCheckInfo}/>
-                    }
+                    {/*<Personal/>*/}
+                    <ReadingPresonalData />
+                    {/*{*/}
+                    {/*    checkInfo === 'personal' ?*/}
+                    {/*        <Personal/> :*/}
+                    {/*        <ChangePassword setCheckInfo={setCheckInfo}/>*/}
+                    {/*}*/}
 
                 </div>
             </Col>

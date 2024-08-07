@@ -1,5 +1,5 @@
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
-import {Avatar, Button, Card, Flex, Progress, Space, Tooltip, Typography} from "antd";
+import {Avatar, Button, Card, Flex, Progress, Space, Tag, Tooltip, Typography} from "antd";
 import {Link} from "react-router-dom";
 import { FieldTimeOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -20,7 +20,7 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
             borderStyle: "solid",
             borderTopColor: `${deadlineColor}`,
           }}
-          size={'default'}
+          size={'small'}
           title={title}
       >
         <Space style={{ width: "100%" }} size={20} direction={"vertical"}>
@@ -28,35 +28,38 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
             <Tooltip title={<p>Начало времени:</p>} placement="top">
               <Flex align={"center"} wrap={"nowrap"} gap={8}>
                 <LuCalendarDays  className={"icon"} />
-
-                <Text type={"secondary"}>
+                <Text style={{fontSize:'12px'}} >
                   {dayjs(created_at).format("DD.MM.YYYY")}
                 </Text>
               </Flex>
             </Tooltip>
 
             <Tooltip title={<p>Окончание срока:</p>} placement="top">
-              <Flex wrap={"nowrap"} align={"center"} gap={8}>
+                <Tag color={deadlineColor}>
+              <Flex  wrap={"nowrap"} align={"center"} gap={8}>
                 <FieldTimeOutlined className={"icon"} />
-                <Text type={"secondary"}>
-                  {dayjs(deadline).format("DD.MM.YYYY")}
-                </Text>
+                  <Text style={{fontSize:'12px' , color:"white"}} >
+                    {dayjs(deadline).format("DD.MM.YYYY")}
+                  </Text>
               </Flex>
+                </Tag>
             </Tooltip>
           </Flex>
           <Progress
-              percent={(doneCountTask/allCountTask) * 100}
+              percent={Math.round((doneCountTask/allCountTask) * 100) }
               percentPosition={{
                 align: "center",
                 type: "outer",
               }}
-              size={["100%", 3]}
+              size={["100%", 6]}
+              style={{fontWeight:800 , fontSize:'16px'}}
               strokeColor={`${deadlineColor}`}
               className={"progress"}
           />
           <Flex align={"center"} justify={"space-between"} gap={5}>
-            <Text>Ответственный:</Text>
-            <AvatarUserProfile key={responsible_user?.id} full_name={responsible_user?.full_name} moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image} messenger1={responsible_user?.messenger_link1} messenger2={responsible_user?.messenger_link2} />
+            <Text style={{fontSize:'12px'}}>Ответственный:</Text>
+
+              <AvatarUserProfile size={40} key={responsible_user?.id} full_name={responsible_user?.full_name} moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image} messenger1={responsible_user?.messenger_link1} messenger2={responsible_user?.messenger_link2} />
           </Flex>
 
           <Flex align={"center"} wrap={true} gap={5} justify={"space-between"}>
@@ -66,7 +69,8 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
 
             <Avatar.Group size={"small"}>
               {included_users?.map((user) => (
-                  <AvatarUserProfile key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image} messenger1={user?.messenger_link1} messenger2={user?.messenger_link2}/>
+                    <AvatarUserProfile size={30} key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image} messenger1={user?.messenger_link1} messenger2={user?.messenger_link2}/>
+
               ))}
             </Avatar.Group>
           </Flex>

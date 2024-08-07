@@ -126,7 +126,7 @@ const TaskInner = () => {
               title="Добавить комментарий"
               onCancel={handleCancel}
               footer={null}
-          >x
+          >
             <WriteComment
                 whichWriteID={whichWriteID}
                 whichWriteIDTask={whichWriteIDTask}

@@ -39,7 +39,7 @@ import {AvatarUserProfile} from "../index";
             <Text type={'secondary'}>{dayjs(main_task_deadline).format('DD.MM.YYYY')}</Text>
           </Flex>
               <Flex align={'center'} justify={'space-between'}>
-                <Progress percent={taskPercent}
+                <Progress percent={Math.round(taskPercent)}
                           percentPosition={{
                             align: 'center',
                             type: 'outer',
