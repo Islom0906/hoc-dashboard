@@ -107,12 +107,14 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         }
     }, [deleteMeetingSuccess]);
 
+    console.log(requiredUser)
+
+
     setInitialValue(form,initialValueForm)
     useEffect(() => {
         if (putMeetingSuccess){
             setIsModalOpen(false)
         }
-
     }, [putMeetingSuccess]);
     editGetById(editModalMeetingRefetch)
 
