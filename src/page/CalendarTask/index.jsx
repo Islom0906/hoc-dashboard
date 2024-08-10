@@ -1,5 +1,5 @@
-import  {useEffect} from 'react';
-import {Flex,  Space, Spin} from 'antd';
+import React, {useEffect, useMemo, useState} from 'react';
+import {Col, Flex, Select, Space, Spin} from 'antd';
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
@@ -20,29 +20,55 @@ const colorMeeting={
 }
 
 const CalendarTask = () => {
+    const [selectCompanyID, setSelectCompanyID] = useState(null)
+
+    const {
+        data: getCompany,
+        refetch: refetchGetCompany
+    } = useGetQuery(false, 'get-company', `/users/companies`, false)
+
     // birthday
     const {
         data: dataBirthDay,
         isLoading:getBirthdayLoading,
         refetch: refetchBirthDay
-    } = useGetQuery(false, 'birthDay-get', '/users/user-birthdays/', false)
+    } = useGetQuery(false, 'birthDay-get', `/users/user-birthdays?company__id=${selectCompanyID}`, false)
     // meeting
     const {
         data: dataMeetting,
         isFetching:getMeetingLoading,
         refetch: refetchMeeting
-    } = useGetQuery(false, 'meeting-get', '/users/meetings/', false)
+    } = useGetQuery(false, 'meeting-get', `/users/meetings/?company__id=${selectCompanyID}`, false)
     // deadline
     const {
         data: dataDeadline,
         isLoading:getDeadlineLoading,
         refetch: refetchDeadline
-    } = useGetQuery(false, 'deadline-get', '/users/user-deadlines-calendar/', false)
+    } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?company__id=${selectCompanyID}`, false)
     useEffect(() => {
-        refetchBirthDay()
-        refetchMeeting()
-        refetchDeadline()
-    }, []);
+        if(selectCompanyID !== null) {
+            refetchBirthDay()
+            refetchMeeting()
+            refetchDeadline()
+        }
+    }, [selectCompanyID]);
+
+    const optionsCompany = useMemo(() => {
+        return getCompany?.map((option) => {
+            return {
+                value: option?.id,
+                label: option?.title,
+            };
+        });
+    }, [getCompany]);
+    const onChangeCompany = (id) => {
+        setSelectCompanyID(id)
+    }
+
+    useEffect(() => {
+        refetchGetCompany()
+    } , [])
+
     return (
         <Spin spinning={getBirthdayLoading||getMeetingLoading||getDeadlineLoading}>
         <Space direction={"vertical"} size={20}>
@@ -71,6 +97,17 @@ const CalendarTask = () => {
                     </p>
                 </Flex>
             </Flex>
+            <Col span={6}>
+                <Select
+                    style={{
+                        width: '100%',
+                    }}
+                    placeholder='Выберите компанию'
+                    optionLabelProp='label'
+                    options={optionsCompany}
+                    onChange={onChangeCompany}
+                />
+            </Col>
             <CustomCalendar
                 colorMeeting={colorMeeting}
                 refetchMeeting={refetchMeeting}

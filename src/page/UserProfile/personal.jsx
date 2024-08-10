@@ -49,11 +49,6 @@ const PersonalInfo = () => {
   // delete image
   const {mutate: imagesDeleteMutate,isSuccess:deleteImageSuccess} = useDeleteQuery()
   // ================================ useEffect =============================
-
-
-
-  console.log(editProfileData)
-
   useEffect(() => {
     if (user) {
       editProfileRefetch()

@@ -174,15 +174,12 @@ const CreateWorkerPostEdit = () => {
         }
 
         const handleBeforeUnload = () => {
-
             localStorage.setItem(
                 'myFormValues',
                 JSON.stringify(form.getFieldsValue()),
             );
         };
-
         window.addEventListener('beforeunload', handleBeforeUnload);
-
         return () => {
             localStorage.removeItem('editDataId')
             localStorage.removeItem('myFormValues')
@@ -202,11 +199,9 @@ const CreateWorkerPostEdit = () => {
                 status: "done",
                 url: imagesUpload?.image
             }]
-
             form.setFieldsValue({image: uploadImg});
             setFileListProps(uploadImg);
         }
-
     }, [imagesUpload]);
 
     const onChangeImage = ({fileList: newFileList}) => {

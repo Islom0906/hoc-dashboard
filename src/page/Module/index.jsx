@@ -1,7 +1,7 @@
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Button, Col, Input, message, Row, Space, Spin,Typography} from "antd";
-import {useEffect, useState} from "react";
+import {Button, Col, Input,  Row, Select, Space, Spin, Typography} from "antd";
+import React, {useEffect, useMemo, useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import ModuleTable from "./ModuleTable";
@@ -12,17 +12,30 @@ const {Title}=Typography
 const CreateWorker = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [selectCompanyID, setSelectCompanyID] = useState(null)
     // delete
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     // get
     const {data,isLoading:getLoading,refetch}=useGetQuery(false,'module-get','/users/modules/',false)
 
+    const {
+        data: getCompany,
+        refetch: refetchGetCompany
+    } = useGetQuery(false, 'get-company', '/users/companies/', false)
+
+
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
-        refetch()
-    }, [isSuccess]);
+        if(selectCompanyID) {
+         refetch()
+        }
+    }, [isSuccess , selectCompanyID]);
+
+    useEffect(() => {
+        refetchGetCompany()
+    } , [])
 
     // delete
     const deleteHandle = (url, id) => {
@@ -44,14 +57,37 @@ const CreateWorker = () => {
             (data) => data?.name.toLowerCase().includes(value.toLowerCase()));
         setSearch(filterData);
     };
+    const optionsCompany = useMemo(() => {
+        return getCompany?.map((option) => {
+            return {
+                value: option?.id,
+                label: option?.title,
+            };
+        });
+    }, [getCompany]);
+
+    const onChangeCompany = (id) => {
+        setSelectCompanyID(id)
+    }
     return (
         <div className={'site-space-compact-wrapper'}>
             <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
                 <Row gutter={20}>
-                    <Col span={24}>
+                    <Col span={18}>
                         <Title level={2}>
                             Отделы
                         </Title>
+                    </Col>
+                    <Col span={6}>
+                        <Select
+                            style={{
+                                width: '100%',
+                            }}
+                            placeholder='Выберите компанию'
+                            optionLabelProp='label'
+                            options={optionsCompany}
+                            onChange={onChangeCompany}
+                        />
                     </Col>
                     <Col span={16}>
                         <Input placeholder="Поиск отделов" onChange={(e) => searchFunc(e.target.value)}/>
@@ -65,7 +101,6 @@ const CreateWorker = () => {
                             Добавить
                         </Button>
                     </Col>
-
                 </Row>
                 <Spin
                     size='medium'

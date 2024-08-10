@@ -157,6 +157,7 @@ const CompanyPostEdit = () => {
                         />
                     </Col>
                     <Col span={12}>
+
                         <Form.Item
                             label='Логотип для тёмной темы:'
                             name={'image_dark'}

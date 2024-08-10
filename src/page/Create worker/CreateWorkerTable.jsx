@@ -109,6 +109,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             id: 'action',
             fixed: 'right',
             render: (_, record) => (
+                    record?.position !== 'admin' &&
                 <Space size={20}>
                     <Button
                         onClick={() => Edit(record.id)}
@@ -122,6 +123,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
                         <Button  type='primary' danger icon={<DeleteOutlined />} />
                     </Popconfirm>
                 </Space>
+
             ),
         },
     ];

@@ -30,7 +30,8 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     // get-responsibleUser
     const {
         data: requiredUser,
-        refetch: refetchRequiredUser
+        refetch: refetchRequiredUser,
+        isLoading : loadingRequiredUser
     } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company?company_id=${selectCompany}`, false)
 
     // get-company
@@ -72,14 +73,11 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
 
 
     useEffect(() => {
+        if(selectCompany){
         refetchRequiredUser()
-    }, [selectCompany]);
-    useEffect(() => {
-        refetchGetCompany()
-        return () => {
-            queryClient.removeQueries()
         }
-    }, [])
+    }, [selectCompany]);
+
     useEffect(() => {
         if (putMeetingDate) {
             dispatch(editIdQuery(''))
@@ -107,7 +105,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         }
     }, [deleteMeetingSuccess]);
 
-    console.log(requiredUser)
 
 
     setInitialValue(form,initialValueForm)
@@ -124,6 +121,12 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             form.setFieldsValue(initialValueForm)
         }
     }, [isModalOpen]);
+
+    useEffect(() => {
+        if(isModalOpen) {
+            refetchGetCompany()
+        }
+    } , [isModalOpen ])
 
     //edit meeting
     useEffect(() => {
@@ -218,7 +221,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                 return requiredUserData
             }
         }
-    }, [requiredUser, isMultipleSelect ]);
+    }, [requiredUser, isMultipleSelect ,selectCompany ]);
     const optionsCompany = useMemo(() => {
         return getCompany?.map((option) => {
             return {
@@ -341,12 +344,12 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                                 style={{
                                     width: '100%',
                                 }}
+                                loading={loadingRequiredUser}
                                 onChange={onChangeSelect}
                                 mode={'multiple'}
                                 placeholder='Выберите участников'
                                 optionLabelProp='label'
                                 options={optionsResponsibleUser}
-                                // onChange={onChangeCompany}
                             />
                         </Form.Item>
                     </Col>

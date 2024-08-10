@@ -1,4 +1,4 @@
-import {Button, Flex, Form, Input, message, Spin, theme} from "antd";
+import {Button, Flex, Form, Input, message, theme , Typography} from "antd";
 import {setAuthToken} from "../../../service/auth/axios";
 import {useDispatch, useSelector} from "react-redux";
 import {authData} from "../../../store/slice/authSlice";
@@ -7,15 +7,15 @@ import './index.scss'
 import {AppLogo} from "../../../components";
 import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
 import {useNavigate} from "react-router-dom";
-import SelectCompany from "./SelectCompany/SelectCompany";
 import {MdArrowBackIos} from "react-icons/md";
 import {clearCompany} from "../../../store/slice/companySlice";
 import {useCallback} from "react";
+const {Title} = Typography
 
 const Login = () => {
+    const {data:{user}}=useSelector(state => state.auth)
     const dispatch = useDispatch()
     const navigate=useNavigate()
-    const {company} = useSelector(state => state.companySlice)
     const {
         token: {mainBg},
     } = theme.useToken();
@@ -54,13 +54,14 @@ const Login = () => {
             }}
             className={'login--page'}>
             {
-                company === null ?
-                    <SelectCompany/>:
                     <BackgroundContent>
                         <div className={'login-card'}>
-                            <div className={'logo-login'}>
-                                <AppLogo/>
-                            </div>
+                            {/*<div className={'logo-login'}>*/}
+                            {/*    <AppLogo/>*/}
+                            {/*</div>*/}
+                            <Title level={1}>
+                                HOC
+                            </Title>
                             <Form
                                 name="basic"
                                 labelCol={{

@@ -3,7 +3,6 @@ import { Button, Calendar, Col, Flex, Popover, Row, Select, Typography, ConfigPr
 import dayjs from "dayjs";
 import 'dayjs/locale/ru'; // Import Russian locale for dayjs
 import ruRU from 'antd/es/locale/ru_RU'; // Import Russian locale for Ant Design
-import locale from '../../constants/calendarLocalDay';
 import ModalCalendar from "./ModalCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { editIdQuery } from "../../store/slice/querySlice";
@@ -40,9 +39,10 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         }
     }
 
+
     const birthdayMap = useMemo(() => {
         return dataBirthDay?.reduce((acc, birthday) => {
-            const key = dayjs(birthday.birthday).format('MM-DD');
+            const key = dayjs(birthday.birthday).format('DD-MM');
             acc[key] = acc[key] || [];
             acc[key].push(birthday);
             return acc;
