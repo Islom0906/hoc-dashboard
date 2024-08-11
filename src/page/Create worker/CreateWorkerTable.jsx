@@ -39,7 +39,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             title: 'Ф.И.О',
             dataIndex: 'first_name',
             id: 'first_name',
-            render: (text , record) => <p>{record?.first_name} {record?.last_name}</p>,
+            render: (text , record) => <p>{record?.first_name} {record?.last_name} {record?.middle_name}</p>,
         },
         {
             title: 'Роль',
@@ -47,11 +47,10 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             id: 'user_roles',
             render: (text) => (
                 // text?.map(company=> (
-                <Space key={text[0]?.id} direction={"horizontal"} size={"small"}>
+                <Space key={text[0]?.id} direction={"vertical"} size={3}>
                     <p>{text[0]?.module_name }</p>
-                    :
                     <Tag color={'success'}>
-                        {text[0]?.user_role_name==='boss' ? 'Болим бошлиги':  "Ходим" }
+                        {text[0]?.user_role_name==='boss' ? 'Руководитель':  "Сотрудник" }
                     </Tag>
                 </Space>
                 // ))
@@ -77,12 +76,12 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             id: 'phone',
             render: (text) => <p>{text}</p>,
         },
-        {
-            title: 'Социальная сеть',
-            dataIndex: 'messenger_link1',
-            id: 'messenger_link1',
-            render: (text , record) => <Tag color={"blue"} icon={<IoLinkOutline />} style={{display:"flex" , alignItems:"center" , gap:5}}>{record?.messenger_link1}</Tag>,
-        },
+        // {
+        //     title: 'Социальная сеть',
+        //     dataIndex: 'messenger_link1',
+        //     id: 'messenger_link1',
+        //     render: (text , record) => <Tag color={"blue"} icon={<IoLinkOutline />} style={{display:"flex" , alignItems:"center" , gap:5}}>{record?.messenger_link1}</Tag>,
+        // },
         // {
         //     title: 'Компания',
         //     dataIndex: 'companies',
@@ -109,19 +108,21 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             id: 'action',
             fixed: 'right',
             render: (_, record) => (
-                    record?.position !== 'admin' &&
                 <Space size={20}>
                     <Button
                         onClick={() => Edit(record.id)}
                         type='dashed'
                         out
                         icon={<EditOutlined />}/>
+                    {
+                        record?.position !== 'admin' &&
                     <Popconfirm
                         title={'Вы уверены, что хотите удалить это?'}
                         description={'Удалить'}
                         onConfirm={() => Delete(record.id)}>
                         <Button  type='primary' danger icon={<DeleteOutlined />} />
                     </Popconfirm>
+                    }
                 </Space>
 
             ),

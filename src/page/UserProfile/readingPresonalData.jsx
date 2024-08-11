@@ -8,7 +8,7 @@ const {Text ,Title} = Typography
 
 const PersonalInfo = () => {
   const {data: {user}} = useSelector(state => state.auth)
-  const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
+  const { data, isLoading: getTaskLoading, refetch } = useGetQuery(
       false,
       'get-task',
       `users/users/${user?.id}`,
@@ -69,7 +69,7 @@ console.log(data)
                   Отчество:
                 </Text>
                 <p >
-                  {data?.last_name}
+                  {data?.middle_name}
                 </p>
               </Flex>
 
@@ -105,26 +105,30 @@ console.log(data)
                 </p>
               </Flex>
             </Col>
-            <Col span={8}>
-              <Flex vertical={true} gap={3}>
-                <Text type={"secondary"}>
-                  Отдел:
-                </Text>
-                <p >
-                  {data?.last_name}
-                </p>
-              </Flex>
-            </Col>
+            {
+              data?.user_roles[0]?.module_name &&
+                <Col span={8}>
+                  <Flex vertical={true} gap={3}>
+                    <Text type={"secondary"}>
+                      Отдел:
+                    </Text>
+                    <p >
+                      {data?.user_roles[0]?.module_name}
+                    </p>
+                  </Flex>
+                </Col>
+            }
+
 
             {
-              data?.user_roles?.user_role_name &&
+              data?.position &&
             <Col span={8}>
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Должность:
                 </Text>
                 <p >
-                  {data?.user_roles?.user_role_name}
+                  {data?.position}
                 </p>
               </Flex>
             </Col>

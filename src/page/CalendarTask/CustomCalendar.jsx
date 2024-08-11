@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react';
 import { Button, Calendar, Col, Flex, Popover, Row, Select, Typography, ConfigProvider } from "antd";
 import dayjs from "dayjs";
-import 'dayjs/locale/ru'; // Import Russian locale for dayjs
-import ruRU from 'antd/es/locale/ru_RU'; // Import Russian locale for Ant Design
+import 'dayjs/locale/ru';
+import ruRU from 'antd/es/locale/ru_RU';
 import ModalCalendar from "./ModalCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-// Set the locale for dayjs
 dayjs.locale('ru');
 
 const { Title, Text } = Typography;

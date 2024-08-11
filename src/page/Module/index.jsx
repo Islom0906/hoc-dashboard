@@ -1,4 +1,4 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Button, Col, Input,  Row, Select, Space, Spin, Typography} from "antd";
 import React, {useEffect, useMemo, useState} from "react";
@@ -6,36 +6,27 @@ import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import ModuleTable from "./ModuleTable";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
+import {FilterCompanyForAdmin} from "../../components";
 const {Title}=Typography
 
 
 const CreateWorker = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [selectCompanyID, setSelectCompanyID] = useState(null)
-    // delete
+    const {companyID} = useSelector(state => state.companySlice)
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
-    // get
-    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'module-get','/users/modules/',false)
+    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'module-get',`/users/modules?company_id=${companyID}`,false)
 
-    const {
-        data: getCompany,
-        refetch: refetchGetCompany
-    } = useGetQuery(false, 'get-company', '/users/companies/', false)
 
 
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
-        if(selectCompanyID) {
+        if(companyID) {
          refetch()
         }
-    }, [isSuccess , selectCompanyID]);
-
-    useEffect(() => {
-        refetchGetCompany()
-    } , [])
+    }, [isSuccess , companyID]);
 
     // delete
     const deleteHandle = (url, id) => {
@@ -57,18 +48,9 @@ const CreateWorker = () => {
             (data) => data?.name.toLowerCase().includes(value.toLowerCase()));
         setSearch(filterData);
     };
-    const optionsCompany = useMemo(() => {
-        return getCompany?.map((option) => {
-            return {
-                value: option?.id,
-                label: option?.title,
-            };
-        });
-    }, [getCompany]);
 
-    const onChangeCompany = (id) => {
-        setSelectCompanyID(id)
-    }
+
+
     return (
         <div className={'site-space-compact-wrapper'}>
             <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
@@ -78,17 +60,7 @@ const CreateWorker = () => {
                             Отделы
                         </Title>
                     </Col>
-                    <Col span={6}>
-                        <Select
-                            style={{
-                                width: '100%',
-                            }}
-                            placeholder='Выберите компанию'
-                            optionLabelProp='label'
-                            options={optionsCompany}
-                            onChange={onChangeCompany}
-                        />
-                    </Col>
+                    <FilterCompanyForAdmin/>
                     <Col span={16}>
                         <Input placeholder="Поиск отделов" onChange={(e) => searchFunc(e.target.value)}/>
                     </Col>

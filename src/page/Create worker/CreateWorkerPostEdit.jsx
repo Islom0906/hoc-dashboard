@@ -113,6 +113,7 @@ const CreateWorkerPostEdit = () => {
             const edit = {
                 first_name: editCreateWorkerData?.first_name,
                 last_name: editCreateWorkerData?.last_name,
+                middle_name: editCreateWorkerData?.middle_name,
                 birthday: dayjs(editCreateWorkerData?.birthday,"DD.MM.YYYY"),
                 gender: editCreateWorkerData?.gender,
                 image,
@@ -135,6 +136,7 @@ const CreateWorkerPostEdit = () => {
         const data = {
             first_name: value?.first_name,
             last_name: value?.last_name,
+            middle_name: value?.middle_name,
             birthday: dayjs(value?.birthday).format('DD.MM.YYYY'),
             gender: value?.gender,
             image: fileListProps[0]?.uid,
@@ -206,11 +208,9 @@ const CreateWorkerPostEdit = () => {
 
     const onChangeImage = ({fileList: newFileList}) => {
         const formData = new FormData();
-
         if (fileListProps.length !== 0 || newFileList.length === 0) {
             form.setFieldsValue({image: []});
             const id = [fileListProps[0]?.uid];
-
             imagesDeleteMutate({url: "users/images", id});
             setFileListProps([])
         } else if (newFileList.length !== 0) {
@@ -234,7 +234,7 @@ const CreateWorkerPostEdit = () => {
         return userRoleData?.map((option) => {
             return {
                 value: option?.id,
-                label: option?.name === "boss" ? 'Болим бошлиғи' : 'Ходим',
+                label: option?.name === "boss" ? 'Руководитель' : 'Сотрудник',
             };
         });
     }, [userRoleData]);
@@ -284,7 +284,7 @@ const CreateWorkerPostEdit = () => {
                 autoComplete="off"
             >
                 <Row gutter={20}>
-                    <Col span={12}>
+                    <Col span={8}>
                         <FormInput
                             required={true}
                             required_text={'Укажите имя'}
@@ -292,12 +292,20 @@ const CreateWorkerPostEdit = () => {
                             name={'first_name'}
                         />
                     </Col>
-                    <Col span={12}>
+                    <Col span={8}>
                         <FormInput
                             required={true}
                             required_text={'Укажите фамилию'}
                             label={'Фамилия'}
                             name={'last_name'}
+                        />
+                    </Col>
+                    <Col span={8}>
+                        <FormInput
+                            required={true}
+                            required_text={'Укажите отчество'}
+                            label={'Отчество'}
+                            name={'middle_name'}
                         />
                     </Col>
                     <Col span={12}>

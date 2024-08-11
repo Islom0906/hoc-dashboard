@@ -1,15 +1,12 @@
 import './index.scss'
 import {  SunOutlined, UserOutlined} from "@ant-design/icons";
-import { Button, Dropdown, Flex} from "antd";
+import {Avatar, Button, Dropdown, Flex} from "antd";
 import {Header} from "antd/es/layout/layout";
 import {useDispatch, useSelector} from "react-redux";
 import {changeThemeMode} from "../../store/slice/themeSlice";
 import {authData} from "../../store/slice/authSlice";
 import {Link, useNavigate} from "react-router-dom";
 import {BsMoon} from "react-icons/bs";
-
-
-
 
 const AppHeader = () => {
   const {systemMode}=useSelector(state => state.theme)
@@ -31,6 +28,7 @@ const AppHeader = () => {
     }))
     navigate('/login')
   }
+
     return (
         <Header className={'app-header'}>
           <Flex style={{width:150 ,height:50 }} align={"center"} justify={"center"}>
@@ -42,7 +40,6 @@ const AppHeader = () => {
                       :
                       <img src={user?.company?.image_dark} className={'logo'} alt={'logo'}
                            style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
-
                   :
                   <img src={'/evms-e.png'} className={'logo'} alt={'logo'}
                        style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
@@ -74,7 +71,7 @@ export  const  UserAccount = ({ user , logOut})=> {
         {
             key: '1',
             label: (
-                <Link  rel="noopener noreferrer" to="/">
+                <Link  rel="noopener noreferrer" to="/profile">
                     Редактировать
                 </Link>
             ),
@@ -95,9 +92,12 @@ export  const  UserAccount = ({ user , logOut})=> {
         <Button>
           {
             user?.image ?
-          <img src={user?.image}  style={{width:40 , height:40 , objectFit:"contain"}} alt="icon"/>
-                :
-                <UserOutlined className={'icon'} />
+                <Avatar icon={<img
+                    src={user?.image}
+                    style={{width: '100%', height: '100%', objectFit: "contain"}}
+                /> } size={'middle'} key={user?.id}/>
+            :
+            <UserOutlined className={'icon'} />
           }
           <span className={'content'}>
             <Flex className={'title'} gap={5}><span>{user.first_name}</span> <span>{user.last_name}</span></Flex>

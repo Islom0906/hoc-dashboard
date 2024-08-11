@@ -1,11 +1,11 @@
 import {Col, Menu, Row, theme} from "antd";
-import Personal from "./personal";
 import './index.scss'
 import {FaUser} from "react-icons/fa";
-import {RiLockPasswordFill} from "react-icons/ri";
 import {useState} from "react";
-import ChangePassword from "./ChangePassword";
 import ReadingPresonalData from "./readingPresonalData";
+// import Personal from "./personal";
+// import ChangePassword from "./ChangePassword";
+// import {RiLockPasswordFill} from "react-icons/ri";
 
 const UserProfile = () => {
     const [checkInfo, setCheckInfo] = useState('personal')

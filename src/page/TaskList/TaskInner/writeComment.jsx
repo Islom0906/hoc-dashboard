@@ -27,6 +27,18 @@ const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask , setIsPostC
     isLoading: imagesUploadLoading,
     isSuccess: imagesUploadSuccess,
   } = usePostQuery()
+  // useEffect(() => {
+  //   if (imagesUploadSuccess) {
+  //     const uploadImg = [{
+  //       uid: imagesUpload?.id,
+  //       name: imagesUpload?.id,
+  //       status: "done",
+  //       url: imagesUpload?.image
+  //     }]
+  //     form.setFieldsValue({image: uploadImg});
+  //     setFileListProps(uploadImg);
+  //   }
+  // }, [imagesUpload]);
   useEffect(() => {
     if (imagesUploadSuccess) {
       const uploadImg = [{
@@ -34,11 +46,11 @@ const WriteComment = ({whichWriteID ,handleCancel ,whichWriteIDTask , setIsPostC
         name: imagesUpload?.id,
         status: "done",
         url: imagesUpload?.image
-      }]
+      }];
       form.setFieldsValue({image: uploadImg});
       setFileListProps(uploadImg);
     }
-  }, [imagesUpload]);
+  }, [imagesUpload, form, imagesUploadSuccess]);
   const onChangeImage = ({fileList: newFileList}) => {
     const formData = new FormData();
     if (fileListProps.length !== 0 || newFileList.length === 0) {

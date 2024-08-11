@@ -1,42 +1,29 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Button, Col, Input, Row, Select, Space, Spin, Typography} from "antd";
-import React, {useEffect, useMemo, useState} from "react";
+import {Button, Col, Input, Row,  Space, Spin, Typography} from "antd";
+import React, {useEffect,  useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import CreateWorkerTable from "./CreateWorkerTable";
 import {  useDeleteQuery, useGetQuery} from "../../service/query/Queries";
-import {useQueryClient} from "react-query";
+import {FilterCompanyForAdmin} from "../../components";
 const {Title}=Typography
 
 
 const CreateWorker = () => {
-    const queryClient = useQueryClient()
     const dispatch = useDispatch()
-    const [selectCompanyID, setSelectCompanyID] = useState(null)
     const navigate = useNavigate()
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
-    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'create-worker-get',`/users/users?company__id=${selectCompanyID}`)
+    const {companyID} = useSelector(state => state.companySlice)
+    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'create-worker-get',`/users/users?company__id=${companyID}`)
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
-    const {
-        data: getCompany,
-        refetch: refetchGetCompany
-    } = useGetQuery(false, 'get-company', '/users/companies/', false)
 
     useEffect(() => {
-        if(selectCompanyID) {
+        if(companyID) {
         refetch()
         }
-    }, [isSuccess , selectCompanyID]);
-
-
-    useEffect(() => {
-        refetchGetCompany()
-        return () => {
-            queryClient.removeQueries()
-        }
-    }, [])
+    }, [isSuccess , companyID]);
 
     // delete
     const deleteHandle = (url, id) => {
@@ -59,38 +46,18 @@ const CreateWorker = () => {
         setSearch(filterData);
     };
 
-    const optionsCompany = useMemo(() => {
-        return getCompany?.map((option) => {
-            return {
-                value: option?.id,
-                label: option?.title,
-            };
-        });
-    }, [getCompany]);
 
-    const onChangeCompany = (id) => {
-        setSelectCompanyID(id)
-    }
+
     return (
         <div className={'site-space-compact-wrapper'}>
             <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
                 <Row gutter={20}>
                     <Col span={18}>
                         <Title level={2}>
-                             сотрудника
+                             Cотрудника
                         </Title>
                     </Col>
-                    <Col span={6}>
-                        <Select
-                            style={{
-                                width: '100%',
-                            }}
-                            placeholder='Выберите компанию'
-                            optionLabelProp='label'
-                            options={optionsCompany}
-                            onChange={onChangeCompany}
-                        />
-                    </Col>
+                    <FilterCompanyForAdmin/>
                     <Col span={16}>
                         <Input placeholder="Поиск сотрудников" onChange={(e) => searchFunc(e.target.value)} />
                     </Col>
