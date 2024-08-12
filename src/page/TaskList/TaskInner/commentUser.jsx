@@ -28,7 +28,7 @@ const CommentUser = ({comment}) => {
             {
                 comment?.file &&
                 <Tag color={'blue'} icon={<CiLink />} style={{display:"flex" , alignItems:'center' , gap:5}}>
-                <a href={comment?.file} target={"_blank"}>
+                <a href={comment?.file} download={true} target={"_blank"}>
                   {extractFilename(comment.file)}
                 </a>
                 </Tag>
