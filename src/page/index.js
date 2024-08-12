@@ -12,6 +12,7 @@ export {default as CreateWorkerPostEdit} from './Create worker/CreateWorkerPostE
 export {default as Module} from './Module';
 export {default as ModulePostEdit} from './Module/ModulePostEdit';
 export {default as BossTracking} from './BossTracking';
+export {default as ResponsibleUser} from './ResponsibleUser/ResponsibleUser';
 export {default as ControllerPanel} from './ControllerPanel';
 export {default as Dashboard} from './Dashboard';
 export {default as Inbox} from './Inbox';

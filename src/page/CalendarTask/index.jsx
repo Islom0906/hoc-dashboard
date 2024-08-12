@@ -85,7 +85,6 @@ const CalendarTask = () => {
                     </p>
                 </Flex>
             </Flex>
-
             <CustomCalendar
                 colorMeeting={colorMeeting}
                 refetchMeeting={refetchMeeting}

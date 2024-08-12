@@ -16,11 +16,11 @@ const BossTracking = () => {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`);
+  } = useGetQuery(false, "staff-get-task",
+      `users/staff-responsible-tasks/?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`);
 
   useEffect(() => {
-
-      refetchStaffGetTask();
+    refetchStaffGetTask();
   }, [user, currentPage, pageSize , ordering , deadlineStatus ]);
   const onPaginationChange = (page, pageSize) => {
     setCurrentPage(page);
@@ -31,9 +31,9 @@ const BossTracking = () => {
       <div>
         <Row gutter={[16 , 30]}>
           <Col span={24}>
-              <h1>Контроль задач в отделе</h1>
+            <h1>Контроль задач в отделе</h1>
           </Col>
-        <FilterTaskList  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
+          <FilterTaskList  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>
@@ -61,15 +61,15 @@ const BossTracking = () => {
                 </Col>
             ))}
           </Row>
-            <Flex align={'center'} justify={'center'} style={{paddingTop:20 , paddingBlock:10}}>
-              <Pagination
-                  current={currentPage}
-                  pageSize={pageSize}
-                  total={taskData?.count || 0}
-                  onChange={onPaginationChange}
-                  showSizeChanger
-              />
-            </Flex>
+          <Flex align={'center'} justify={'center'} style={{paddingTop:20 , paddingBlock:10}}>
+            <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                total={taskData?.count || 0}
+                onChange={onPaginationChange}
+                showSizeChanger
+            />
+          </Flex>
         </Spin>
       </div>
   );

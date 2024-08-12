@@ -35,7 +35,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
       if (subTaskItem?.task_status === "done" && user?.roles?.[0]?.name === "admin") {
         putProjectDone({ url: `/users/staff-subtasks`, data: { task_status: 'not_started' }, id: whichWriteID });
         setCheckedState((prevState) => ({ ...prevState, [whichWriteID]: false }));
-      } else if ( subTaskItem?.task_status !== "failed" && user?.roles?.[0]?.name === "staff" || user?.roles?.[0]?.name === "boss") {
+      } else if ( user?.roles?.[0]?.name === "staff" || user?.roles?.[0]?.name === "boss") {
         putProjectDone({ url: `/users/staff-subtasks`, data: { task_status: 'done' }, id: whichWriteID });
         setCheckedState((prevState) => ({ ...prevState, [whichWriteID]: true }));
       }

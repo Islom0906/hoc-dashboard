@@ -88,7 +88,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             setIsModalOpen(false)
             form.setFieldsValue(initialValueForm)
         }
-    }, [ putMeetingSuccess]);
+    }, [putMeetingSuccess]);
 
     useEffect(() => {
         if (postMeetingSuccess){
@@ -124,7 +124,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         if(isModalOpen) {
             refetchGetCompany()
         }
-    } , [isModalOpen ])
+    } , [isModalOpen])
 
     //edit meeting
     useEffect(() => {
@@ -319,7 +319,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                                 style={{
                                     width: '100%',
                                 }}
-                                // onChange={onChangeSelect}
                                 placeholder='Выберите компанию'
                                 optionLabelProp='label'
                                 options={optionsCompany}

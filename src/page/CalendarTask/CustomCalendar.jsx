@@ -7,7 +7,6 @@ import ModalCalendar from "./ModalCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { FaExternalLinkAlt } from "react-icons/fa";
-
 dayjs.locale('ru');
 
 const { Title, Text } = Typography;
@@ -39,9 +38,15 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     }
 
 
+
     const birthdayMap = useMemo(() => {
         return dataBirthDay?.reduce((acc, birthday) => {
-            const key = dayjs(birthday.birthday).format('DD-MM');
+            const parsedDate = dayjs(birthday.birthday, 'DD.MM.YYYY');
+            if (!parsedDate.isValid()) {
+                console.warn(`Invalid Date: ${birthday.birthday}`);
+                return acc;
+            }
+            const key = parsedDate.format('MM-DD');
             acc[key] = acc[key] || [];
             acc[key].push(birthday);
             return acc;
@@ -50,7 +55,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
 
     const meetingMap = useMemo(() => {
         return dataMeeting?.reduce((acc, meeting) => {
-            const key = dayjs(meeting.meeting_date).format('YYYY-MM-DD');
+            const key = dayjs(meeting?.meeting_date).format('YYYY-MM-DD');
             acc[key] = acc[key] || [];
             acc[key].push(meeting);
             return acc;
@@ -59,7 +64,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
 
     const deadlineMap = useMemo(() => {
         return dataDeadline?.results?.reduce((acc, deadline) => {
-            const key = dayjs(deadline.deadline).format('YYYY-MM-DD');
+            const key = dayjs(deadline?.deadline).format('YYYY-MM-DD');
             acc[key] = acc[key] || [];
             acc[key].push(deadline);
             return acc;

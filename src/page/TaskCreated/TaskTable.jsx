@@ -1,4 +1,4 @@
-import {Avatar, Button, Popconfirm, Progress, Space, Table} from "antd";
+import {Avatar, Button, Popconfirm, Progress, Space, Table, Tooltip} from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { useNavigate } from "react-router-dom";
@@ -37,8 +37,10 @@ const TaskTable = ({ data, deleteHandle, pagination, setPagination, handleTableC
       id: "process",
       render: (text, record) => {
         return(
-        <Progress size={50} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
-        }/>)
+            <Tooltip key={record?.id} title={`${record?.done_sub_tasks_count} / ${record?.sub_tasks_count}`} >
+              <Progress size={50} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
+              }/>
+            </Tooltip>)
       },
     },
     {
