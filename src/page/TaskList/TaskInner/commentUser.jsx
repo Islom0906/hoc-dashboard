@@ -35,7 +35,6 @@ const CommentUser = ({comment}) => {
             }
           </Flex>
         </Flex>
-
       </Flex>
   );
 };
