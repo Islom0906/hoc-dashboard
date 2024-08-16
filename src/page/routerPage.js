@@ -5,9 +5,9 @@ import {
     CalendarTask,
     TaskInner,
     CompanyPostEdit, CreateWorker, CreateWorkerPostEdit,
-    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask
+    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask, ResponsibleUser
 } from './index'
-import { RiPlayListAddLine } from "react-icons/ri";
+import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
 import { BsBuildingAdd } from "react-icons/bs";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { VscFileSubmodule } from "react-icons/vsc";
@@ -124,6 +124,15 @@ export const samplePagesConfigs = [
         permittedRole: ["boss"],
         isBackground: true
     },
+    // {
+    //     key: 1213222,
+    //     label: 'Ответственный',
+    //     icon:  <RiContractFill className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+    //     path: '/Responsible',
+    //     element: ResponsibleUser,
+    //     permittedRole: ["boss"],
+    //     isBackground: true
+    // },
     // {
     //     path: '/taskEditBoss/add',
     //     element: TaskEdit,

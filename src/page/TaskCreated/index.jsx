@@ -1,12 +1,13 @@
-import {Button, Col, Form, Input, Row, Select, Space, Spin, Typography} from "antd";
+import {Button, Col, Input, Row,  Space, Spin, Typography} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import React, {useEffect, useMemo, useState} from "react";
-import { useDispatch } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { useNavigate } from "react-router-dom";
 import TaskTable from "./TaskTable";
 import { useDeleteQuery, useGetQuery } from "../../service/query/Queries";
 import {useQueryClient} from "react-query";
+import {FilterCompanyForAdmin} from "../../components";
 
 const { Title } = Typography;
 
@@ -17,7 +18,7 @@ const TaskCreated = () => {
   const [search, setSearch] = useState('');
   const [deadlineStatus, setDeadlineStatus] = useState('');
   const [ordering, setOrdering] = useState('');
-  const [selectCompanyID, setSelectCompanyID] = useState(null)
+  const {companyID} = useSelector(state => state.companySlice)
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -35,12 +36,12 @@ const TaskCreated = () => {
   const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
       false,
       'get-task',
-      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${selectCompanyID !== null ? `&company=${selectCompanyID}` :''}${search && `&search=${search}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`} `,
+      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${companyID !== null ? `&company=${companyID}` :''}${search && `&search=${search}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`} `,
       false
   );
   useEffect(() => {
     refetch();
-  }, [isSuccess, pagination.current, pagination.pageSize, search, deadlineStatus, ordering ,selectCompanyID]);
+  }, [isSuccess, pagination.current, pagination.pageSize, search, deadlineStatus, ordering ,companyID]);
 
   // get data
   useEffect(() => {
@@ -87,18 +88,6 @@ const TaskCreated = () => {
     }
   }, [])
 
-  const optionsCompany = useMemo(() => {
-    return getCompany?.map((option) => {
-      return {
-        value: option?.id,
-        label: option?.title,
-      };
-    });
-  }, [getCompany]);
-
-  const onChangeCompany = (id) => {
-    setSelectCompanyID(id)
-  }
   return (
       <div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{ width: '100%' }}>
@@ -108,17 +97,7 @@ const TaskCreated = () => {
                 Создать задачу
               </Title>
             </Col>
-            <Col span={6}>
-                <Select
-                    style={{
-                      width: '100%',
-                    }}
-                    placeholder='Выберите компания'
-                    optionLabelProp='label'
-                    options={optionsCompany}
-                    onChange={onChangeCompany}
-                />
-            </Col>
+            <FilterCompanyForAdmin/>
             <Col span={16}>
               <Input placeholder="Поиск задач" onChange={(e) => searchFunc(e.target.value)} />
             </Col>

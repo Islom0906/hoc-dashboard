@@ -8,20 +8,21 @@ const {Text ,Title} = Typography
 
 const PersonalInfo = () => {
   const {data: {user}} = useSelector(state => state.auth)
-  const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
+  const { data, isLoading: getTaskLoading, refetch } = useGetQuery(
       false,
       'get-task',
-      '/users/user/me',
+      `users/users/${user?.id}`,
       false
   );
 
-  console.log(user)
 
   useEffect(() => {
+    if(user?.id) {
     refetch()
-  } , [])
+    }
+  } , [user])
 
-
+console.log(data)
 
   return (
       <Spin spinning={getTaskLoading}>
@@ -36,7 +37,7 @@ const PersonalInfo = () => {
                 <Text type={"secondary"}>
                   Фотография:
                 </Text>
-                <img src={data?.image} className={'logo'} alt={'company light'}
+                <img src={data?.images?.image} className={'logo'} alt={'company light'}
                      style={{width: '100px', height: '100px', objectFit: 'contain'}}/>
               </Flex>
             </Col>
@@ -68,7 +69,7 @@ const PersonalInfo = () => {
                   Отчество:
                 </Text>
                 <p >
-                  {data?.last_name}
+                  {data?.middle_name}
                 </p>
               </Flex>
 
@@ -79,7 +80,7 @@ const PersonalInfo = () => {
                   Дата рождения:
                 </Text>
                 <p >
-                  {data?.first_name}
+                  {data?.birthday}
                 </p>
               </Flex>
 
@@ -90,7 +91,7 @@ const PersonalInfo = () => {
                   Номер телефона:
                 </Text>
                 <p >
-                  {data?.last_name}
+                  {data?.phone}
                 </p>
               </Flex>
             </Col>
@@ -100,30 +101,38 @@ const PersonalInfo = () => {
                   Электронная почта:
                 </Text>
                 <p >
-                  {data?.last_name}
+                  {data?.email}
                 </p>
               </Flex>
             </Col>
-            <Col span={8}>
-              <Flex vertical={true} gap={3}>
-                <Text type={"secondary"}>
-                  Отдел:
-                </Text>
-                <p >
-                  {data?.last_name}
-                </p>
-              </Flex>
-            </Col>
+            {
+              data?.user_roles[0]?.module_name &&
+                <Col span={8}>
+                  <Flex vertical={true} gap={3}>
+                    <Text type={"secondary"}>
+                      Отдел:
+                    </Text>
+                    <p >
+                      {data?.user_roles[0]?.module_name}
+                    </p>
+                  </Flex>
+                </Col>
+            }
+
+
+            {
+              data?.position &&
             <Col span={8}>
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Должность:
                 </Text>
                 <p >
-                  {data?.last_name}
+                  {data?.position}
                 </p>
               </Flex>
             </Col>
+            }
           </Row>
         </Space>
       </Spin>

@@ -1,28 +1,32 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Button, Col, Input, message, Row, Space, Spin,Typography} from "antd";
-import {useEffect, useState} from "react";
+import {Button, Col, Input,  Row, Select, Space, Spin, Typography} from "antd";
+import React, {useEffect, useMemo, useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import ModuleTable from "./ModuleTable";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
+import {FilterCompanyForAdmin} from "../../components";
 const {Title}=Typography
 
 
 const CreateWorker = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // delete
+    const {companyID} = useSelector(state => state.companySlice)
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
-    // get
-    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'module-get','/users/modules/',false)
+    const {data,isLoading:getLoading,refetch}=useGetQuery(false,'module-get',`/users/modules?company_id=${companyID}`,false)
+
+
 
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
-        refetch()
-    }, [isSuccess]);
+        if(companyID) {
+         refetch()
+        }
+    }, [isSuccess , companyID]);
 
     // delete
     const deleteHandle = (url, id) => {
@@ -44,15 +48,19 @@ const CreateWorker = () => {
             (data) => data?.name.toLowerCase().includes(value.toLowerCase()));
         setSearch(filterData);
     };
+
+
+
     return (
         <div className={'site-space-compact-wrapper'}>
             <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
                 <Row gutter={20}>
-                    <Col span={24}>
+                    <Col span={18}>
                         <Title level={2}>
                             Отделы
                         </Title>
                     </Col>
+                    <FilterCompanyForAdmin/>
                     <Col span={16}>
                         <Input placeholder="Поиск отделов" onChange={(e) => searchFunc(e.target.value)}/>
                     </Col>
@@ -65,7 +73,6 @@ const CreateWorker = () => {
                             Добавить
                         </Button>
                     </Col>
-
                 </Row>
                 <Spin
                     size='medium'

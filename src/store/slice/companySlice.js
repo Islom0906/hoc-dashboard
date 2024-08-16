@@ -1,24 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const savedCompany = localStorage.getItem('company');
+const savedCompany = localStorage.getItem('companyID');
 const initialState = {
-  company: savedCompany ? JSON.parse(savedCompany) : null
+  companyID: savedCompany ? JSON.parse(savedCompany) : null
 };
 
 export const companySlice = createSlice({
-  name: 'company',
+  name: 'companySlice',
   initialState,
   reducers: {
     selectCompany: (state, { payload }) => {
-      state.company = payload;
-      localStorage.setItem('company', JSON.stringify(payload));
+      state.companyID = payload;
+      localStorage.setItem('companyID', JSON.stringify(payload));
     },
     clearCompany: (state) => {
-      state.company = null;
-      localStorage.removeItem('company');
+      state.companyID = null;
+      localStorage.removeItem('companyID');
     }
   }
 });
+
 
 export const { selectCompany, clearCompany } = companySlice.actions;
 export default companySlice.reducer;

@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import {Col, Row, Spin, Pagination, Flex} from "antd";
 import {FilterTaskList, TaskCardForBoss} from "../../components";
 import { useGetQuery } from "../../service/query/Queries";
-// import FilterTaskList from "./FilterTaskList/FilterTaskList";
 
 
 const BossTracking = () => {

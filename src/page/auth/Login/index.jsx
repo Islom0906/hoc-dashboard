@@ -1,4 +1,4 @@
-import {Button, Flex, Form, Input, message, Spin, theme} from "antd";
+import {Button, Flex, Form, Input, message, theme , Typography} from "antd";
 import {setAuthToken} from "../../../service/auth/axios";
 import {useDispatch, useSelector} from "react-redux";
 import {authData} from "../../../store/slice/authSlice";
@@ -7,25 +7,32 @@ import './index.scss'
 import {AppLogo} from "../../../components";
 import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
 import {useNavigate} from "react-router-dom";
-import SelectCompany from "./SelectCompany/SelectCompany";
 import {MdArrowBackIos} from "react-icons/md";
 import {clearCompany} from "../../../store/slice/companySlice";
 import {useCallback} from "react";
+const {Title} = Typography
 
 const Login = () => {
+    const {data:{isLoading}}=useSelector(state => state.auth)
     const dispatch = useDispatch()
     const navigate=useNavigate()
-    const {company} = useSelector(state => state.companySlice)
     const {
         token: {mainBg},
     } = theme.useToken();
 
     const onFinish = useCallback(async (values) => {
+        dispatch(authData({
+            user: null,
+            isLoading: true,
+            isAuthenticated: false,
+        }));
         if (localStorage.getItem('token')) {
             localStorage.removeItem('refToken');
         }
         try {
             const data = await apiService.postData('/users/user/token/', values);
+
+
             localStorage.setItem('token', data?.access);
             localStorage.setItem('refToken', data?.refresh);
             setAuthToken(data.access);
@@ -47,6 +54,9 @@ const Login = () => {
             }));
         }
     }, [dispatch, navigate]);
+
+
+    console.log(isLoading)
     return (
         <div
             style={{
@@ -54,13 +64,14 @@ const Login = () => {
             }}
             className={'login--page'}>
             {
-                company === null ?
-                    <SelectCompany/>:
                     <BackgroundContent>
                         <div className={'login-card'}>
-                            <div className={'logo-login'}>
-                                <AppLogo/>
-                            </div>
+                            {/*<div className={'logo-login'}>*/}
+                            {/*    <AppLogo/>*/}
+                            {/*</div>*/}
+                            <Title level={1}>
+                                HOC
+                            </Title>
                             <Form
                                 name="basic"
                                 labelCol={{
@@ -72,10 +83,6 @@ const Login = () => {
                                 style={{
                                     maxWidth: 600,
                                 }}
-                                // initialValues={{
-                                //     email: 'sirofim012@gmail.com',
-                                //     password: 'admin001'
-                                // }}
                                 initialValues={{
                                     email: '',
                                     password: ''
@@ -108,28 +115,19 @@ const Login = () => {
                                 >
                                     <Input.Password placeholder={'Напишите свой пароль'}/>
                                 </Form.Item>
-
-
                                 <Form.Item
                                     wrapperCol={{
                                         span: 24,
                                     }}
                                 >
                                     <Flex gap={20} justify={'center'}>
-                                        <Button type="primary" htmlType="submit" style={{width:'100%'}}>
+                                        <Button type="primary" htmlType="submit" style={{width:'100%'}} disabled={isLoading}>
                                             Вход
                                         </Button>
-
-
-                                        <Button  type="link" onClick={() => dispatch(clearCompany())}   style={{width:'100%'}} icon={<MdArrowBackIos />}>
-                                            Назад
-                                        </Button>
                                     </Flex>
-
                                 </Form.Item>
                             </Form>
                         </div>
-
                     </BackgroundContent>
             }
         </div>

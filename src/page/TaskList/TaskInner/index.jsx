@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Col,
   Row,
   Space,
@@ -8,7 +7,7 @@ import {
   Spin, Flex,
 } from "antd";
 import { useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { AvatarUserProfile, TaskInnerCard } from "../../../components";
 import { useSelector } from "react-redux";
 import { useGetByIdQuery } from "../../../service/query/Queries";
@@ -29,15 +28,7 @@ const TaskInner = () => {
     data: taskInner,
     refetch: refetchTaskInner,
     isLoading: loadingTaskInner,
-    isSuccess: successTaskInner
   } = useGetByIdQuery(false, "taskInner", item, 'users/staff-subtask-retrieve');
-
-  // const {
-  //   data: taskInnerBoss,
-  //   refetch: refetchTaskInnerBoss,
-  //   isLoading: loadingTaskInnerBoss,
-  //   isSuccess: successTaskInnerBoss
-  // } = useGetByIdQuery(false, "taskInnerBoss", item, 'users/boss-tasks-retrieve');
 
   useEffect(() => {
     refetchTaskInner();
@@ -120,7 +111,6 @@ const TaskInner = () => {
               </Flex>
             </Space>
           </Col>
-
           <Modal
               open={open}
               title="Добавить комментарий"

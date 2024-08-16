@@ -10,3 +10,4 @@ export {default as AvatarUserProfile} from './AvatarUserProfile/AvatarUserProfil
 export {default as TaskCard} from './TaskCard/TaskCard'
 export {default as TaskCardForBoss} from './TaskCardForBoss/TaskCardForBoss'
 export {default as FilterTaskList} from './FilterTaskList/FilterTaskList'
+export {default as FilterCompanyForAdmin} from './FilterCompanyForAdmin/FilterCompanyForAdmin'

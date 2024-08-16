@@ -27,13 +27,13 @@ useEffect(() => {
           {userRole && samplePagesConfigs
               .filter(menu => isPermitted(menu.permittedRole) && !menu.noIndex)
               .map((menu) => (
-                  menu.children ? (
+                  menu.items ? (
                       <SubMenu
                           key={menu.key}
                           title={<LinkItem icon={menu?.icon} label={menu.label} />}
                       >
                         <Menu.ItemGroup>
-                          {menu.children
+                          {menu.items
                               .filter(menuItem => isPermitted(menuItem.permittedRole) && !menuItem.noIndex)
                               .map((menuItem) => (
                                   <Menu.Item key={menuItem.key}>
