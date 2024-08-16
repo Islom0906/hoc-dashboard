@@ -124,15 +124,15 @@ export const samplePagesConfigs = [
         permittedRole: ["boss"],
         isBackground: true
     },
-    // {
-    //     key: 1213222,
-    //     label: 'Ответственный',
-    //     icon:  <RiContractFill className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
-    //     path: '/Responsible',
-    //     element: ResponsibleUser,
-    //     permittedRole: ["boss"],
-    //     isBackground: true
-    // },
+    {
+        key: 1213222,
+        label: 'Ответственный',
+        icon:  <RiContractFill className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+        path: '/Responsible',
+        element: ResponsibleUser,
+        permittedRole: ["boss", 'staff'],
+        isBackground: true
+    },
     // {
     //     path: '/taskEditBoss/add',
     //     element: TaskEdit,
