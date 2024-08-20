@@ -68,14 +68,14 @@ export  const  UserAccount = ({ user , logOut})=> {
 
 
     const items = [
-        {
-            key: '1',
-            label: (
-                <Link  rel="noopener noreferrer" to="/profile">
-                    Редактировать
-                </Link>
-            ),
-        },
+        // {
+        //     key: '1',
+        //     label: (
+        //         <Link  rel="noopener noreferrer" to="/profile">
+        //             Редактировать
+        //         </Link>
+        //     ),
+        // },
         {
             key: '2',
             label: (

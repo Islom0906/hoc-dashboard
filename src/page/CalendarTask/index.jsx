@@ -5,6 +5,7 @@ import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
 import {FilterCompanyForAdmin} from "../../components";
 import {useSelector} from "react-redux";
+
 const {Title}=Typography
 
 const colorMeeting={
@@ -24,7 +25,7 @@ const colorMeeting={
 
 const CalendarTask = () => {
     const {companyID} = useSelector(state => state.companySlice)
-
+    const {data: {user}} = useSelector(state => state.auth);
     // birthday
     const {
         data: dataBirthDay,
@@ -62,7 +63,10 @@ const CalendarTask = () => {
                         Календарь
                     </Title>
                 </Col>
+                {
+                    user?.roles[0]?.name === 'admin' &&
                 <FilterCompanyForAdmin/>
+                }
             </Row>
             <Flex align={'center'} gap={20}>
                 <Flex align={'center'} gap={5}>
