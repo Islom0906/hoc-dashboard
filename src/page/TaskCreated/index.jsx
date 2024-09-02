@@ -79,8 +79,6 @@ const TaskCreated = () => {
       setOrdering('')
     }
   };
-
-
   useEffect(() => {
     refetchGetCompany()
     return () => {

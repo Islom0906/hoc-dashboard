@@ -30,7 +30,8 @@ const initialValueForm = {
             text: "",
             deadline: '',
             staff: null,
-            module: null
+            module: null,
+            file: null,
         }
     ]
 }
@@ -114,7 +115,8 @@ const TaskPostEdit = () => {
                 text: item?.text,
                 deadline: dayjs(item?.deadline) || null,
                 staff: item?.staff,
-                module: item?.module?.id
+                module: item?.module?.id,
+                file: item?.file
             })
 
             const optionSubModuleStaff = item?.module?.staffs?.map((option) => {
@@ -142,7 +144,6 @@ const TaskPostEdit = () => {
 
         })
 
-
         if (!editTaskData?.moduls?.length > 0 && editTaskSuccess) {
             setSelectAddSubTask(true)
             setSubTaskStaffs(subModuleStaff)
@@ -164,7 +165,9 @@ const TaskPostEdit = () => {
             form.setFieldsValue(edit)
         }
     }, [editTaskData])
-
+    const onFailed = (value) => {
+        console.log(value)
+    }
     const onFinish = (value) => {
         const selectStaff = []
         const selectModuls = []
@@ -190,7 +193,8 @@ const TaskPostEdit = () => {
             moduls: selectAddSubTask ? [] : selectModuls,
             users: selectAddSubTask ? [] : selectStaff,
             sub_tasks: value?.sub_tasks ? subTask : [],
-            responsible_user: value?.responsible_user
+            responsible_user: value?.responsible_user,
+
         }
         if (editTaskData) {
             putTask({url: '/users/tasks', data: data, id: editId})
@@ -288,8 +292,6 @@ const TaskPostEdit = () => {
             refetchGetUserByModules()
         }
     }, [selectModulesID]);
-
-
     return (<div>
         {(postTaskLoading || editTaskLoading || putTaskLoading) ?
             <AppLoader/> :
@@ -307,6 +309,7 @@ const TaskPostEdit = () => {
                 }}
                 initialValues={initialValueForm}
                 onFinish={onFinish}
+                onFinishFailed={onFailed}
                 autoComplete="off"
             >
                 <Row gutter={20}>
@@ -382,9 +385,8 @@ const TaskPostEdit = () => {
                     <Col span={24}>
                         <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
                             <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
-                                <CreatSubTask onChangeModules={onChangeModules} optionsModules={optionsModules}
+                                <CreatSubTask  form={form}  onChangeModules={onChangeModules} optionsModules={optionsModules}
                                               optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
-
                                 />
                             </Flex>
                         </Card>
@@ -438,8 +440,6 @@ const TaskPostEdit = () => {
                             />
                         </Form.Item>
                     </Col>
-
-
                 </Row>
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
                     {editTaskSuccess ? 'Редактировать' : 'Создать'}

@@ -36,7 +36,6 @@ const CompanyPostEdit = () => {
         isLoading: putCompanyLoading,
         isSuccess: putCompanySuccess
     } = useEditQuery()
-
     // ================================ useEffect =============================
     // company success
     SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')
@@ -44,20 +43,15 @@ const CompanyPostEdit = () => {
     EditGetById(editCompanyRefetch)
     // if no edit company
     SetInitialValue(form,initialValueForm)
-
-
-
     //edit company
     useEffect(() => {
         if (editCompanySuccess) {
-
             const image_dark = [{
                 uid: editCompanyData.id,
                 name: editCompanyData.id,
                 status: "done",
                 url: editCompanyData.image_dark
             }];
-
             const image_light = [{
                 uid: editCompanyData.id,
                 name: editCompanyData.id,
@@ -72,12 +66,10 @@ const CompanyPostEdit = () => {
             setFileListPropsLight(image_light)
             form.setFieldsValue(edit)
         }
-
     }, [editCompanyData])
 
     const onFinish = (value) => {
         const formData = new FormData();
-        console.log(fileListPropsDark)
         formData.append('title', value.title);
         if (fileListPropsDark[0]?.originFileObj) {
             formData.append('image_dark', fileListPropsDark[0]?.originFileObj);
@@ -91,43 +83,12 @@ const CompanyPostEdit = () => {
             postCompanyMutate({url: "/users/companies/", data: formData});
         }
     }
-
-
-    // refresh page again get data
-    useEffect(() => {
-        const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
-        if (storedValues) {
-            console.log(storedValues)
-            // storedValues.image = []
-            form.setFieldsValue(storedValues);
-        }
-
-        const handleBeforeUnload = () => {
-            localStorage.setItem(
-                'myFormValues',
-                JSON.stringify(form.getFieldsValue()),
-            );
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            localStorage.removeItem('editDataId')
-            localStorage.removeItem('myFormValues')
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        }
-    }, []);
-
-
-    // image
     const onChangeImageLight = ({fileList: newFileList } ) => {
         setFileListPropsLight(newFileList);
     };
     const onChangeImageDark = ({fileList: newFileList } ) => {
         setFileListPropsDark(newFileList);
     };
-
-
     return (<div>
         {(postCompanyLoading || editCompanyLoading || putCompanyLoading) ?
             <AppLoader/> :
@@ -196,8 +157,6 @@ const CompanyPostEdit = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-
-
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
                     {editCompanySuccess ? 'Редактировать' : 'Создать'}
                 </Button>

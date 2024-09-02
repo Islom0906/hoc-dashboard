@@ -58,7 +58,6 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
           />
           <Flex align={"center"} justify={"space-between"} gap={5}>
             <Text style={{fontSize:'12px'}}>Ответственный:</Text>
-
               <AvatarUserProfile size={40} key={responsible_user?.id} full_name={responsible_user?.full_name} moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image} messenger1={responsible_user?.messenger_link1} messenger2={responsible_user?.messenger_link2} />
           </Flex>
 
@@ -66,7 +65,6 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
             {/*<Text type={"secondary"}>*/}
             {/*  {dayjs(lastUpdate).format("DD.MM.YYYY")}*/}
             {/*</Text>*/}
-
             <Avatar.Group size={"small"}>
               {included_users?.map((user) => (
                     <AvatarUserProfile size={30} key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image} messenger1={user?.messenger_link1} messenger2={user?.messenger_link2}/>

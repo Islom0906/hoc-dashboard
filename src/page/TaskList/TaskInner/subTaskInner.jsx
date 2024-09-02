@@ -9,6 +9,7 @@ import { AvatarUserProfile } from "../../../components";
 import { MdOutlineUpdate } from "react-icons/md";
 import DeadlineStatusColor from "../../../hooks/deadlineStatusColor";
 import { deadlineColor } from "../../../constants/deadlineColor";
+import {CiLink} from "react-icons/ci";
 const { Title } = Typography;
 
 const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, includedUser, deadline_status, isPostCommentSuccess }) => {
@@ -22,13 +23,14 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
     setWhichWriteID(id);
     showModal();
   };
-
   const onChangeDoneProject = (id) => {
     setIsChecked(true);
     setWhichWriteID(id);
     showModal();
   };
-
+  const extractFilename = (url) => {
+    return url.substring(url.lastIndexOf('/') + 1);
+  };
   useEffect(() => {
     const [subTaskItem] = subTask.filter((subtaskChild) => subtaskChild?.id === whichWriteID);
     if (isPostCommentSuccess && isChecked) {
@@ -39,7 +41,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
         putProjectDone({ url: `/users/staff-subtasks`, data: { task_status: 'done' }, id: whichWriteID });
         setCheckedState((prevState) => ({ ...prevState, [whichWriteID]: true }));
       }
-      setIsChecked(false); // Reset isChecked after handling the task status change
+      setIsChecked(false);
     }
   }, [isPostCommentSuccess]);
 
@@ -70,6 +72,14 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
                         <Flex align={"start"} gap={5} vertical={true}>
                           <Title level={4}>{task?.title}</Title>
                           <p>{task?.text}</p>
+                          {
+                              task?.file &&
+                              <Tag color={'blue'} icon={<CiLink />} style={{display:"flex" , alignItems:'center' , gap:5}}>
+                                <a href={task?.file} download={true} target={"_blank"}>
+                                  {extractFilename(task.file)}
+                                </a>
+                              </Tag>
+                          }
                         </Flex>
                       </Flex>
                       <Flex vertical={true} gap={10}>
@@ -81,7 +91,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
                             {dayjs(task?.deadline).format("DD.MM.YYYY")}
                           </Tag>
                         </Tooltip>
-                        <Button type="primary" onClick={() => clickHandle(task?.id)}>
+                        <Button type="primary" size={"small"} onClick={() => clickHandle(task?.id)}>
                           <FaRegCommentDots />
                         </Button>
                       </Flex>

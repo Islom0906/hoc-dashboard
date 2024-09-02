@@ -22,7 +22,6 @@ const PersonalInfo = () => {
     }
   } , [user])
 
-console.log(data)
 
   return (
       <Spin spinning={getTaskLoading}>

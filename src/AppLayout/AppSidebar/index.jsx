@@ -23,7 +23,7 @@ useEffect(() => {
 
   return (
       <Sider width={300} breakpoint={'lg'}>
-        <Menu className={'app-aside'} mode="inline">
+        <Menu className={'app-aside'} mode="inline" >
           {userRole && samplePagesConfigs
               .filter(menu => isPermitted(menu.permittedRole) && !menu.noIndex)
               .map((menu) => (
@@ -61,7 +61,7 @@ export default AppSidebar;
 
 export const LinkItem = ({ icon, label }) => {
   return (
-      <Flex gap={20}>
+      <Flex gap={25} >
         <span>{icon}</span>
         <span>{label}</span>
       </Flex>

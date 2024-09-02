@@ -8,8 +8,6 @@ const CommentUser = ({comment}) => {
   const extractFilename = (url) => {
     return url.substring(url.lastIndexOf('/') + 1);
   };
-
-
   return (
       <Flex align={"start"} justify={"space-between"} gap={15} style={{width: '100%',padding:'10px 5px',
           borderRadius:'5px'}}>

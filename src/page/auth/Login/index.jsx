@@ -1,16 +1,13 @@
-import {Button, Flex, Form, Input, message, theme , Typography} from "antd";
+import {Button, Flex, Form, Input, message, theme} from "antd";
 import {setAuthToken} from "../../../service/auth/axios";
 import {useDispatch, useSelector} from "react-redux";
 import {authData} from "../../../store/slice/authSlice";
 import apiService from "../../../service/apis/api";
 import './index.scss'
-import {AppLogo} from "../../../components";
 import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
 import {useNavigate} from "react-router-dom";
-import {MdArrowBackIos} from "react-icons/md";
-import {clearCompany} from "../../../store/slice/companySlice";
-import {useCallback} from "react";
-const {Title} = Typography
+import  {useCallback} from "react";
+import EHOC from './EHOC.png'
 
 const Login = () => {
     const {data:{isLoading}}=useSelector(state => state.auth)
@@ -56,7 +53,6 @@ const Login = () => {
     }, [dispatch, navigate]);
 
 
-    console.log(isLoading)
     return (
         <div
             style={{
@@ -66,12 +62,13 @@ const Login = () => {
             {
                     <BackgroundContent>
                         <div className={'login-card'}>
-                            {/*<div className={'logo-login'}>*/}
-                            {/*    <AppLogo/>*/}
-                            {/*</div>*/}
-                            <Title level={1}>
-                                HOC
-                            </Title>
+                            <img
+                                width={'80%'}
+                                height={80}
+                                src={EHOC}
+                                style={{objectFit:"contain"}}
+                                alt={'EHOC'}
+                            />
                             <Form
                                 name="basic"
                                 labelCol={{

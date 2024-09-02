@@ -9,6 +9,7 @@ const FilterCompanyForAdmin = () => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const companyID = useSelector((state) => state.companySlice.companyID);
+  const {data:{user}}=useSelector(state => state.auth)
 
   const {
     data: getCompany,
@@ -16,11 +17,17 @@ const FilterCompanyForAdmin = () => {
   } = useGetQuery(false, "get-company", "/users/companies/", false);
 
   useEffect(() => {
-    refetchGetCompany();
+    if(user?.roles[0]?.name === 'admin') {
+      refetchGetCompany();
+    }else {
+      // dispatch(selectCompany(id))
+    }
     return () => {
       queryClient.removeQueries();
     };
   }, []);
+
+
 
   const optionsCompany = useMemo(() => {
     return getCompany?.map((option) => {

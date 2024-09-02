@@ -14,7 +14,6 @@ const TaskTable = ({ data, deleteHandle, pagination, setPagination, handleTableC
   const dispatch = useDispatch();
 
 
-  console.log(data)
   const Delete = async (id) => {
     deleteHandle("/users/tasks", id);
   };

@@ -1,9 +1,58 @@
-import {Button, Col, DatePicker, Form, Row, Select, Typography} from "antd";
+import {Button, Col, DatePicker, Form, Row, Select, Typography, Upload} from "antd";
 import {MinusCircleOutlined} from "@ant-design/icons";
 import {FormInput, FormTextArea} from "../../components";
+import {onPreviewImage} from "../../hooks";
+import {FaFolderPlus} from "react-icons/fa";
+import React, {useEffect, useState} from "react";
+import {useDeleteQuery, usePostQuery} from "../../service/query/Queries";
 const {Title} = Typography
 
-const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) => {
+const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,form }) => {
+  const [fileListProps, setFileListProps] = useState([]);
+  const [fileListNumber, setFileListNumber] = useState([]);
+  const {
+    mutate: imagesDeleteMutate
+  } = useDeleteQuery()
+  // query-image
+  const {
+    mutate: imagesUploadMutate,
+    data: imagesUpload,
+    isSuccess: imagesUploadSuccess,
+  } = usePostQuery()
+  useEffect(() => {
+    if (imagesUploadSuccess) {
+      const uploadImg = [{
+        uid: imagesUpload?.id,
+        name: imagesUpload?.id,
+        status: "done",
+        url: imagesUpload?.image
+      }];
+      // form.setFieldsValue({file: uploadImg});
+      setFileListProps(uploadImg);
+      const getValueSubTask = form.getFieldValue('sub_tasks')
+      console.log('getValueSubTask' , getValueSubTask[fileListNumber])
+      getValueSubTask[fileListNumber].file = imagesUpload?.id
+      form.setFieldsValue({
+        sub_tasks: [
+          ...getValueSubTask,
+        ]
+      });
+    }
+  }, [imagesUpload, form, imagesUploadSuccess]);
+  const onChangeImage = ({fileList: newFileList} , index) => {
+    const formData = new FormData();
+    if (fileListProps.length !== 0 || newFileList.length === 0) {
+      // form.setFieldsValue({file: []});
+      const id = [fileListProps[0]?.uid];
+      imagesDeleteMutate({url: "users/files", id});
+      setFileListProps([])
+    } else if (newFileList.length !== 0) {
+      formData.append("image", newFileList[0].originFileObj);
+      imagesUploadMutate({url: "/users/files/", data: formData});
+      setFileListNumber(index)
+    }
+  };
+
   return (
       <Form.List name="sub_tasks">
         {(fields, {add, remove}) => (
@@ -36,6 +85,8 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             />
                           </Form.Item>
                         </Col>
+
+
                         <Col span={12}>
                           <Form.Item
                               label={'Выберите отдел'}
@@ -58,6 +109,7 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             />
                           </Form.Item>
                         </Col>
+
                         <Col span={12}>
                           <Form.Item
                               label={'Выберите сотрудника'}
@@ -79,6 +131,7 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             />
                           </Form.Item>
                         </Col>
+
                         <Col span={12}>
                           <Form.Item
                           >
@@ -86,6 +139,23 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                                 label={'Название подзадачи'}
                                 name={[field.name, 'title']}
                             />
+                          </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                          <Form.Item
+                              label='Добавить файл'
+                              name={[field.name, 'file']}
+                              >
+                            <Upload
+                                maxCount={1}
+                                fileList={fileListProps}
+                                listType='picture-card'
+                                onChange={ (file) => onChangeImage( file,index)}
+                                onPreview={onPreviewImage}
+                                beforeUpload={() => false}
+                            >
+                              {fileListProps.length > 0 ? "" : <FaFolderPlus style={{fontSize:'32px'}} />}
+                            </Upload>
                           </Form.Item>
                         </Col>
                         <Col span={24}>
