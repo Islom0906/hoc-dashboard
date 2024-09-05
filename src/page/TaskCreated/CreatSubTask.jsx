@@ -7,8 +7,7 @@ import React, {useEffect, useState} from "react";
 import {useDeleteQuery, usePostQuery} from "../../service/query/Queries";
 const {Title} = Typography
 
-const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,form }) => {
-  const [fileListProps, setFileListProps] = useState([]);
+const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,form ,fileListProps,setFileListProps}) => {
   const [fileListNumber, setFileListNumber] = useState([]);
   const {
     mutate: imagesDeleteMutate
@@ -21,31 +20,36 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
   } = usePostQuery()
   useEffect(() => {
     if (imagesUploadSuccess) {
+      const initialImage=[...fileListProps]
       const uploadImg = [{
         uid: imagesUpload?.id,
         name: imagesUpload?.id,
         status: "done",
         url: imagesUpload?.image
       }];
-      // form.setFieldsValue({file: uploadImg});
-      setFileListProps(uploadImg);
+      initialImage[fileListNumber]=uploadImg
+      setFileListProps(initialImage);
       const getValueSubTask = form.getFieldValue('sub_tasks')
-      console.log('getValueSubTask' , getValueSubTask[fileListNumber])
       getValueSubTask[fileListNumber].file = imagesUpload?.id
       form.setFieldsValue({
         sub_tasks: [
           ...getValueSubTask,
         ]
       });
+      console.log('getValueSubTask' ,getValueSubTask[fileListNumber].file)
+      console.log('1' )
+
     }
   }, [imagesUpload, form, imagesUploadSuccess]);
   const onChangeImage = ({fileList: newFileList} , index) => {
     const formData = new FormData();
-    if (fileListProps.length !== 0 || newFileList.length === 0) {
-      // form.setFieldsValue({file: []});
-      const id = [fileListProps[0]?.uid];
+    if(fileListProps[index]?.length  || newFileList.length === 0) {
+      const deleteFileProps=[...fileListProps]
+      const id = [fileListProps[index][0]?.uid];
       imagesDeleteMutate({url: "users/files", id});
-      setFileListProps([])
+      deleteFileProps[index] = []
+      console.log(deleteFileProps)
+      setFileListProps(deleteFileProps)
     } else if (newFileList.length !== 0) {
       formData.append("image", newFileList[0].originFileObj);
       imagesUploadMutate({url: "/users/files/", data: formData});
@@ -125,6 +129,9 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                                 style={{
                                   width: '100%',
                                 }}
+                                rules={[{
+                                  required: true, message: 'Выберите сотрудника'
+                                }]}
                                 placeholder='Выберите сотрудника'
                                 optionLabelProp='label'
                                 options={optionsUserByModules && optionsUserByModules[0]?.length > 0 ? optionsUserByModules[index] : optionsUserByModules}
@@ -136,6 +143,8 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                           <Form.Item
                           >
                             <FormInput
+                                required={true}
+                                required_text={'Выберите Название подзадачи'}
                                 label={'Название подзадачи'}
                                 name={[field.name, 'title']}
                             />
@@ -148,18 +157,20 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                               >
                             <Upload
                                 maxCount={1}
-                                fileList={fileListProps}
+                                fileList={fileListProps[index]}
                                 listType='picture-card'
-                                onChange={ (file) => onChangeImage( file,index)}
+                                onChange={ (file) => onChangeImage(file,index)}
                                 onPreview={onPreviewImage}
                                 beforeUpload={() => false}
                             >
-                              {fileListProps.length > 0 ? "" : <FaFolderPlus style={{fontSize:'32px'}} />}
+                              {fileListProps[index]?.length > 0 ? "" : <FaFolderPlus style={{fontSize:'32px'}} />}
                             </Upload>
                           </Form.Item>
                         </Col>
                         <Col span={24}>
                           <FormTextArea
+                              required={true}
+                              required_text={'Выберите подзадаче'}
                               label={'Подробно о подзадаче'}
                               name={[field.name, 'text']}
                           />

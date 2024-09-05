@@ -5,7 +5,7 @@ import {Header} from "antd/es/layout/layout";
 import {useDispatch, useSelector} from "react-redux";
 import {changeThemeMode} from "../../store/slice/themeSlice";
 import {authData} from "../../store/slice/authSlice";
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import {BsMoon} from "react-icons/bs";
 
 const AppHeader = () => {

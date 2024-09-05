@@ -40,6 +40,8 @@ const TaskPostEdit = () => {
     const [form] = Form.useForm();
     const [selectCompanyID, setSelectCompanyID] = useState(null)
     const [selectModulesID, setSelectModulesID] = useState(null)
+    const [fileListProps, setFileListProps] = useState([[]]);
+
     const [selectAddSubTask, setSelectAddSubTask] = useState(false)
     const [subTaskStaffs, setSubTaskStaffs] = useState([])
     const {editId} = useSelector(state => state.query)
@@ -106,6 +108,7 @@ const TaskPostEdit = () => {
     //edit company
     useEffect(() => {
         const subTask = []
+        const editFileProps=[]
         const allModuls = []
         const subModuleStaff = []
         const allModuleStaff = []
@@ -116,9 +119,14 @@ const TaskPostEdit = () => {
                 deadline: dayjs(item?.deadline) || null,
                 staff: item?.staff,
                 module: item?.module?.id,
-                file: item?.file
+                file: item?.file_id
             })
-
+            editFileProps.push([{
+                uid: item?.file_id,
+                name:item?.file_url,
+                status: "done",
+                url: item?.file_url
+            }])
             const optionSubModuleStaff = item?.module?.staffs?.map((option) => {
                 return {
                     value: option?.id,
@@ -161,6 +169,7 @@ const TaskPostEdit = () => {
                 sub_tasks: subTask,
                 allModuls
             }
+            setFileListProps(editFileProps)
             setSelectCompanyID(editTaskData?.company?.id)
             form.setFieldsValue(edit)
         }
@@ -194,7 +203,6 @@ const TaskPostEdit = () => {
             users: selectAddSubTask ? [] : selectStaff,
             sub_tasks: value?.sub_tasks ? subTask : [],
             responsible_user: value?.responsible_user,
-
         }
         if (editTaskData) {
             putTask({url: '/users/tasks', data: data, id: editId})
@@ -387,6 +395,8 @@ const TaskPostEdit = () => {
                             <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
                                 <CreatSubTask  form={form}  onChangeModules={onChangeModules} optionsModules={optionsModules}
                                               optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
+                                               fileListProps={fileListProps}
+                                               setFileListProps={setFileListProps}
                                 />
                             </Flex>
                         </Card>
