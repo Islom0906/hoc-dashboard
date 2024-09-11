@@ -89,8 +89,6 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                             />
                           </Form.Item>
                         </Col>
-
-
                         <Col span={12}>
                           <Form.Item
                               label={'Выберите отдел'}
@@ -113,7 +111,6 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                             />
                           </Form.Item>
                         </Col>
-
                         <Col span={12}>
                           <Form.Item
                               label={'Выберите сотрудника'}

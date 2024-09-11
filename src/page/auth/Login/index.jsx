@@ -7,12 +7,13 @@ import './index.scss'
 import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
 import {useNavigate} from "react-router-dom";
 import  {useCallback} from "react";
-import EHOC from './EHOC.png'
-
+import EHOCLight from './EHOC.png'
+import EHOCDark from './EHOC-dark.png'
 const Login = () => {
     const {data:{isLoading}}=useSelector(state => state.auth)
     const dispatch = useDispatch()
     const navigate=useNavigate()
+    const {systemMode}=useSelector(state => state.theme)
     const {
         token: {mainBg},
     } = theme.useToken();
@@ -62,13 +63,17 @@ const Login = () => {
             {
                     <BackgroundContent>
                         <div className={'login-card'}>
-                            <img
-                                width={'80%'}
-                                height={80}
-                                src={EHOC}
-                                style={{objectFit:"contain"}}
-                                alt={'EHOC'}
-                            />
+                            {
+                                systemMode === 'light' ?
+                                    <img
+                                        src={EHOCDark}
+                                        style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
+                                    /> :
+                                    <img
+                                        src={EHOCLight}
+                                        style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
+                                    />
+                            }
                             <Form
                                 name="basic"
                                 labelCol={{

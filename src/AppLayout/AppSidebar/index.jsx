@@ -6,11 +6,13 @@ import { Link } from 'react-router-dom';
 import { samplePagesConfigs} from "../../page/routerPage";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import EHOC from './EHOC.png'
+import EHOCLight from './EHOC.png'
+import EHOCDark from './EHOC-dark.png'
 
 const AppSidebar = () => {
   const [userRole ,setUserRole] = useState(null)
   const {data:{user}} = useSelector(state => state.auth)
+  const {systemMode}=useSelector(state => state.theme)
 
 useEffect(() => {
   if(user) {
@@ -55,18 +57,23 @@ useEffect(() => {
               ))}
         </Menu>
         <Flex style={{position:"absolute" , bottom:'10px'  ,left:'50%' , transform:'translateX(-50%)'}}>
-          <img
-              src={EHOC}
-              style={{width: '150px', height: '70px', objectFit: "contain" , background:"#fff30"}}
-          />
+          {
+            systemMode === 'light' ?
+                <img
+                    src={EHOCDark}
+                    style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
+                /> :
+                <img
+                    src={EHOCLight}
+                    style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
+                />
+          }
         </Flex>
 
       </Sider>
   );
 };
-
 export default AppSidebar;
-
 export const LinkItem = ({icon, label}) => {
   return (
       <Flex gap={25} >
