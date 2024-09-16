@@ -36,12 +36,10 @@ const initialValueForm = {
     ]
 }
 const TaskPostEdit = () => {
-    const queryClient = useQueryClient()
     const [form] = Form.useForm();
-    const [selectCompanyID, setSelectCompanyID] = useState(null)
     const [selectModulesID, setSelectModulesID] = useState(null)
     const [fileListProps, setFileListProps] = useState([[]]);
-
+    const {companyID} = useSelector(state => state.companySlice)
     const [selectAddSubTask, setSelectAddSubTask] = useState(false)
     const [subTaskStaffs, setSubTaskStaffs] = useState([])
     const {editId} = useSelector(state => state.query)
@@ -49,33 +47,27 @@ const TaskPostEdit = () => {
     const {
         data: responsibleUser,
         refetch: refetchResponsibleUser
-    } = useGetQuery(false, 'get-responsibleUser', `users/user-filter-by-company?company_id=${selectCompanyID}`, false)
-    // get-company
+    } = useGetQuery(false, 'get-responsibleUser', `users/user-filter-by-company?company_id=${companyID}`, false)
     const {
-        data: getCompany,
-        refetch: refetchGetCompany
-    } = useGetQuery(false, 'get-company', '/users/companies/', false)
+        data: getTag,
+        refetch: refetchGetTag
+    } = useGetQuery(false, 'get-tag', `users/tags/${companyID}`, false)
     // get modules
     const {
         data: getModules,
         refetch: refetchGetModules
-    } = useGetQuery(false, 'get-modules', `/users/module-filter?company_id=${selectCompanyID}`, false)
-
-
+    } = useGetQuery(false, 'get-modules', `/users/module-filter?company_id=${companyID}`, false)
     // get-user
     const {
         data: getUserByModules,
         refetch: refetchGetUserByModules
     } = useGetQuery(false, 'get-user', `/users/user-filter?module_id=${selectModulesID}`, false)
-
-
     // post task
     const {
         mutate: postTaskMutate,
         isLoading: postTaskLoading,
         isSuccess: postTaskSuccess
     } = usePostQuery()
-
     // get by id
     const {
         isLoading: editTaskLoading,
@@ -83,8 +75,6 @@ const TaskPostEdit = () => {
         refetch: editTaskRefetch,
         isSuccess: editTaskSuccess
     } = useGetByIdQuery(false, "edit-task", editId, '/users/tasks')
-
-
     // put task
     const {
         mutate: putTask,
@@ -92,19 +82,10 @@ const TaskPostEdit = () => {
         isSuccess: putTaskSuccess
     } = useEditQuery()
 
-
-    useEffect(() => {
-        refetchGetCompany()
-        return () => {
-            queryClient.removeQueries()
-        }
-    }, [])
     // tasks success
-
     successCreateAndEdit(postTaskSuccess, putTaskSuccess, '/taskCreated')
     editGetById(editTaskRefetch)
     setInitialValue(form, initialValueForm)
-
     //edit company
     useEffect(() => {
         const subTask = []
@@ -151,7 +132,6 @@ const TaskPostEdit = () => {
             allModuleStaff.push(optionModuleStaff)
 
         })
-
         if (!editTaskData?.moduls?.length > 0 && editTaskSuccess) {
             setSelectAddSubTask(true)
             setSubTaskStaffs(subModuleStaff)
@@ -164,13 +144,12 @@ const TaskPostEdit = () => {
                 text: editTaskData?.title,
                 deadline: dayjs(editTaskData?.deadline),
                 responsible_user: editTaskData?.responsible_user?.id,
-                company: editTaskData?.company?.id,
+                tag: editTaskData?.tag?.id,
                 moduls: editTaskData?.moduls,
                 sub_tasks: subTask,
                 allModuls
             }
             setFileListProps(editFileProps)
-            setSelectCompanyID(editTaskData?.company?.id)
             form.setFieldsValue(edit)
         }
     }, [editTaskData])
@@ -198,7 +177,8 @@ const TaskPostEdit = () => {
             title: value.title,
             text: value.text,
             deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS'),
-            company: value?.company,
+            tag: value?.tag,
+            company: companyID,
             moduls: selectAddSubTask ? [] : selectModuls,
             users: selectAddSubTask ? [] : selectStaff,
             sub_tasks: value?.sub_tasks ? subTask : [],
@@ -245,15 +225,16 @@ const TaskPostEdit = () => {
             };
         });
     }, [responsibleUser]);
-    // option Company
-    const optionsCompany = useMemo(() => {
-        return getCompany?.map((option) => {
+
+    // option module
+    const optionTag = useMemo(() => {
+        return getTag?.map((option) => {
             return {
                 value: option?.id,
-                label: option?.title,
+                label: option?.name,
             };
         });
-    }, [getCompany]);
+    }, [getTag]);
     // option module
     const optionsModules = useMemo(() => {
         return getModules?.results?.map((option) => {
@@ -273,9 +254,7 @@ const TaskPostEdit = () => {
         });
     }, [getUserByModules]);
 
-    const onChangeCompany = (id) => {
-        setSelectCompanyID(id)
-    }
+
     const onChangeModules = (id, index) => {
         setSelectModulesID(id)
         setSubTaskStaffs([])
@@ -290,11 +269,13 @@ const TaskPostEdit = () => {
         }
     }
     useEffect(() => {
-        if (selectCompanyID) {
+        if (companyID) {
             refetchGetModules()
             refetchResponsibleUser()
+            refetchGetTag()
         }
-    }, [selectCompanyID]);
+    }, [companyID]);
+
     useEffect(() => {
         if (selectModulesID) {
             refetchGetUserByModules()
@@ -326,6 +307,27 @@ const TaskPostEdit = () => {
                             Создать задачу:
                         </Title>
                     </Col>
+                    <Col span={24}>
+                        <Form.Item
+                            label={'Выберите компанию'}
+                            name={'tag'}
+                            rules={[{
+                                required: true, message: 'Выберите компания'
+                            }]}
+                            wrapperCol={{
+                                span: 24,
+                            }}
+                        >
+                            <Select
+                                style={{
+                                    width: '100%',
+                                }}
+                                placeholder='Выберите компанию'
+                                optionLabelProp='label'
+                                options={optionTag}
+                            />
+                        </Form.Item>
+                    </Col>
                     <Col span={12}>
                         <FormInput
                             required={true}
@@ -334,6 +336,7 @@ const TaskPostEdit = () => {
                             name={'title'}
                         />
                     </Col>
+
                     <Col span={12}>
                         <Form.Item
                             label="Выберите крайний срок"
@@ -355,28 +358,7 @@ const TaskPostEdit = () => {
                             name={'text'}
                         />
                     </Col>
-                    <Col span={24}>
-                        <Form.Item
-                            label={'Выберите компанию'}
-                            name={'company'}
-                            rules={[{
-                                required: true, message: 'Выберите компания'
-                            }]}
-                            wrapperCol={{
-                                span: 24,
-                            }}
-                        >
-                            <Select
-                                style={{
-                                    width: '100%',
-                                }}
-                                placeholder='Выберите компанию'
-                                optionLabelProp='label'
-                                options={optionsCompany}
-                                onChange={onChangeCompany}
-                            />
-                        </Form.Item>
-                    </Col>
+
                     {/*<Col>*/}
                     {/*        <Button  type={"primary"} style={{marginBottom: 30}}*/}
                     {/*                 onClick={() => setSelectAddSubTask(prev => !prev)}>*/}
@@ -446,7 +428,6 @@ const TaskPostEdit = () => {
                                 placeholder='Выберите человек'
                                 optionLabelProp='label'
                                 options={optionsResponsibleUser}
-                                // onChange={onChangeCompany}
                             />
                         </Form.Item>
                     </Col>

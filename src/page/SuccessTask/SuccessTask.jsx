@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import {Col, Row, Spin, Pagination, Flex} from "antd";
-import { TaskCard} from "../../components";
+import {FilterTaskList, TaskCard} from "../../components";
 import { useGetQuery } from "../../service/query/Queries";
 
 
@@ -9,17 +9,28 @@ const SuccessTask = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
+  const [ordering, setOrdering] = useState('');
+  const [getTagCompany, setGetTagCompany] = useState('');
+  const [deadlineStatus, setDeadlineStatus] = useState('');
 
+  const {
+    data: GetTagCompany =[],
+    refetch: refetchGetTagCompany,
+  } = useGetQuery(false, "get-tag-company", `users/tag-selection`);
+
+  // !ozgarish kerak API
   const {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "staff-get-task", `users/staff-done-subtasks/?page=${currentPage}&page_size=${pageSize}`);
-
+  } = useGetQuery(false, "staff-get-task", `users/staff-done-subtasks/?page=${currentPage}&page_size=${pageSize}${getTagCompany && `&tag__in=${getTagCompany}`}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`);
+  useEffect(() => {
+    refetchGetTagCompany()
+  } , [user])
   useEffect(() => {
 
     refetchStaffGetTask();
-  }, [user, currentPage, pageSize  ]);
+  }, [user, currentPage, pageSize , ordering , deadlineStatus , getTagCompany  ]);
   const onPaginationChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);
@@ -32,6 +43,7 @@ const SuccessTask = () => {
           <Col span={24}>
             <h1>Ваши выполненные задачи:</h1>
           </Col>
+          <FilterTaskList setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany} />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>
@@ -40,7 +52,6 @@ const SuccessTask = () => {
                     key={task?.main_task_id}
                     className="gutter-row"
                     xs={{ span: 12 }}
-
                     md={{ span: 8 }}
                     xl={{ span: 6 }}
                 >

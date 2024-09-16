@@ -9,7 +9,7 @@ const CompanyTable = ({data,deleteHandle}) => {
     const navigate=useNavigate()
     const dispatch=useDispatch()
     const Delete = async (id) => {
-        deleteHandle('/users/companies',id)
+        deleteHandle('/users/tag',id)
     };
 
 
@@ -23,8 +23,8 @@ const CompanyTable = ({data,deleteHandle}) => {
     const columns = [
         {
             title: 'Название компании',
-            dataIndex: 'title',
-            id: 'title',
+            dataIndex: 'name',
+            id: 'name',
             render: (text) => <p>{text}</p>,
         },
         {

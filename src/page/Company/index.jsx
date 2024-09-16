@@ -1,11 +1,12 @@
 import {Button, Col, Input, Row, Typography, Space, Spin} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import CompanyTable from "./CompanyTable";
-import {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
+import {FilterCompanyForAdmin} from "../../components";
 
 const {Title} = Typography
 
@@ -13,11 +14,12 @@ const {Title} = Typography
 const Company = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {companyID} = useSelector(state => state.companySlice)
+
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
-    const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get','/users/companies/',false)
+    const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get',`/users/tags/${companyID}`,false)
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
-
     useEffect(() => {
         refetch()
     }, [isSuccess]);
@@ -47,13 +49,16 @@ const Company = () => {
 
     return (
         <div className={'site-space-compact-wrapper'}>
+
             <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
                 <Row gutter={20}>
-                    <Col span={24}>
+                    <Col span={18}>
                         <Title level={2}>
                             Компания
                         </Title>
                     </Col>
+                    <FilterCompanyForAdmin/>
+
                     <Col span={16}>
                         <Input placeholder="Поиск компании" onChange={(e) => searchFunc(e.target.value)}/>
                     </Col>

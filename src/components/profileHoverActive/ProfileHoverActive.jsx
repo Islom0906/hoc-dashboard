@@ -2,8 +2,9 @@ import { Flex} from "antd";
 import {FaRegUserCircle} from "react-icons/fa";
 import {VscFileSubmodule} from "react-icons/vsc";
 import {IoMdLink} from "react-icons/io";
+import {FaBuildingColumns} from "react-icons/fa6";
 
- const ProfileHoverActive = ({ full_name , moduls , messenger1 , messenger2 }) => {
+ const ProfileHoverActive = ({ full_name , moduls , company }) => {
 
   return (
       <Flex vertical={true} gap={5} >
@@ -22,19 +23,13 @@ import {IoMdLink} from "react-icons/io";
             </Flex>
         }
         {
-            messenger1 &&
+            company &&
             <Flex gap={2} align={'center'}>
-              <IoMdLink  />
-              <a href={messenger1} target={"_blank"}>{messenger1}</a>
+              <FaBuildingColumns />
+              <p>{company}</p>
             </Flex>
         }
-        {
-            messenger2 &&
-            <Flex gap={2} align={'center'}>
-              <IoMdLink  />
-              <a href={messenger2} target={"_blank"}>{messenger2}</a>
-            </Flex>
-        }
+
       </Flex>
   );
 };

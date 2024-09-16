@@ -16,15 +16,16 @@ const initialValueForm={
     text: "",
     meeting_date: "",
     company: '',
+    tag: '',
     users: []
 }
 const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}) => {
     const queryClient = useQueryClient()
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
-    const [selectCompany , setSelectCompany] = useState('')
     const [isMultipleSelect, setIsMultipleSelect] = useState('show')
     const dispatch=useDispatch()
+    const {companyID} = useSelector(state => state.companySlice)
 
 
     // get-responsibleUser
@@ -32,15 +33,8 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         data: requiredUser,
         refetch: refetchRequiredUser,
         isLoading : loadingRequiredUser
-    } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company?company_id=${selectCompany}`, false)
+    } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company?company_id=${companyID}`, false)
 
-    // get-company
-    const {
-        data: getCompany,
-        refetch: refetchGetCompany
-    } = useGetQuery(false, 'get-company', '/users/companies', false)
-
-    // post meeting
     const {
         mutate: postMeetingMutate,
         isLoading: postMeetingLoading,
@@ -54,6 +48,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         isLoading: putMeetingLoading,
         isSuccess: putMeetingSuccess
     } = useEditQuery()
+
 
     // get by-id
     const {
@@ -70,13 +65,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         isSuccess:deleteMeetingSuccess,
         isLoading: deleteMeetingLoading
     } = useDeleteQuery()
-
-
-    useEffect(() => {
-        if(selectCompany){
-        refetchRequiredUser()
-        }
-    }, [selectCompany]);
 
     useEffect(() => {
         if (putMeetingDate) {
@@ -118,13 +106,12 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             dispatch(editIdQuery(''))
             form.setFieldsValue(initialValueForm)
         }
+        if(companyID){
+            refetchRequiredUser()
+        }
     }, [isModalOpen]);
 
-    useEffect(() => {
-        if(isModalOpen) {
-            refetchGetCompany()
-        }
-    } , [isModalOpen])
+
 
     //edit meeting
     useEffect(() => {
@@ -181,7 +168,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-
     const deleteMeetingHandle=()=>{
         if (editId){
         deleteMeetingMutate({url:'/users/meetings', id: editId})
@@ -189,7 +175,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     }
     // option Company
     const optionsResponsibleUser = useMemo(() => {
-        if(selectCompany) {
+        if(companyID) {
             const requiredUserData = []
             if (isMultipleSelect === 'show') {
                 requiredUserData.push({
@@ -219,15 +205,8 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                 return requiredUserData
             }
         }
-    }, [requiredUser, isMultipleSelect ,selectCompany ]);
-    const optionsCompany = useMemo(() => {
-        return getCompany?.map((option) => {
-            return {
-                value: option?.id,
-                label: option?.title,
-            };
-        });
-    }, [getCompany]);
+    }, [requiredUser, isMultipleSelect ,companyID  ]);
+
     const onChangeSelect = (value) => {
         if (!value.length>0){
             setIsMultipleSelect('show')
@@ -239,10 +218,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                     setIsMultipleSelect('special')
                 }
             })
-    }
-
-    const onChangeCompany = (id) => {
-        setSelectCompany(id)
     }
 
     return (<Modal
@@ -303,29 +278,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                             name={'text'}
                         />
                     </Col>
-
-                    <Col span={24}>
-                        <Form.Item
-                            label={'Выберите компанию'}
-                            name={'company'}
-                            rules={[{
-                                required: true, message: 'Выберите компанию'
-                            }]}
-                            wrapperCol={{
-                                span: 24,
-                            }}
-                        >
-                            <Select
-                                style={{
-                                    width: '100%',
-                                }}
-                                placeholder='Выберите компанию'
-                                optionLabelProp='label'
-                                options={optionsCompany}
-                                onChange={onChangeCompany}
-                            />
-                        </Form.Item>
-                    </Col>
                     <Col span={24}>
                         <Form.Item
                             label={'Участники'}
@@ -350,8 +302,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                             />
                         </Form.Item>
                     </Col>
-
-
                 </Row>
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
                     {editModalMeetingSuccess ? 'Изменить' : 'Создать'}

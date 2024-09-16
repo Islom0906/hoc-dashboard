@@ -102,6 +102,7 @@ const TaskInner = () => {
               </Flex>
               <Flex style={{width:'100%'}} justify={"end"} >
                 <TaskInnerCard
+                    tag={taskInner?.tag}
                     main_task_responsible_user={taskInner?.responsible_user}
                     taskPercent={taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
                     main_task_deadline={taskInner?.deadline}

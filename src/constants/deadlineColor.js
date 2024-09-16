@@ -1,11 +1,11 @@
 export const deadlineColor = {
   failed: {
-    color: '#C80036',
+    color: '#ff1a1a',
     name: 'failed',
     text:'Просроченные',
   },
   soon: {
-    color:'#d9e814',
+    color:'#ffff1a',
     name: 'soon',
     text:'Ожидающие',
   },
@@ -15,12 +15,12 @@ export const deadlineColor = {
     text:'Неотложные',
   },
   started: {
-    color:'#3FA2F6',
+    color:'#3366cc',
     name: 'started',
     text:'Новые'
   },
   done: {
-    color:'#0aff00',
+    color:'#76bc33',
     name: 'done',
     text:'Выполненные'
   }

@@ -160,15 +160,21 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         );
     };
 
+
+
     const onSelect = (newValue, info) => {
-        if (info.source === 'date' && user?.roles[0]?.name === 'admin') {
-            setValue(newValue);
-            setIsModalOpen(true);
+        if (user?.roles[0]?.name === 'admin') {
+            const isPastDate = newValue.isBefore(dayjs(), 'day');
+            if (!isPastDate) {
+                console.log("This is a past date:", newValue.format("YYYY-MM-DD"));
+                setValue(newValue);
+                setIsModalOpen(true);
+            }
         }
     };
 
     return (
-        <ConfigProvider locale={ruRU}> {/* Set Ant Design locale to Russian */}
+        <ConfigProvider locale={ruRU}>
             <Calendar
                 headerRender={({ value, onChange }) => (
                     <CustomHeader setFilterForColor={setFilterForColor} filterForColor={filterForColor}

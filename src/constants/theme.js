@@ -1,4 +1,5 @@
 export const configLight = {
+    colorPrimary: "#76BC33",
     contentBg:'#FFFFFF',
     mainBg:"#FBFBFB",
     Button: {

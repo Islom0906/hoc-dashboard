@@ -52,7 +52,7 @@ const FilterCompanyForAdmin = () => {
             optionLabelProp="label"
             options={optionsCompany}
             onChange={onChangeCompany}
-            value={companyID} // Set the value to the selected companyID
+            value={companyID}
         />
       </Col>
   );

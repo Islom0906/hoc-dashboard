@@ -11,17 +11,25 @@ const BossTracking = () => {
   const [pageSize, setPageSize] = useState(12);
   const [ordering, setOrdering] = useState('');
   const [deadlineStatus, setDeadlineStatus] = useState('');
-
+  const [getTagCompany, setGetTagCompany] = useState('');
   const {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
   } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`);
 
-  useEffect(() => {
+  const {
+    data: GetTagCompany =[],
+    refetch: refetchGetTagCompany,
+  } = useGetQuery(false, "get-tag-company", `users/tag-selection` ,false);
 
+  useEffect(() => {
+    refetchGetTagCompany()
+  } , [user])
+
+  useEffect(() => {
       refetchStaffGetTask();
-  }, [user, currentPage, pageSize , ordering , deadlineStatus ]);
+  }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany ]);
   const onPaginationChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);
@@ -33,7 +41,7 @@ const BossTracking = () => {
           <Col span={24}>
               <h1>Контроль задач в отделе</h1>
           </Col>
-        <FilterTaskList  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
+        <FilterTaskList getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>

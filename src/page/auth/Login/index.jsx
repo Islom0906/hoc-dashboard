@@ -4,10 +4,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {authData} from "../../../store/slice/authSlice";
 import apiService from "../../../service/apis/api";
 import './index.scss'
-import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
 import {useNavigate} from "react-router-dom";
 import  {useCallback} from "react";
 import EHOCLight from './EHOC.png'
+import banner from './banner.jpg'
 import EHOCDark from './EHOC-dark.png'
 const Login = () => {
     const {data:{isLoading}}=useSelector(state => state.auth)
@@ -15,7 +15,7 @@ const Login = () => {
     const navigate=useNavigate()
     const {systemMode}=useSelector(state => state.theme)
     const {
-        token: {mainBg},
+        token: {mainBg , colorPrimary},
     } = theme.useToken();
 
     const onFinish = useCallback(async (values) => {
@@ -29,12 +29,9 @@ const Login = () => {
         }
         try {
             const data = await apiService.postData('/users/user/token/', values);
-
-
             localStorage.setItem('token', data?.access);
             localStorage.setItem('refToken', data?.refresh);
             setAuthToken(data.access);
-
             const userInfo = await apiService.getData('/users/user/me');
             dispatch(authData({
                 user: userInfo,
@@ -52,17 +49,16 @@ const Login = () => {
             }));
         }
     }, [dispatch, navigate]);
-
-
     return (
         <div
             style={{
-                background: mainBg,
+                backgroundImage:`url(${banner})`,
+                backgroundPosition:"center",
+                backgroundSize:"cover",
             }}
-            className={'login--page'}>
+            className={'login--page'} >
             {
-                    <BackgroundContent>
-                        <div className={'login-card'}>
+                        <div className={'login-card'} style={{border:`1.5px solid ${colorPrimary}` , padding:'5px 10px' , borderRadius:5 , background:"white"}}>
                             {
                                 systemMode === 'light' ?
                                     <img
@@ -130,7 +126,6 @@ const Login = () => {
                                 </Form.Item>
                             </Form>
                         </div>
-                    </BackgroundContent>
             }
         </div>
 

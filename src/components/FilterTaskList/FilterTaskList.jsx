@@ -16,8 +16,7 @@ const deadlineTime = [
     value: '',
   },
 ];
-
-const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert }) => {
+const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , getTagCompany , setGetTagCompany }) => {
   const deadlineColorArray = useMemo(() => {
     return Object.entries(deadlineColor).map(([key, value]) => ({
       label: value.text,
@@ -25,19 +24,24 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert }) 
       color: value.color,
     }));
   }, [deadlineColor]);
-
+  const getTagCompanyArray = useMemo(() => {
+    return Object.entries(getTagCompany).map(([key, value]) => ({
+      label: value?.name,
+      value: value?.id,
+    }));
+  }, [getTagCompany]);
   const onChangeDeadlineTime = (changleItem) => {
     setOrdering(changleItem);
   };
-
+  const onChangeTagCompany = (changleItem) => {
+    setGetTagCompany(changleItem);
+  };
   const onChangeDeadlineStatus = (changleItem) => {
     setDeadlineStatus(changleItem.toString());
   };
-
   const tagRender = (props) => {
     const { label, value, closable, onClose } = props;
     const color = deadlineColor[value]?.color;
-
     return (
         <Tag
             color={color}
@@ -71,6 +75,21 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert }) 
               </Flex>
             </Col>
         )}
+        <Col span={6}>
+          <label htmlFor="selectCompany">
+            <p style={{ fontSize: '14px', marginBottom: 10 }}>Выберите компанию:</p>
+          </label>
+          <Select
+              id="selectCompany"
+              mode="multiple"
+              allowClear
+              style={{ width: '100%' }}
+              placeholder="Выберите компанию"
+              optionLabelProp="label"
+              options={getTagCompanyArray}
+              onChange={onChangeTagCompany}
+          />
+        </Col>
         <Col span={6}>
           <label htmlFor="deadlineTimeSelect">
             <p style={{ fontSize: '14px', marginBottom: 10 }}>по времени Крайнего срока:</p>

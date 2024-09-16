@@ -11,6 +11,7 @@ const BossTracking = () => {
   const [pageSize, setPageSize] = useState(12);
   const [ordering, setOrdering] = useState('');
   const [deadlineStatus, setDeadlineStatus] = useState('');
+  const [getTagCompany, setGetTagCompany] = useState('');
 
   const {
     data: staffGetTask = {},
@@ -21,7 +22,7 @@ const BossTracking = () => {
 
   useEffect(() => {
     refetchStaffGetTask();
-  }, [user, currentPage, pageSize , ordering , deadlineStatus ]);
+  }, [user, currentPage, pageSize , ordering , deadlineStatus , getTagCompany ]);
   const onPaginationChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);
@@ -33,7 +34,7 @@ const BossTracking = () => {
           <Col span={24}>
             <h1>Контроль задач в отделе</h1>
           </Col>
-          <FilterTaskList  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
+          <FilterTaskList setGetTagCompany={setGetTagCompany} getTagCompany={getTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering}  />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>

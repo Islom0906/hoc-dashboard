@@ -9,7 +9,7 @@ import { AvatarUserProfile } from "../../components";
 import { deadlineColor } from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
 
-const TaskTable = ({ data, deleteHandle, pagination, setPagination, handleTableChange }) => {
+const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -47,6 +47,19 @@ const TaskTable = ({ data, deleteHandle, pagination, setPagination, handleTableC
       dataIndex: "title",
       id: "title",
       render: (title) => <p>{title}</p>,
+    },
+    {
+      title: "Компания",
+      dataIndex: "tag",
+      id: "tag",
+      filters: getTagCompanyArray,
+      render: (text , record) =>
+    <AvatarUserProfile
+        size={'large'}
+        key={record?.tag?.id}
+        company={record?.tag?.name}
+        image={record?.tag?.image_light}
+    />,
     },
     {
       title: "Создана",

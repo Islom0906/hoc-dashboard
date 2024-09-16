@@ -31,18 +31,17 @@ const AppHeader = () => {
 
     return (
         <Header className={'app-header'}>
-          <Flex style={{width:150 ,height:50 }} align={"center"} justify={"center"}>
-            {
-              user?.company ?
-                  systemMode === 'light' ?
-                      <img src={user?.company?.image_light} className={'logo'} alt={'logo'}
-                           style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
-                      :
-                      <img src={user?.company?.image_dark} className={'logo'} alt={'logo'}
-                           style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
-                  :
-                  <img src={'/evms-e.png'} className={'logo'} alt={'logo'}
-                       style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+          <Flex style={{width:110 ,height:50 }} align={"center"} justify={"center"}>
+              {
+                systemMode === 'light' ?
+                  <img
+                      src={`http://95.46.96.95:82/media/EHOC-dark.png`}
+                      style={{width:'100%', height:'100%', objectFit: "contain"}}
+                  /> :
+                  <img
+                      src={'http://95.46.96.95:82/media/EHOC.png'}
+                      style={{width:'100%', height:'100%', objectFit: "contain"}}
+                  />
             }
           </Flex>
           <Flex align={"center"} gap={10}>
@@ -102,7 +101,6 @@ export  const  UserAccount = ({ user , logOut})=> {
           <span className={'content'}>
             <Flex className={'title'} gap={5}><span>{user.first_name}</span> <span>{user.last_name}</span></Flex>
           </span>
-
         </Button>
       </Dropdown>
   )

@@ -4,6 +4,7 @@ import {AppLoader, FormInput} from "../../components";
 import { useSelector} from "react-redux";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 import {useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Queries";
+import {useQueryClient} from "react-query";
 
 
 const initialValueForm = {
@@ -17,6 +18,8 @@ const CompanyPostEdit = () => {
     const {editId} = useSelector(state => state.query)
     const [fileListPropsDark, setFileListPropsDark] = useState([]);
     const [fileListPropsLight, setFileListPropsLight] = useState([]);
+    const {companyID} = useSelector(state => state.companySlice)
+
     // query-company
     const {
         mutate: postCompanyMutate,
@@ -29,7 +32,7 @@ const CompanyPostEdit = () => {
         data: editCompanyData,
         refetch: editCompanyRefetch,
         isSuccess: editCompanySuccess
-    } = useGetByIdQuery(false, "edit-company", editId, '/users/companies')
+    } = useGetByIdQuery(false, "edit-company", editId, '/users/tag')
     // put-query
     const {
         mutate: putCompany,
@@ -38,8 +41,10 @@ const CompanyPostEdit = () => {
     } = useEditQuery()
     // ================================ useEffect =============================
     // company success
-    SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')
+    SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/tag')
     // if edit compant
+
+    console.log(editCompanyData)
     EditGetById(editCompanyRefetch)
     // if no edit company
     SetInitialValue(form,initialValueForm)
@@ -60,7 +65,7 @@ const CompanyPostEdit = () => {
             }];
             const edit = {
                 image_light,image_dark,
-                title: editCompanyData?.title
+                name: editCompanyData?.name
             }
             setFileListPropsDark(image_dark)
             setFileListPropsLight(image_light)
@@ -70,7 +75,7 @@ const CompanyPostEdit = () => {
 
     const onFinish = (value) => {
         const formData = new FormData();
-        formData.append('title', value.title);
+        formData.append('name', value.name);
         if (fileListPropsDark[0]?.originFileObj) {
             formData.append('image_dark', fileListPropsDark[0]?.originFileObj);
         }
@@ -78,9 +83,9 @@ const CompanyPostEdit = () => {
             formData.append('image_light', fileListPropsLight[0]?.originFileObj);
         }
         if (editCompanyData) {
-            putCompany({url: '/users/companies', data: formData, id: editId})
+            putCompany({url: `/users/tag`, data: formData, id: editId})
         } else {
-            postCompanyMutate({url: "/users/companies/", data: formData});
+            postCompanyMutate({url: `/users/tags/${companyID}/`, data: formData});
         }
     }
     const onChangeImageLight = ({fileList: newFileList } ) => {
@@ -114,7 +119,7 @@ const CompanyPostEdit = () => {
                             required={true}
                             required_text={'Требуется название компании'}
                             label={'Название компании'}
-                            name={'title'}
+                            name={'name'}
                         />
                     </Col>
                     <Col span={12}>

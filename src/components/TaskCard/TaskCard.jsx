@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import {AvatarUserProfile} from "../index";
 import {LuCalendarDays} from "react-icons/lu";
 
-const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , doneCountTask ,allCountTask ,responsible_user , lastUpdate ,included_users }) => {
+const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , tag , doneCountTask ,allCountTask ,responsible_user , lastUpdate ,included_users }) => {
   const deadlineColor = DeadlineStatusColor(deadline_status);
   const { Text } = Typography;
 
@@ -22,6 +22,11 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
           }}
           size={'small'}
           title={title}
+          extra={
+        <div style={{padding:'8px 0'}}>
+            <AvatarUserProfile size={'large'} key={tag?.id} company={tag?.name} image={tag?.image_light}/>
+        </div>
+          }
       >
         <Space style={{ width: "100%" }} size={20} direction={"vertical"}>
           <Flex wrap={true} justify={"space-between"} gap={5} align={"center"}>
@@ -58,7 +63,7 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
           />
           <Flex align={"center"} justify={"space-between"} gap={5}>
             <Text style={{fontSize:'12px'}}>Ответственный:</Text>
-              <AvatarUserProfile size={40} key={responsible_user?.id} full_name={responsible_user?.full_name} moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image} messenger1={responsible_user?.messenger_link1} messenger2={responsible_user?.messenger_link2} />
+            <AvatarUserProfile size={40} key={responsible_user?.id} full_name={responsible_user?.full_name} moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image}  />
           </Flex>
 
           <Flex align={"center"} wrap={true} gap={5} justify={"space-between"}>
@@ -67,7 +72,7 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , don
             {/*</Text>*/}
             <Avatar.Group size={"small"}>
               {included_users?.map((user) => (
-                    <AvatarUserProfile size={30} key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image} messenger1={user?.messenger_link1} messenger2={user?.messenger_link2}/>
+                    <AvatarUserProfile size={30} key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image} />
 
               ))}
             </Avatar.Group>

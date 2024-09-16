@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile} from "../index";
 
- const TaskInnerCard = ({
+ const TaskInnerCard = ({       tag,
                                 main_task_responsible_user,
                                 main_task_deadline,
                                 main_task_created_at,
@@ -25,9 +25,15 @@ import {AvatarUserProfile} from "../index";
       }} title="Информация о задаче">
         <Flex vertical={true} gap={10}>
           <Flex align={'center'} justify={'space-between'}>
+            <Text type={'secondary'}> Компания:</Text>
+            <Flex align={"center"} gap={10}>
+              <AvatarUserProfile key={tag?.id} company={tag?.name} image={tag?.image_light}  />
+            </Flex>
+          </Flex>
+          <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Ответственный:</Text>
             <Flex align={"center"} gap={10}>
-              <AvatarUserProfile key={main_task_responsible_user?.id} full_name={main_task_responsible_user?.full_name} image={main_task_responsible_user?.image} messenger1={main_task_responsible_user?.messenger_link1}  messenger2={main_task_responsible_user?.messenger_link2} />
+              <AvatarUserProfile key={main_task_responsible_user?.id} full_name={main_task_responsible_user?.full_name} image={main_task_responsible_user?.image}  />
             </Flex>
           </Flex>
           <Flex align={'center'} justify={'space-between'}>
