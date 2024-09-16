@@ -6,13 +6,10 @@ import { Link } from 'react-router-dom';
 import { samplePagesConfigs} from "../../page/routerPage";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import EHOCLight from '../AppHeader/EHOC.png'
-import EHOCDark from '../AppHeader/EHOC-dark.png'
 
 const AppSidebar = () => {
   const [userRole ,setUserRole] = useState(null)
   const {data:{user}} = useSelector(state => state.auth)
-  const {systemMode}=useSelector(state => state.theme)
 
 useEffect(() => {
   if(user) {

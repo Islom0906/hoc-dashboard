@@ -35,11 +35,11 @@ const AppHeader = () => {
               {
                 systemMode === 'light' ?
                   <img
-                      src={`http://95.46.96.95:82/media/EHOC-dark.png`}
+                      src={`https://hoc.evms.uz/media/EHOC-dark.png`}
                       style={{width:'100%', height:'100%', objectFit: "contain"}}
                   /> :
                   <img
-                      src={'http://95.46.96.95:82/media/EHOC.png'}
+                      src={'https://hoc.evms.uz/media/EHOC.png'}
                       style={{width:'100%', height:'100%', objectFit: "contain"}}
                   />
             }

@@ -39,6 +39,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             <Tooltip key={record?.id} title={`${record?.done_sub_tasks_count} / ${record?.sub_tasks_count}`} >
               <Progress size={50} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
               }/>
+
             </Tooltip>)
       },
     },
