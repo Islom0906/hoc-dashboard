@@ -33,7 +33,7 @@ const TaskEdit = () => {
 
     // get-user
     const { data: getUserByModules,
-        refetch: refetchGetUserByModules} = useGetQuery(false , 'get-user' ,`/users/user-filter?module_id=${user?.modules[0].id}`)
+        refetch: refetchGetUserByModules} = useGetQuery(false , 'get-user' ,`/users/user-filter?module_id=${user?.modules[0].id}` , false)
 
     const {
        isLoading: loadingGetAddSubTask,

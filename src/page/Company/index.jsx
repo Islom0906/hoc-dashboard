@@ -19,6 +19,7 @@ const Company = () => {
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get',`/users/tags/${companyID}`,false)
     const [search, setSearch] = useState([]);
+
     const [isSearch, setIsSearch] = useState(false);
     useEffect(() => {
         refetch()

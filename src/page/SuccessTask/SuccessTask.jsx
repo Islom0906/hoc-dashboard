@@ -28,7 +28,6 @@ const SuccessTask = () => {
     refetchGetTagCompany()
   } , [user])
   useEffect(() => {
-
     refetchStaffGetTask();
   }, [user, currentPage, pageSize , ordering , deadlineStatus , getTagCompany  ]);
   const onPaginationChange = (page, pageSize) => {

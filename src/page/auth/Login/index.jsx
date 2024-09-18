@@ -1,4 +1,4 @@
-import {Button, Flex, Form, Input, message, theme} from "antd";
+import {Button, Col, Flex, Form, Input, message, Row, theme} from "antd";
 import {setAuthToken} from "../../../service/auth/axios";
 import {useDispatch, useSelector} from "react-redux";
 import {authData} from "../../../store/slice/authSlice";
@@ -6,14 +6,19 @@ import apiService from "../../../service/apis/api";
 import './index.scss'
 import {useNavigate} from "react-router-dom";
 import  {useCallback} from "react";
-import EHOCLight from './EHOC.png'
 import banner from './banner.jpg'
-import EHOCDark from './EHOC-dark.png'
+import {BsMoon} from "react-icons/bs";
+import {SunOutlined} from "@ant-design/icons";
+import {changeThemeMode} from "../../../store/slice/themeSlice";
+import {selectCompany} from "../../../store/slice/companySlice";
 const Login = () => {
     const {data:{isLoading}}=useSelector(state => state.auth)
     const dispatch = useDispatch()
     const navigate=useNavigate()
     const {systemMode}=useSelector(state => state.theme)
+    const isDarkHandle=()=>{
+        dispatch(changeThemeMode())
+    }
     const {
         token: {mainBg , colorPrimary},
     } = theme.useToken();
@@ -38,6 +43,8 @@ const Login = () => {
                 isLoading: false,
                 isAuthenticated: true,
             }));
+            dispatch(selectCompany(userInfo?.company?.id))
+
             navigate('/');
             message.success('Успешно');
         } catch (error) {
@@ -58,15 +65,15 @@ const Login = () => {
             }}
             className={'login--page'} >
             {
-                        <div className={'login-card'} style={{border:`1.5px solid ${colorPrimary}` , padding:'5px 10px' , borderRadius:5 , background:"white"}}>
+                        <div className={'login-card'} style={{border:`1.5px solid ${colorPrimary}` , padding:'5px 10px' , borderRadius:5 ,mainBg}}>
                             {
                                 systemMode === 'light' ?
                                     <img
-                                        src={EHOCDark}
+                                        src={'https://hoc.evms.uz/media/EHOC-dark.png'}
                                         style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
                                     /> :
                                     <img
-                                        src={EHOCLight}
+                                        src={'https://hoc.evms.uz/media/EHOC.png'}
                                         style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
                                     />
                             }
@@ -118,11 +125,22 @@ const Login = () => {
                                         span: 24,
                                     }}
                                 >
-                                    <Flex gap={20} justify={'center'}>
+                                    <Row gutter={4} justify={'center'}>
+                                        <Col span={20}>
                                         <Button type="primary" htmlType="submit" style={{width:'100%'}} disabled={isLoading}>
                                             Вход
                                         </Button>
-                                    </Flex>
+                                        </Col>
+                                        <Col span={4}>
+                                            <Button onClick={isDarkHandle} type="primary">
+                                                {
+                                                    systemMode==='light'?
+                                                        <BsMoon className={'icon'} style={{fontSize:18}} />:
+                                                        <SunOutlined className={'icon'} style={{fontSize:18}}/>
+                                                }
+                                            </Button>
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Form>
                         </div>

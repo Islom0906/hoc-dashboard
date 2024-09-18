@@ -20,7 +20,7 @@ const TaskList = () => {
   const {
     data: GetTagCompany =[],
     refetch: refetchGetTagCompany,
-  } = useGetQuery(false, "get-tag-company", `users/tag-selection`);
+  } = useGetQuery(false, "get-tag-company", `users/tag-selection` , false);
 
   useEffect(() => {
       refetchStaffGetTask();

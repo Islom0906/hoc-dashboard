@@ -11,15 +11,11 @@ const CompanyTable = ({data,deleteHandle}) => {
     const Delete = async (id) => {
         deleteHandle('/users/tag',id)
     };
-
-
     const Edit = (id) => {
         localStorage.setItem('editDataId',id)
         dispatch(editIdQuery(id))
         navigate('/company/add')
     };
-
-
     const columns = [
         {
             title: 'Название компании',

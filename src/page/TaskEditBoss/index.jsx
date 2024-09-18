@@ -23,7 +23,7 @@ const TaskEditBoss = () => {
   // get
   const {data : dataGetBossNotShared,
     isLoading: loadingGetBossNotShared,
-    refetch: refetchGetBossNotShared, isSuccess:isSuccessGetBossNotShared}=useGetQuery(false,'boss-task-get-noshared',`/users/boss-task-filter-get/?page=${pagination.current}&page_size=${pagination.pageSize}&shared=not_shared`)
+    refetch: refetchGetBossNotShared, isSuccess:isSuccessGetBossNotShared}=useGetQuery(false,'boss-task-get-noshared',`/users/boss-task-filter-get/?page=${pagination.current}&page_size=${pagination.pageSize}&shared=not_shared` , false)
   // const { data : dataGetBossShared,
   //   isLoading: loadingGetBossShared,
   //   refetch: refetchGetBossShared,}=useGetQuery(false,'boss-task-get-shared',`/users/boss-task-filter-get/?shared=shared?page=${pagination.current}&page_size=${pagination.pageSize}`)

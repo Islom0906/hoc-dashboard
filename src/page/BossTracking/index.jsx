@@ -16,7 +16,7 @@ const BossTracking = () => {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`);
+  } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}` , false);
 
   const {
     data: GetTagCompany =[],

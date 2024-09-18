@@ -18,7 +18,7 @@ const BossTracking = () => {
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
   } = useGetQuery(false, "staff-get-task",
-      `users/staff-responsible-tasks/?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`);
+      `users/staff-responsible-tasks/?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}` , false);
 
   useEffect(() => {
     refetchStaffGetTask();

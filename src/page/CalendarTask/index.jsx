@@ -1,10 +1,11 @@
-import React, {useEffect,} from 'react';
+import React, {useEffect, useState,} from 'react';
 import {Col, Flex, Row, Space, Spin, Typography} from 'antd';
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
 import {FilterCompanyForAdmin} from "../../components";
 import {useSelector} from "react-redux";
+import dayjs from "dayjs";
 
 const {Title}=Typography
 
@@ -24,36 +25,46 @@ const colorMeeting={
 }
 
 const CalendarTask = () => {
+    const [filterDate , setFilterDate] = useState({
+        year: '',
+        month:''
+    })
+
     const {companyID} = useSelector(state => state.companySlice)
     const {data: {user}} = useSelector(state => state.auth);
+
+    console.log(filterDate)
     // birthday
     const {
         data: dataBirthDay,
         isLoading:getBirthdayLoading,
         refetch: refetchBirthDay
-    } = useGetQuery(false, 'birthDay-get', `/users/user-birthdays?company__id=${companyID}`, false)
+    } = useGetQuery(false, 'birthDay-get',
+        `/users/user-birthdays?company__id=${companyID}`+
+        (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     // meeting
     const {
         data: dataMeetting,
         isFetching:getMeetingLoading,
         refetch: refetchMeeting
-    } = useGetQuery(false, 'meeting-get', `/users/meetings/?company__id=${companyID}`, false)
+    } = useGetQuery(false, 'meeting-get', `/users/meetings/?company__id=${companyID}` +
+        (filterDate?.year !== 'null' ? `&year=${filterDate?.year}` : '') +
+        (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     // deadline
     const {
         data: dataDeadline,
         isLoading:getDeadlineLoading,
         refetch: refetchDeadline
-    } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?company__id=${companyID}`, false)
+    } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?company__id=${companyID}` +
+        (filterDate?.year !== 'null' ? `&year=${filterDate?.year}` : '') +
+        (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     useEffect(() => {
-        if(companyID !== null) {
+        if(companyID !== null && filterDate?.year !== '' && filterDate?.month !== '') {
             refetchBirthDay()
             refetchMeeting()
             refetchDeadline()
         }
-    }, [companyID]);
-
-
-
+    }, [companyID , filterDate.year , filterDate.month]);
     return (
         <Spin spinning={getBirthdayLoading||getMeetingLoading||getDeadlineLoading}>
         <Space direction={"vertical"} size={20}>
@@ -74,7 +85,6 @@ const CalendarTask = () => {
                     <p>
                         Встречи
                     </p>
-
                 </Flex>
                 <Flex align={'center'} gap={5}>
                     <span style={{width:20, height:20 , background:colorMeeting.birthday.color, borderRadius:'100%'}} />
@@ -89,7 +99,10 @@ const CalendarTask = () => {
                     </p>
                 </Flex>
             </Flex>
+
             <CustomCalendar
+
+                setFilterDate={setFilterDate}
                 colorMeeting={colorMeeting}
                 refetchMeeting={refetchMeeting}
                 dataBirthDay={dataBirthDay}

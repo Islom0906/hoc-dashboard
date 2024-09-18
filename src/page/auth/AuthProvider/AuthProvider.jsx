@@ -2,12 +2,14 @@ import React, {useEffect} from 'react';
 import axios, {setAuthToken} from "../../../service/auth/axios";
 import apiService from "../../../service/apis/api";
 import {authData} from "../../../store/slice/authSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {selectCompany} from "../../../store/slice/companySlice";
 
 const AuthProvider = ({children}) => {
     const navigate=useNavigate()
     const dispatch=useDispatch()
+
     axios.interceptors.response.use(
         (res) => res,
         async (err) => {
@@ -65,7 +67,7 @@ const AuthProvider = ({children}) => {
                     isLoading: false,
                     isAuthenticated: true
                 }))
-                // navigate(0)
+                dispatch(selectCompany(data?.company?.id))
             } catch (error) {
                 dispatch(authData({
                     user: null,
@@ -79,6 +81,8 @@ const AuthProvider = ({children}) => {
         getUser()
 
     }, []);
+
+
     return (
         <>
             {children}

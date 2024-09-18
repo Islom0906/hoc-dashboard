@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const savedCompany = localStorage.getItem('companyID');
+const savedCompany = localStorage.getItem('companyID') || null;
 const initialState = {
-  companyID: savedCompany ? JSON.parse(savedCompany) : null
+  companyID:localStorage.getItem('companyID') || null
 };
 
 export const companySlice = createSlice({

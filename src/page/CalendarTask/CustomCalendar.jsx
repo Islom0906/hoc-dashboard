@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import { Button, Calendar, Col, Flex, Popover, Row, Select, Typography, ConfigProvider } from "antd";
 import dayjs from "dayjs";
 import 'dayjs/locale/ru';
@@ -22,13 +22,12 @@ const contentPopover = (content) => {
     );
 }
 
-const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadline, colorMeeting }) => {
+const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadline, colorMeeting , setFilterDate }) => {
     const [value, setValue] = useState(() => dayjs());
     const [filterForColor, setFilterForColor] = useState('all');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: { user } } = useSelector(state => state.auth);
     const dispatch = useDispatch();
-
     const changeMeeting = (e, id) => {
         e.stopPropagation();
         dispatch(editIdQuery(id));
@@ -36,8 +35,6 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
             setIsModalOpen(true);
         }
     }
-
-
 
     const birthdayMap = useMemo(() => {
         return dataBirthDay?.reduce((acc, birthday) => {
@@ -163,6 +160,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
 
 
     const onSelect = (newValue, info) => {
+
         if (user?.roles[0]?.name === 'admin') {
             const isPastDate = newValue.isBefore(dayjs(), 'day');
             if (!isPastDate) {
@@ -173,12 +171,13 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         }
     };
 
+
     return (
         <ConfigProvider locale={ruRU}>
             <Calendar
                 headerRender={({ value, onChange }) => (
                     <CustomHeader setFilterForColor={setFilterForColor} filterForColor={filterForColor}
-                                  colorMeeting={colorMeeting} value={value} onChange={onChange} />
+                                  colorMeeting={colorMeeting} value={value} setFilterDate={setFilterDate} onChange={onChange} />
                 )}
                 cellRender={dateCellRender}
                 onSelect={onSelect}
@@ -195,7 +194,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
 
 export default CustomCalendar;
 
-const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filterForColor }) => {
+const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filterForColor , setFilterDate }) => {
     const year = value.year();
     const month = value.month();
     const yearRange = Array.from({ length: 2030 - 1950 + 1 }, (_, i) => 1950 + i);
@@ -207,10 +206,15 @@ const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filter
         const newValue = value.month(newMonth);
         onChange(newValue);
     };
+    useEffect(() => {
+        setFilterDate({
+            year:value.year(),
+            month: value.month(),
+        })
+    } , [value])
     const selectFilter = (btn) => {
         setFilterForColor(btn);
     }
-
     const showBtnSelected = useMemo(() => {
         return Object.entries(colorMeeting).map(([key, obj]) => (
             <Button type={filterForColor === obj?.name ? 'primary' : 'default'} key={key}
@@ -218,7 +222,6 @@ const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filter
                 {obj?.name}
             </Button>));
     }, [colorMeeting, filterForColor]);
-
     return (
         <div style={{ padding: 10 }}>
             <Row justify={"space-between"}>
