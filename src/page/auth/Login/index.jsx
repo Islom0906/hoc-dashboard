@@ -6,11 +6,11 @@ import apiService from "../../../service/apis/api";
 import './index.scss'
 import {useNavigate} from "react-router-dom";
 import  {useCallback} from "react";
-import banner from './banner.jpg'
 import {BsMoon} from "react-icons/bs";
 import {SunOutlined} from "@ant-design/icons";
 import {changeThemeMode} from "../../../store/slice/themeSlice";
 import {selectCompany} from "../../../store/slice/companySlice";
+import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
 const Login = () => {
     const {data:{isLoading}}=useSelector(state => state.auth)
     const dispatch = useDispatch()
@@ -59,13 +59,11 @@ const Login = () => {
     return (
         <div
             style={{
-                backgroundImage:`url(${banner})`,
-                backgroundPosition:"center",
-                backgroundSize:"cover",
+                background: mainBg,
             }}
             className={'login--page'} >
-            {
-                        <div className={'login-card'} style={{border:`1.5px solid ${colorPrimary}` , padding:'5px 10px' , borderRadius:5 ,mainBg}}>
+            {<BackgroundContent>
+                        <div className={'login-card'}>
                             {
                                 systemMode === 'light' ?
                                     <img
@@ -125,7 +123,7 @@ const Login = () => {
                                         span: 24,
                                     }}
                                 >
-                                    <Row gutter={4} justify={'center'}>
+                                    <Row gutter={10} justify={'center'}>
                                         <Col span={20}>
                                         <Button type="primary" htmlType="submit" style={{width:'100%'}} disabled={isLoading}>
                                             Вход
@@ -144,6 +142,7 @@ const Login = () => {
                                 </Form.Item>
                             </Form>
                         </div>
+                </BackgroundContent>
             }
         </div>
 
