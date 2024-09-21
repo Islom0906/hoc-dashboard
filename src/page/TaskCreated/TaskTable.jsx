@@ -170,11 +170,14 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                 type="dashed"
                 icon={<FaRegEye />}
             />
+            {
+              record?.done_sub_tasks_count > 0 &&
             <Button
                 onClick={() => Edit(record.id)}
                 type="dashed"
                 icon={<EditOutlined />}
             />
+            }
             <Popconfirm
                 title={"Вы уверены, что хотите удалить это?"}
                 description={"Удалить"}
