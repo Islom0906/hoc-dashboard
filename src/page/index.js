@@ -15,5 +15,6 @@ export {default as BossTracking} from './BossTracking';
 export {default as ResponsibleUser} from './ResponsibleUser/ResponsibleUser';
 export {default as ControllerPanel} from './ControllerPanel';
 export {default as Dashboard} from './Dashboard';
+export {default as Support} from './Support';
 export {default as Inbox} from './Inbox';
 export {default as MyApplications} from './MyApplications';

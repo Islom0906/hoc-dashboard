@@ -50,6 +50,8 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         }, {});
     }, [dataBirthDay]);
 
+    console.log(birthdayMap)
+
     const meetingMap = useMemo(() => {
         return dataMeeting?.reduce((acc, meeting) => {
             const key = dayjs(meeting?.meeting_date).format('YYYY-MM-DD');
@@ -60,16 +62,19 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     }, [dataMeeting]);
 
     const deadlineMap = useMemo(() => {
-        return dataDeadline?.results?.reduce((acc, deadline) => {
+        return dataDeadline?.reduce((acc, deadline) => {
             const key = dayjs(deadline?.deadline).format('YYYY-MM-DD');
             acc[key] = acc[key] || [];
             acc[key].push(deadline);
             return acc;
         }, {});
-    }, [dataDeadline?.results]);
+    }, [dataDeadline]);
+
+    console.log(dataBirthDay)
 
     const dateCellRender = (value) => {
         const birthdayStr = value.format('MM-DD');
+        console.log('birthdayStr' , birthdayStr)
         const dateStr = value.format('YYYY-MM-DD');
         let meetingsOnDate = [];
         let birthdaysOnDate = [];
@@ -77,6 +82,8 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         if (filterForColor === 'all') {
             if (birthdayMap) {
                 birthdaysOnDate = birthdayMap[birthdayStr] || [];
+                console.log( 'birthdaysOnDate' , birthdaysOnDate)
+                console.log( 'birthdayMap' , birthdayMap)
             }
             if (meetingMap) {
                 meetingsOnDate = meetingMap[dateStr] || [];
@@ -84,20 +91,21 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
             if (deadlineMap) {
                 deadlineOnDate = deadlineMap[dateStr] || [];
             }
-        } else {
-            if (birthdayMap && colorMeeting.birthday.name === filterForColor) {
-                birthdaysOnDate = birthdayMap[birthdayStr] || [];
-            }
-            if (meetingMap && colorMeeting.meeting.name === filterForColor) {
-                meetingsOnDate = meetingMap[dateStr] || [];
-            }
-            if (deadlineMap && colorMeeting.deadline.name === filterForColor) {
-                deadlineOnDate = deadlineMap[dateStr] || [];
-            }
         }
+        if (birthdayMap && colorMeeting.birthday.name === filterForColor) {
+            birthdaysOnDate = birthdayMap[birthdayStr] || [];
+        }
+        if (meetingMap && colorMeeting.meeting.name === filterForColor) {
+            meetingsOnDate = meetingMap[dateStr] || [];
+        }
+        if (deadlineMap && colorMeeting.deadline.name === filterForColor) {
+            deadlineOnDate = deadlineMap[dateStr] || [];
+        }
+
 
         return (
             <ul className="events">
+
                 {birthdaysOnDate?.map(birthday => (
                     <li key={birthday.id}>
                         <Popover key={birthday?.id} content={contentPopover(birthday)}
@@ -197,7 +205,7 @@ export default CustomCalendar;
 const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filterForColor , setFilterDate }) => {
     const year = value.year();
     const month = value.month();
-    const yearRange = Array.from({ length: 2030 - 1950 + 1 }, (_, i) => 1950 + i);
+    const yearRange = Array.from({ length: 2030 - 2020 }, (_, i) => 2020 + i);
     const handleYearChange = (newYear) => {
         const newValue = value.year(newYear);
         onChange(newValue);
@@ -209,7 +217,7 @@ const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filter
     useEffect(() => {
         setFilterDate({
             year:value.year(),
-            month: value.month(),
+            month: value.month()+1,
         })
     } , [value])
     const selectFilter = (btn) => {
