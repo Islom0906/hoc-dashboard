@@ -5,7 +5,7 @@ import {
     CalendarTask,
     TaskInner,
     CompanyPostEdit, CreateWorker, CreateWorkerPostEdit,
-    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask, ResponsibleUser
+    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask, ResponsibleUser, InboxInner
 } from './index'
 import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
 import { BsBuildingAdd } from "react-icons/bs";
@@ -14,8 +14,10 @@ import { VscFileSubmodule } from "react-icons/vsc";
 import {IoCalendarOutline, IoCheckmarkDoneOutline} from "react-icons/io5";
 import { PiShuffleBold } from "react-icons/pi";
 import {
+    InboxOutlined,
     OrderedListOutlined, UserOutlined,
 } from "@ant-design/icons";
+import Inbox from "./Inbox";
 // import TaskEditBoss from "./TaskEditBoss";
 // import TaskEdit from "./TaskEditBoss/TaskEdit";
 // import {CgController} from "react-icons/cg";
@@ -24,7 +26,7 @@ import {
 export const authRole = {
     admin: 'admin',
     boss: 'boss',
-    user: 'user'
+    user: 'staff'
 }
 
 
@@ -79,15 +81,22 @@ export const samplePagesConfigs = [
         permittedRole: ['admin', "boss", 'staff'],
         isBackground: true
     },
-    // {
-    //     key: 5,
-    //     icon: <InboxOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-    //     path: '/inbox',
-    //     label: 'Избранный',
-    //     element: Inbox,
-    //     permittedRole: ['staff', "boss"],
-    //     isBackground: false
-    // },
+    {
+        key: 5,
+        icon: <InboxOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        path: '/inbox',
+        label: 'Избранный',
+        element: Inbox,
+        permittedRole: ["admin","staff"],
+        isBackground: false
+    },
+    {
+        path: '/inbox/:id',
+        element: InboxInner,
+        noIndex: true,
+        permittedRole: ["admin","staff"],
+        isBackground: false
+    },
     // {
     //     key: 6,
     //     label: 'Мои заявки',

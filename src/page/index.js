@@ -16,4 +16,5 @@ export {default as ResponsibleUser} from './ResponsibleUser/ResponsibleUser';
 export {default as ControllerPanel} from './ControllerPanel';
 export {default as Dashboard} from './Dashboard';
 export {default as Inbox} from './Inbox';
+export {default as InboxInner} from './Inbox/inboxInner';
 export {default as MyApplications} from './MyApplications';
