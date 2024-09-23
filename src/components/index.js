@@ -13,3 +13,6 @@ export {default as FilterTaskList} from './FilterTaskList/FilterTaskList'
 export {default as FilterCompanyForAdmin} from './FilterCompanyForAdmin/FilterCompanyForAdmin'
 export {default as ImageUploader} from './ImageUploader/ImageUploader'
 export {default as InboxCard} from './Inbox/InboxCard'
+
+// Chart
+export {default as CircleChart} from './Chart/CircleChart'

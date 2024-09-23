@@ -33,7 +33,6 @@ const CalendarTask = () => {
     const {companyID} = useSelector(state => state.companySlice)
     const {data: {user}} = useSelector(state => state.auth);
 
-    console.log(filterDate)
     // birthday
     const {
         data: dataBirthDay,
@@ -42,6 +41,8 @@ const CalendarTask = () => {
     } = useGetQuery(false, 'birthDay-get',
         `/users/user-birthdays?company__id=${companyID}`+
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
+
+
     // meeting
     const {
         data: dataMeetting,
@@ -83,25 +84,25 @@ const CalendarTask = () => {
                 <Flex align={'center'} gap={5}>
                     <span style={{width:20, height:20 , background:colorMeeting.meeting.color, borderRadius:'100%'}} />
                     <p>
-                        Встречи
+                        {colorMeeting.meeting.name}
                     </p>
                 </Flex>
                 <Flex align={'center'} gap={5}>
                     <span style={{width:20, height:20 , background:colorMeeting.birthday.color, borderRadius:'100%'}} />
                     <p>
-                        Дни рождений
+                        {colorMeeting.birthday.name}
+
                     </p>
                 </Flex>
                 <Flex align={'center'} gap={5}>
                     <span style={{width:20, height:20 , background:colorMeeting.deadline.color, borderRadius:'100%'}} />
                     <p>
-                        Сроки по задачам
+                        {colorMeeting.deadline.name}
                     </p>
                 </Flex>
             </Flex>
 
             <CustomCalendar
-
                 setFilterDate={setFilterDate}
                 colorMeeting={colorMeeting}
                 refetchMeeting={refetchMeeting}

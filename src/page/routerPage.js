@@ -4,8 +4,8 @@ import {
     UserProfile,
     CalendarTask,
     TaskInner,
-    CompanyPostEdit, CreateWorker, CreateWorkerPostEdit,
-    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask, ResponsibleUser, InboxInner
+    CompanyPostEdit, CreateWorker, CreateWorkerPostEdit, Support,
+    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask, ResponsibleUser, Dashboard,InboxInner
 } from './index'
 import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
 import { BsBuildingAdd } from "react-icons/bs";
@@ -17,7 +17,8 @@ import {
     InboxOutlined,
     OrderedListOutlined, UserOutlined,
 } from "@ant-design/icons";
-import Inbox from "./Inbox";
+import {RxDashboard} from "react-icons/rx";
+import {BiSupport} from "react-icons/bi";
 // import TaskEditBoss from "./TaskEditBoss";
 // import TaskEdit from "./TaskEditBoss/TaskEdit";
 // import {CgController} from "react-icons/cg";
@@ -37,30 +38,31 @@ export const samplePagesConfigs = [
     //     path: '/dashboard',
     //     label: 'Панель',
     //     element: Dashboard,
-    //     permittedRole: ['admin', 'staff', "boss"],
+    //     permittedRole: [authRole.admin, authRole.user, authRole.boss],
     //     isBackground: false
     // },
+
     {
         key: 2,
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/task-list',
         label: 'Задачи',
         element: TaskList,
-        permittedRole: ['staff' ,'boss'],
+        permittedRole: [authRole.user ,authRole.boss],
         isBackground: true
     },
     {
         path: '/task-list/:item',
         element:  TaskInner,
         noIndex: true,
-        permittedRole: ["boss" , "staff" , "admin"],
+        permittedRole: [authRole.boss , authRole.user , authRole.admin],
         isBackground: true
     },
     {
         path: '/success-task/:item',
         element:  TaskInner,
         noIndex: true,
-        permittedRole: ["boss" , "staff" , "admin"],
+        permittedRole: [authRole.boss , authRole.user , authRole.admin],
         isBackground: true
     },
     {
@@ -69,7 +71,7 @@ export const samplePagesConfigs = [
         path: '/success-task',
         label: 'Выполненные задачи',
         element: SuccessTask,
-        permittedRole: ['staff' ,'boss'],
+        permittedRole: [authRole.user ,authRole.boss],
         isBackground: true
     },
     {
@@ -78,7 +80,7 @@ export const samplePagesConfigs = [
         label: 'Календарь',
         path: '/calendar-task',
         element: CalendarTask,
-        permittedRole: ['admin', "boss", 'staff'],
+        permittedRole: [authRole.admin, authRole.boss, authRole.user],
         isBackground: true
     },
     {
@@ -103,7 +105,7 @@ export const samplePagesConfigs = [
     //     icon: <PiUserListLight className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
     //     path: '/my-applications',
     //     element: MyApplications,
-    //     permittedRole: ['staff', 'admin', "boss"],
+    //     permittedRole: [authRole.user', authRole.admin, authRole.boss"],
     //     isBackground: false
     // },
     {
@@ -112,7 +114,7 @@ export const samplePagesConfigs = [
         icon: <RiPlayListAddLine className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskCreated',
         element: TaskCreated,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true
     },
     // {
@@ -121,7 +123,7 @@ export const samplePagesConfigs = [
     //     icon: <CgController className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
     //     path: '/controllerPanel',
     //     element: ControllerPanel,
-    //     permittedRole: ["admin", "boss"],
+    //     permittedRole: [authRole.admin, authRole.boss"],
     //     isBackground: true
     // },
     {
@@ -130,7 +132,7 @@ export const samplePagesConfigs = [
         icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: BossTracking,
-        permittedRole: ["boss"],
+        permittedRole: [authRole.boss],
         isBackground: true
     },
     {
@@ -139,20 +141,20 @@ export const samplePagesConfigs = [
         icon:  <RiContractFill className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/Responsible',
         element: ResponsibleUser,
-        permittedRole: ["boss", 'staff'],
+        permittedRole: [authRole.boss, authRole.user],
         isBackground: true
     },
     // {
     //     path: '/taskEditBoss/add',
     //     element: TaskEdit,
-    //     permittedRole: ["boss"],
+    //     permittedRole: [authRole.boss"],
     //     isBackground: true,
     //     noIndex: true
     // },
     {
         path: '/task/add',
         element: TaskPostEdit,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true,
         noIndex: true
     },
@@ -162,13 +164,13 @@ export const samplePagesConfigs = [
         icon: <BsBuildingAdd className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/company',
         element: Company,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true
     },
     {
         path: '/company/add',
         element: CompanyPostEdit,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true,
         noIndex: true
     },
@@ -178,13 +180,13 @@ export const samplePagesConfigs = [
         icon: <AiOutlineUsergroupAdd className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/create-worker',
         element: CreateWorker,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true
     },
     {
         path: '/create-worker/add',
         element: CreateWorkerPostEdit,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true,
         noIndex: true
     },
@@ -194,13 +196,13 @@ export const samplePagesConfigs = [
         icon: <VscFileSubmodule className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/module',
         element: Module,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true
     },
     {
         path: '/module/add',
         element: ModulePostEdit,
-        permittedRole: ["admin"],
+        permittedRole: [authRole.admin],
         isBackground: true,
         noIndex: true
     },
@@ -210,7 +212,16 @@ export const samplePagesConfigs = [
         label: 'Профиль',
         path: '/user-profile',
         element: UserProfile,
-        permittedRole: ['admin', 'staff', "boss"],
+        permittedRole: [authRole.admin, authRole.user, authRole.boss],
         isBackground: false
     },
+    // {
+    //     key: 12321232312312312,
+    //     icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     path: '/support',
+    //     label: 'Поддерживать',
+    //     element: Support,
+    //     permittedRole: [authRole.admin, authRole.user, authRole.boss],
+    //     isBackground: false
+    // },
 ];

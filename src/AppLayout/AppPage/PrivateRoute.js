@@ -10,11 +10,13 @@ const PrivateRoute = ({component: Component, permittedRoles, isBackground}) => {
 
     useEffect(() => {
         if (user && user.roles) {
-
             const roles = user.roles.map(role => role.name)
             setUserRoles(roles);
         }
     }, [user]);
+
+    console.log(userRoles , 'userRoles')
+    console.log(hasAccess , 'hasAccess')
 
     useEffect(() => {
         if (userRoles.length > 0) {
