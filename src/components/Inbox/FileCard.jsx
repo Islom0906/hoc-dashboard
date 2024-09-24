@@ -6,22 +6,18 @@ const FileCard = ({files,comment}) => {
     return (
         <Card bordered={true} style={cardStyle} size={"small"}>
             <Space size={5} direction={"vertical"}>
-                <Image.PreviewGroup
-                    preview={{
-                        onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
-                    }}
-                >
+                <Space size={10}>
                     {
                         files?.map(file=>(
                             <Image
                                 key={file?.id}
-                                width={30}
-                                src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"/>
+                                width={50}
+                                src={file?.file}/>
                         ))
                     }
+                </Space>
 
 
-                </Image.PreviewGroup>
                 <Text>{comment}</Text>
             </Space>
 
