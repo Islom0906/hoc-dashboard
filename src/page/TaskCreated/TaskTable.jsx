@@ -1,4 +1,4 @@
-import {Avatar, Button, Popconfirm, Progress, Space, Table, Tooltip} from "antd";
+import {Avatar, Button, Flex, Popconfirm, Progress,  Table, Tooltip} from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ import {FaRegEye} from "react-icons/fa";
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const Delete = async (id) => {
     deleteHandle("/users/tasks", id);
@@ -164,20 +163,21 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
       fixed: "right",
       width: 140,
       render: (_, record) => (
-          <Space size={10}>
+          <Flex gap={10} justify={'end'}>
+            {
+                record?.done_sub_tasks_count ===0 &&
+                <Button
+                    onClick={() => Edit(record.id)}
+                    type="dashed"
+                    icon={<EditOutlined />}
+                />
+            }
             <Button
                 onClick={() => handleTaskInnerGet(record?.id)}
                 type="dashed"
                 icon={<FaRegEye />}
             />
-            {
-              record?.done_sub_tasks_count > 0 &&
-            <Button
-                onClick={() => Edit(record.id)}
-                type="dashed"
-                icon={<EditOutlined />}
-            />
-            }
+
             <Popconfirm
                 title={"Вы уверены, что хотите удалить это?"}
                 description={"Удалить"}
@@ -185,7 +185,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             >
               <Button type="primary" danger icon={<DeleteOutlined />} />
             </Popconfirm>
-          </Space>
+          </Flex>
       ),
     },
   ];

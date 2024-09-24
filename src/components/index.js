@@ -1,4 +1,3 @@
-export {default as AppLogo} from './AppLogo'
 export {default as AppLoader} from './AppLoader'
 export {default as FormInput} from './Form/FormInput'
 export {default as FormInputEmail} from './Form/FormInputEmail'
@@ -14,6 +13,7 @@ export {default as FilterCompanyForAdmin} from './FilterCompanyForAdmin/FilterCo
 export {default as ImageUploader} from './ImageUploader/ImageUploader'
 export {default as InboxCard} from './Inbox/InboxCard'
 export {default as FileCard} from './Inbox/FileCard'
+export {default as Map} from './Map/Map'
 
 // Chart
 export {default as CircleChart} from './Chart/CircleChart'
