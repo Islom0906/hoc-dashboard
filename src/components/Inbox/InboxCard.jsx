@@ -30,9 +30,9 @@ const InboxCard = ({title,id,deleteHandle}) => {
                 </Col>
 
                 <Col span={12} style={{display:'flex',alignItems:'end'}}>
-                    <Flex align={"start"} wrap={"nowrap"} gap={8} style={{height:'100%'}} >
-                        <LuCalendarDays className={"icon"}/>
-                        <Text style={{fontSize: '12px'}}>
+                    <Flex align={"center"} wrap={"nowrap"} gap={8}  >
+                        <LuCalendarDays className={"icon"} style={{marginBottom:4}}/>
+                        <Text style={{fontSize: '12px'}} >
                             {dayjs(new Date()).format('DD.MM.YYYY hh:mm')}
                         </Text>
                     </Flex>

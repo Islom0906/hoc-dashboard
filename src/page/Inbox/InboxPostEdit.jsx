@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Form, Row, Typography, Upload} from "antd";
+import {Button, Card, Col, Form, Row, Upload} from "antd";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
-import {
-    useDeleteImagesQuery,
-    useDeleteQuery,
-    useEditQuery,
-    useGetByIdQuery,
-    usePostQuery
-} from "../../service/query/Queries";
+import {useDeleteQuery, useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Queries";
 import {PlusOutlined} from "@ant-design/icons";
 
 
@@ -35,7 +29,7 @@ const InboxPostEdit = () => {
     }
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
-
+    console.log(editId)
     const [fileListProps, setFileListProps] = useState(imageInitial);
     const [isUpload, setIsUpload] = useState("")
     const [mainIndex, setMainIndex] = useState(null)
@@ -85,10 +79,10 @@ const InboxPostEdit = () => {
                 let fileEdit = []
                 item.files?.map((fileId) => {
                     fileEdit.push({
-                        uid: editInboxData?.fileId?.id,
-                        name: editInboxData?.fileId?.id,
+                        uid: fileId?.id,
+                        name: fileId?.id,
                         status: "done",
-                        url: editInboxData.fileId.path
+                        url: fileId.file
                     })
                 })
                 return fileEdit
@@ -164,7 +158,6 @@ const InboxPostEdit = () => {
     useEffect(() => {
         // images
         if (imagesUploadSuccess && isUpload) {
-            console.log(imagesUpload)
             const initialImage = {...fileListProps}
             const uploadImg = {
                 uid: imagesUpload?.id,
@@ -173,11 +166,10 @@ const InboxPostEdit = () => {
                 url: imagesUpload?.image
 
             }
-
-            if (!initialImage[isUpload][mainIndex]){
+            console.log(initialImage[isUpload][mainIndex])
+            if (initialImage[isUpload][mainIndex]===undefined){
                 initialImage[isUpload][mainIndex]=[]
             }
-            console.log(initialImage[isUpload][mainIndex])
             initialImage[isUpload][mainIndex]?.push(uploadImg)
             changeFieldValue(isUpload, [uploadImg], mainIndex)
             setFileListProps(initialImage);
@@ -189,7 +181,7 @@ const InboxPostEdit = () => {
     const onChangeImage = (info, name, index = null, multiple = false) => {
         const {fileList: newFileList, file} = info
         const formData = new FormData();
-        let id = {}
+        let id = null
         let multipleDeleteIndex = null
         if (multiple && file?.status === 'removed') {
             fileListProps[name][index].map((item, ind) => {
@@ -198,14 +190,14 @@ const InboxPostEdit = () => {
                 }
             })
         }
-        console.log(multipleDeleteIndex)
+
         if (file?.status === 'removed') {
             const deleteImageFileProps = {...fileListProps}
             // tekshirish
             changeFieldValue(name, {}, index)
-            console.log(fileListProps[name][index][multipleDeleteIndex]?.uid)
+            id = fileListProps[name][index][multipleDeleteIndex]?.uid
             deleteImageFileProps[name][index].splice(multipleDeleteIndex, 1)
-            imagesDeleteMutate({url: "/users/files", id:fileListProps[name][index][multipleDeleteIndex]?.uid});
+            imagesDeleteMutate({url: "/users/files", id});
             setFileListProps(deleteImageFileProps)
         } else if (newFileList.length !== 0 && newFileList[newFileList.length - 1].originFileObj) {
             formData.append("image",  newFileList[newFileList.length - 1].originFileObj );
@@ -231,7 +223,6 @@ const InboxPostEdit = () => {
 
         remove(name);
     };
-    console.log(fileListProps)
 
     return (<div>
         {(postInboxLoading || editInboxLoading || putInboxLoading) ?

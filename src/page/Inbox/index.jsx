@@ -36,7 +36,10 @@ const Inbox = () => {
 
       <Spin spinning={deleteLoading||getInboxLoading}>
           <Row gutter={[20,20]} >
-              <Col span={24}>
+              <Col span={24}
+
+
+              >
                   <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
                       <Row gutter={[16, 30]}>
                           <Col span={24}>
@@ -62,7 +65,18 @@ const Inbox = () => {
               </Col>
           {
               data?.map((message) => (
-                  <Col span={6} key={message?.id}>
+                  <Col
+                      span={6}
+                      xl={{
+                          span:6
+                      }}
+                      md={{
+                          span:8
+                      }}
+                      xs={{
+                          span:12
+                      }}
+                       key={message?.id}>
                       <InboxCard title={message?.title} id={message?.id} deleteHandle={deleteHandle}/>
                   </Col>
               ))
