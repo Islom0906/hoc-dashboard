@@ -18,4 +18,5 @@ export {default as Dashboard} from './Dashboard';
 export {default as Support} from './Support';
 export {default as Inbox} from './Inbox';
 export {default as InboxInner} from './Inbox/inboxInner';
+export {default as InboxPostEdit} from './Inbox/InboxPostEdit';
 export {default as MyApplications} from './MyApplications';

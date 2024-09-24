@@ -124,4 +124,22 @@ export const useDeleteQuery=()=>{
     });
     return {mutate,isSuccess,isLoading}
 }
-
+export const useDeleteImagesQuery=()=>{
+    const {
+        mutate,
+        isSuccess,
+        isLoading,
+    } = useMutation(({url, id}) => apiService.deleteImages(url, id),{
+        onSuccess:()=>{
+            message.success('Успешно')
+        },
+        onError: (error) => {
+            message.error(error.response.data)
+            console.log(error.response)
+            // for (let obj in error.response.data) {
+            //     message.error(`${obj}: ${error.response.data[obj][0]}`)
+            // }
+        }
+    });
+    return {mutate,isSuccess,isLoading}
+}

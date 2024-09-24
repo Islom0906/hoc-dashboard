@@ -4,8 +4,20 @@ import {
     UserProfile,
     CalendarTask,
     TaskInner,
-    CompanyPostEdit, CreateWorker, CreateWorkerPostEdit, Support,
-    Module, ModulePostEdit, BossTracking, TaskCreated, TaskPostEdit, SuccessTask, ResponsibleUser, Dashboard,InboxInner
+    CompanyPostEdit,
+    CreateWorker,
+    CreateWorkerPostEdit,
+    Support,
+    Module,
+    ModulePostEdit,
+    BossTracking,
+    TaskCreated,
+    TaskPostEdit,
+    SuccessTask,
+    ResponsibleUser,
+    Dashboard,
+    Inbox, InboxInner, InboxPostEdit,
+
 } from './index'
 import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
 import { BsBuildingAdd } from "react-icons/bs";
@@ -19,6 +31,7 @@ import {
 } from "@ant-design/icons";
 import {RxDashboard} from "react-icons/rx";
 import {BiSupport} from "react-icons/bi";
+
 // import TaskEditBoss from "./TaskEditBoss";
 // import TaskEdit from "./TaskEditBoss/TaskEdit";
 // import {CgController} from "react-icons/cg";
@@ -32,15 +45,15 @@ export const authRole = {
 
 
 export const samplePagesConfigs = [
-    // {
-    //     key: 1,
-    //     icon: <RxDashboard className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-    //     path: '/dashboard',
-    //     label: 'Панель',
-    //     element: Dashboard,
-    //     permittedRole: [authRole.admin, authRole.user, authRole.boss],
-    //     isBackground: false
-    // },
+    {
+        key: 1,
+        icon: <RxDashboard className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        path: '/dashboard',
+        label: 'Панель',
+        element: Dashboard,
+        permittedRole: [authRole.admin, authRole.user, authRole.boss],
+        isBackground: false
+    },
 
     {
         key: 2,
@@ -95,6 +108,13 @@ export const samplePagesConfigs = [
     {
         path: '/inbox/:id',
         element: InboxInner,
+        noIndex: true,
+        permittedRole: ["admin","staff"],
+        isBackground: false
+    },
+    {
+        path: '/inbox-add',
+        element: InboxPostEdit,
         noIndex: true,
         permittedRole: ["admin","staff"],
         isBackground: false
@@ -215,13 +235,13 @@ export const samplePagesConfigs = [
         permittedRole: [authRole.admin, authRole.user, authRole.boss],
         isBackground: false
     },
-    // {
-    //     key: 12321232312312312,
-    //     icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-    //     path: '/support',
-    //     label: 'Поддерживать',
-    //     element: Support,
-    //     permittedRole: [authRole.admin, authRole.user, authRole.boss],
-    //     isBackground: false
-    // },
+    {
+        key: 12321232312312312,
+        icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        path: '/support',
+        label: 'Поддерживать',
+        element: Support,
+        permittedRole: [authRole.admin, authRole.user, authRole.boss],
+        isBackground: false
+    },
 ];

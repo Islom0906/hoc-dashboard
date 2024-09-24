@@ -4,39 +4,18 @@ import dayjs from "dayjs";
 import {FaRegEye} from "react-icons/fa";
 import {DeleteOutlined} from "@ant-design/icons";
 import {LuCalendarDays} from "react-icons/lu";
+import {useNavigate} from "react-router-dom";
 
 const {Title, Text} = Typography
 
-const items = [
-    {
-        key: '1',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                1st menu item
-            </a>
-        ),
-    },
-    {
-        key: '2',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                2nd menu item
-            </a>
-        ),
-    },
-    {
-        key: '3',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                3rd menu item
-            </a>
-        ),
-    },
-];
-const InboxCard = () => {
+const InboxCard = ({title,id,deleteHandle}) => {
+    const navigate = useNavigate();
+    const ViewInner=()=>{
+        navigate(`/inbox/${id}`)
+    }
 
-    const Delete = () => {
-
+    const Delete = (id) => {
+        deleteHandle('/users/inbox',id)
     }
     return (
         <Card className={'chat-card'} size={"small"}>
@@ -45,8 +24,7 @@ const InboxCard = () => {
 
                 <Col span={24}>
                     <Title level={4} className={'chat-title'}>
-                        bu mening birinchi malumotlarim
-                        bu mening birinchi malumotlarim
+                        {title}
 
                     </Title>
                 </Col>
@@ -62,6 +40,7 @@ const InboxCard = () => {
                 <Col span={6}>
 
                     <Button
+                        onClick={ViewInner}
                         style={{width: '100%'}}
                         type="primary"
                         icon={<FaRegEye/>}
@@ -72,7 +51,7 @@ const InboxCard = () => {
                     <Popconfirm
                         title={"Вы уверены, что хотите удалить это?"}
                         description={"Удалить"}
-                        onConfirm={() => Delete(1)}
+                        onConfirm={() => Delete(id)}
                     >
                         <Button
                             style={{width: '100%'}}
