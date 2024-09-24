@@ -1,26 +1,53 @@
 import {Button, Card, Col, Flex, Row, Space, Typography} from "antd";
-import BackgroundContent from "../../AppLayout/AppPage/BackgrountContent";
-import {CircleChart} from "../../components";
-import {MapContainer, Marker, TileLayer, useMap} from "react-leaflet";
+import {CircleChart , Map} from "../../components";
 import 'leaflet/dist/leaflet.css'
 import {FaPlus} from "react-icons/fa";
 const { Title } = Typography;
 const Dashboard = () => {
-  function SetViewOnClick({ coords }) {
-    const map = useMap();
-    map.setView(coords, map.getZoom());
 
-    return null;
-  }
 
-  const position = [51.505, -0.09]
+  const positions = [
+    {
+      latitude: 324.505,
+      longitude: -324.12,
+      name: 'leapmotors',
+      fulladdress: 'leapmotors full adress',
+      category:'dillers',
+      icon: 'https://hoc.evms.uz/media/EHOC.png',
+    } ,
+    {
+      latitude: 324.505,
+      longitude: -123.12,
+      name: 'leapmotors',
+      fulladdress: 'leapmotors full adress',
+      category: 'home',
+      icon: 'https://hoc.evms.uz/media/EHOC.png',
+    },
+    {
+      latitude: 12.505,
+      longitude: -123.12,
+      name: 'leapmotors',
+      fulladdress: 'leapmotors full adress',
+      category: 'home',
+      icon: 'https://hoc.evms.uz/media/EHOC.png',
+    },
+    {
+      latitude: 232.505,
+      longitude: -2323.12,
+      name: 'leapmotors',
+      fulladdress: 'leapmotors full adress',
+      category: 'home',
+      icon: 'https://hoc.evms.uz/media/EHOC.png',
+    }
+  ]
+
   return (
       <div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
           <Row gutter={[16, 30]}  >
             <Col span={18}>
               <Title level={2} style={{marginBottom:0}}>
-                Создать задачу
+                Панель
               </Title>
             </Col>
             <Col span={12}>
@@ -33,7 +60,7 @@ const Dashboard = () => {
                 <Row gutter={[16, 16]}>
                   <Col span={12}>
                     <Title level={4} style={{marginBottom:0}}>
-                      Создать задачу
+                      Наши офисы:
                     </Title>
                   </Col>
                   <Col span={12}>
@@ -42,14 +69,7 @@ const Dashboard = () => {
                     </Flex>
                   </Col>
                   <Col span={24} style={{borderRadius:10 , overflow:"hidden"}}>
-                  <MapContainer  style={{height:400,width:'100%'}} center={position} zoom={21} scrollWheelZoom={true}>
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={position}>
-                    </Marker>
-                  </MapContainer>
+                    <Map zoom={12} positions={positions} mapHeight={400}/>
                   </Col>
                 </Row>
               </Card>
