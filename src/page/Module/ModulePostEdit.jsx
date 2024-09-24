@@ -2,8 +2,6 @@ import React, {useEffect, useMemo} from 'react';
 import {Button, Col,  Form, message, Row, Select} from "antd";
 import {AppLoader, FormInput} from "../../components";
 import {useSelector} from "react-redux";
-import {useMutation, useQuery} from "react-query";
-import apiService from "../../service/apis/api";
 import {EditGetById,  SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 

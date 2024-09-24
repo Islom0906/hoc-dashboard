@@ -8,7 +8,6 @@ import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
-import company from "../Company";
 
 const {Title}=Typography
 const initialValueForm={

@@ -31,16 +31,15 @@ export const authRole = {
 
 
 export const samplePagesConfigs = [
-    // {
-    //     key: 1,
-    //     icon: <RxDashboard className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-    //     path: '/dashboard',
-    //     label: 'Панель',
-    //     element: Dashboard,
-    //     permittedRole: [authRole.admin, authRole.user, authRole.boss],
-    //     isBackground: false
-    // },
-
+    {
+        key: 1,
+        icon: <RxDashboard className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        path: '/dashboard',
+        label: 'Панель',
+        element: Dashboard,
+        permittedRole: [authRole.admin, authRole.user, authRole.boss],
+        isBackground: false
+    },
     {
         key: 2,
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
@@ -207,13 +206,13 @@ export const samplePagesConfigs = [
         permittedRole: [authRole.admin, authRole.user, authRole.boss],
         isBackground: false
     },
-    // {
-    //     key: 12321232312312312,
-    //     icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-    //     path: '/support',
-    //     label: 'Поддерживать',
-    //     element: Support,
-    //     permittedRole: [authRole.admin, authRole.user, authRole.boss],
-    //     isBackground: false
-    // },
+    {
+        key: 12321232312312312,
+        icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        path: '/support',
+        label: 'Поддерживать',
+        element: Support,
+        permittedRole: [authRole.admin, authRole.user, authRole.boss],
+        isBackground: false
+    },
 ];
