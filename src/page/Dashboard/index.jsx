@@ -150,17 +150,17 @@ const Dashboard = () => {
                 Панель
               </Title>
             </Col>
-            <Col span={12}>
-              <Card size={"small"}>
-                <CircleChart/>
-              </Card>
-            </Col>
+            {/*<Col span={12}>*/}
+            {/*  <Card size={"small"}>*/}
+            {/*    <CircleChart/>*/}
+            {/*  </Card>*/}
+            {/*</Col>*/}
             <Col span={12}>
               <DashboardProfileCard />
             </Col>
             <Col span={12}>
               <Card size={"small"}>
-                <Row gutter={[16, 16]}>
+                <Row gutter={16}>
                   <Col span={12}>
                     <Title level={4} style={{marginBottom:0}}>
                       Наши офисы:

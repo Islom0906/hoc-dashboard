@@ -35,7 +35,21 @@ const DashboardProfileCard = () => {
             }}
             bodyStyle={{ padding: '10px' }}
         >
-          <Row justify="center">
+          <Row justify="center" gutter={10}>
+            <Col span={12}>
+              <TrophyOutlined style={{ fontSize: '24px', color: '#1890ff' }} />
+              <Title level={5} style={{ marginTop: 5, color: '#1890ff' }}>
+                2300
+              </Title>
+              <Text>Achievements</Text>
+            </Col>
+            <Col span={12}>
+              <TeamOutlined style={{ fontSize: '24px', color: '#ff4d4f' }} />
+              <Title level={5} style={{ marginTop: 5, color: '#ff4d4f' }}>
+                38
+              </Title>
+              <Text>Friends</Text>
+            </Col>
             <Col span={12}>
               <TrophyOutlined style={{ fontSize: '24px', color: '#1890ff' }} />
               <Title level={5} style={{ marginTop: 5, color: '#1890ff' }}>
