@@ -44,7 +44,7 @@ const Inbox = () => {
                       <Row gutter={[16, 30]}>
                           <Col span={24}>
                               <Title level={2} style={{marginBottom: 0}}>
-                                  Мой почтовый ящик
+                                  Избранный
                               </Title>
                           </Col>
 

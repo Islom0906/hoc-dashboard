@@ -100,7 +100,9 @@ const Support = () => {
                 checkInfo === 'history' ?
                     <Flex vertical={true} gap={20} >
                       {
-                        GetAdminAllTicket?.map(ticket => (<FileCard key={ticket?.id} files={[ticket.file]} comment={ticket?.text} date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}  />))
+                        GetAdminAllTicket?.map(ticket => (<FileCard key={ticket?.id} files={[ticket.file]} comment={ticket?.text} date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}
+                          user={ticket?.created_by}
+                        />))
                       }
                     </Flex>
                 :
@@ -146,8 +148,20 @@ const Support = () => {
                     </div>
                       {
                           checkInfo === 'Admin' ?
-                        GetAdminTicket?.map(ticket => (<FileCard key={ticket?.id} files={[ticket.file]} comment={ticket?.text} date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}  />))
-                              : GetDeveloperTicket?.map(ticket => (<FileCard key={ticket?.id} files={[ticket.file]} comment={ticket?.text} date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}  />))
+                        GetAdminTicket?.map(ticket => (
+                            <FileCard
+                            key={ticket?.id}
+                            files={[ticket.file]}
+                            comment={ticket?.text}
+                            date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}  />
+                        ))
+                              : GetDeveloperTicket?.map(ticket => (
+                                  <FileCard
+                                      key={ticket?.id}
+                                      files={[ticket.file]}
+                                      comment={ticket?.text}
+                                      date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}
+                                  />))
                       }
                     </Flex>
 

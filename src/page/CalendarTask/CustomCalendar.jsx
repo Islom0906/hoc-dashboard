@@ -1,12 +1,13 @@
 import {useEffect, useMemo, useState} from 'react';
-import { Button, Calendar, Col, Flex, Popover, Row, Select, Typography, ConfigProvider } from "antd";
+import {Button, Calendar, Col, ConfigProvider, Flex, Popover, Row, Select, Typography} from "antd";
 import dayjs from "dayjs";
 import 'dayjs/locale/ru';
 import ruRU from 'antd/es/locale/ru_RU';
 import ModalCalendar from "./ModalCalendar";
-import { useDispatch, useSelector } from "react-redux";
-import { editIdQuery } from "../../store/slice/querySlice";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import {useDispatch, useSelector} from "react-redux";
+import {editIdQuery} from "../../store/slice/querySlice";
+import {FaExternalLinkAlt} from "react-icons/fa";
+
 dayjs.locale('ru');
 
 const { Title, Text } = Typography;
@@ -50,7 +51,6 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         }, {});
     }, [dataBirthDay]);
 
-    console.log(birthdayMap)
 
     const meetingMap = useMemo(() => {
         return dataMeeting?.reduce((acc, meeting) => {
@@ -70,11 +70,9 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         }, {});
     }, [dataDeadline]);
 
-    console.log(dataBirthDay)
 
     const dateCellRender = (value) => {
         const birthdayStr = value.format('MM-DD');
-        console.log('birthdayStr' , birthdayStr)
         const dateStr = value.format('YYYY-MM-DD');
         let meetingsOnDate = [];
         let birthdaysOnDate = [];
@@ -82,8 +80,6 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         if (filterForColor === 'all') {
             if (birthdayMap) {
                 birthdaysOnDate = birthdayMap[birthdayStr] || [];
-                console.log( 'birthdaysOnDate' , birthdaysOnDate)
-                console.log( 'birthdayMap' , birthdayMap)
             }
             if (meetingMap) {
                 meetingsOnDate = meetingMap[dateStr] || [];
@@ -174,7 +170,6 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
             if (!isPastDate) {
                 console.log("This is a past date:", newValue.format("YYYY-MM-DD"));
                 setValue(newValue);
-                setIsModalOpen(true);
             }
         }
     };

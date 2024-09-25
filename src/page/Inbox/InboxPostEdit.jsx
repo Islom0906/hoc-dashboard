@@ -266,12 +266,12 @@ const InboxPostEdit = () => {
                     </Col>
                     <Col span={24}>
 
-                    <Card bordered={true} style={cardStyle}>
+                    <Card bordered={true} >
                         <Form.List name="items">
                             {(fields, {add, remove}) => (
                                 <>
                                     {fields.map((field, index) => (
-                                        <Row key={field.key} gutter={20}>
+                                        <Row key={field.key} gutter={20} >
 
 
                                             <Col span={24}>

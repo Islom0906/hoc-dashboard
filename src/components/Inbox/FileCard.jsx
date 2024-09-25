@@ -1,13 +1,14 @@
-import {Card, Image, Space, Typography} from "antd";
+import {Card, Flex, Image, Space, Typography} from "antd";
 import React from "react";
-import dayjs from "dayjs";
 import {AvatarUserProfile} from "../index";
+
 const cardStyle = {border: 1, borderStyle: "dashed", borderColor: "black"}
 const { Text} = Typography
 const FileCard = ({files,comment , date , user}) => {
+    console.log(user)
     return (
         <Card bordered={true} style={cardStyle} size={"small"}>
-            <Space size={5} direction={"vertical"}>
+            <Space size={5} direction={"vertical"} style={{width: '100%'}}>
                 <Space size={10}>
                     {
                       files.length !== 0 &&
@@ -20,23 +21,23 @@ const FileCard = ({files,comment , date , user}) => {
                     }
                 </Space>
                 <Text>{comment}</Text>
-              {
-                date &&
-                <Text style={{fontSize:11}} type={"secondary"}>{date}</Text>
-              }
-              {
-                user &&
-                <div style={{flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 10}}>
-                  <Text style={{flexShrink: 0, fontSize: '11px'}}
-                        type="secondary">{dayjs(user.created_at).format("DD.MM.YYYY hh:mm")}</Text>
-                  <div style={{width: 40, height: 40}}>
+
+
+                <Flex justify={"space-between"} align={"end"} style={{flexShrink: 0,}}>
+
+                    <Text style={{flexShrink: 0, fontSize: '11px'}}
+                          type="secondary">{date}</Text>
+                    {
+                        user &&
+                        <div style={{width: 30, height: 30}}>
                     <AvatarUserProfile key={user?.created_user?.id} full_name={user?.created_user?.full_name}
                                        moduls={user?.created_user?.position}
                                        image={user?.created_user?.images.image}/>
+                    </div>
+                    }
+                </Flex>
 
-                  </div>
-                </div>
-              }
+
             </Space>
         </Card>
     )
