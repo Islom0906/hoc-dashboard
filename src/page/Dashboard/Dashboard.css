@@ -1,0 +1,7 @@
+[class~='ant-carousel'] [class~='slick-slider'] li button {
+    border-radius: 0 !important;
+}
+[class~='ant-carousel'] [class~='slick-slider'] li.slick-active button {
+    background-color: #000 !important;
+}
+
