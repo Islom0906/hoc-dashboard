@@ -7,6 +7,7 @@ import { useGetQuery } from "../../service/query/Queries";
 
 const BossTracking = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
+  const {companyID} = useSelector(state => state.companySlice)
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [ordering, setOrdering] = useState('');
@@ -21,11 +22,11 @@ const BossTracking = () => {
   const {
     data: GetTagCompany =[],
     refetch: refetchGetTagCompany,
-  } = useGetQuery(false, "get-tag-company", `users/tag-selection` ,false);
+  } = useGetQuery(false, "get-tag-company", `/users/tags/${companyID}` ,false);
 
   useEffect(() => {
     refetchGetTagCompany()
-  } , [user])
+  } , [companyID])
 
   useEffect(() => {
       refetchStaffGetTask();
@@ -35,6 +36,9 @@ const BossTracking = () => {
     setPageSize(pageSize);
   };
   const taskData = staffGetTask;
+
+
+  console.log(GetTagCompany)
   return (
       <div>
         <Row gutter={[16 , 30]}>

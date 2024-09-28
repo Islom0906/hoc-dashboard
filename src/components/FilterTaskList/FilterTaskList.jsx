@@ -16,7 +16,7 @@ const deadlineTime = [
     value: '',
   },
 ];
-const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , getTagCompany , setGetTagCompany }) => {
+const FilterTaskList = ({ staff , setOrdering, setDeadlineStatus, deadlineColorAlert , getTagCompany , setGetTagCompany }) => {
   const deadlineColorArray = useMemo(() => {
     return Object.entries(deadlineColor).map(([key, value]) => ({
       label: value.text,
@@ -75,6 +75,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
               </Flex>
             </Col>
         )}
+
         <Col span={6}>
           <label htmlFor="selectCompany">
             <p style={{ fontSize: '14px', marginBottom: 10 }}>Выберите компанию:</p>
@@ -90,6 +91,23 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
               onChange={onChangeTagCompany}
           />
         </Col>
+        {staff &&
+            <Col span={6}>
+              <label htmlFor="deadlineColorSelect">
+                <p style={{ fontSize: '14px', marginBottom: 10 }}>Сотрудники:</p>
+              </label>
+              <Select
+                  id="deadlineColorSelect"
+                  style={{ width: '100%' }}
+                  mode="multiple"
+                  placeholder="Сотрудники"
+                  optionLabelProp="label"
+                  options={deadlineColorArray}
+                  onChange={onChangeDeadlineStatus}
+              />
+            </Col>
+        }
+
         <Col span={6}>
           <label htmlFor="deadlineTimeSelect">
             <p style={{ fontSize: '14px', marginBottom: 10 }}>по времени Крайнего срока:</p>

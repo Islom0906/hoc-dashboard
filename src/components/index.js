@@ -15,5 +15,3 @@ export {default as InboxCard} from './Inbox/InboxCard'
 export {default as FileCard} from './Inbox/FileCard'
 export {default as Map} from './Map/Map'
 
-// Chart
-export {default as CircleChart} from './Chart/CircleChart'

@@ -7,6 +7,7 @@ import { useGetQuery } from "../../service/query/Queries";
 
 const SuccessTask = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
+  const {companyID} = useSelector(state => state.companySlice)
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [ordering, setOrdering] = useState('');
@@ -16,17 +17,17 @@ const SuccessTask = () => {
   const {
     data: GetTagCompany =[],
     refetch: refetchGetTagCompany,
-  } = useGetQuery(false, "get-tag-company", `users/tag-selection`);
+  } = useGetQuery(false, "get-tag-company", `/users/tags/${companyID}`, false);
 
   // !ozgarish kerak API
   const {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "staff-get-task", `users/staff-done-subtasks/?page=${currentPage}&page_size=${pageSize}${getTagCompany && `&tag__in=${getTagCompany}`}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`);
+  } = useGetQuery(false, "staff-get-task", `users/staff-done-subtasks/?page=${currentPage}&page_size=${pageSize}${getTagCompany && `&tag__in=${getTagCompany}`}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}` , false);
   useEffect(() => {
     refetchGetTagCompany()
-  } , [user])
+  } , [companyID])
   useEffect(() => {
     refetchStaffGetTask();
   }, [user, currentPage, pageSize , ordering , deadlineStatus , getTagCompany  ]);
