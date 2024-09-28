@@ -4,6 +4,7 @@ import {Map} from "../../../components";
 import MapTable from "./map-table";
 import AddLocationMap from "./AddLocationMap";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 
 const {Title} = Typography
@@ -125,17 +126,11 @@ const positions = [
   }
 ];
 const MapForDashboardStructure = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+const navigation=useNavigate()
   const showModal = () => {
-    setIsModalOpen(true);
+    navigation('/map-add')
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+
 
   return (
       <>
@@ -163,11 +158,7 @@ const MapForDashboardStructure = () => {
             </Col>
           </Row>
         </Card>
-        <Col span={24}>
-          <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={false}>
-            <AddLocationMap setIsModalOpen={setIsModalOpen} />
-          </Modal>
-        </Col>
+
       </>
 
   );

@@ -26,7 +26,7 @@ function SetViewOnClick({ coords }) {
   return null;
 }
 
-const AddLocationMap = ({setIsModalOpen,isModalOpen}) => {
+const AddLocationMap = ({setIsModalOpen}) => {
   const [form] = Form.useForm();
   const {editId} = useSelector(state => state.query)
   const [position, setPosition] = useState([40.7821 ,72.3500])
