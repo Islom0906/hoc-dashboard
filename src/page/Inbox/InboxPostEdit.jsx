@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Form, Row, Upload} from "antd";
+import React, {useEffect, useMemo, useState} from 'react';
+import {Button, Card, Col, Form, Modal, Row, Select, Upload} from "antd";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
-import {useDeleteQuery, useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Queries";
+import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 import {PlusOutlined} from "@ant-design/icons";
+import InboxCategoryPostEdit from "./category/inboxCategoryPostEdit";
 
 
-const cardStyle = {border: 1, borderStyle: "dashed", borderColor: "black"}
 const initialValueForm = {
     title: "",
     text: "",
+    category: "",
     items: [
         {
             comment: "",
@@ -19,20 +20,21 @@ const initialValueForm = {
     ]
 }
 
-
-
-
-
 const InboxPostEdit = () => {
     const imageInitial = {
         files: [[]],
     }
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
-    console.log(editId)
     const [fileListProps, setFileListProps] = useState(imageInitial);
     const [isUpload, setIsUpload] = useState("")
     const [mainIndex, setMainIndex] = useState(null)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    // query-company-get
+    const {
+        data: categortInboxData,
+        refetch: categortInboxFetch
+    } = useGetQuery(false, 'get-category-inbox', '/users/inbox-category', false)
     // query-inbox
     const {
         mutate: postInboxMutate,
@@ -71,7 +73,9 @@ const InboxPostEdit = () => {
     // if no edit inbox
     SetInitialValue(form, initialValueForm)
 
-
+    useEffect(() => {
+        categortInboxFetch()
+    }, []);
     //edit inbox
     useEffect(() => {
         if (editInboxSuccess) {
@@ -92,6 +96,8 @@ const InboxPostEdit = () => {
             const edit = {
                 title: editInboxData.title,
                 text: editInboxData.text,
+                category: editInboxData.category,
+
                 items:editInboxData.items
             }
 
@@ -155,6 +161,9 @@ const InboxPostEdit = () => {
         }
     }
 
+
+
+
     useEffect(() => {
         // images
         if (imagesUploadSuccess && isUpload) {
@@ -166,7 +175,6 @@ const InboxPostEdit = () => {
                 url: imagesUpload?.image
 
             }
-            console.log(initialImage[isUpload][mainIndex])
             if (initialImage[isUpload][mainIndex]===undefined){
                 initialImage[isUpload][mainIndex]=[]
             }
@@ -193,7 +201,6 @@ const InboxPostEdit = () => {
 
         if (file?.status === 'removed') {
             const deleteImageFileProps = {...fileListProps}
-            // tekshirish
             changeFieldValue(name, {}, index)
             id = fileListProps[name][index][multipleDeleteIndex]?.uid
             deleteImageFileProps[name][index].splice(multipleDeleteIndex, 1)
@@ -224,12 +231,32 @@ const InboxPostEdit = () => {
         remove(name);
     };
 
+
+    // option category
+    const optionsCategory = useMemo(() => {
+        return categortInboxData?.map((option) => {
+            return {
+                value: option?.id,
+                label: option?.name,
+            };
+        });
+    }, [categortInboxData]);
+
+
+    const addCategory = () => {
+        setIsModalOpen(true)
+    }
+    const handelClose = () => {
+        setIsModalOpen(false)
+    }
+
     return (<div>
+
         {(postInboxLoading || editInboxLoading || putInboxLoading) ?
             <AppLoader/> :
             <Form
                 form={form}
-                name="basic"
+                name="inbox"
                 labelCol={{
                     span: 24
                 }}
@@ -265,6 +292,37 @@ const InboxPostEdit = () => {
                         />
                     </Col>
                     <Col span={24}>
+                        <Form.Item
+                            label={'Категория'}
+                            name={'category'}
+                            rules={[{
+                                required: true, message: 'Выберите категория'
+                            }]}
+                            wrapperCol={{
+                                span: 24,
+                            }}
+                        >
+                            <Select
+                                style={{
+                                    width: '100%',
+                                }}
+                                placeholder='Выберите одну категория'
+                                optionLabelProp='label'
+                                options={optionsCategory}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col  span={24}>
+                        <Button
+                            htmlType={"button"}
+                            type='primary'
+                            icon={<PlusOutlined/>}
+                            style={{width: '100%'}}
+                            onClick={addCategory}>
+                            Создать категорию
+                        </Button>
+                    </Col>
+                    <Col span={24} style={{marginTop:20}}>
 
                     <Card bordered={true} >
                         <Form.List name="items">
@@ -331,6 +389,9 @@ const InboxPostEdit = () => {
                 </Button>
             </Form>
         }
+        <Modal title={'Категория'} open={isModalOpen} footer={null} onCancel={handelClose}>
+            <InboxCategoryPostEdit setIsModalOpen={setIsModalOpen} categoryRefetch={categortInboxFetch} link={'/inbox-add'}/>
+        </Modal>
     </div>)
 
 }

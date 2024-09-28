@@ -5,19 +5,22 @@ import {AvatarUserProfile} from "../index";
 const cardStyle = {border: 1, borderStyle: "dashed", borderColor: "black"}
 const { Text} = Typography
 const FileCard = ({files,comment , date , user}) => {
-    console.log(user)
     return (
         <Card bordered={true} style={cardStyle} size={"small"}>
             <Space size={5} direction={"vertical"} style={{width: '100%'}}>
                 <Space size={10}>
                     {
-                      files.length !== 0 &&
-                        files?.map(file=>(
-                            <Image
-                                key={file?.id}
-                                width={50}
-                                src={file?.file}/>
-                        ))
+                        files.length !== 0 &&
+                        files.map(file => {
+                            const isImage = file?.file.match(/\.(jpeg|jpg|png|gif)$/i); // Check for image extensions
+                            return isImage ? (
+                                <Image key={file?.id} width={50} src={file?.file} />
+                            ) : (
+                                <a key={file?.id} href={file?.file} download rel="noopener noreferrer">
+                                    {file?.file.split('/').pop()} {/* Display the file name if not an image */}
+                                </a>
+                            );
+                        })
                     }
                 </Space>
                 <Text>{comment}</Text>

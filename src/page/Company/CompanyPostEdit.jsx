@@ -41,7 +41,7 @@ const CompanyPostEdit = () => {
     } = useEditQuery()
     // ================================ useEffect =============================
     // company success
-    SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/tag')
+    SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')
     // if edit compant
 
     console.log(editCompanyData)

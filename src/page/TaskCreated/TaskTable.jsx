@@ -13,7 +13,8 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const Delete = async (id) => {
+  const Delete =  (id) => {
+    console.log(id)
     deleteHandle("/users/tasks", id);
   };
 

@@ -20,3 +20,4 @@ export {default as Inbox} from './Inbox';
 export {default as InboxInner} from './Inbox/inboxInner';
 export {default as InboxPostEdit} from './Inbox/InboxPostEdit';
 export {default as MyApplications} from './MyApplications';
+export {default as AddLocationMap} from './Dashboard/map-company/AddLocationMap';

@@ -16,7 +16,7 @@ import {
     SuccessTask,
     ResponsibleUser,
     Dashboard,
-    Inbox, InboxInner, InboxPostEdit,
+    Inbox, InboxInner, InboxPostEdit, AddLocationMap,
 
 } from './index'
 import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
@@ -53,6 +53,13 @@ export const samplePagesConfigs = [
         element: Dashboard,
         permittedRole: [authRole.admin, authRole.user, authRole.boss],
         isBackground: false
+    },
+    {
+        path: '/map-add',
+        element:  AddLocationMap,
+        noIndex: true,
+        permittedRole: [authRole.admin],
+        isBackground: true
     },
     {
         key: 2,

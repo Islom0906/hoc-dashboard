@@ -1,12 +1,12 @@
-import { Button, Card, Carousel, Col, Flex, Modal, Row, Space, Typography} from "antd";
-import { CircleChart, Map} from "../../components";
+import {Button, Card, Carousel, Col, Flex, Row, Space, Typography} from "antd";
+import {Map} from "../../components";
 import {useState} from "react";
 import 'leaflet/dist/leaflet.css'
 import {FaPlus} from "react-icons/fa";
-import AddLocationMap from "./map-company/AddLocationMap";
 import './Dashboard.css'
 import MapTable from "./map-company/map-table";
 import DashboardProfileCard from "./DashboardProfileCard";
+import {useNavigate} from "react-router-dom";
 
 
 const { Title  } = Typography;
@@ -128,15 +128,9 @@ const positions = [
 
 
 const Dashboard = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate()
   const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
+    navigate('/map-add')
   };
 
 
@@ -185,11 +179,7 @@ const Dashboard = () => {
                 </Row>
               </Card>
             </Col>
-            <Col span={24}>
-              <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={false}>
-                <AddLocationMap setIsModalOpen={setIsModalOpen} />
-              </Modal>
-            </Col>
+
             </Row>
         </Space>
       </div>

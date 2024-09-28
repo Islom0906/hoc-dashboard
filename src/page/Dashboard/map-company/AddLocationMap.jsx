@@ -5,8 +5,9 @@ import {AppLoader, FormInput, FormInputNumber} from "../../../components";
 import {useSelector} from "react-redux";
 import {EditGetById,  SetInitialValue, SuccessCreateAndEdit} from "../../../hooks";
 import { useEditQuery, useGetByIdQuery, usePostQuery} from "../../../service/query/Queries";
-import {MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents} from "react-leaflet";
-import 'leaflet/dist/leaflet.css'
+import {MapContainer, Marker, TileLayer, useMap, useMapEvents} from "react-leaflet";
+import 'leaflet/dist/leaflet.css';
+
 
 const initialValueForm = {
   nameRu:"",
@@ -25,10 +26,10 @@ function SetViewOnClick({ coords }) {
   return null;
 }
 
-const AddLocationMap = ({setIsModalOpen}) => {
+const AddLocationMap = ({setIsModalOpen,isModalOpen}) => {
   const [form] = Form.useForm();
   const {editId} = useSelector(state => state.query)
-  const [position, setPosition] = useState([40.4459 ,68.6626])
+  const [position, setPosition] = useState([40.7821 ,72.3500])
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
@@ -40,6 +41,7 @@ const AddLocationMap = ({setIsModalOpen}) => {
 
     return null;
   };
+
 
   const customIcon = new L.Icon({
     iconUrl: '/location.png',
@@ -69,7 +71,7 @@ const AddLocationMap = ({setIsModalOpen}) => {
   // ================================ useEffect =============================
 
   // map success
-  SuccessCreateAndEdit(postMapSuccess, putMapHomeSuccess, '/map')
+  SuccessCreateAndEdit(postMapSuccess, putMapHomeSuccess, '/dashboard')
   // if edit map
   EditGetById(editMapRefetch)
   // if no edit map
@@ -200,13 +202,13 @@ const AddLocationMap = ({setIsModalOpen}) => {
               />
             </Col>
             <Col span={24} >
-              <MapContainer style={{height:400}} center={position.length>0 ? position:[41.315820, 69.244905]} zoom={5} scrollWheelZoom={true} className={"custom-cursor"}>
+              <MapContainer style={{height:'300px',cursor:'pointer'}} center={position.length>0 ? position:[40.7821, 72.3500]} zoom={5} scrollWheelZoom={true} >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <LocationMarker/>
-                <SetViewOnClick coords={position.length>0 ? position:[41.315820, 69.244905]}/>
+                <SetViewOnClick coords={position.length>0 ? position:[40.7821, 72.3500]}/>
                 {
                     <Marker position={position} icon={customIcon}></Marker>
                 }
