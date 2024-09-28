@@ -1,4 +1,4 @@
-import {Button, Col, Input, Row,  Space, Spin, Typography} from "antd";
+import {Button, Col, Input, Row, Select, Space, Spin, Typography} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import React, {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,14 +13,25 @@ import {deadlineColor} from "../../constants/deadlineColor";
 const { Title } = Typography;
 
 const TaskCreated = () => {
+  const selectInputSearch = [
+    {
+      name:"Задача",
+      value:"task"
+    },
+    {
+      name:"Участники",
+      value:"staff"
+    }
+  ]
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const [selectedOptionSearch , setSelectedOptionSearch] = useState('task')
   const [deadlineStatus, setDeadlineStatus] = useState('');
   const [ordering, setOrdering] = useState('');
   const {companyID} = useSelector(state => state.companySlice)
   const [getTagCompany, setGetTagCompany] = useState('');
-
+  const { Option } = Select;
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -93,6 +104,21 @@ const TaskCreated = () => {
     }));
   }, [GetTagCompany]);
 
+  const selectedSearchInput = (e) => {
+    setSelectedOptionSearch(e)
+  }
+
+
+
+  const selectBefore = (
+      <Select onChange={e => selectedSearchInput(e)}  defaultValue={selectInputSearch[0].value}>
+        {
+          selectInputSearch?.map(item => (
+              <Option value={item?.value}>{item?.name}</Option>
+          ))
+        }
+      </Select>
+  );
 
   return (
       <div className={'site-space-compact-wrapper'}>
@@ -105,7 +131,7 @@ const TaskCreated = () => {
             </Col>
             <FilterCompanyForAdmin/>
             <Col span={16}>
-              <Input placeholder="Поиск задач" onChange={(e) => searchFunc(e.target.value)} />
+              <Input addonBefore={selectBefore} placeholder={`Поиск ${selectedOptionSearch==='task' ? ' задач' : 'участники' }`} onChange={(e) => searchFunc(e.target.value)} />
             </Col>
             <Col span={8}>
               <Button

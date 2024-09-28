@@ -1,146 +1,172 @@
-import { Button, Card, Carousel, Col, Flex, Modal, Row, Space, Typography} from "antd";
-import { CircleChart, Map} from "../../components";
-import {useState} from "react";
+import {Card, Col, Row, Space, Typography} from "antd";
+import {useEffect, useMemo} from "react";
 import 'leaflet/dist/leaflet.css'
-import {FaPlus} from "react-icons/fa";
-import AddLocationMap from "./map-company/AddLocationMap";
 import './Dashboard.css'
-import MapTable from "./map-company/map-table";
-import DashboardProfileCard from "./DashboardProfileCard";
+import DashboardProfileCard from "./profileCard/DashboardProfileCard";
+import {useGetQuery} from "../../service/query/Queries";
+import ForBossTaskChart from "./boss-chart/ForBossTaskChart";
+import MapForDashboardStructure from "./map-company/MapForDashboardStructure";
+import {useSelector} from "react-redux";
+import {FaTasks} from "react-icons/fa";
+import {GrCompliance, GrInProgress} from "react-icons/gr";
+import {MdError} from "react-icons/md";
+import {RiContractFill} from "react-icons/ri";
+import SmallProfileCard from "./profileCard/smallProfileCard";
 
 
-const { Title  } = Typography;
-const positions = [
+const { Title, Text  } = Typography;
+const appointments = [
   {
-    latitude: 41.2995,
-    longitude: 69.2401,
-    name: 'Tashkent',
-    fulladdress: 'Tashkent, Uzbekistan',
-    category: 'Capital',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Dr Nail Wagner',
+    specialty: 'Heart Specialist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar1.jpg', // Use actual avatar URLs
   },
   {
-    latitude: 40.7821,
-    longitude: 72.3500,
-    name: 'Andijan',
-    fulladdress: 'Andijan Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Dr. Kane Williamson',
+    specialty: 'Psychiatrist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar2.jpg',
   },
   {
-    latitude: 39.7747,
-    longitude: 64.4286,
-    name: 'Bukhara',
-    fulladdress: 'Bukhara Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Dr. Tom Bundle',
+    specialty: 'Neurologist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar3.jpg',
   },
   {
-    latitude: 40.3744,
-    longitude: 71.7843,
-    name: 'Fergana',
-    fulladdress: 'Fergana Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Jone B. Rilea',
+    specialty: 'Rheumatologist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar4.jpg',
   },
   {
-    latitude: 40.1250,
-    longitude: 67.8286,
-    name: 'Jizzakh',
-    fulladdress: 'Jizzakh Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Dr. Kane Williamson',
+    specialty: 'Psychiatrist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar2.jpg',
   },
   {
-    latitude: 42.3553,
-    longitude: 59.4658,
-    name: 'Karakalpakstan',
-    fulladdress: 'Karakalpakstan, Uzbekistan',
-    category: 'Autonomous Republic',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Dr. Tom Bundle',
+    specialty: 'Neurologist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar3.jpg',
   },
   {
-    latitude: 38.8564,
-    longitude: 65.7932,
-    name: 'Kashkadarya',
-    fulladdress: 'Kashkadarya Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Jone B. Rilea',
+    specialty: 'Rheumatologist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar4.jpg',
   },
   {
-    latitude: 41.3809,
-    longitude: 60.3666,
-    name: 'Khorezm',
-    fulladdress: 'Khorezm Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Dr. Kane Williamson',
+    specialty: 'Psychiatrist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar2.jpg',
   },
   {
-    latitude: 40.9983,
-    longitude: 71.6726,
-    name: 'Namangan',
-    fulladdress: 'Namangan Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Dr. Tom Bundle',
+    specialty: 'Neurologist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar3.jpg',
   },
   {
-    latitude: 40.1039,
-    longitude: 65.3700,
-    name: 'Navoiy',
-    fulladdress: 'Navoiy Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
+    title: 'Jone B. Rilea',
+    specialty: 'Rheumatologist',
+    time: '9:30',
+    date: '15 Aug',
+    avatar: 'https://example.com/avatar4.jpg',
   },
-  {
-    latitude: 39.6542,
-    longitude: 66.9597,
-    name: 'Samarkand',
-    fulladdress: 'Samarkand Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
-  },
-  {
-    latitude: 40.4459,
-    longitude: 68.6626,
-    name: 'Sirdaryo',
-    fulladdress: 'Sirdaryo Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
-  },
-  {
-    latitude: 37.8093,
-    longitude: 67.1585,
-    name: 'Surkhandarya',
-    fulladdress: 'Surkhandarya Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
-  },
-
-  {
-    latitude: 41.3300,
-    longitude: 69.2199,
-    name: 'Tashkent Region',
-    fulladdress: 'Tashkent Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
-  }
 ];
 
 
 const Dashboard = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const { data: { user } = {} } = useSelector((state) => state.auth);
+
+  const {
+    data: GetUserTaskStatistics =[],
+    refetch: refetchGetUserTaskStatistics,
+  } = useGetQuery(false, "user-task-statistics", `users/staff-statistics/` , false);
+
+  const {
+    data: GetBossStatistics =[],
+    refetch: refetchGetBossStatistics,
+  } = useGetQuery(false, "boss-task-statistics", `users/boss-statistics?from_year=2024 from_month=2 to_year=2024 to_month=8` , false);
 
 
+  const taskStatus = useMemo(() => {
 
+    let arrayList = [
+      {
+        id: 1,
+        icon: <FaTasks style={{ fontSize: '24px' }} />,
+        count: GetUserTaskStatistics?.total_tasks_count || 0,
+        text: 'Все задачи',
+        span: '24',
+      },
+      {
+        id: 2,
+        icon: <GrCompliance style={{ fontSize: '24px' }} />,
+        count: GetUserTaskStatistics?.done_tasks_count || 0,
+        text: 'Сделанный',
+        span: '8',
+        color: 'rgba(75, 192, 192, 0.5)'
+      },
+      {
+        id: 3,
+        icon: <GrInProgress style={{ fontSize: '24px' }} />,
+        count: GetUserTaskStatistics?.in_progress_tasks_count || 0,
+        text: 'В процессе',
+        span: '8',
+        color: 'rgba(255, 206, 86, 0.5)'
+      },
+      {
+        id: 4,
+        icon: <MdError style={{ fontSize: '24px' }} />,
+        count: GetUserTaskStatistics?.failed_tasks_count || 0,
+        text: 'Неуспешный',
+        span: '8',
+        color: 'rgba(255, 99, 132, 0.5)'
+      },
+      {
+        id: 5,
+        icon: <RiContractFill style={{ fontSize: '24px' }} />,
+        count: GetUserTaskStatistics?.responsible_tasks_count || 0,
+        text: 'Ответственная задача',
+        span: '24',
+      },
+    ]
+
+    let filteredTaskStatus = arrayList?.filter(status => status.id !== 1 && status.id !== 5);
+    const chartData = {
+      labels: filteredTaskStatus.map(status => status.text),
+      datasets: [
+        {
+          data: filteredTaskStatus?.map(status => status.count),
+          backgroundColor: filteredTaskStatus?.map(status => status.color),
+          borderWidth: 1,
+        },
+      ],
+    };
+    return {chartData,  arrayList}
+  }, [GetUserTaskStatistics]);
+
+useEffect(() => {
+  refetchGetUserTaskStatistics()
+  refetchGetBossStatistics()
+} , [])
+
+
+  console.log(GetBossStatistics)
   return (
       <div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
@@ -155,40 +181,30 @@ const Dashboard = () => {
             {/*    <CircleChart/>*/}
             {/*  </Card>*/}
             {/*</Col>*/}
-            <Col span={12}>
-              <DashboardProfileCard />
-            </Col>
-            <Col span={12}>
-              <Card size={"small"}>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Title level={4} style={{marginBottom:0}}>
-                      Наши офисы:
-                    </Title>
-                  </Col>
-                  <Col span={12}>
-                    <Flex align={"end"} justify={"end"}>
-                      <Button onClick={showModal} size={"small"} type={"primary"}><FaPlus /></Button>
-                    </Flex>
-                  </Col>
 
-                  <Col span={24}>
-                    <Carousel autoplay={true} className={'current_carousel'} arrows infinite={true}  dotPosition={'top'} >
-                      <Col span={24} style={{borderRadius:10 , overflow:"hidden"}}>
-                        <Map zoom={12} positions={positions} mapHeight={400}/>
-                      </Col>
-                      <Col span={24} style={{borderRadius:10 , overflow:"hidden"}}>
-                        <MapTable />
-                      </Col>
-                    </Carousel>
-                  </Col>
-                </Row>
-              </Card>
+            <Col span={16}>
+              <MapForDashboardStructure />
             </Col>
-            <Col span={24}>
-              <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={false}>
-                <AddLocationMap setIsModalOpen={setIsModalOpen} />
-              </Modal>
+            <Col span={8}>
+              <DashboardProfileCard title={'Мой профиль'} image={user?.image} position={user?.position} fullName={`${user?.first_name} ${user?.last_name} ${user?.middle_name}`} statistics={taskStatus?.arrayList} chartData={taskStatus?.chartData}  />
+            </Col>
+            {/*--------  Boss -------- */}
+            <Col span={16}>
+              <ForBossTaskChart modules={user?.modules[0]?.name} />
+            </Col>
+            <Col span={8}>
+              <Card
+                  className={'staff-card'}
+                  title="Сотрудники:"
+                  extra={<Text strong>...</Text>}
+              >
+                <div   style={{height:400 , overflowY:"scroll"}}>
+                  {appointments.map((appointment, index) => (
+                      <SmallProfileCard date={appointment?.date} avatar={appointment?.avatar} title={appointment?.title} specialty={appointment?.specialty} time={appointment?.time} />
+                  ))}
+                </div>
+
+              </Card>
             </Col>
             </Row>
         </Space>
