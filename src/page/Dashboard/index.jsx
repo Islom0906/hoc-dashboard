@@ -1,5 +1,5 @@
 import {Card, Col, Row, Space, Typography} from "antd";
-import {useEffect, useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import 'leaflet/dist/leaflet.css'
 import './Dashboard.css'
 import DashboardProfileCard from "./profileCard/DashboardProfileCard";
@@ -12,6 +12,8 @@ import {GrCompliance, GrInProgress} from "react-icons/gr";
 import {MdError} from "react-icons/md";
 import {RiContractFill} from "react-icons/ri";
 import SmallProfileCard from "./profileCard/smallProfileCard";
+import AboutTagList from "./Tag-boss/AboutTagList";
+import AboutTagChart from "./Tag-boss/AboutTagChart";
 
 
 const { Title, Text  } = Typography;
@@ -91,16 +93,22 @@ const appointments = [
 
 const Dashboard = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
-
+  const [tagChartData, setTagChartData] = useState({})
   const {
     data: GetUserTaskStatistics =[],
     refetch: refetchGetUserTaskStatistics,
   } = useGetQuery(false, "user-task-statistics", `users/staff-statistics/` , false);
 
+
   const {
     data: GetBossStatistics =[],
     refetch: refetchGetBossStatistics,
-  } = useGetQuery(false, "boss-task-statistics", `users/boss-statistics?from_year=2024 from_month=2 to_year=2024 to_month=8` , false);
+  } = useGetQuery(false, "boss-task-statistics", `users/boss-statistics?from_year=2024&from_month=2&to_year=2024&to_month=8` , false);
+
+  const {
+    data:GetTagBossStatistics,
+    refetch:refetchGetTagBossStatistics
+  }=useGetQuery(false,'company-all-data',`/users/tag-statistics/1?year=2024&month=9`,false)
 
 
   const taskStatus = useMemo(() => {
@@ -163,10 +171,10 @@ const Dashboard = () => {
 useEffect(() => {
   refetchGetUserTaskStatistics()
   refetchGetBossStatistics()
+  refetchGetTagBossStatistics()
 } , [])
 
 
-  console.log(GetBossStatistics)
   return (
       <div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
@@ -205,6 +213,12 @@ useEffect(() => {
                 </div>
 
               </Card>
+            </Col>
+            <Col span={16}>
+              <AboutTagList setTagChartData={setTagChartData} data={GetTagBossStatistics}/>
+            </Col>
+            <Col span={8}>
+              <AboutTagChart tagChartData={tagChartData}/>
             </Col>
             </Row>
         </Space>

@@ -14,7 +14,6 @@ const initialValueForm = {
     gender: "",
     image: [],
     phone: "",
-
     position: "",
     email: "",
     password: "",
