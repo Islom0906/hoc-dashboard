@@ -19,34 +19,34 @@ const InboxCard = ({title,id,deleteHandle}) => {
     }
     return (
         <Card className={'chat-card'} size={"small"}>
-            <Row gutter={[5, 10]}>
+            <Row gutter={[2, 5]}>
 
 
                 <Col span={24}>
-                    <Title level={4} className={'chat-title'}>
+                    <Title level={5} className={'chat-title'}>
                         {title}
-
                     </Title>
                 </Col>
 
-                <Col span={12} style={{display:'flex',alignItems:'end'}}>
-                    <Flex align={"center"} wrap={"nowrap"} gap={8}  >
+                <Col span={16} style={{display:'flex',alignItems:'end'}}>
+                    <Flex align={"center"} wrap={"nowrap"} gap={3}  >
                         <LuCalendarDays className={"icon"} style={{marginBottom:4}}/>
                         <Text style={{fontSize: '12px'}} >
                             {dayjs(new Date()).format('DD.MM.YYYY hh:mm')}
                         </Text>
                     </Flex>
                 </Col>
-                <Col span={6}>
+                <Col span={4}>
 
                     <Button
                         onClick={ViewInner}
                         style={{width: '100%'}}
+                        size={"small"}
                         type="primary"
                         icon={<FaRegEye/>}
                     />
                 </Col>
-                <Col span={6}>
+                <Col span={4}>
 
                     <Popconfirm
                         title={"Вы уверены, что хотите удалить это?"}
@@ -54,6 +54,8 @@ const InboxCard = ({title,id,deleteHandle}) => {
                         onConfirm={() => Delete(id)}
                     >
                         <Button
+                            size={"small"}
+
                             style={{width: '100%'}}
                             type="primary" danger icon={<DeleteOutlined/>}/>
                     </Popconfirm>

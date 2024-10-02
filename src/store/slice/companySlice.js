@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const savedCompany = localStorage.getItem('companyID') || null;
 const initialState = {
   companyID:localStorage.getItem('companyID') || null
 };

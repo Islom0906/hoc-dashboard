@@ -8,8 +8,8 @@ const BackgroundContent = ({children}) => {
     return (
         <div
             style={{
-                padding:40,
-                minHeight: 200,
+                padding:20,
+                minHeight: '40vh',
                 background: contentBg,
                 borderRadius: borderRadiusLG,
             }}

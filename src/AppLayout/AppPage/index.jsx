@@ -11,7 +11,7 @@ const AppPage = () => {
     return (
         <Content
             style={{
-                padding: 30,
+                padding: 10,
                 overflowY: "scroll"
             }}
         >
