@@ -14,7 +14,6 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
   const dispatch = useDispatch();
 
   const Delete =  (id) => {
-    console.log(id)
     deleteHandle("/users/tasks", id);
   };
 
@@ -167,11 +166,20 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
           <Flex gap={10} justify={'end'}>
             {
                 record?.done_sub_tasks_count ===0 &&
-                <Button
-                    onClick={() => Edit(record.id)}
-                    type="dashed"
-                    icon={<EditOutlined />}
-                />
+                <>
+                  <Button
+                      onClick={() => Edit(record.id)}
+                      type="dashed"
+                      icon={<EditOutlined />}
+                  />
+                  <Popconfirm
+                      title={"Вы уверены, что хотите удалить это?"}
+                      description={"Удалить"}
+                      onConfirm={() => Delete(record.id)}
+                  >
+                    <Button type="primary" danger icon={<DeleteOutlined />} />
+                  </Popconfirm>
+                </>
             }
             <Button
                 onClick={() => handleTaskInnerGet(record?.id)}
@@ -179,13 +187,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                 icon={<FaRegEye />}
             />
 
-            <Popconfirm
-                title={"Вы уверены, что хотите удалить это?"}
-                description={"Удалить"}
-                onConfirm={() => Delete(record.id)}
-            >
-              <Button type="primary" danger icon={<DeleteOutlined />} />
-            </Popconfirm>
+
           </Flex>
       ),
     },

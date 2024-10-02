@@ -1,19 +1,15 @@
-import { Avatar, Card, Carousel, Col, Flex, Row, Typography } from "antd";
+import { Avatar, Card, Typography, Tabs } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { FaChartPie, FaListAlt } from "react-icons/fa";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-
 const { Title, Text } = Typography;
+const { TabPane } = Tabs;
 
-const DashboardProfileCard = ({ title , image ,fullName, position , statistics , chartData  }) => {
-
-
-
-
-
+const DashboardProfileCard = ({ title, image, fullName, position, statistics, chartData }) => {
   return (
       <Card
           style={{
@@ -43,28 +39,41 @@ const DashboardProfileCard = ({ title , image ,fullName, position , statistics ,
             }}
             bodyStyle={{ padding: '10px' }}
         >
-          <Carousel  className={'dashboard-profile-card'}  dotPosition={'top'}>
-            <div>
-              <Row justify="center" gutter={[1, 15]} style={{ width: '100%' }}>
-                {statistics?.map(status => (
-                    <Col  span={status?.span} key={status?.id} style={{height:'100%'}}>
-                      <Flex vertical={true} gap={3} align={"center"}  style={{height:'100%'}} justify={"center"}>
-                        {status?.icon}
-                        <Title level={5} style={{ margin: 0 }}>
-                          {status?.count}
-                        </Title>
-                        <Text style={{ margin: 0 }}>{status?.text}</Text>
-                      </Flex>
-                    </Col>
-                ))}
-              </Row>
-            </div>
-            <div>
-              {chartData &&
-              <Doughnut data={chartData} />
-              }
-            </div>
-          </Carousel>
+          <Tabs defaultActiveKey="1">
+            <TabPane
+                tab={
+                  <span style={{display: 'flex', alignItems: 'center', gap: 5}}>
+                <FaListAlt/> Статистика
+              </span>
+                }
+                key="1"
+            >
+            {statistics && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    {statistics.map((status, index) => (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                          {status.icon}
+                          <Text style={{ margin: 0 }}>{status.text}</Text>
+                          <Title level={5} style={{ margin: 0 }}>
+                            {status.count}
+                          </Title>
+                        </div>
+                    ))}
+                  </div>
+              )}
+            </TabPane>
+
+            <TabPane
+                tab={
+                  <span style={{display: 'flex', alignItems: 'center', gap: 5}}>
+                <FaChartPie/> Диаграмма
+              </span>
+                }
+                key="2"
+            >
+            {chartData && <Doughnut data={chartData} />}
+            </TabPane>
+          </Tabs>
         </Card>
       </Card>
   );

@@ -42,7 +42,7 @@ const TaskList = () => {
           <Col span={24}>
               <h1>Ваши задачи</h1>
           </Col>
-        <FilterTaskList staff={false} setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany} />
+        <FilterTaskList  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany} />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[12, 12]} style={{ marginTop: 15 }}>

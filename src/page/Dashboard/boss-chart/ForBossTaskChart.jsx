@@ -2,6 +2,8 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, LineElement, 
 import { Chart } from 'react-chartjs-2';
 import {Card, Col, Row, Select, Typography} from "antd";
 import dayjs from "dayjs";
+import {useEffect, useState} from "react";
+
 
 ChartJS.register(
     BarElement,
@@ -15,18 +17,39 @@ ChartJS.register(
 );
 
 const { Title:AntTitle  } = Typography;
-const ForBossTaskChart = ({modules}) => {
+const ForBossTaskChart = ({modules , dataChart}) => {
   const value = dayjs()
   const year = value.year();
   const month = value.month();
+  const [chart , setChart] = useState({
+    total_tasks_count : null,
+    done_tasks_count : null,
+    failed_tasks_count: null
+  })
   const yearRange = Array.from({ length: 2030 - 2020 },(_, i) => 2020 + i);
-
-  console.log(month)
-
-  console.log(modules)
   const mountName = Array.from({ length: 12 }, (_, i) => i).map(month => (
         dayjs().month(month).format('MMM')
   ))
+
+
+  useEffect(() => {
+    if (dataChart) {
+      const aggregatedData = {
+        total_tasks_count: [],
+        done_tasks_count: [],
+        failed_tasks_count: []
+      };
+      dataChart.forEach(item => {
+        aggregatedData.total_tasks_count.push(item.total_tasks_count || 0);
+        aggregatedData.done_tasks_count.push(item.done_tasks_count || 0);
+        aggregatedData.failed_tasks_count.push(item.failed_tasks_count || 0);
+        return aggregatedData
+      });
+
+      setChart({total_tasks_count: aggregatedData.total_tasks_count ,done_tasks_count: aggregatedData.done_tasks_count , failed_tasks_count: aggregatedData.failed_tasks_count});
+    }
+  }, [dataChart]);
+
 
 
   const data = {
@@ -35,35 +58,31 @@ const ForBossTaskChart = ({modules}) => {
       {
         type: 'bar',
         label: 'Bar Dataset',
-        data: [10, 20, 30, 40],
+        data: chart?.total_tasks_count,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
       },
       {
         type: 'line',
         label: 'Line Dataset',
-        data: [[3, 30], 15, 20,33],
+        data: chart?.done_tasks_count,
         fill: false,
         borderColor: 'rgb(54, 162, 235)',
       },
       {
         type: 'line',
         label: 'Line Dataset',
-        data: [0, 25, 0,43],
+        data: chart?.failed_tasks_count,
         fill: false,
         borderColor: 'rgb(54, 162, 235)',
       },
     ],
   };
   const options = {
-    responsive: true,
+    // responsive: true,
     plugins: {
       legend: {
         position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Mixed Bar and Line Chart',
       },
     },
   };

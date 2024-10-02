@@ -1,13 +1,16 @@
-import {Button, Col, Flex, Form, Menu, Row, Space, Spin, theme} from "antd";
+import {Button, Card, Col, Flex, Form, Menu, Row, Space, Spin, theme, Typography} from "antd";
 import {FaUser} from "react-icons/fa";
 import {useEffect, useState} from "react";
 import {FaUserGear} from "react-icons/fa6";
 import {FormTextArea, ImageUploader} from "../../components";
 import {useGetQuery, usePostQuery} from "../../service/query/Queries";
 import {useSelector} from "react-redux";
-import {BiCommentDetail} from "react-icons/bi";
+import {BiCommentDetail, BiSolidPhoneCall} from "react-icons/bi";
 import FileCard from "../../components/Inbox/FileCard";
 import dayjs from "dayjs";
+
+
+const {Text } = Typography
 
 const initialValueForm = {
   text: '',
@@ -75,38 +78,54 @@ const Support = () => {
       <Spin spinning={postCommentLoading}>
         <Row gutter={30}>
           <Col span={8}>
-            <div className={'card-personal'} style={{backgroundColor: contentBg}}>
-              <Menu
-                  mode="inline"
-                  selectedKeys={[checkInfo]}
-                  style={{height: '100%', borderRight: 0}}
-                  onClick={({key}) => handleMenu(key)}
-              >
-                <Menu.Item key="programmer" icon={<FaUserGear/>}>Разработчик программы</Menu.Item>
-                {
-                    user?.position !== "Admin" &&
-                <Menu.Item key="admin" icon={<FaUser/>}>Программа для администратора</Menu.Item>
-                }
-                {
-                  user?.position === "Admin" &&
-                <Menu.Item key="history" icon={<BiCommentDetail />}>Мнения, присланные сотрудниками</Menu.Item>
-                }
-              </Menu>
+            <Flex vertical={true} gap={20}>
 
-            </div>
+              <div className={'card-personal'} style={{backgroundColor: contentBg}}>
+                <Menu
+                    mode="inline"
+                    selectedKeys={[checkInfo]}
+                    style={{height: '100%', borderRight: 0}}
+                    onClick={({key}) => handleMenu(key)}
+                >
+                  <Menu.Item key="programmer" icon={<FaUserGear/>}>Разработчик программы</Menu.Item>
+                  {
+                      user?.position !== "Admin" &&
+                      <Menu.Item key="admin" icon={<FaUser/>}>Программа для администратора</Menu.Item>
+                  }
+                  {
+                      user?.position === "Admin" &&
+                      <Menu.Item key="history" icon={<BiCommentDetail/>}>Мнения, присланные сотрудниками</Menu.Item>
+                  }
+                </Menu>
+
+              </div>
+
+              {/*<Card>*/}
+              {/*  <BiSolidPhoneCall style={{fontsize:50  , color:'#'}} />*/}
+              {/*  <Text>*/}
+              {/*    Свяжитесь с администратором HOC*/}
+              {/*    <a href="">*/}
+
+              {/*    </a>*/}
+              {/*  </Text>*/}
+              {/*</Card>*/}
+            </Flex>
+
           </Col>
           <Col span={16}>
-              {
-                checkInfo === 'history' ?
-                    <Flex vertical={true} gap={20} >
-                      {
-                        GetAdminAllTicket?.map(ticket => (<FileCard key={ticket?.id} files={[ticket.file]} comment={ticket?.text} date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}
-                          user={ticket?.created_by}
-                        />))
-                      }
-                    </Flex>
-                :
-                    <Flex vertical={true} gap={20} >
+            {
+              checkInfo === 'history' ?
+                  <Flex vertical={true} gap={20}>
+                    {
+                      GetAdminAllTicket?.map(ticket => (
+                          <FileCard key={ticket?.id} files={[ticket.file]} comment={ticket?.text}
+                                    date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}
+                                    user={ticket?.created_by}
+                          />))
+                    }
+                  </Flex>
+                  :
+                  <Flex vertical={true} gap={20}>
                     <div className={'card-personal'} style={{backgroundColor: contentBg}}>
                       <Space direction={'vertical'} size={'large'}>
                         <h2>

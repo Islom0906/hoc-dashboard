@@ -31,7 +31,7 @@ const AppHeader = () => {
 
     return (
         <Header className={'app-header'}>
-          <Flex style={{width:110 ,height:50 }} align={"center"} justify={"center"}>
+          <Flex style={{width:100 ,height:30 }} align={"center"} justify={"center"}>
               {
                 systemMode === 'light' ?
                   <img
@@ -94,12 +94,12 @@ export  const  UserAccount = ({ user , logOut})=> {
                 <Avatar icon={<img
                     src={user?.image}
                     style={{width: '100%', height: '100%', objectFit: "contain"}}
-                /> } size={'middle'} key={user?.id}/>
+                /> } size={'small'} key={user?.id}/>
             :
             <UserOutlined className={'icon'} />
           }
           <span className={'content'}>
-            <Flex className={'title'} gap={5}><span>{user.first_name}</span> <span>{user.last_name}</span></Flex>
+            <Flex className={'title'} gap={5} style={{fontSize:12}}><span>{user.first_name}</span> <span>{user.last_name}</span></Flex>
           </span>
         </Button>
       </Dropdown>

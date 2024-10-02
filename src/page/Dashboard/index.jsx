@@ -1,5 +1,5 @@
 import {Card, Col, Row, Space, Typography} from "antd";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo} from "react";
 import 'leaflet/dist/leaflet.css'
 import './Dashboard.css'
 import DashboardProfileCard from "./profileCard/DashboardProfileCard";
@@ -93,7 +93,8 @@ const appointments = [
 
 const Dashboard = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
-  const [tagChartData, setTagChartData] = useState({})
+  const [modulID , setModulID] = useState('')
+    const [tagChartData, setTagChartData] = useState({})
   const {
     data: GetUserTaskStatistics =[],
     refetch: refetchGetUserTaskStatistics,
@@ -103,13 +104,23 @@ const Dashboard = () => {
   const {
     data: GetBossStatistics =[],
     refetch: refetchGetBossStatistics,
-  } = useGetQuery(false, "boss-task-statistics", `users/boss-statistics?from_year=2024&from_month=2&to_year=2024&to_month=8` , false);
+  } = useGetQuery(false, "boss-task-statistics", `users/boss-statistics?from_year=2024&from_month=1&to_year=2024&to_month=12` , false);
 
+    const {
+        data:GetTagBossStatistics,
+        refetch:refetchGetTagBossStatistics
+    }=useGetQuery(false,'company-all-data',`/users/tag-statistics/1?year=2024&month=9`,false)
   const {
-    data:GetTagBossStatistics,
-    refetch:refetchGetTagBossStatistics
-  }=useGetQuery(false,'company-all-data',`/users/tag-statistics/1?year=2024&month=9`,false)
+    data: GetIdBossStatistics =[],
+    refetch: refetchGetIdBossStatistics,
+  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulID}` , false);
 
+
+  useEffect((  ) => {
+    if( user?.roles[0].name ==='boss') {
+      setModulID(user?.modules[0].id)
+    }
+  } , [user])
 
   const taskStatus = useMemo(() => {
 
@@ -119,14 +130,12 @@ const Dashboard = () => {
         icon: <FaTasks style={{ fontSize: '24px' }} />,
         count: GetUserTaskStatistics?.total_tasks_count || 0,
         text: 'Все задачи',
-        span: '24',
       },
       {
         id: 2,
         icon: <GrCompliance style={{ fontSize: '24px' }} />,
         count: GetUserTaskStatistics?.done_tasks_count || 0,
         text: 'Сделанный',
-        span: '8',
         color: 'rgba(75, 192, 192, 0.5)'
       },
       {
@@ -134,7 +143,6 @@ const Dashboard = () => {
         icon: <GrInProgress style={{ fontSize: '24px' }} />,
         count: GetUserTaskStatistics?.in_progress_tasks_count || 0,
         text: 'В процессе',
-        span: '8',
         color: 'rgba(255, 206, 86, 0.5)'
       },
       {
@@ -142,7 +150,6 @@ const Dashboard = () => {
         icon: <MdError style={{ fontSize: '24px' }} />,
         count: GetUserTaskStatistics?.failed_tasks_count || 0,
         text: 'Неуспешный',
-        span: '8',
         color: 'rgba(255, 99, 132, 0.5)'
       },
       {
@@ -150,7 +157,6 @@ const Dashboard = () => {
         icon: <RiContractFill style={{ fontSize: '24px' }} />,
         count: GetUserTaskStatistics?.responsible_tasks_count || 0,
         text: 'Ответственная задача',
-        span: '24',
       },
     ]
 
@@ -174,6 +180,12 @@ useEffect(() => {
   refetchGetTagBossStatistics()
 } , [])
 
+  useEffect(() => {
+    if(modulID) refetchGetIdBossStatistics()
+  } , [modulID])
+
+
+console.log('GetIdBossStatistics' , GetIdBossStatistics)
 
   return (
       <div className={'site-space-compact-wrapper'}>
@@ -198,17 +210,16 @@ useEffect(() => {
             </Col>
             {/*--------  Boss -------- */}
             <Col span={16}>
-              <ForBossTaskChart modules={user?.modules[0]?.name} />
+              <ForBossTaskChart dataChart={GetBossStatistics} modules={user?.modules[0]?.name} />
             </Col>
             <Col span={8}>
               <Card
                   className={'staff-card'}
                   title="Сотрудники:"
-                  extra={<Text strong>...</Text>}
               >
                 <div   style={{height:400 , overflowY:"scroll"}}>
-                  {appointments.map((appointment, index) => (
-                      <SmallProfileCard date={appointment?.date} avatar={appointment?.avatar} title={appointment?.title} specialty={appointment?.specialty} time={appointment?.time} />
+                  {GetIdBossStatistics.map((staff) => (
+                      <SmallProfileCard staffID={staff?.id} failed_tasks_count={staff?.failed_tasks_count} total_tasks_count={staff?.total_tasks_count} in_progress_tasks_count={staff?.in_progress_tasks_count} avatar={staff?.image} fullName={staff?.full_name} position={staff?.position} done_tasks_count={staff?.done_tasks_count} />
                   ))}
                 </div>
 

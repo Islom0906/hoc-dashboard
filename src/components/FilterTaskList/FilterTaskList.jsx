@@ -1,6 +1,8 @@
 import { Col, Flex, Select, Tag } from "antd";
-import React, { useMemo } from "react";
+import React, {useEffect, useMemo} from "react";
 import { deadlineColor } from "../../constants/deadlineColor";
+import {selectStaffIDs} from "../../store/slice/staffSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const deadlineTime = [
   {
@@ -16,7 +18,9 @@ const deadlineTime = [
     value: '',
   },
 ];
-const FilterTaskList = ({ staff , setOrdering, setDeadlineStatus, deadlineColorAlert , getTagCompany , setGetTagCompany }) => {
+const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , getTagCompany , setGetTagCompany ,getStaffForModuls =[] }) => {
+  const dispatch = useDispatch()
+  const {staffIDs} = useSelector(state => state.staffSlice)
   const deadlineColorArray = useMemo(() => {
     return Object.entries(deadlineColor).map(([key, value]) => ({
       label: value.text,
@@ -30,8 +34,15 @@ const FilterTaskList = ({ staff , setOrdering, setDeadlineStatus, deadlineColorA
       value: value?.id,
     }));
   }, [getTagCompany]);
+  const getModulsArray = useMemo(() => {
+    return Object.entries(getStaffForModuls).map(([ key , value]) => ({
+      label: `${value?.full_name} ${value?.position}`,
+      value: value?.id,
+    }));
+  }, [getStaffForModuls]);
+
   const onChangeDeadlineTime = (changleItem) => {
-    setOrdering(changleItem);
+    setOrdering(changleItem.toString());
   };
   const onChangeTagCompany = (changleItem) => {
     setGetTagCompany(changleItem);
@@ -39,6 +50,26 @@ const FilterTaskList = ({ staff , setOrdering, setDeadlineStatus, deadlineColorA
   const onChangeDeadlineStatus = (changleItem) => {
     setDeadlineStatus(changleItem.toString());
   };
+
+
+  const onChangeModulsStaff = (changleItem) => {
+    dispatch(selectStaffIDs(changleItem))
+  }
+  const getStaffIDs = useMemo(() => {
+    let user = ''
+    if(staffIDs) {
+        user = ''
+      return user
+    }else {
+      user = getStaffForModuls.filter((item) => item?.id === staffIDs)
+      return {
+        label: `${user[0]?.full_name} ${user[0]?.position}`,
+        value: user[0]?.id,
+      }
+    }
+
+  }, [staffIDs]);
+
   const tagRender = (props) => {
     const { label, value, closable, onClose } = props;
     const color = deadlineColor[value]?.color;
@@ -87,23 +118,24 @@ const FilterTaskList = ({ staff , setOrdering, setDeadlineStatus, deadlineColorA
               style={{ width: '100%' }}
               placeholder="Выберите компанию"
               optionLabelProp="label"
-              options={getTagCompanyArray}
+              options={getTagCompanyArray  || []}
               onChange={onChangeTagCompany}
           />
         </Col>
-        {staff &&
+        {
             <Col span={6}>
-              <label htmlFor="deadlineColorSelect">
+              <label htmlFor="selectModulsStaff">
                 <p style={{ fontSize: '14px', marginBottom: 10 }}>Сотрудники:</p>
               </label>
               <Select
-                  id="deadlineColorSelect"
+                  id="selectModulsStaff"
                   style={{ width: '100%' }}
                   mode="multiple"
                   placeholder="Сотрудники"
                   optionLabelProp="label"
-                  options={deadlineColorArray}
-                  onChange={onChangeDeadlineStatus}
+                  options={getModulsArray || []}
+                  defaultValue={getStaffIDs || 'salom'}
+                  onChange={onChangeModulsStaff}
               />
             </Col>
         }

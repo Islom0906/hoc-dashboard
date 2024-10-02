@@ -8,8 +8,7 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 import InboxCategoryPostEdit from "./category/inboxCategoryPostEdit";
-import {CgHashtag} from "react-icons/cg";
-
+import {CiHashtag} from "react-icons/ci";
 const {Title, Text} = Typography
 
 
@@ -114,12 +113,12 @@ const Inbox = () => {
                                       }}
                                       onClick={() => setCheckCategory("")}>
                                       <Flex align={"center"} gap={4}>
-                                          <CgHashtag style={{
-                                              fontSize: '28px',
+                                          <CiHashtag  style={{
+                                              fontSize: '18px',
                                               color: checkCategory === "" ? "#69B13D" : "#818181",
                                           }}/>
                                           <Text style={{
-                                              fontSize: 20,
+                                              fontSize: 12,
                                               color: checkCategory === "" ? "#69B13D" : "#818181",
                                           }}>
                                               Все
@@ -154,13 +153,13 @@ const Inbox = () => {
                                               }}
                                               onClick={() => setCheckCategory(category?.id)}>
                                               <Flex align={"center"} gap={4}>
-                                                  <CgHashtag style={{
-                                                      fontSize: '28px',
+                                                  <CiHashtag style={{
+                                                      fontSize: '18px',
                                                       color: checkCategory === category?.id ? "#69B13D" : "#818181",
                                                   }}
                                                   />
                                                   <Text style={{
-                                                      fontSize: 20,
+                                                      fontSize: 12,
                                                       color: checkCategory === category?.id ? "#69B13D" : "#959595",
                                                   }}>
                                                       {category?.name}

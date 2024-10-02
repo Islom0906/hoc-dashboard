@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Navigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import BackgroundContent from "./BackgrountContent";
 
@@ -15,8 +14,6 @@ const PrivateRoute = ({component: Component, permittedRoles, isBackground}) => {
         }
     }, [user]);
 
-    console.log(userRoles , 'userRoles')
-    console.log(hasAccess , 'hasAccess')
 
     useEffect(() => {
         if (userRoles.length > 0) {

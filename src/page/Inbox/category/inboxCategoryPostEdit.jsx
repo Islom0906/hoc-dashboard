@@ -76,7 +76,6 @@ const InboxCategoryPostEdit = ({setIsModalOpen,categoryRefetch,link,isModalOpen}
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => {
-            console.log('render')
             localStorage.removeItem('editDataId')
             localStorage.removeItem('myFormValues')
             window.removeEventListener('beforeunload', handleBeforeUnload);

@@ -1,7 +1,5 @@
 import './index.scss'
 import {useSelector} from "react-redux";
-import logo from './logo.svg'
-import logoDark from  './logo-dark.svg'
 const AppLogo = () => {
     const {systemMode} = useSelector(state => state.theme)
     const {company} = useSelector(state => state.companySlice)

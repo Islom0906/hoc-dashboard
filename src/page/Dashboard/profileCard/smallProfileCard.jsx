@@ -2,12 +2,25 @@ import {Avatar, Col, Flex, Row, Typography} from 'antd';
 import {FaTasks} from "react-icons/fa";
 import {GrCompliance, GrInProgress} from "react-icons/gr";
 import {MdError} from "react-icons/md";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {selectModuls} from "../../../store/slice/modulsSlice";
+import {selectStaffIDs} from "../../../store/slice/staffSlice";
 
 const {Text} = Typography
 
-const SmallProfileCard = ({avatar, title, specialty}) => {
+const SmallProfileCard = ({staffID , avatar, fullName, position , done_tasks_count , failed_tasks_count , total_tasks_count , in_progress_tasks_count}) => {
+  const navigate=useNavigate()
+  const dispatch = useDispatch()
+
+
+  const handlerCard = () => {
+    dispatch(selectStaffIDs(staffID))
+    navigate('/taskEditBoss')
+  }
+
   return (
-      <div style={{padding: '10px 0',
+      <div onClick={handlerCard} style={{padding: '10px 0',
       }}>
         <Row
             align="middle"
@@ -16,37 +29,37 @@ const SmallProfileCard = ({avatar, title, specialty}) => {
             }}
         >
           <Col span={5}>
-            <Avatar src={avatar} size="large"/>
+            <Avatar src={avatar}/>
           </Col>
           <Col span={19}>
-            <Text strong>{title}</Text>
+            <Text strong>{fullName}</Text>
             <br/>
-            <Text type="secondary">{specialty}</Text>
+            <Text type="secondary" style={{fontSize:11}}>{position}</Text>
           </Col>
         </Row>
         <Row style={{marginTop: 4}}>
           <Col span={6}>
             <Flex gap={4} align={"center"}>
-              <FaTasks style={{fontSize: '16px'}}/>
-              <Text>100</Text>
+              <FaTasks style={{fontSize: '12px'}}/>
+              <Text>{total_tasks_count}</Text>
             </Flex>
           </Col>
           <Col span={6}>
             <Flex gap={4} align={"center"}>
-              <GrCompliance style={{fontSize: '16px'}}/>
-              <Text>20</Text>
+              <GrCompliance style={{fontSize: '12px'}}/>
+              <Text>{done_tasks_count}</Text>
             </Flex>
           </Col>
           <Col span={6}>
             <Flex gap={4} align={"center"}>
-              <GrInProgress style={{fontSize: '16px'}}/>
-              <Text>30</Text>
+              <GrInProgress style={{fontSize: '12px'}}/>
+              <Text>{in_progress_tasks_count}</Text>
             </Flex>
           </Col>
           <Col span={6}>
             <Flex gap={4} align={"center"}>
-              <MdError style={{fontSize: '16px'}}/>
-              <Text>40</Text>
+              <MdError style={{fontSize: '12px'}}/>
+              <Text>{failed_tasks_count}</Text>
             </Flex>
           </Col>
         </Row>

@@ -23,7 +23,6 @@ const InboxInner = () => {
 
 
     const Edit = (id) => {
-        console.log(id)
         localStorage.setItem('editDataId', id)
         dispatch(editIdQuery(id))
         navigate('/inbox-add')

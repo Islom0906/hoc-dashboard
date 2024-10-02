@@ -61,6 +61,32 @@ export const samplePagesConfigs = [
         permittedRole: [authRole.admin],
         isBackground: true
     },
+
+    // {
+    //     key: 2,
+    //     icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     label: 'Задачи',
+    //     path: '/tasks',
+    //     permittedRole: [authRole.admin, authRole.boss, authRole.user],
+    //     items: [  // Submenu items
+    //         {
+    //             key: 'task-list',
+    //             path: '/task-list',
+    //             label: 'Список задач',
+    //             icon: <RiPlayListAddLine className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
+    //             element: TaskList,
+    //             permittedRole: [authRole.user ,authRole.boss]
+    //         },
+    //         {
+    //             key: 'success-task',
+    //             path: '/success-task',
+    //             label: 'Выполненные задачи',
+    //             icon: <IoCheckmarkDoneOutline className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //             element: SuccessTask,
+    //             permittedRole: [authRole.user ,authRole.boss]
+    //         }
+    //     ]
+    // },
     {
         key: 2,
         icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
@@ -70,6 +96,7 @@ export const samplePagesConfigs = [
         permittedRole: [authRole.user ,authRole.boss],
         isBackground: true
     },
+
     {
         path: '/task-list/:item',
         element:  TaskInner,

@@ -2,9 +2,10 @@ import React, {useEffect} from 'react';
 import axios, {setAuthToken} from "../../../service/auth/axios";
 import apiService from "../../../service/apis/api";
 import {authData} from "../../../store/slice/authSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {selectCompany} from "../../../store/slice/companySlice";
+import {selectModuls} from "../../../store/slice/modulsSlice";
 
 const AuthProvider = ({children}) => {
     const navigate=useNavigate()
@@ -68,6 +69,11 @@ const AuthProvider = ({children}) => {
                     isAuthenticated: true
                 }))
                 dispatch(selectCompany(data?.company?.id))
+                if(data?.roles[0].name ==='boss'){
+                    console.log('this is boss')
+                    console.log('this is boss' , data?.modules[0]?.id)
+                    dispatch(selectModuls(data?.modules[0]?.id))
+                }
             } catch (error) {
                 dispatch(authData({
                     user: null,

@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import {Col, Row, Spin, Pagination, Flex} from "antd";
-import {FilterTaskList, TaskCardForBoss} from "../../components";
+import {FilterTaskList, TaskCard, TaskCardForBoss} from "../../components";
 import { useGetQuery } from "../../service/query/Queries";
 
 
 const BossTracking = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
   const {companyID} = useSelector(state => state.companySlice)
+  const {modulsID} = useSelector(state => state.modulsSlice)
+  const {staffIDs} = useSelector(state => state.staffSlice)
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [ordering, setOrdering] = useState('');
@@ -17,20 +19,28 @@ const BossTracking = () => {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}` , false);
+  } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks?page=${currentPage}&page_size=${pageSize}${staffIDs?.length !== 0 ? `&staff_id=${staffIDs}` : ''}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}${getTagCompany && `&tag__in=${getTagCompany}`}`}` , false);
+
 
   const {
     data: GetTagCompany =[],
     refetch: refetchGetTagCompany,
   } = useGetQuery(false, "get-tag-company", `/users/tags/${companyID}` ,false);
 
+  const {
+    data: GetStaffForModuls =[],
+    refetch: refetchStaffForModuls,
+  } = useGetQuery(false, "get-staff-moduls", `/users/user-filter?module_id=${modulsID}` ,false);
+
   useEffect(() => {
     refetchGetTagCompany()
   } , [companyID])
-
+  useEffect(() => {
+    refetchStaffForModuls()
+  } , [modulsID])
   useEffect(() => {
       refetchStaffGetTask();
-  }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany ]);
+  }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany , staffIDs]);
   const onPaginationChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);
@@ -38,14 +48,13 @@ const BossTracking = () => {
   const taskData = staffGetTask;
 
 
-  console.log(GetTagCompany)
   return (
       <div>
         <Row gutter={[16 , 30]}>
           <Col span={24}>
               <h1>Контроль задач в отделе</h1>
           </Col>
-        <FilterTaskList getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} />
+        <FilterTaskList getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} getStaffForModuls={GetStaffForModuls?.results } />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>
@@ -57,7 +66,8 @@ const BossTracking = () => {
                     md={{ span: 8 }}
                     xl={{ span: 6 }}
                 >
-                  <TaskCardForBoss
+                  <TaskCard
+                      tag={task?.main_tag}
                       key={task?.main_task_id}
                       title={task?.main_task_title}
                       deadline_status={task?.main_deadline_status}

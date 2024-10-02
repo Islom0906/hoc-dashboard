@@ -162,8 +162,6 @@ const CreateWorkerPostEdit = () => {
 
     // refresh page again get data
     useEffect(() => {
-
-
         const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
         if (storedValues) {
             // storedValues.image = []
@@ -234,7 +232,7 @@ const CreateWorkerPostEdit = () => {
         return userRoleData?.map((option) => {
             return {
                 value: option?.id,
-                label: option?.name === "boss" ? 'Руководитель' : 'Сотрудник',
+                label: option?.name,
             };
         });
     }, [userRoleData]);
@@ -263,6 +261,11 @@ const CreateWorkerPostEdit = () => {
 
 
     }, []);
+
+    const selectUserRole = (value) => {
+        alert(value)
+    }
+
 
     return (<div>
         {(postCreateWorkerLoading || editCreateWorkerLoading || putCreateWorkerLoading || imagesUploadLoading) ?
@@ -308,7 +311,26 @@ const CreateWorkerPostEdit = () => {
                             name={'middle_name'}
                         />
                     </Col>
-                    <Col span={12}>
+                    <Col span={8}>
+                        <Form.Item
+                            label='Изображение'
+                            name={'image'}
+                            rules={[{required: true, message: 'Загрузите изображение'}]}>
+                            {/*<ImgCrop>*/}
+                            <Upload
+                                maxCount={1}
+                                fileList={fileListProps}
+                                listType='picture-card'
+                                onChange={onChangeImage}
+                                onPreview={onPreviewImage}
+                                beforeUpload={() => false}
+                            >
+                                {fileListProps.length > 0 ? "" : <CiSquarePlus style={{fontSize:'30px'}}  />}
+                            </Upload>
+                            {/*</ImgCrop>*/}
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
                         <Form.Item
                             label="Дата рождения"
                             name={'birthday'}
@@ -320,7 +342,7 @@ const CreateWorkerPostEdit = () => {
                         </Form.Item>
 
                     </Col>
-                    <Col span={12}>
+                    <Col span={8}>
                         <Form.Item
                             label={'Пол'}
                             name={'gender'}
@@ -341,7 +363,7 @@ const CreateWorkerPostEdit = () => {
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={12}>
+                    <Col span={24}>
                         <FormInputNumber
                             required={true}
                             required_text={'Укажите номер телефона'}
@@ -350,14 +372,7 @@ const CreateWorkerPostEdit = () => {
                         />
 
                     </Col>
-                    <Col span={12}>
-                        <FormInput
-                            required={true}
-                            required_text={'Укажите должность'}
-                            label={'Должность'}
-                            name={'position'}
-                        />
-                    </Col>
+
                     <Col span={12}>
                         <FormInputEmail
                             required={true}
@@ -397,24 +412,14 @@ const CreateWorkerPostEdit = () => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item
-                            label='Изображение'
-                            name={'image'}
-                            rules={[{required: true, message: 'Загрузите изображение'}]}>
-                            {/*<ImgCrop>*/}
-                            <Upload
-                                maxCount={1}
-                                fileList={fileListProps}
-                                listType='picture-card'
-                                onChange={onChangeImage}
-                                onPreview={onPreviewImage}
-                                beforeUpload={() => false}
-                            >
-                                {fileListProps.length > 0 ? "" : <CiSquarePlus style={{fontSize:'30px'}}  />}
-                            </Upload>
-                            {/*</ImgCrop>*/}
-                        </Form.Item>
+                        <FormInput
+                            required={true}
+                            required_text={'Укажите должность'}
+                            label={'Должность'}
+                            name={'position'}
+                        />
                     </Col>
+
                 </Row>
                 <Form.List name="user_roles">
                     {(fields, {add, remove}) => (
@@ -426,11 +431,8 @@ const CreateWorkerPostEdit = () => {
 
                                             <Col span={12}>
                                                 <Form.Item
-                                                    label={'Отдел'}
+                                                    label={'Отдел (если сотрудник будет директором, отдел не будет выбрана)'}
                                                     name={[field.name, 'module']}
-                                                    rules={[{
-                                                        required: true, message: 'Укажите отдел'
-                                                    }]}
                                                     wrapperCol={{
                                                         span: 24,
                                                     }}
@@ -464,6 +466,7 @@ const CreateWorkerPostEdit = () => {
                                                         placeholder='Укажите только одну роль'
                                                         optionLabelProp='label'
                                                         options={optionsUserRole}
+                                                        onChange={selectUserRole}
                                                     />
                                                 </Form.Item>
                                             </Col>
