@@ -17,7 +17,7 @@ ChartJS.register(
 );
 
 const { Title:AntTitle  } = Typography;
-const ForBossTaskChart = ({modules , dataChart}) => {
+const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
   const value = dayjs()
   const year = value.year();
   const month = value.month();
@@ -89,8 +89,10 @@ const ForBossTaskChart = ({modules , dataChart}) => {
 
   const handleYearChange = (newYear) => {
     const newValue = value.year(newYear);
+    setSelectYear(newValue)
     // onChange(newValue);
   };
+
   const handleMonthChange = (newMonth) => {
     const newValue = value.month(newMonth);
     // onChange(newValue);

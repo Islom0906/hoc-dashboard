@@ -93,8 +93,9 @@ const appointments = [
 
 const Dashboard = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
-  const [modulID , setModulID] = useState('')
+  const {modulsID} = useSelector((state) => state.modulsSlice);
     const [tagChartData, setTagChartData] = useState({})
+  const [selectYear , setSelectYear] = useState('')
   const {
     data: GetUserTaskStatistics =[],
     refetch: refetchGetUserTaskStatistics,
@@ -113,14 +114,14 @@ const Dashboard = () => {
   const {
     data: GetIdBossStatistics =[],
     refetch: refetchGetIdBossStatistics,
-  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulID}` , false);
+  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulsID}` , false);
 
 
-  useEffect((  ) => {
-    if( user?.roles[0].name ==='boss') {
-      setModulID(user?.modules[0].id)
-    }
-  } , [user])
+  // useEffect((  ) => {
+  //   if( user?.roles[0].name ==='boss') {
+  //     setModulID(user?.modules[0].id)
+  //   }
+  // } , [user])
 
   const taskStatus = useMemo(() => {
 
@@ -181,8 +182,8 @@ useEffect(() => {
 } , [])
 
   useEffect(() => {
-    if(modulID) refetchGetIdBossStatistics()
-  } , [modulID])
+    if(modulsID) refetchGetIdBossStatistics()
+  } , [modulsID])
 
 
 console.log('GetIdBossStatistics' , GetIdBossStatistics)
@@ -210,7 +211,7 @@ console.log('GetIdBossStatistics' , GetIdBossStatistics)
             </Col>
             {/*--------  Boss -------- */}
             <Col span={16}>
-              <ForBossTaskChart dataChart={GetBossStatistics} modules={user?.modules[0]?.name} />
+              <ForBossTaskChart dataChart={GetBossStatistics} modules={user?.modules[0]?.name} setSelectYear={setSelectYear} />
             </Col>
             <Col span={8}>
               <Card
