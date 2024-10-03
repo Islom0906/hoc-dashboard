@@ -88,7 +88,7 @@ const TaskInner = () => {
             <Space style={{width:"100%"}} direction={"vertical"} size="large">
               <Flex justify={"end"}>
                 <Avatar.Group>
-                  {taskInner?.included_users.map(user => (
+                  {taskInner?.included_users?.map(user => (
                       <AvatarUserProfile
                           key={user?.id}
                           full_name={user?.full_name}

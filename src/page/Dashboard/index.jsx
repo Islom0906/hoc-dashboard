@@ -14,6 +14,7 @@ import {RiContractFill} from "react-icons/ri";
 import SmallProfileCard from "./profileCard/smallProfileCard";
 import AboutTagList from "./Tag-boss/AboutTagList";
 import AboutTagChart from "./Tag-boss/AboutTagChart";
+import {currentMonth, currentYear} from "../../helper/time.helper";
 
 
 const { Title, Text  } = Typography;
@@ -94,7 +95,9 @@ const appointments = [
 const Dashboard = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
   const [modulID , setModulID] = useState('')
-    const [tagChartData, setTagChartData] = useState({})
+  const [valueYear, setValueYear] = useState(currentYear)
+  const [valueMonth, setValueMonth] = useState(currentMonth)
+
   const {
     data: GetUserTaskStatistics =[],
     refetch: refetchGetUserTaskStatistics,
@@ -109,7 +112,7 @@ const Dashboard = () => {
     const {
         data:GetTagBossStatistics,
         refetch:refetchGetTagBossStatistics
-    }=useGetQuery(false,'company-all-data',`/users/tag-statistics/1?year=2024&month=9`,false)
+    } = useGetQuery(false, 'company-all-data', `/users/tag-statistics/${user?.tags[0]?.id}?year=${valueYear}&month=${valueMonth}`, false)
   const {
     data: GetIdBossStatistics =[],
     refetch: refetchGetIdBossStatistics,
@@ -174,18 +177,24 @@ const Dashboard = () => {
     return {chartData,  arrayList}
   }, [GetUserTaskStatistics]);
 
-useEffect(() => {
-  refetchGetUserTaskStatistics()
-  refetchGetBossStatistics()
-  refetchGetTagBossStatistics()
-} , [])
+  useEffect(() => {
+    refetchGetUserTaskStatistics()
+    refetchGetBossStatistics()
+  }, [])
+
+  useEffect(() => {
+    console.log('render')
+    if (user?.roles[0]?.name === 'director') {
+      refetchGetTagBossStatistics()
+
+    }
+  }, [valueYear, valueMonth]);
 
   useEffect(() => {
     if(modulID) refetchGetIdBossStatistics()
   } , [modulID])
 
 
-console.log('GetIdBossStatistics' , GetIdBossStatistics)
 
   return (
       <div className={'site-space-compact-wrapper'}>
@@ -208,30 +217,48 @@ console.log('GetIdBossStatistics' , GetIdBossStatistics)
             <Col span={8}>
               <DashboardProfileCard title={'Мой профиль'} image={user?.image} position={user?.position} fullName={`${user?.first_name} ${user?.last_name} ${user?.middle_name}`} statistics={taskStatus?.arrayList} chartData={taskStatus?.chartData}  />
             </Col>
-            {/*--------  Boss -------- */}
-            <Col span={16}>
-              <ForBossTaskChart dataChart={GetBossStatistics} modules={user?.modules[0]?.name} />
-            </Col>
-            <Col span={8}>
-              <Card
-                  className={'staff-card'}
-                  title="Сотрудники:"
-              >
-                <div   style={{height:400 , overflowY:"scroll"}}>
-                  {GetIdBossStatistics.map((staff) => (
-                      <SmallProfileCard staffID={staff?.id} failed_tasks_count={staff?.failed_tasks_count} total_tasks_count={staff?.total_tasks_count} in_progress_tasks_count={staff?.in_progress_tasks_count} avatar={staff?.image} fullName={staff?.full_name} position={staff?.position} done_tasks_count={staff?.done_tasks_count} />
-                  ))}
-                </div>
+            {/*--------- Tag Bos ----------*/}
 
-              </Card>
-            </Col>
-            <Col span={16}>
-              <AboutTagList setTagChartData={setTagChartData} data={GetTagBossStatistics}/>
-            </Col>
-            <Col span={8}>
-              <AboutTagChart tagChartData={tagChartData}/>
-            </Col>
-            </Row>
+            {
+                user?.roles[0]?.name === 'director' &&
+                <>
+                  <Col span={16}>
+                    <AboutTagChart data={GetTagBossStatistics}/>
+                  </Col>
+                  <Col span={8}>
+                    <AboutTagList setValueMonth={setValueMonth} valueMonth={valueMonth} valueYear={valueYear}
+                                  setValueYear={setValueYear} data={GetTagBossStatistics}
+                                  setModulID={setModulID}/>
+                  </Col>
+                </>
+          }
+
+
+          {/*--------  Boss -------- */}
+            {
+                (user?.roles[0]?.name === 'director' || user?.roles[0]?.name === 'boss') &&
+                <>
+                  <Col span={16}>
+                    <ForBossTaskChart dataChart={GetBossStatistics} modules={user?.modules[0]?.name} />
+                  </Col>
+                  <Col span={8}>
+                    <Card
+                        className={'staff-card'}
+                        title="Сотрудники:"
+                    >
+                      <div   style={{height:400 , overflowY:"scroll"}}>
+                        {GetIdBossStatistics.map((staff) => (
+                            <SmallProfileCard staffID={staff?.id} failed_tasks_count={staff?.failed_tasks_count} total_tasks_count={staff?.total_tasks_count} in_progress_tasks_count={staff?.in_progress_tasks_count} avatar={staff?.image} fullName={staff?.full_name} position={staff?.position} done_tasks_count={staff?.done_tasks_count} />
+                        ))}
+                      </div>
+
+                    </Card>
+                  </Col>
+                </>
+            }
+
+
+        </Row>
         </Space>
       </div>
   );

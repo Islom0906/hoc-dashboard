@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 import InboxCategoryPostEdit from "./category/inboxCategoryPostEdit";
 import {CiHashtag} from "react-icons/ci";
+import useDebounce from "../../hooks/useDebounce";
 const {Title, Text} = Typography
 
 
@@ -17,10 +18,11 @@ const Inbox = () => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [checkCategory, setCheckCategory] = useState("")
-
+    const [search, setSearch] = useState('');
+    const debounceInputValue=useDebounce(search,500)
     const {
         data, isLoading: getInboxLoading, refetch
-    } = useGetQuery(false, 'inbox-get', `/users/inbox?${checkCategory ? `cat=${checkCategory}` : ""}`, false)
+    } = useGetQuery(false, 'inbox-get', `/users/inbox?${checkCategory ? `cat=${checkCategory}` : ""}${search ? `&title=${search}`:""}`, false)
     const {
         data: categoryData, refetch: categoryRefetch
     } = useGetQuery(false, 'inbox-category-get', `/users/inbox-category`, false)
@@ -31,7 +33,7 @@ const Inbox = () => {
     useEffect(() => {
         refetch()
 
-    }, [inboxSuccess, checkCategory]);
+    }, [inboxSuccess, checkCategory,debounceInputValue]);
 
     useEffect(() => {
         categoryRefetch()
@@ -60,7 +62,7 @@ const Inbox = () => {
         setIsModalOpen(false)
     }
     const searchFunc = (value) => {
-        console.log(value)
+        setSearch(value)
     };
 
 
