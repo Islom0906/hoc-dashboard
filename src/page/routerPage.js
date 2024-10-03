@@ -40,7 +40,8 @@ import {BiSupport} from "react-icons/bi";
 export const authRole = {
     admin: 'admin',
     boss: 'boss',
-    user: 'staff'
+    user: 'staff',
+    director:'director'
 }
 
 
@@ -51,7 +52,7 @@ export const samplePagesConfigs = [
         path: '/dashboard',
         label: 'Панель',
         element: Dashboard,
-        permittedRole: [authRole.admin, authRole.user, authRole.boss],
+        permittedRole: [authRole.admin, authRole.user, authRole.boss,authRole.director],
         isBackground: false
     },
     {
@@ -126,7 +127,7 @@ export const samplePagesConfigs = [
         label: 'Календарь',
         path: '/calendar-task',
         element: CalendarTask,
-        permittedRole: [authRole.admin, authRole.boss, authRole.user],
+        permittedRole: [authRole.admin, authRole.boss, authRole.user,authRole.director],
         isBackground: true
     },
     {
@@ -135,21 +136,21 @@ export const samplePagesConfigs = [
         path: '/inbox',
         label: 'Избранный',
         element: Inbox,
-        permittedRole: ["admin","staff"],
+        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director],
         isBackground: false
     },
     {
         path: '/inbox/:id',
         element: InboxInner,
         noIndex: true,
-        permittedRole: ["admin","staff"],
+        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director],
         isBackground: false
     },
     {
         path: '/inbox-add',
         element: InboxPostEdit,
         noIndex: true,
-        permittedRole: ["admin","staff"],
+        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director],
         isBackground: false
     },
     // {
@@ -186,6 +187,12 @@ export const samplePagesConfigs = [
         path: '/taskEditBoss',
         element: BossTracking,
         permittedRole: [authRole.boss],
+        isBackground: true
+    },
+    {
+        path: '/view-task-director',
+        element: BossTracking,
+        permittedRole: [authRole.director],
         isBackground: true
     },
     {

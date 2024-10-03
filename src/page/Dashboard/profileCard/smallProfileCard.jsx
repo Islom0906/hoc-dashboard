@@ -3,7 +3,7 @@ import {FaTasks} from "react-icons/fa";
 import {GrCompliance, GrInProgress} from "react-icons/gr";
 import {MdError} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectModuls} from "../../../store/slice/modulsSlice";
 import {selectStaffIDs} from "../../../store/slice/staffSlice";
 
@@ -12,11 +12,17 @@ const {Text} = Typography
 const SmallProfileCard = ({staffID , avatar, fullName, position , done_tasks_count , failed_tasks_count , total_tasks_count , in_progress_tasks_count}) => {
   const navigate=useNavigate()
   const dispatch = useDispatch()
+  const { data: { user } = {} } = useSelector((state) => state.auth);
 
 
   const handlerCard = () => {
     dispatch(selectStaffIDs(staffID))
-    navigate('/taskEditBoss')
+    if (user?.roles[0]?.name==='director'){
+    navigate('/view-task-director')
+    }else{
+      navigate('/taskEditBoss')
+
+    }
   }
 
   return (
