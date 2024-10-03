@@ -86,7 +86,6 @@ const ForBossTaskChart = ({modules , dataChart}) => {
       },
     },
   };
-
   const handleYearChange = (newYear) => {
     const newValue = value.year(newYear);
     // onChange(newValue);
