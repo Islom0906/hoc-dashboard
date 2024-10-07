@@ -13,8 +13,6 @@ const SmallProfileCard = ({staffID , avatar, fullName, position , done_tasks_cou
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const { data: { user } = {} } = useSelector((state) => state.auth);
-
-
   const handlerCard = () => {
     dispatch(selectStaffIDs(staffID))
     // dispatch(selectModuls(modulID))
@@ -24,7 +22,6 @@ const SmallProfileCard = ({staffID , avatar, fullName, position , done_tasks_cou
       navigate('/taskEditBoss')
     }
   }
-
   return (
       <div onClick={handlerCard} style={{padding: '10px 0',
       }}>
