@@ -70,7 +70,7 @@ const Dashboard = () => {
   // director
 
   useEffect(() => {
-    if (user?.roles[0]?.name === 'director' && selectCompany) {
+    if (user?.roles[0]?.name === 'director' && selectCompany?.id) {
       refetchGetCompanyByIDStatistics()
     }
   }, [selectCompany, valueYear, valueMonth]);
@@ -86,7 +86,7 @@ const Dashboard = () => {
   // boss
 
   useEffect(() => {
-    if (modulsID && user?.roles[0]?.name === 'boss') {
+    if (modulsID) {
       refetchGetModulStaffStatistics()
       refetchGetModulByIDStatistics()
     }

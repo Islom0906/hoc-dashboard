@@ -75,10 +75,6 @@ const CalendarTask = () => {
                         Календарь
                     </Title>
                 </Col>
-                {
-                    user?.roles[0]?.name === 'admin' &&
-                <FilterCompanyForAdmin/>
-                }
             </Row>
             <Flex align={'center'} gap={20}>
                 <Flex align={'center'} gap={5}>

@@ -34,11 +34,11 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
 
     const onSelect = (newValue, info) => {
 
-        if (user?.roles[0]?.name === 'admin') {
+        if (user?.roles[0]?.name !== 'staff' && user?.roles[0]?.name !== 'boss' ) {
             const isPastDate = newValue.isBefore(dayjs(), 'day');
             if (!isPastDate) {
-                console.log("This is a past date:", newValue.format("YYYY-MM-DD"));
                 setValue(newValue);
+                setIsModalOpen(true);
             }
         }
     };

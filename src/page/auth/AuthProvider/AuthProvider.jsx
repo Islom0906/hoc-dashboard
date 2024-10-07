@@ -70,8 +70,6 @@ const AuthProvider = ({children}) => {
                 }))
                 dispatch(selectCompany(data?.company?.id))
                 if(data?.roles[0].name ==='boss'){
-                    console.log('this is boss')
-                    console.log('this is boss' , data?.modules[0]?.id)
                     dispatch(selectModuls(data?.modules[0]?.id))
                 }
             } catch (error) {

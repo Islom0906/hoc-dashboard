@@ -44,7 +44,6 @@ const CompanyPostEdit = () => {
     SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')
     // if edit compant
 
-    console.log(editCompanyData)
     EditGetById(editCompanyRefetch)
     // if no edit company
     SetInitialValue(form,initialValueForm)

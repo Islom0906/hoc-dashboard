@@ -21,8 +21,6 @@ const BossTracking = () => {
     isLoading: isLoadingStaffGetTask,
   } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks/${modulsID}?page=${currentPage}&page_size=${pageSize}${staffIDs?.length !== 0 ? `&staff_id=${staffIDs}` : ''}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}${getTagCompany && `&tag__in=${getTagCompany}`}`}` , false);
 
-  console.log('modulsID' ,modulsID)
-  console.log('staffIDs' ,staffIDs)
 
   const {
     data: GetTagCompany =[],

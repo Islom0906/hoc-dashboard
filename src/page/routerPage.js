@@ -96,7 +96,7 @@ export const samplePagesConfigs = [
         path: '/task-list',
         label: 'Задачи',
         element: TaskList,
-        permittedRole: [authRole.user ,authRole.boss],
+        permittedRole: [authRole.user ,authRole.boss ,authRole.director ,authRole.general_director],
         isBackground: true
     },
 
@@ -104,14 +104,14 @@ export const samplePagesConfigs = [
         path: '/task-list/:item',
         element:  TaskInner,
         noIndex: true,
-        permittedRole: [authRole.boss , authRole.user , authRole.admin],
+        permittedRole: [authRole.boss , authRole.user , authRole.admin ,authRole.director ,authRole.general_director],
         isBackground: true
     },
     {
         path: '/success-task/:item',
         element:  TaskInner,
         noIndex: true,
-        permittedRole: [authRole.boss , authRole.user , authRole.admin],
+        permittedRole: [authRole.boss , authRole.user , authRole.admin ,authRole.director ,authRole.general_director],
         isBackground: true
     },
     {
@@ -120,7 +120,7 @@ export const samplePagesConfigs = [
         path: '/success-task',
         label: 'Выполненные задачи',
         element: SuccessTask,
-        permittedRole: [authRole.user ,authRole.boss],
+        permittedRole: [authRole.user ,authRole.boss ,authRole.director, authRole.general_director],
         isBackground: true
     },
     {
@@ -170,7 +170,7 @@ export const samplePagesConfigs = [
         icon: <RiPlayListAddLine className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskCreated',
         element: TaskCreated,
-        permittedRole: [authRole.admin],
+        permittedRole: [authRole.admin , authRole.director ,authRole.general_director],
         isBackground: true
     },
     // {
@@ -188,13 +188,13 @@ export const samplePagesConfigs = [
         icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: BossTracking,
-        permittedRole: [authRole.boss , authRole.general_director],
+        permittedRole: [authRole.boss ],
         isBackground: true
     },
     {
         path: '/view-task-director',
         noIndex: true,
-        element: BossTracking,
+        element: TaskCreated,
         permittedRole: [authRole.director ,authRole.general_director],
         isBackground: true
     },
@@ -217,7 +217,7 @@ export const samplePagesConfigs = [
     {
         path: '/task/add',
         element: TaskPostEdit,
-        permittedRole: [authRole.admin],
+        permittedRole: [authRole.admin , authRole.director ,authRole.general_director],
         isBackground: true,
         noIndex: true
     },
