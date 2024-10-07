@@ -14,4 +14,5 @@ export {default as ImageUploader} from './ImageUploader/ImageUploader'
 export {default as InboxCard} from './Inbox/InboxCard'
 export {default as FileCard} from './Inbox/FileCard'
 export {default as Map} from './Map/Map'
+export {default as SelectMountYear} from './selectMountYear/index'
 

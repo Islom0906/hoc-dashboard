@@ -222,6 +222,8 @@ const CreateWorkerPostEdit = () => {
         }
     }, [imagesUpload]);
 
+
+
     const onChangeImage = ({fileList: newFileList}) => {
         const formData = new FormData();
         if (fileListProps.length !== 0 || newFileList.length === 0) {

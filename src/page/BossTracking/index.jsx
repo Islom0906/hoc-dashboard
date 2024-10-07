@@ -15,13 +15,14 @@ const BossTracking = () => {
   const [ordering, setOrdering] = useState('');
   const [deadlineStatus, setDeadlineStatus] = useState('');
   const [getTagCompany, setGetTagCompany] = useState('');
-  console.log(modulsID)
   const {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks?page=${currentPage}&page_size=${pageSize}${staffIDs?.length !== 0 ? `&staff_id=${staffIDs}` : ''}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}${getTagCompany && `&tag__in=${getTagCompany}`}`}` , false);
+  } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks/${modulsID}?page=${currentPage}&page_size=${pageSize}${staffIDs?.length !== 0 ? `&staff_id=${staffIDs}` : ''}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}${getTagCompany && `&tag__in=${getTagCompany}`}`}` , false);
 
+  console.log('modulsID' ,modulsID)
+  console.log('staffIDs' ,staffIDs)
 
   const {
     data: GetTagCompany =[],
@@ -41,7 +42,7 @@ const BossTracking = () => {
   } , [modulsID])
   useEffect(() => {
       refetchStaffGetTask();
-  }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany , staffIDs]);
+  }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany , staffIDs , modulsID]);
   const onPaginationChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);

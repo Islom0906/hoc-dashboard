@@ -9,14 +9,12 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const options = {
     scales: {
         y: {
-            beginAtZero: true, // Ensure Y axis starts at zero
+            beginAtZero: true,
         },
     },
 };
 
 const AboutTagChart = ({data}) => {
-    console.log(data)
-
     const yearRange = Array.from({ length: 2030 - 2020 }, (_, i) => 2020 + i);
 
     const dataChart = useMemo(() => {

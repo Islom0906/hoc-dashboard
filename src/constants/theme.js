@@ -1,7 +1,7 @@
 export const configLight = {
     colorPrimary: "#76BC33",
     contentBg:'#FFFFFF',
-    mainBg:"#FBFBFB",
+    mainBg:"#F4F6F3",
     Button: {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
@@ -117,6 +117,7 @@ export const configDark = {
     },
     Typography: {
         colorTextHeading:"#DEDEE6"
+
     },
 
     InputNumber: {

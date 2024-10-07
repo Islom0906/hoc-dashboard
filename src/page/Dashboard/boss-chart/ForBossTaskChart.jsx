@@ -34,6 +34,7 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
 
   useEffect(() => {
     if (dataChart) {
+      console.log('dataChart' , dataChart)
       const aggregatedData = {
         total_tasks_count: [],
         done_tasks_count: [],
@@ -46,6 +47,7 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
         return aggregatedData
       });
 
+      console.log(aggregatedData)
       setChart({total_tasks_count: aggregatedData.total_tasks_count ,done_tasks_count: aggregatedData.done_tasks_count , failed_tasks_count: aggregatedData.failed_tasks_count});
     }
   }, [dataChart]);
@@ -57,24 +59,26 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
     datasets: [
       {
         type: 'bar',
-        label: 'Bar Dataset',
+        label: 'Все задачи',
         data: chart?.total_tasks_count,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgb(10, 143, 220)',
+        backgroundColor: 'rgba(10, 143, 220, 0.2)',
       },
       {
         type: 'line',
-        label: 'Line Dataset',
+        label: 'Выполненные задачи',
         data: chart?.done_tasks_count,
         fill: false,
-        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(17, 193, 91, 0.2)',
+        borderColor: 'rgba(17, 193, 91, 0.2)',
       },
       {
         type: 'line',
-        label: 'Line Dataset',
+        label: 'Невыполненные задачи',
         data: chart?.failed_tasks_count,
         fill: false,
-        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(240, 79, 71, 0.2)',
+        borderColor: 'rgb(240, 79, 71)',
       },
     ],
   };

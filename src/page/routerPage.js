@@ -16,7 +16,7 @@ import {
     SuccessTask,
     ResponsibleUser,
     Dashboard,
-    Inbox, InboxInner, InboxPostEdit, AddLocationMap,
+    Inbox, InboxInner, InboxPostEdit, AddLocationMap,PressCenter
 
 } from './index'
 import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
@@ -31,6 +31,7 @@ import {
 } from "@ant-design/icons";
 import {RxDashboard} from "react-icons/rx";
 import {BiSupport} from "react-icons/bi";
+import {GiNewspaper} from "react-icons/gi";
 
 // import TaskEditBoss from "./TaskEditBoss";
 // import TaskEdit from "./TaskEditBoss/TaskEdit";
@@ -41,7 +42,8 @@ export const authRole = {
     admin: 'admin',
     boss: 'boss',
     user: 'staff',
-    director:'director'
+    director:'director',
+    general_director:'general_director'
 }
 
 
@@ -52,7 +54,7 @@ export const samplePagesConfigs = [
         path: '/dashboard',
         label: 'Панель',
         element: Dashboard,
-        permittedRole: [authRole.admin, authRole.user, authRole.boss,authRole.director],
+        permittedRole: [authRole.admin, authRole.boss,authRole.director, authRole.general_director],
         isBackground: false
     },
     {
@@ -127,7 +129,7 @@ export const samplePagesConfigs = [
         label: 'Календарь',
         path: '/calendar-task',
         element: CalendarTask,
-        permittedRole: [authRole.admin, authRole.boss, authRole.user,authRole.director],
+        permittedRole: [authRole.admin, authRole.boss, authRole.user,authRole.director ,authRole.general_director],
         isBackground: true
     },
     {
@@ -136,21 +138,21 @@ export const samplePagesConfigs = [
         path: '/inbox',
         label: 'Избранный',
         element: Inbox,
-        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director],
+        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director , authRole.general_director],
         isBackground: false
     },
     {
         path: '/inbox/:id',
         element: InboxInner,
         noIndex: true,
-        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director],
+        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director , authRole.general_director],
         isBackground: false
     },
     {
         path: '/inbox-add',
         element: InboxPostEdit,
         noIndex: true,
-        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director],
+        permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director ,authRole.general_director],
         isBackground: false
     },
     // {
@@ -159,7 +161,7 @@ export const samplePagesConfigs = [
     //     icon: <PiUserListLight className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
     //     path: '/my-applications',
     //     element: MyApplications,
-    //     permittedRole: [authRole.user', authRole.admin, authRole.boss"],
+    //     permittedRole: [authRole.user, authRole.admin, authRole.boss"],
     //     isBackground: false
     // },
     {
@@ -186,13 +188,14 @@ export const samplePagesConfigs = [
         icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: BossTracking,
-        permittedRole: [authRole.boss],
+        permittedRole: [authRole.boss , authRole.general_director],
         isBackground: true
     },
     {
         path: '/view-task-director',
+        noIndex: true,
         element: BossTracking,
-        permittedRole: [authRole.director],
+        permittedRole: [authRole.director ,authRole.general_director],
         isBackground: true
     },
     {
@@ -272,7 +275,16 @@ export const samplePagesConfigs = [
         label: 'Профиль',
         path: '/user-profile',
         element: UserProfile,
-        permittedRole: [authRole.admin, authRole.user, authRole.boss],
+        permittedRole: [authRole.admin, authRole.user, authRole.boss , authRole.director , authRole.general_director],
+        isBackground: false
+    },
+    {
+        key: 900000,
+        icon: <GiNewspaper className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        label: 'Пресс-центр',
+        path: '/press-center',
+        element: PressCenter,
+        permittedRole: [authRole.admin, authRole.user, authRole.boss , authRole.director , authRole.general_director],
         isBackground: false
     },
     {
@@ -281,7 +293,7 @@ export const samplePagesConfigs = [
         path: '/support',
         label: 'Поддерживать',
         element: Support,
-        permittedRole: [authRole.admin, authRole.user, authRole.boss],
+        permittedRole: [authRole.admin, authRole.user, authRole.boss ,  authRole.director , authRole.general_director],
         isBackground: false
     },
 ];

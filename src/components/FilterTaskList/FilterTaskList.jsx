@@ -39,7 +39,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
       label: `${value?.full_name} ${value?.position}`,
       value: value?.id,
     }));
-  }, [getStaffForModuls]);
+  }, [getStaffForModuls ,staffIDs]);
 
   const onChangeDeadlineTime = (changleItem) => {
     setOrdering(changleItem.toString());
@@ -134,7 +134,6 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
                   placeholder="Сотрудники"
                   optionLabelProp="label"
                   options={getModulsArray || []}
-                  defaultValue={getStaffIDs || 'salom'}
                   onChange={onChangeModulsStaff}
               />
             </Col>

@@ -4,6 +4,7 @@ import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {IoLinkOutline} from "react-icons/io5";
+import {useEffect} from "react";
 
 const CreateWorkerTable = ({data,deleteHandle}) => {
     const navigate=useNavigate()
@@ -17,13 +18,16 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
         navigate('/create-worker/add')
     };
 
+
     const columns = [
         {
             title: 'Изображение',
-            dataIndex: 'images',
+            dataIndex: 'image',
             width:125,
-            id: 'images',
+            id: 'image',
             render: (image) => {
+
+                console.log(image)
                 return (
                     <Image
                         style={{

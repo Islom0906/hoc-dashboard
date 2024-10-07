@@ -19,5 +19,6 @@ export {default as Support} from './Support';
 export {default as Inbox} from './Inbox';
 export {default as InboxInner} from './Inbox/inboxInner';
 export {default as InboxPostEdit} from './Inbox/InboxPostEdit';
+export {default as PressCenter} from './press-center/index.jsx';
 export {default as MyApplications} from './MyApplications';
 export {default as AddLocationMap} from './Dashboard/map-company/AddLocationMap';
