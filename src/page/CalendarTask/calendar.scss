@@ -1,29 +1,32 @@
+.calendar-card{
+  //height: calc(100vh - 200px);
+}
 .ant-picker-calendar {
   th {
     font-size: 14px !important;
   }
 
-  .ant-picker-calendar-date-content {
-    height: 30px !important;
-
-  }
+  //.ant-picker-calendar-date-content {
+  //  height: 100% !important;
+  //
+  //}
 
   ::-webkit-scrollbar {
     width: 3px;
     height: 3px;
   }
   ::-webkit-scrollbar-button {
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
   }
   ::-webkit-scrollbar-thumb {
     background: #76bc33;
-    border: 0px none #ffffff;
+    border: 0 none #ffffff;
     border-radius: 50px;
   }
   ::-webkit-scrollbar-track {
     background: #515a64;
-    border: 0px none #ffffff;
+    border: 0 none #ffffff;
     border-radius: 75px;
   }
   ::-webkit-scrollbar-corner {

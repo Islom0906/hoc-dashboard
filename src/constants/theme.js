@@ -1,5 +1,8 @@
 export const configLight = {
     colorPrimary: "#76BC33",
+    colorChartLabel:'#5F5959',
+    colorChartLine:'#5F595920',
+
     contentBg:'#FFFFFF',
     mainBg:"#F4F6F3",
     Button: {
@@ -33,7 +36,7 @@ export const configLight = {
         headerBg: "rgb(255, 255, 255)",
         siderBg: "rgb(255, 255, 255)",
         footerBg: "rgb(255, 255, 255)",
-        bodyBg: "rgb(222, 222, 230)"
+        bodyBg: "#F4F6F3"
     },
     Menu: {
         itemBg: "rgb(255, 255, 255)",
@@ -100,6 +103,8 @@ export const configLight = {
 };
 export const configDark = {
     contentBg:'#252B36',
+    colorChartLabel:'#E8E8E8',
+    colorChartLine:'#E8E8E820',
     mainBg:"rgb(27, 31, 40)",
     Button: {
         colorPrimary: "#76BC33",
@@ -133,7 +138,7 @@ export const configDark = {
         labelColor: "rgb(222, 222, 230)"
     },
     Layout: {
-        bodyBg: "rgb(27, 31, 40)",
+        bodyBg: "#121723",
         headerBg: "rgb(37, 43, 54)",
         footerBg: "rgb(37, 43, 54)",
         siderBg: "rgb(37, 43, 54)"
