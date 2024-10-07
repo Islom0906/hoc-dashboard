@@ -2,7 +2,7 @@ import {Avatar, Button, Flex, Popconfirm, Progress,  Table, Tooltip} from "antd"
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import { AvatarUserProfile } from "../../components";
@@ -11,6 +11,7 @@ import {FaRegEye} from "react-icons/fa";
 
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
   const navigate = useNavigate();
+  const {data:{user}}=useSelector(state => state.auth)
   const dispatch = useDispatch();
 
   const Delete =  (id) => {
@@ -163,8 +164,10 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
       fixed: "right",
       width: 140,
       render: (_, record) => (
+
           <Flex gap={10} justify={'end'}>
             {
+              user?.roles[0].name !== 'director' ?
                 record?.done_sub_tasks_count ===0 &&
                 <>
                   <Button
@@ -180,6 +183,23 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     <Button type="primary" danger icon={<DeleteOutlined />} />
                   </Popconfirm>
                 </>
+                  :
+                  record?.tag?.id === user?.tags[0].id && record?.done_sub_tasks_count ===0  &&
+                    <>
+                      <Button
+                          onClick={() => Edit(record.id)}
+                          type="dashed"
+                          icon={<EditOutlined />}
+                      />
+                      <Popconfirm
+                          title={"Вы уверены, что хотите удалить это?"}
+                          description={"Удалить"}
+                          onConfirm={() => Delete(record.id)}
+                      >
+                        <Button type="primary" danger icon={<DeleteOutlined />} />
+                      </Popconfirm>
+                    </>
+
             }
             <Button
                 onClick={() => handleTaskInnerGet(record?.id)}

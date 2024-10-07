@@ -27,7 +27,6 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             id: 'image',
             render: (image) => {
 
-                console.log(image)
                 return (
                     <Image
                         style={{

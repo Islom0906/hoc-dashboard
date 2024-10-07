@@ -16,7 +16,7 @@ const SmallProfileCard = ({staffID , avatar, fullName, position , done_tasks_cou
   const handlerCard = () => {
     dispatch(selectStaffIDs(staffID))
     // dispatch(selectModuls(modulID))
-    if (user?.roles[0]?.name==='director'){
+    if (user?.roles[0]?.name!=='boss'){
     navigate('/view-task-director')
     }else{
       navigate('/taskEditBoss')

@@ -24,7 +24,6 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
         e.stopPropagation();
         dispatch(editIdQuery(id));
         if (user?.roles[0]?.name === 'admin') {
-            console.log('render')
             setIsModalOpen(true);
         }
     }
@@ -34,13 +33,13 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     const deadlineMap = useDeadlineMap(dataDeadline)
 
     const onSelect = (newValue, info) => {
-        console.log(newValue)
-        if (user?.roles[0]?.name === 'admin') {
+
+        if (user?.roles[0]?.name !== 'staff' && user?.roles[0]?.name !== 'boss' ) {
             const isPastDate = newValue.isBefore(dayjs(), 'day');
-            // if (!isPastDate) {
+            if (!isPastDate) {
                 setValue(newValue);
                 setIsModalOpen(true);
-            // }
+            }
         }
     };
 

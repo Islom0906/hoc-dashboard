@@ -9,6 +9,7 @@ import { useDeleteQuery, useGetQuery } from "../../service/query/Queries";
 import {useQueryClient} from "react-query";
 import {FilterCompanyForAdmin} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
+import useDebounce from "../../hooks/useDebounce";
 
 const { Title } = Typography;
 
@@ -37,6 +38,7 @@ const TaskCreated = () => {
     pageSize: 10,
     total: 0,
   });
+  const debounceInputValue=useDebounce(search,500)
   // delete
   const { mutate, isSuccess, isLoading: deleteLoading } = useDeleteQuery();
 
@@ -44,7 +46,7 @@ const TaskCreated = () => {
   const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
       false,
       'get-task',
-      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${companyID !== null ? `&company=${companyID}` :''}${getTagCompany && `&tag__in=${getTagCompany}`}${search && `&search=${search}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`} `,
+      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${companyID !== null ? `&company=${companyID}` :''}${getTagCompany && `&tag__in=${getTagCompany}`}${search && `&${selectInputSearch[0].value === selectedOptionSearch ? 'search': 'full_name'}=${search}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`} `,
       false
   );
   // get-tag-company
@@ -54,7 +56,7 @@ const TaskCreated = () => {
   } = useGetQuery(false, "get-tag-company", `users/tag-selection` ,false);
   useEffect(() => {
     refetch();
-  }, [isSuccess, pagination.current, pagination.pageSize, search, deadlineStatus, ordering ,companyID ,getTagCompany]);
+  }, [isSuccess, pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering ,companyID ,getTagCompany]);
   useEffect(() => {
     refetchGetTagCompany()
   } , [])
@@ -74,9 +76,7 @@ const TaskCreated = () => {
     dispatch(editIdQuery(""));
     navigate('/task/add');
   };
-  const searchFunc = (value) => {
-    setSearch(value);
-  };
+
 
   const handleTableChange = (pagination, filters, sorter) => {
     setPagination({
@@ -107,9 +107,9 @@ const TaskCreated = () => {
   const selectedSearchInput = (e) => {
     setSelectedOptionSearch(e)
   }
-
-
-
+  const searchFunc = (value) => {
+    setSearch(value);
+  };
   const selectBefore = (
       <Select onChange={e => selectedSearchInput(e)}  defaultValue={selectInputSearch[0].value}>
         {
@@ -129,7 +129,7 @@ const TaskCreated = () => {
                 Создать задачу
               </Title>
             </Col>
-            <FilterCompanyForAdmin/>
+            {/*<FilterCompanyForAdmin/>*/}
             <Col span={16}>
               <Input addonBefore={selectBefore} placeholder={`Поиск ${selectedOptionSearch==='task' ? ' задач' : 'участники' }`} onChange={(e) => searchFunc(e.target.value)} />
             </Col>

@@ -37,7 +37,6 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
         ]
       });
       console.log('getValueSubTask' ,getValueSubTask[fileListNumber].file)
-      console.log('1' )
 
     }
   }, [imagesUpload, form, imagesUploadSuccess]);

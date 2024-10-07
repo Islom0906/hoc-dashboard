@@ -86,7 +86,7 @@ const Dashboard = () => {
   // boss
 
   useEffect(() => {
-    if (modulsID && user?.roles[0]?.name === 'boss') {
+    if (modulsID) {
       refetchGetModulStaffStatistics()
       refetchGetModulByIDStatistics()
     }
