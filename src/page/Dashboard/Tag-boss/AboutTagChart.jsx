@@ -143,10 +143,10 @@ const AboutTagChart = ({data}) => {
 
     const dataChart = useMemo(() => {
 
-      const labels=  data1?.map((label)=>(label.name))
-        const failedTasks = data1?.map(item => item.failed_tasks_count);
-        const doneTasks = data1?.map(item => item.done_tasks_count);
-        const inProgressTasks = data1?.map(item => item.in_progress_tasks_count);
+      const labels=  data?.map((label)=>(label.name))
+        const failedTasks = data?.map(item => item.failed_tasks_count);
+        const doneTasks = data?.map(item => item.done_tasks_count);
+        const inProgressTasks = data?.map(item => item.in_progress_tasks_count);
         return {
             labels: labels,
             datasets: [
