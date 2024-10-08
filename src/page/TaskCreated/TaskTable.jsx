@@ -1,4 +1,4 @@
-import {Avatar, Button, Flex, Popconfirm, Progress,  Table, Tooltip} from "antd";
+import {Avatar, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip} from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { useNavigate } from "react-router-dom";
@@ -44,38 +44,47 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
       },
     },
     {
-      title: "Задача",
-      dataIndex: "title",
-      id: "title",
-      render: (title) => <p>{title}</p>,
-    },
-    {
       title: "Компания",
       dataIndex: "tag",
       id: "tag",
       filters: getTagCompanyArray,
       render: (text , record) =>
-    <AvatarUserProfile
-        size={'large'}
-        key={record?.tag?.id}
-        company={record?.tag?.name}
-        image={record?.tag?.image_light}
-    />,
+          <AvatarUserProfile
+              size={'large'}
+              key={record?.tag?.id}
+              company={record?.tag?.name}
+              image={record?.tag?.image_light}
+          />,
     },
     {
-      title: "Создана",
-      dataIndex: "created_at",
-      id: "created_at",
-      width: 150,
-      render: (text) => <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
+      title: "Создано",
+      dataIndex: "created_by",
+      id: "created_by",
+      render: (text , record) =>
+          <AvatarUserProfile
+              size={'large'}
+              key={record?.created_by?.id}
+              company={record?.created_by?.position}
+              full_name={record?.created_by?.full_name}
+              image={record?.created_by?.image}
+          />,
     },
+
+    {
+      title: "Задача",
+      dataIndex: "title",
+      id: "title",
+      render: (title) => <p>{title}</p>,
+    },
+
+
     {
       title: "Крайний срок",
       dataIndex: "deadline",
       id: "deadline",
       width: 150,
       sorter: {multiple: 3},
-      render: (text) => <p>{dayjs(text).format("DD.MM.YYYY")}</p>,
+      render: (_, record) =>  <Tag color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
     },
     {
       title: "Статус",
@@ -115,49 +124,39 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
       },
     },
     {
-      title: "Участники",
+      title: "Ответственный и Участники",
       dataIndex: "included_users",
       id: "team",
       render: (text, record) => {
         const users = [...(record.included_users || [])];
-
-
         return (
-            <Avatar.Group size={"small"}>
-              {users.map((user) => (
+            <Flex justify={"space-between"} align={'center'}>
+              <Avatar.Group size={"small"}>
+                <AvatarUserProfile
+                    key={record?.responsible_user?.id}
+                    full_name={record?.responsible_user?.full_name}
+                    moduls={record?.responsible_user?.roles?.[0]?.name}
+                    image={record?.responsible_user?.image}
+                />
+              </Avatar.Group>
+              <Avatar.Group size={"small"} max={{
+                count: 4,
+                style: { color: "#f56a00", backgroundColor: "#fde3cf" },
+              }} >
+                {users.map((user) => (
                     <AvatarUserProfile
-                        messenger1={user?.messenger_link1}
-                        messenger2={user?.messenger_link2}
                         key={user?.id}
                         full_name={user?.full_name}
                         moduls={user?.roles?.[0]?.name}
                         image={user?.image}
                     />
-              ))}
-            </Avatar.Group>
+                ))}
+              </Avatar.Group>
+            </Flex>
         );
       },
     },
-    {
-      title: "Ответственный",
-      dataIndex: ['responsible_user'],
-      id: "responsible_user",
-      width: 100,
-      render: (responsible_user) => {
-        return (
-            <Avatar.Group size={"small"}>
-              <AvatarUserProfile
-                  messenger2={responsible_user?.messenger_link2}
-                  messenger1={responsible_user?.messenger_link1}
-                  key={responsible_user?.id}
-                  full_name={responsible_user?.full_name}
-                  moduls={responsible_user?.roles?.[0]?.name}
-                  image={responsible_user?.image}
-              />
-            </Avatar.Group>
-        );
-      },
-    },
+
     {
       title: "Редактировать",
       id: "action",
@@ -172,7 +171,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                 <>
                   <Button
                       onClick={() => Edit(record.id)}
-                      type="dashed"
+                      type="primary"
                       icon={<EditOutlined />}
                   />
                   <Popconfirm
@@ -188,7 +187,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     <>
                       <Button
                           onClick={() => Edit(record.id)}
-                          type="dashed"
+                          type="primary"
                           icon={<EditOutlined />}
                       />
                       <Popconfirm
@@ -206,8 +205,6 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                 type="dashed"
                 icon={<FaRegEye />}
             />
-
-
           </Flex>
       ),
     },

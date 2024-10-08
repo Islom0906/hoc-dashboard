@@ -2,7 +2,6 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Button, Card, Col, DatePicker, Flex, Form, Row, Select, Typography} from "antd";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
-import {useQueryClient} from "react-query";
 import successCreateAndEdit from "../../hooks/successCreateAndEdit";
 import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";

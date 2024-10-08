@@ -1,9 +1,8 @@
 import React, {useEffect, useState,} from 'react';
-import {Col, Flex, Row, Space, Spin, Typography} from 'antd';
+import {Col, Flex, Row, Spin, Typography} from 'antd';
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
-import {FilterCompanyForAdmin} from "../../components";
 import {useSelector} from "react-redux";
 
 const {Title} = Typography
@@ -30,7 +29,6 @@ const CalendarTask = () => {
     })
 
     const {companyID} = useSelector(state => state.companySlice)
-    const {data: {user}} = useSelector(state => state.auth);
 
     // birthday
     const {
@@ -74,10 +72,6 @@ const CalendarTask = () => {
                             Календарь
                         </Title>
                     </Col>
-                    {
-                        user?.roles[0]?.name === 'admin' &&
-                        <FilterCompanyForAdmin/>
-                    }
                 </Row>
                 <Flex align={'center'} gap={20}>
                     <Flex align={'center'} gap={5}>
@@ -100,7 +94,6 @@ const CalendarTask = () => {
                         }}/>
                         <p>
                             {colorMeeting.birthday.name}
-
                         </p>
                     </Flex>
                     <Flex align={'center'} gap={5}>
