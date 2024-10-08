@@ -1,21 +1,73 @@
 import {useMemo} from "react";
 import dayjs from "dayjs";
-import {Button, Flex, Popover,Typography} from "antd";
-import {FaExternalLinkAlt} from "react-icons/fa";
+import {Button, Card, Flex, Popover, Typography , Tag, Avatar, Switch,} from "antd";
+import {FaBirthdayCake, FaExternalLinkAlt} from "react-icons/fa";
+import { EditOutlined, ArrowRightOutlined } from '@ant-design/icons';
+
 const {Title,Text}=Typography
-
-
-const contentPopover = (content) => {
+const contentPopoverBirthday = (content) => {
     return (
-        <div className={'popover-card'}>
-            {content.meeting_date &&
-                <p>Время: {dayjs(content.meeting_date).format("HH:mm:ss")}</p>}
-            {content.text &&
-                <p>О чем: {content.text}</p>}
-        </div>
+        <Card
+            style={{
+                borderRadius: '10px',
+                textAlign: 'center',
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                padding: '20px',
+                backgroundColor: '#F9F9F9',
+            }}
+            bodyStyle={{ padding: '0' }}
+        >
+            <div >
+                <FaBirthdayCake
+                    size={50}
+                    color="#2176FF"
+                    style={{ marginBottom: '20px' }}
+                />
+                {content.first_name && (
+                    <p style={{ fontSize: '16px', color: '#333' }}>{`День рождения: ${content.first_name} ${content.last_name}`}</p>
+                )}
+            </div>
+        </Card>
     );
+};
+
+const contentPopoverDeadline = () => {
+
 }
 
+const contentPopoverMeeting = ({meeting}) => {
+    console.log(meeting)
+
+    return(
+    <Card
+        style={{
+            borderRadius: '10px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            padding: '16px',
+        }}
+        bodyStyle={{ padding: 0 }}
+    >
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+                <h3 style={{ marginBottom: 0 }}>Design Discussion</h3>
+                <p style={{ color: 'gray', marginBottom: '16px' }}>12:30 - 15:45</p>
+            </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+            <Tag color="blue">Team</Tag>
+            <Tag color="red">Meeting</Tag>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Avatar.Group maxCount={2}>
+                <Avatar src="https://example.com/avatar1.jpg" />
+                <Avatar src="https://example.com/avatar2.jpg" />
+                <Avatar>+4</Avatar>
+            </Avatar.Group>
+        </div>
+    </Card>)
+}
 export const useBirthdayMap = (dataBirthDay) => {
     return useMemo(() => {
         return dataBirthDay?.reduce((acc, birthday) => {
@@ -97,9 +149,7 @@ export const dateCellRender = (
 
             {birthdaysOnDate?.map(birthday => (
                 <li key={birthday.id}>
-                    <Popover key={birthday?.id} content={contentPopover(birthday)}
-                             title={`День рождения: ${birthday.first_name} ${birthday.last_name}`}
-                             style={{border: `1px , solid ${colorMeeting.birthday.color}`}}>
+                    <Popover key={birthday?.id} content={contentPopoverBirthday(birthday)}>
                         <Flex gap={2} align={"center"}>
                             <div className={'color-badge'}
                                  style={{backgroundColor: colorMeeting.birthday.color, borderRadius: '100%'}}/>
@@ -113,8 +163,7 @@ export const dateCellRender = (
             ))}
             {meetingsOnDate?.map((meeting) => (
                 <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
-                    <Popover content={contentPopover(meeting)} title={`Встреча: ${meeting.title}`}
-                             style={{border: `1px , solid ${colorMeeting.meeting.color}`}}>
+                    <Popover content={contentPopoverMeeting(meeting)}>
                         <Flex gap={2} align={"center"}>
                             <div className={'color-badge'}
                                  style={{backgroundColor: colorMeeting.meeting.color, borderRadius: '100%'}}/>
@@ -127,7 +176,7 @@ export const dateCellRender = (
             ))}
             {deadlineOnDate?.map((deadline) => (
                 <li key={deadline.id}>
-                    <Popover key={deadline?.id} content={contentPopover(deadline)}
+                    <Popover key={deadline?.id} content={contentPopoverDeadline(deadline)}
                              title={<div>
                                  <Title level={5}>
                                      {deadline?.title}
