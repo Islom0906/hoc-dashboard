@@ -14,18 +14,28 @@ const initialValueForm={
     title: "",
     text: "",
     meeting_date: "",
-    company: '',
+    company: null,
     tag: '',
     users: []
 }
 const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}) => {
     const queryClient = useQueryClient()
     const [form] = Form.useForm();
-    const {editId} = useSelector(state => state.query)
+
     const [isMultipleSelect, setIsMultipleSelect] = useState('show')
+    const [isUser, setIsUser] = useState(true)
+
     const dispatch=useDispatch()
+    const {data: {user} = {}} = useSelector((state) => state.auth);
+    const {editId} = useSelector(state => state.query)
     const {companyID} = useSelector(state => state.companySlice)
 
+    // get-responsibleUser
+    const {
+        data: companyData,
+        refetch: refetchCompanyData,
+        isLoading: loadingCompanyData
+    } = useGetQuery(false, 'get-companyData', `users/companies`, false)
 
     // get-responsibleUser
     const {
@@ -82,6 +92,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             refetchMeeting()
             setIsModalOpen(false)
             form.setFieldsValue(initialValueForm)
+            setIsMultipleSelect('show')
         }
     }, [postMeetingSuccess]);
     useEffect(() => {
@@ -108,7 +119,11 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         if(companyID){
             refetchRequiredUser()
         }
-    }, [isModalOpen]);
+        if (user?.roles[0]?.name === 'general_director') {
+            refetchCompanyData()
+
+        }
+    }, [isModalOpen, user]);
 
 
 
@@ -137,26 +152,30 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     const onFinish = (value) => {
         let allUser = false
         let formatDate=null
+
         const meetingDate = date
             .hour(value?.meeting_date.hour())
             .minute(value?.meeting_date.minute())
             .second(value?.meeting_date.second())
+
         if (editId){
             formatDate= dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss.SSS')
         }else{
             formatDate=dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
         }
+
         value?.users.map((user) => {
             if (user === "") {
                 allUser = true
             }
         })
+
         const data = {
             title: value.title,
             text: value.text,
             meeting_date: formatDate,
-            company:value.company,
-            users: isMultipleSelect==='allUser' ? [] : value?.users
+            company: user?.roles[0]?.name === 'general_director' ? value.company :  companyID,
+            users: isMultipleSelect==='allUser'|| isUser ? [] : value?.users
         }
         if (editModalMeetingData) {
             putMeeting({url: '/users/meetings', data: data, id: editId})
@@ -164,7 +183,10 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             postMeetingMutate({url: "/users/meetings/", data: data});
         }
     }
+    // cancel modal
     const handleCancel = () => {
+        setIsMultipleSelect('show')
+        form.setFieldsValue(initialValueForm)
         setIsModalOpen(false);
     };
     const deleteMeetingHandle=()=>{
@@ -206,6 +228,16 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         }
     }, [requiredUser, isMultipleSelect ,companyID  ]);
 
+
+    const optionsCompany = useMemo(() => {
+        return companyData?.map(company => (
+            {
+                value: company?.id,
+                label: company?.title
+            }
+        ))
+    }, [companyData]);
+
     const onChangeSelect = (value) => {
         if (!value.length>0){
             setIsMultipleSelect('show')
@@ -217,6 +249,15 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                     setIsMultipleSelect('special')
                 }
             })
+    }
+
+    const onChangeSelectCompany = (value) => {
+        console.log(value)
+if (value.length>0){
+    setIsUser(false)
+}else {
+    setIsUser(true)
+}
     }
 
     return (<Modal
@@ -277,7 +318,37 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                             name={'text'}
                         />
                     </Col>
-                    <Col span={24}>
+                    {
+                        user?.roles[0].name === 'general_director'
+                        &&
+                        <Col span={24}>
+                            <Form.Item
+                                label={'Компания'}
+                                name={'company'}
+                                rules={[{
+                                    required: true, message: 'Выберите компания'
+                                }]}
+                                wrapperCol={{
+                                    span: 24,
+                                }}
+                            >
+                                <Select
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                    mode={'multiple'}
+                                    loading={loadingCompanyData}
+                                    placeholder='Выберите компания'
+                                    optionLabelProp='label'
+                                    onChange={onChangeSelectCompany}
+                                    options={optionsCompany}
+                                />
+                            </Form.Item>
+                        </Col>
+                    }
+                    {
+                        isUser &&
+                        <Col span={24}>
                         <Form.Item
                             label={'Участники'}
                             name={'users'}
@@ -301,6 +372,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                             />
                         </Form.Item>
                     </Col>
+                    }
                 </Row>
                 <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
                     {editModalMeetingSuccess ? 'Изменить' : 'Создать'}

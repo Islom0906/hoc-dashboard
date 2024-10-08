@@ -189,7 +189,7 @@ const Inbox = () => {
                           span:12
                       }}
                        key={message?.id}>
-                      <InboxCard title={message?.title} id={message?.id} deleteHandle={deleteHandle}/>
+                      <InboxCard created_at={message?.created_at} title={message?.title} id={message?.id} deleteHandle={deleteHandle}/>
                   </Col>
               ))
           }

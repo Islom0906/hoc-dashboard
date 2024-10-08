@@ -32,11 +32,12 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     const meetingMap = useMeetingMap(dataMeeting)
     const deadlineMap = useDeadlineMap(dataDeadline)
 
-    const onSelect = (newValue, info) => {
+    function onSelect  (newValue,info)  {
+        console.log(info)
 
         if (user?.roles[0]?.name !== 'staff' && user?.roles[0]?.name !== 'boss' ) {
             const isPastDate = newValue.isBefore(dayjs(), 'day');
-            if (!isPastDate) {
+            if (!isPastDate &&info.source==='date') {
                 setValue(newValue);
                 setIsModalOpen(true);
             }
