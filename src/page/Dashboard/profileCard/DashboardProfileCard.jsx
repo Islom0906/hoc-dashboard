@@ -36,7 +36,7 @@ const DashboardProfileCard = ({selectCompany , companyID, title, image, fullName
             borderRadius: 10,
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             textAlign: 'center',
-            border: `${selectCompany.id === companyID ? '1px solid #76BC33' : '1px solid transparent'}`
+            border: `${selectCompany?.id === companyID ? '1px solid #76BC33' : '1px solid transparent'}`
           }}
           size={"small"}
       >

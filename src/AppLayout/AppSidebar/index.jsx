@@ -14,7 +14,7 @@ const AppSidebar = () => {
 useEffect(() => {
   if(user) {
   user?.roles.map(item => (
-      setUserRole([item.name])
+      setUserRole([item.role.name])
   ))
   }
 } , [user])

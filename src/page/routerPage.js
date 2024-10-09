@@ -96,7 +96,7 @@ export const samplePagesConfigs = [
         path: '/task-list',
         label: 'Задачи',
         element: TaskList,
-        permittedRole: [authRole.user ,authRole.boss ,authRole.director ,authRole.general_director],
+        permittedRole: [authRole.user ,authRole.boss],
         isBackground: true
     },
 

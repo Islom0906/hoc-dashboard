@@ -22,8 +22,9 @@ const Dashboard = () => {
   const [selectModul, setSelectModul] = useState('')
   const {modulsID} = useSelector(state => state.modulsSlice)
   const [selectCompany, setSelectCompany] = useState({name: '', id: ''})
+  const roleName = user?.roles[0]?.role?.name
 
-
+  console.log('roleName' ,roleName)
   // modulni getBYID
   const {
     data: GetModulByIDStatistics = [], refetch: refetchGetModulByIDStatistics,
@@ -48,20 +49,20 @@ const Dashboard = () => {
   // general derector
 
   useEffect(() => {
-    if (user?.roles[0]?.name === 'general_director' && selectCompany.id) {
+    if (roleName === 'general_director' && selectCompany.id) {
       refetchGetCompanyByIDStatistics()
     }
   }, [valueYear, valueMonth, selectCompany])
 
   useEffect(() => {
-    if (user?.roles[0]?.name === 'general_director') {
+    if (roleName === 'general_director') {
       refetchGetCompanyAllForGeneralStatistics()
     }
   }, [user])
 
 
   useEffect(() => {
-    if (user?.roles[0]?.name === 'general_director') {
+    if (roleName === 'general_director') {
       refetchGetModulStaffStatistics()
     }
   }, [modulsID])
@@ -70,7 +71,7 @@ const Dashboard = () => {
   // director
 
   useEffect(() => {
-    if (user?.roles[0]?.name === 'director' && selectCompany?.id) {
+    if (roleName === 'director' && selectCompany?.id) {
       refetchGetCompanyByIDStatistics()
     }
   }, [selectCompany, valueYear, valueMonth]);
@@ -109,7 +110,7 @@ const Dashboard = () => {
 
             {/*---- General derector ----*/}
 
-            {user?.roles[0]?.name === 'general_director' && <>
+            {roleName === 'general_director' && <>
               <Col span={24}>
                 <Title level={4}>
                   Компания
@@ -130,7 +131,7 @@ const Dashboard = () => {
 
 
             {/*--------- Tag Bos ----------*/}
-            {user?.roles[0]?.name !== 'boss' && <>
+            {roleName !== 'boss' && <>
               <Col span={24}>
                 <Title level={4} style={{textAlign: 'center'}}>
                   {selectCompany?.name}
@@ -148,7 +149,7 @@ const Dashboard = () => {
             </>}
             {/*--------  Boss -------- */}
             <Col span={16}>
-              <ForBossTaskChart dataChart={GetModulByIDStatistics} modules={selectModul || user?.modules[0]?.name}/>
+              <ForBossTaskChart dataChart={GetModulByIDStatistics} modules={selectModul || user?.roles[0].modul?.name}/>
             </Col>
             <Col span={8}>
               <Card

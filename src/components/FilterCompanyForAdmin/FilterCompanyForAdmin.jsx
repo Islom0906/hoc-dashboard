@@ -17,7 +17,7 @@ const FilterCompanyForAdmin = () => {
   } = useGetQuery(false, "get-company", "/users/companies/", false);
 
   useEffect(() => {
-    if(user?.roles[0]?.name === 'admin') {
+    if(user?.roles[0]?.role.name === 'admin') {
       refetchGetCompany();
     }else {
       // dispatch(selectCompany(id))

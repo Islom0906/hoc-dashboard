@@ -9,7 +9,7 @@ const PrivateRoute = ({component: Component, permittedRoles, isBackground}) => {
 
     useEffect(() => {
         if (user && user.roles) {
-            const roles = user.roles.map(role => role.name)
+            const roles = user.roles.map(item => item.role.name)
             setUserRoles(roles);
         }
     }, [user]);
