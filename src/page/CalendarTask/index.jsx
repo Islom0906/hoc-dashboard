@@ -68,7 +68,7 @@ const CalendarTask = () => {
             <Flex gap={10} vertical={true} className={'calendar-card'}>
                 <Row gutter={20}>
                     <Col span={18}>
-                        <Title level={2}>
+                        <Title level={2} style={{marginBottom:0}}>
                             Календарь
                         </Title>
                     </Col>
@@ -108,14 +108,15 @@ const CalendarTask = () => {
                         </p>
                     </Flex>
                 </Flex>
-                <CustomCalendar
-                    setFilterDate={setFilterDate}
-                    colorMeeting={colorMeeting}
-                    refetchMeeting={refetchMeeting}
-                    dataBirthDay={dataBirthDay}
-                    dataMeeting={dataMeetting}
-                    dataDeadline={dataDeadline}
-                />
+                    <CustomCalendar
+                        setFilterDate={setFilterDate}
+                        colorMeeting={colorMeeting}
+                        refetchMeeting={refetchMeeting}
+                        dataBirthDay={dataBirthDay}
+                        dataMeeting={dataMeetting}
+                        dataDeadline={dataDeadline}
+                    />
+
             </Flex>
         </Spin>
     );

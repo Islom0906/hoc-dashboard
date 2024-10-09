@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 const {Title, Text} = Typography
 
-const InboxCard = ({title,id,deleteHandle}) => {
+const InboxCard = ({title,id,deleteHandle,created_at}) => {
     const navigate = useNavigate();
     const ViewInner=()=>{
         navigate(`/inbox/${id}`)
@@ -32,7 +32,7 @@ const InboxCard = ({title,id,deleteHandle}) => {
                     <Flex align={"center"} wrap={"nowrap"} gap={3}  >
                         <LuCalendarDays className={"icon"} style={{marginBottom:4}}/>
                         <Text style={{fontSize: '12px'}} >
-                            {dayjs(new Date()).format('DD.MM.YYYY hh:mm')}
+                            {dayjs(created_at).format('DD.MM.YYYY hh:mm')}
                         </Text>
                     </Flex>
                 </Col>

@@ -118,6 +118,7 @@ const data1 = [
 
 
 const { Title:AntTitle  } = Typography;
+
 const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
   const {
     token: {colorChartLabel,colorChartLine},
@@ -138,14 +139,14 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
 
 
   useEffect(() => {
-    if (data1) {
-      console.log('data1' , data1)
+    if (dataChart) {
+      console.log('dataChart' , dataChart)
       const aggregatedData = {
         total_tasks_count: [],
         done_tasks_count: [],
         failed_tasks_count: []
       };
-      data1.forEach(item => {
+      dataChart.forEach(item => {
         aggregatedData.total_tasks_count.push(item.total_tasks_count || 0);
         aggregatedData.done_tasks_count.push(item.done_tasks_count || 0);
         aggregatedData.failed_tasks_count.push(item.failed_tasks_count || 0);
@@ -155,7 +156,7 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
       console.log(aggregatedData)
       setChart({total_tasks_count: aggregatedData.total_tasks_count ,done_tasks_count: aggregatedData.done_tasks_count , failed_tasks_count: aggregatedData.failed_tasks_count});
     }
-  }, [data1]);
+  }, [dataChart]);
 
 
 
