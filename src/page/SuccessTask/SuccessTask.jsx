@@ -17,7 +17,7 @@ const SuccessTask = () => {
   const {
     data: GetTagCompany =[],
     refetch: refetchGetTagCompany,
-  } = useGetQuery(false, "get-tag-company", `/users/tags/${companyID}`, false);
+  } = useGetQuery(false, "get-tag-company", `/users/company-selection/`, false);
 
   // !ozgarish kerak API
   const {

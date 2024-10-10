@@ -63,7 +63,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
     }else {
       user = getStaffForModuls.filter((item) => item?.id === staffIDs)
       return {
-        label: `${user[0]?.full_name} ${user[0]?.position}`,
+        label: `${user[0]?.full_name} ${user[0]?.roles[0].position}`,
         value: user[0]?.id,
       }
     }

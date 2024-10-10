@@ -51,9 +51,9 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
       render: (text , record) =>
           <AvatarUserProfile
               size={'large'}
-              key={record?.tag?.id}
-              company={record?.tag?.name}
-              image={record?.tag?.image_light}
+              key={record?.company?.id}
+              company={record?.company?.title}
+              image={record?.company?.image_light}
           />,
     },
     {
