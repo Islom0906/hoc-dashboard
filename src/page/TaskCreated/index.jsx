@@ -46,17 +46,17 @@ const TaskCreated = () => {
   const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
       false,
       'get-task',
-      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${companyID !== null ? `&company=${companyID}` :''}${getTagCompany && `&tag__in=${getTagCompany}`}${search && `&${selectInputSearch[0].value === selectedOptionSearch ? 'search': 'full_name'}=${search}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`} `,
+      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${getTagCompany && `&tag__in=${getTagCompany}`}${search && `&${selectInputSearch[0].value === selectedOptionSearch ? 'search': 'full_name'}=${search}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`} `,
       false
   );
   // get-tag-company
   const {
     data: GetTagCompany =[],
     refetch: refetchGetTagCompany,
-  } = useGetQuery(false, "get-tag-company", `users/tag-selection` ,false);
+  } = useGetQuery(false, "get-tag-company", `users/company-selection` ,false);
   useEffect(() => {
     refetch();
-  }, [isSuccess, pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering ,companyID ,getTagCompany]);
+  }, [isSuccess, pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering  ,getTagCompany]);
   useEffect(() => {
     refetchGetTagCompany()
   } , [])
@@ -99,7 +99,7 @@ const TaskCreated = () => {
   };
   const getTagCompanyArray = useMemo(() => {
     return Object.entries(GetTagCompany).map(([key, value]) => ({
-      text: value?.name,
+      text: value?.title,
       value: value?.id,
     }));
   }, [GetTagCompany]);

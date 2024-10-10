@@ -51,7 +51,8 @@ const TaskPostEdit = () => {
     const {
         data: getTag,
         refetch: refetchGetTag
-    } = useGetQuery(false, 'get-tag', `users/tags/${companyID}`, false)
+    } = useGetQuery(false, 'get-tag', `users/companies`, false)
+
     // get modules
     const {
         data: getModules,
@@ -231,7 +232,7 @@ const TaskPostEdit = () => {
         return getTag?.map((option) => {
             return {
                 value: option?.id,
-                label: option?.name,
+                label: option?.title,
             };
         });
     }, [getTag]);
