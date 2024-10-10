@@ -9,15 +9,15 @@ const {Title} = Typography
 
 const colorMeeting = {
     meeting: {
-        color: '#1b1ba1',
+        color: '#3664BD',
         name: 'Встречи',
     },
     birthday: {
-        color: '#dde01b',
+        color: '#CED232',
         name: 'Дни рождений',
     },
     deadline: {
-        color: '#e01b2b',
+        color: '#BD3636',
         name: 'Сроки по задачам',
     }
 }
@@ -79,7 +79,7 @@ const CalendarTask = () => {
                             width: 20,
                             height: 20,
                             background: colorMeeting.meeting.color,
-                            borderRadius: '100%'
+                            borderRadius: '4px'
                         }}/>
                         <p>
                             {colorMeeting.meeting.name}
@@ -90,7 +90,7 @@ const CalendarTask = () => {
                             width: 20,
                             height: 20,
                             background: colorMeeting.birthday.color,
-                            borderRadius: '100%'
+                            borderRadius: '4px'
                         }}/>
                         <p>
                             {colorMeeting.birthday.name}
@@ -101,7 +101,7 @@ const CalendarTask = () => {
                             width: 20,
                             height: 20,
                             background: colorMeeting.deadline.color,
-                            borderRadius: '100%'
+                            borderRadius: '4px'
                         }}/>
                         <p>
                             {colorMeeting.deadline.name}
