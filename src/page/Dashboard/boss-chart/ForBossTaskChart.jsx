@@ -139,14 +139,14 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
 
 
   useEffect(() => {
-    if (dataChart) {
-      console.log('dataChart' , dataChart)
+    if (data1) {
+      console.log('data1' , data1)
       const aggregatedData = {
         total_tasks_count: [],
         done_tasks_count: [],
         failed_tasks_count: []
       };
-      dataChart.forEach(item => {
+      data1.forEach(item => {
         aggregatedData.total_tasks_count.push(item.total_tasks_count || 0);
         aggregatedData.done_tasks_count.push(item.done_tasks_count || 0);
         aggregatedData.failed_tasks_count.push(item.failed_tasks_count || 0);
@@ -175,7 +175,20 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
         label: 'Выполненные задачи',
         data: chart?.done_tasks_count,
         fill: true, // Ensure this is set to true to fill the area under the line
-        backgroundColor: chartColor.done+'90', // Set this to a semi-transparent color for the interior,
+        backgroundColor: function(context) {
+          const bgColor=[
+              'rgba(219, 251, 222,0.9)',
+              'rgba(0,236,33,0.5)'
+          ]
+          if (!context.chart.chartArea){
+            return;
+          }
+          const {ctx,data,chartArea:{top,bottom}}=context.chart;
+          const gradientBg=ctx.createLinearGradient(0,top,0,bottom);
+          gradientBg.addColorStop(0,bgColor[0])
+          gradientBg.addColorStop(1,bgColor[1])
+          return gradientBg
+        },
         order:2,
         tension: 0.4
       },
@@ -183,9 +196,19 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
         type: 'line',
         label: 'Невыполненные задачи',
         data: chart?.failed_tasks_count,
-        fill: false, // Ensure this is set to true to fill the area under the line
+        fill: true, // Ensure this is set to true to fill the area under the line
         borderColor:chartColor.failed,
-        backgroundColor: chartColor.failed, // Set this to a semi-transparent color for the interior,
+        backgroundColor: function(context) {
+          const chart = context.chart;
+          const {ctx, chartArea} = chart;
+          if (!chartArea) {
+            return null;
+          }
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, 'rgba(232, 74, 74, 0.5)'); // Light red at the top
+          gradient.addColorStop(1, 'rgba(232, 74, 74, 0)');   // Transparent red at the bottom
+          return gradient;
+        }, // Set this to a semi-transparent color for the interior,
         order:1
       },
     ],
