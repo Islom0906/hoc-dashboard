@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 import CreatSubTask from "./CreatSubTask";
 import AddStaffTask from "./AddStaffTask";
+
 const {Title,Text} = Typography
 const initialValueForm = {
     title: '',
@@ -37,6 +38,10 @@ const initialValueForm = {
 }
 const TaskPostEdit = () => {
     const [form] = Form.useForm();
+
+    const {data: {user} = {}} = useSelector((state) => state.auth);
+    const isBoss = user?.roles[0]?.role?.name === 'boss'
+
     const [selectModulesID, setSelectModulesID] = useState(null)
     const [fileListProps, setFileListProps] = useState([[]]);
     const {companyID} = useSelector(state => state.companySlice)
@@ -84,9 +89,16 @@ const TaskPostEdit = () => {
     } = useEditQuery()
 
     // tasks success
-    successCreateAndEdit(postTaskSuccess, putTaskSuccess, '/taskCreated')
+    successCreateAndEdit(postTaskSuccess, putTaskSuccess, isBoss ? "/taskEditBoss":'/taskCreated')
     editGetById(editTaskRefetch)
     setInitialValue(form, initialValueForm)
+
+    useEffect(() => {
+        if (isBoss){
+            setSelectModulesID(user?.roles[0]?.module?.id)
+        }
+    }, [user]);
+
     //edit company
     useEffect(() => {
         const subTask = []
@@ -145,11 +157,12 @@ const TaskPostEdit = () => {
                 text: editTaskData?.title,
                 deadline: dayjs(editTaskData?.deadline),
                 responsible_user: editTaskData?.responsible_user?.id,
-                tag: editTaskData?.tag?.id,
+                company: editTaskData?.company?.id,
                 moduls: editTaskData?.moduls,
                 sub_tasks: subTask,
                 allModuls
             }
+            console.log(edit)
             setFileListProps(editFileProps)
             form.setFieldsValue(edit)
         }
@@ -178,13 +191,13 @@ const TaskPostEdit = () => {
             title: value.title,
             text: value.text,
             deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS'),
-            tag: value?.tag,
-            company: companyID,
-            moduls: selectAddSubTask ? [] : selectModuls,
+            company: value?.company,
+            moduls: !isBoss ? selectAddSubTask ? [] : selectModuls:[user?.roles[0]?.module?.id],
             users: selectAddSubTask ? [] : selectStaff,
             sub_tasks: value?.sub_tasks ? subTask : [],
             responsible_user: value?.responsible_user,
         }
+        console.log()
         if (editTaskData) {
             putTask({url: '/users/tasks', data: data, id: editId})
         } else {
@@ -256,6 +269,7 @@ const TaskPostEdit = () => {
     }, [getUserByModules]);
 
 
+
     const onChangeModules = (id, index) => {
         setSelectModulesID(id)
         setSubTaskStaffs([])
@@ -271,7 +285,9 @@ const TaskPostEdit = () => {
     }
     useEffect(() => {
         if (companyID) {
-            refetchGetModules()
+            if (!isBoss) {
+                refetchGetModules()
+            }
             refetchResponsibleUser()
             refetchGetTag()
         }
@@ -359,7 +375,9 @@ const TaskPostEdit = () => {
                             name={'text'}
                         />
                     </Col>
-
+                    {
+                        !isBoss &&
+                        <>
                     <Col>
                             <Button  type={"primary"} style={{marginBottom: 30}}
                                      onClick={() => setSelectAddSubTask(prev => !prev)}>
@@ -373,17 +391,9 @@ const TaskPostEdit = () => {
                             <Text type="danger" >{ selectAddSubTask ? 'А теперь  вы добавите подзадачу!' : ' Щас вы добавите  сотрудника!'}</Text>
                         </div>
                     </Col>
-                    {/*<Col span={24}>*/}
-                    {/*    <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>*/}
-                    {/*        <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>*/}
-                    {/*            <CreatSubTask  form={form}  onChangeModules={onChangeModules} optionsModules={optionsModules}*/}
-                    {/*                          optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}*/}
-                    {/*                           fileListProps={fileListProps}*/}
-                    {/*                           setFileListProps={setFileListProps}*/}
-                    {/*            />*/}
-                    {/*        </Flex>*/}
-                    {/*    </Card>*/}
-                    {/*</Col>*/}
+                        </>
+                    }
+
 
                     {
                         selectAddSubTask ?
@@ -401,11 +411,14 @@ const TaskPostEdit = () => {
                             </Col>
                             :
                             <Col span={24}>
+
                                 <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
                                     <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
-                                        <AddStaffTask optionsModules={optionsModules}
-                                                  optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
-                                                  onChangeModules={onChangeModules}
+                                        <AddStaffTask
+                                            optionsModules={optionsModules}
+                                            optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
+                                            onChangeModules={onChangeModules}
+                                            isBoss={isBoss}
                                         />
                                     </Flex>
                                 </Card>

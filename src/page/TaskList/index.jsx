@@ -17,7 +17,7 @@ const TaskList = () => {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "staff-get-task", `users/staff-subtasks/?page=${currentPage}&page_size=${pageSize}${getTagCompany && `&tag__in=${getTagCompany}`}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`, false);
+  } = useGetQuery(false, "staff-get-task", `users/staff-subtasks/?page=${currentPage}&page_size=${pageSize}${getTagCompany && `&company_id=${getTagCompany}`}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}`, false);
   const {
     data: GetTagCompany =[],
     refetch: refetchGetTagCompany,

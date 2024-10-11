@@ -230,7 +230,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
 
 
     const optionsCompany = useMemo(() => {
-        return companyData?.map(company => (
+        return companyData?.result?.map(company => (
             {
                 value: company?.id,
                 label: company?.title

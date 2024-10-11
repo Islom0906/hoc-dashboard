@@ -217,7 +217,7 @@ export const samplePagesConfigs = [
     {
         path: '/task/add',
         element: TaskPostEdit,
-        permittedRole: [authRole.admin , authRole.director ,authRole.general_director],
+        permittedRole: [authRole.admin , authRole.director ,authRole.general_director,authRole.boss],
         isBackground: true,
         noIndex: true
     },

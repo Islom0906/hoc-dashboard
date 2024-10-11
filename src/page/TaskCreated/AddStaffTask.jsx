@@ -1,9 +1,9 @@
-import {Button, Col, Form, Row, Select , Typography} from "antd";
-import {MinusCircleOutlined} from "@ant-design/icons";
+import {Col, Form, Row, Select, Typography} from "antd";
 import React from "react";
+
 const {Title} = Typography
 
-const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) => {
+const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules, isBoss}) => {
 
   return (
       <Form.List name="allModuls">
@@ -13,6 +13,9 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                 return (
                     <div key={field.fieldKey} style={{marginBottom: 20}}>
                       <Row gutter={20}>
+                          {
+                              !isBoss &&
+                       <>
                         <Col span={20}>
                           <Title level={3} style={{marginBottom: '30px'}}>
                             Добавить сотрудника:
@@ -41,7 +44,10 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             />
                           </Form.Item>
                         </Col>
-                        <Col span={12}>
+                       </>
+                          }
+
+                          <Col span={isBoss ? 24:12 }>
                           <Form.Item
                               label={'Выберите сотрудник'}
                               name={[field.name, 'user']}
@@ -59,6 +65,9 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             />
                           </Form.Item>
                         </Col>
+                          {
+                              !isBoss &&
+                              <>
                         {/*<Col span={2}>*/}
                         {/*  <Button type={"dashed"} danger onClick={() => remove(field.name)}*/}
                         {/*          style={{marginTop: 10}}>*/}
@@ -66,16 +75,23 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                         {/*    />*/}
                         {/*  </Button>*/}
                         {/*</Col>*/}
+                              </>
+                          }
                       </Row>
                     </div>
                 );
               })}
+                {
+                    !isBoss &&
+                    <>
               {/*<Form.Item>*/}
               {/*  <Button type="primary" onClick={() => add()} block*/}
               {/*          style={{backgroundColor: '#28a745'}}>*/}
               {/*    Добавить сотрудника*/}
               {/*  </Button>*/}
               {/*</Form.Item>*/}
+                    </>
+                }
 
             </>
         )}

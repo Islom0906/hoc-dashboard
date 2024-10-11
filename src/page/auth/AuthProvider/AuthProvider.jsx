@@ -69,8 +69,9 @@ const AuthProvider = ({children}) => {
                     isAuthenticated: true
                 }))
                 dispatch(selectCompany(data?.roles[0].company?.id))
-                if(data?.roles[0].name ==='boss'){
-                    dispatch(selectModuls(data?.modules[0]?.id))
+                if(data?.roles[0].role?.name ==='boss'){
+
+                    dispatch(selectModuls(data?.roles[0]?.module.id))
                 }
             } catch (error) {
                 dispatch(authData({

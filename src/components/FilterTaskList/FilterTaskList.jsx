@@ -30,10 +30,11 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
   }, [deadlineColor]);
   const getTagCompanyArray = useMemo(() => {
     return Object.entries(getTagCompany).map(([key, value]) => ({
-      label: value?.name,
+      label: value?.title,
       value: value?.id,
     }));
   }, [getTagCompany]);
+  console.log(getTagCompanyArray)
   const getModulsArray = useMemo(() => {
     return Object.entries(getStaffForModuls).map(([ key , value]) => ({
       label: `${value?.full_name} ${value?.position}`,

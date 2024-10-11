@@ -1,16 +1,37 @@
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {Avatar, Button, Card, Flex, Progress, Space, Tag, Tooltip, Typography} from "antd";
 import {Link} from "react-router-dom";
-import { FieldTimeOutlined} from "@ant-design/icons";
+import {FieldTimeOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
 import {AvatarUserProfile} from "../index";
 import {LuCalendarDays} from "react-icons/lu";
+import {useDispatch, useSelector} from "react-redux";
+import {editIdQuery} from "../../store/slice/querySlice";
 
-const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , tag , doneCountTask ,allCountTask ,responsible_user , lastUpdate ,included_users }) => {
-  const deadlineColor = DeadlineStatusColor(deadline_status);
-  const { Text } = Typography;
+const TaskCard = ({
+                      id,
+                      title,
+                      deadline_status,
+                      link,
+                      created_at,
+                      deadline,
+                      tag,
+                      doneCountTask,
+                      allCountTask,
+                      responsible_user,
+                      lastUpdate,
+                      included_users,
+                      created_by
+                  }) => {
+    const {data: {user} = {}} = useSelector((state) => state.auth);
+    const dispatch = useDispatch()
+    const deadlineColor = DeadlineStatusColor(deadline_status);
+    const { Text } = Typography;
 
-
+    const Edit = (id) => {
+        localStorage.setItem("editDataId", id);
+        dispatch(editIdQuery(id));
+    };
   return (
       <Card
           className={"TaskCard"}
@@ -79,7 +100,17 @@ const TaskCard = ({   title , deadline_status , link ,created_at ,deadline , tag
           </Flex>
           {
           }
-          <Flex>
+          <Flex align={"center"} gap={5}>
+              {
+                  user?.id===created_by?.id &&
+              <Button style={{textAlign: "center", width: '100%'}} type={"primary"} onClick={Edit(id)}>
+                  <Link to={`/task/add`}>
+                      {/*<LuDoorOpen style={{ fontSize: "23px" }} />*/}
+                      Редактировать
+                  </Link>
+              </Button>
+              }
+
             <Button  style={{textAlign:"center" , width:'100%'}} type={"primary"}  >
               <Link to={`${link}`}>
                 {/*<LuDoorOpen style={{ fontSize: "23px" }} />*/}
