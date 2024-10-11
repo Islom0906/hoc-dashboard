@@ -38,8 +38,6 @@ const CalendarTask = () => {
     } = useGetQuery(false, 'birthDay-get',
         `/users/user-birthdays?company__id=${companyID}` +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
-
-
     // meeting
     const {
         data: dataMeetting,
