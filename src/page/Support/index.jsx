@@ -1,16 +1,15 @@
-import {Button, Card, Col, Flex, Form, Menu, Row, Space, Spin, theme, Typography} from "antd";
+import {Button,  Col, Flex, Form, Menu, Row, Space, Spin, theme} from "antd";
 import {FaUser} from "react-icons/fa";
 import {useEffect, useState} from "react";
 import {FaUserGear} from "react-icons/fa6";
 import {FormTextArea, ImageUploader} from "../../components";
 import {useGetQuery, usePostQuery} from "../../service/query/Queries";
 import {useSelector} from "react-redux";
-import {BiCommentDetail, BiSolidPhoneCall} from "react-icons/bi";
+import {BiCommentDetail} from "react-icons/bi";
 import FileCard from "../../components/Inbox/FileCard";
 import dayjs from "dayjs";
 
 
-const {Text } = Typography
 
 const initialValueForm = {
   text: '',
@@ -52,7 +51,7 @@ const Support = () => {
       text: value.text,
       created_by:user?.id,
     };
-    if( checkInfo === 'Admin') {
+    if( checkInfo === 'admin') {
       postCommentMutate({url: "/users/admin-ticket/", data: data});
     }
     if(checkInfo === 'programmer'){
@@ -67,13 +66,16 @@ const Support = () => {
     if(checkInfo === 'history' ){
       refetchGetAdminAllTicket()
     }
-    if(checkInfo === 'Admin') {
+    if(checkInfo === 'admin') {
       refetchGetAdminTicket()
     }
     if(checkInfo === 'programmer'){
       refetchGetDeveloperTicket()
     }
   } , [checkInfo])
+
+  console.log('user?.roles[0]?.role?.name', user?.roles[0]?.role?.name)
+
   return (
       <Spin spinning={postCommentLoading}>
         <Row gutter={30}>
@@ -89,11 +91,11 @@ const Support = () => {
                 >
                   <Menu.Item key="programmer" icon={<FaUserGear/>}>Разработчик программы</Menu.Item>
                   {
-                      user?.position !== "Admin" &&
+                      user?.roles[0]?.role?.name !== "admin" &&
                       <Menu.Item key="admin" icon={<FaUser/>}>Программа для администратора</Menu.Item>
                   }
                   {
-                      user?.position === "Admin" &&
+                      user?.roles[0]?.role?.name === "admin" &&
                       <Menu.Item key="history" icon={<BiCommentDetail/>}>Мнения, присланные сотрудниками</Menu.Item>
                   }
                 </Menu>
@@ -118,7 +120,7 @@ const Support = () => {
                   <Flex vertical={true} gap={20}>
                     {
                       GetAdminAllTicket?.map(ticket => (
-                          <FileCard key={ticket?.id} files={[ticket.file]} comment={ticket?.text}
+                          <FileCard key={ticket?.id} files={[ticket?.file]} comment={ticket?.text}
                                     date={dayjs(ticket?.created_at).format('YYYY.MM.DD')}
                                     user={ticket?.created_by}
                           />))
@@ -166,7 +168,7 @@ const Support = () => {
                       </Space>
                     </div>
                       {
-                          checkInfo === 'Admin' ?
+                          checkInfo === 'admin' ?
                         GetAdminTicket?.map(ticket => (
                             <FileCard
                             key={ticket?.id}

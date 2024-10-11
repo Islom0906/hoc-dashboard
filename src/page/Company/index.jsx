@@ -16,7 +16,7 @@ const Company = () => {
     const navigate = useNavigate()
     const {companyID} = useSelector(state => state.companySlice)
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
-    const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'tag-company-get',`/users/tags/${companyID}`,false)
+    const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get',`/users/companies`,false)
     const [search, setSearch] = useState([]);
 
     const [isSearch, setIsSearch] = useState(false);
@@ -28,7 +28,6 @@ const Company = () => {
     const deleteHandle = (url, id) => {
         mutate({url, id});
     };
-
     // add
     const addArticle = () => {
         dispatch(editIdQuery(""));

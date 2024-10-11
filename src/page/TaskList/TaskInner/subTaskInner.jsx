@@ -18,6 +18,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
   const [isChecked, setIsChecked] = useState(false);
   const StatusDeadlineColor = DeadlineStatusColor(deadline_status);
   const { mutate: putProjectDone, isLoading: putProjectDoneLoading } = useEditQuery();
+  const roles = user?.roles[0]?.role?.name
 
   const clickHandle = (id) => {
     setWhichWriteID(id);
@@ -34,11 +35,11 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
   useEffect(() => {
     const [subTaskItem] = subTask.filter((subtaskChild) => subtaskChild?.id === whichWriteID);
     if (isPostCommentSuccess && isChecked) {
-      if (subTaskItem?.task_status === "done" && user?.roles?.[0]?.name === "admin") {
-        putProjectDone({ url: `/users/staff-subtasks`, data: { task_status: 'not_started' }, id: whichWriteID });
+      if (subTaskItem?.status === "done" && roles !== "staff") {
+        putProjectDone({ url: `/users/staff-subtasks`, data: { status: 'not_started' }, id: whichWriteID });
         setCheckedState((prevState) => ({ ...prevState, [whichWriteID]: false }));
-      } else if ( user?.roles?.[0]?.name === "staff" || user?.roles?.[0]?.name === "boss") {
-        putProjectDone({ url: `/users/staff-subtasks`, data: { task_status: 'done' }, id: whichWriteID });
+      } else if ( roles === "staff" || roles === "boss") {
+        putProjectDone({ url: `/users/staff-subtasks`, data: { status: 'done' }, id: whichWriteID });
         setCheckedState((prevState) => ({ ...prevState, [whichWriteID]: true }));
       }
       setIsChecked(false);
@@ -47,7 +48,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
 
   useEffect(() => {
     subTask?.map((item) => {
-      setCheckedState((prevState) => ({ ...prevState, [item?.id]: item?.task_status === 'done' ? true : false }));
+      setCheckedState((prevState) => ({ ...prevState, [item?.id]: item?.status === 'done' ? true : false }));
     });
   }, [subTask]);
 

@@ -32,7 +32,7 @@ const CompanyPostEdit = () => {
         data: editCompanyData,
         refetch: editCompanyRefetch,
         isSuccess: editCompanySuccess
-    } = useGetByIdQuery(false, "edit-company", editId, '/users/tag')
+    } = useGetByIdQuery(false, "edit-company", editId, '/users/companies')
     // put-query
     const {
         mutate: putCompany,
@@ -82,9 +82,9 @@ const CompanyPostEdit = () => {
             formData.append('image_light', fileListPropsLight[0]?.originFileObj);
         }
         if (editCompanyData) {
-            putCompany({url: `/users/tag`, data: formData, id: editId})
+            putCompany({url: `/users/companies`, data: formData, id: editId})
         } else {
-            postCompanyMutate({url: `/users/tags/${companyID}/`, data: formData});
+            postCompanyMutate({url: `/users/companies/`, data: formData});
         }
     }
     const onChangeImageLight = ({fileList: newFileList } ) => {
