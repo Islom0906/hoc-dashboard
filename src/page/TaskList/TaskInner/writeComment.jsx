@@ -27,7 +27,23 @@ const WriteComment = ({whichWriteID, handleCancel, whichWriteIDTask, setIsPostCo
       file: value.file[0]?.uid,
       message: value.message,
     };
-    postCommentMutate({url: "/users/messages/", data: data});
+
+    if(whichWriteIDTask) {
+      const data = {
+        task: whichWriteIDTask || null,
+        file: value.file[0]?.uid,
+        message: value.message,
+      };
+      postCommentMutate({url: "/users/task-messages/", data: data});
+    }
+    else{
+      const data = {
+        sub_task: whichWriteID || null,
+        file: value.file[0]?.uid,
+        message: value.message,
+      };
+    postCommentMutate({url: "/users/subtask-messages/", data: data});
+    }
     form.setFieldsValue(initialValueForm);
     handleCancel();
   };

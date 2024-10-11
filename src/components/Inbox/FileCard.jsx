@@ -5,6 +5,8 @@ import {AvatarUserProfile} from "../index";
 const cardStyle = {border: 1, borderStyle: "dashed", borderColor: "black"}
 const {Text} = Typography
 const FileCard = ({files, comment, date, user}) => {
+    console.log(files)
+
     return (
         <Card bordered={true} style={cardStyle} size={"small"}>
             <Space size={5} direction={"vertical"} style={{width: '100%'}}>
@@ -12,14 +14,16 @@ const FileCard = ({files, comment, date, user}) => {
                     {
                         files.length !== 0 &&
                         files.map(file => {
-                            const isImage = file?.file.match(/\.(jpeg|jpg|png|gif)$/i); // Check for image extensions
-                            return isImage ? (
+                            const isImage = file?.file?.match(/\.(jpeg|jpg|png|gif)$/i); // Check for image extensions
+                            return !isImage ?
+                                (
+                                    <a key={file?.id} href={file?.file} download rel="noopener noreferrer">
+                                        {file?.file?.split('/').pop()} {/* Display the file name if not an image */}
+                                    </a>
+                                ):
+                                (
                                 <Image key={file?.id} width={50} src={file?.file}/>
-                            ) : (
-                                <a key={file?.id} href={file?.file} download rel="noopener noreferrer">
-                                    {file?.file.split('/').pop()} {/* Display the file name if not an image */}
-                                </a>
-                            );
+                            )
                         })
                     }
                 </Space>

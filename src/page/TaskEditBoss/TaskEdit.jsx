@@ -199,9 +199,6 @@ const TaskEdit = () => {
                                 {dataGetAddSubTask?.deadline}
                             </Text>
                         </Flex>
-
-
-
                         <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
                             <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
                                 <CreatSubTask
@@ -213,6 +210,7 @@ const TaskEdit = () => {
                         <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
                             {successGetAddSubTask ? 'Изменить' : 'Создать'}
                         </Button>
+
                     </Col>
                     {
                         editId &&

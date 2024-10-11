@@ -56,6 +56,7 @@ const TaskInner = () => {
                 ) : (
                     <TaskHeader
                         showModal={showModal}
+                        task_status={taskInner?.status}
                         setWhichWriteIDTask={setWhichWriteIDTask}
                         title={taskInner?.title}
                         text={taskInner?.text}
@@ -94,15 +95,13 @@ const TaskInner = () => {
                           full_name={user?.full_name}
                           roles={user?.roles?.[0]?.name}
                           image={user?.image}
-                          messenger1={user?.messenger_link1}
-                          messenger2={user?.messenger_link2}
                       />
                   ))}
                 </Avatar.Group>
               </Flex>
               <Flex style={{width:'100%'}} justify={"end"} >
                 <TaskInnerCard
-                    tag={taskInner?.tag}
+                    tag={taskInner?.company}
                     main_task_responsible_user={taskInner?.responsible_user}
                     taskPercent={taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
                     main_task_deadline={taskInner?.deadline}

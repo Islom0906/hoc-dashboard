@@ -19,8 +19,8 @@ const CompanyTable = ({data,deleteHandle}) => {
     const columns = [
         {
             title: 'Название компании',
-            dataIndex: 'name',
-            id: 'name',
+            dataIndex: 'title',
+            id: 'title',
             render: (text) => <p>{text}</p>,
         },
         {

@@ -27,7 +27,7 @@ import {AvatarUserProfile} from "../index";
           <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Компания:</Text>
             <Flex align={"center"} gap={10}>
-              <AvatarUserProfile key={tag?.id} company={tag?.name} image={tag?.image_light}  />
+              <AvatarUserProfile key={tag?.id} company={tag?.title} image={tag?.image_light}  />
             </Flex>
           </Flex>
           <Flex align={'center'} justify={'space-between'}>

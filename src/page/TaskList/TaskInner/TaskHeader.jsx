@@ -2,19 +2,28 @@ import {Button, Checkbox, Col, Flex, Popconfirm, Row, Spin, Typography} from "an
 import React, {useEffect,  useState} from "react";
 import {useEditQuery} from "../../../service/query/Queries";
 import {FaRegCommentDots} from "react-icons/fa";
+import {useSelector} from "react-redux";
 const {Text, Title} = Typography;
 
 
 const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDTask}) => {
+  const { data: { user } = {} } = useSelector((state) => state.auth);
+
   const [checkedState, setCheckedState] = useState({});
   const {
     mutate: putProjectDone,
     isLoading: putProjectDoneLoading,
     isSuccess: putProjectDoneSuccess
   } = useEditQuery()
+  const roles = user?.roles[0]?.role?.name
   const onChangeDoneProject = (id) => {
-    putProjectDone({url: `/users/staff-subtasks`, data:{task_status: 'done'}, id})
-    setCheckedState((prevState) => ({ ...prevState, [id]: true }));
+    if(task_status === "done" && roles !== "staff") {
+      putProjectDone({url: `/users/tasks-update`, data:{status: 'not_started'}, id})
+      setCheckedState((prevState) => ({ ...prevState, [id]: true }));
+    }else if( roles === "staff" || roles === "boss") {
+      putProjectDone({url: `/users/tasks-update`, data:{status: 'done'}, id})
+      setCheckedState((prevState) => ({ ...prevState, [id]: true }));
+    }
   }
 
   useEffect(() => {
