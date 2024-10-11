@@ -18,7 +18,7 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             Добавить сотрудника:
                           </Title>
                         </Col>
-                        <Col span={11}>
+                        <Col span={12}>
                           <Form.Item
                               label={'Выберите департамент'}
                               name={[field.name, 'moduls']}
@@ -41,7 +41,7 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             />
                           </Form.Item>
                         </Col>
-                        <Col span={11}>
+                        <Col span={12}>
                           <Form.Item
                               label={'Выберите сотрудник'}
                               name={[field.name, 'user']}
@@ -59,23 +59,23 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules}) =
                             />
                           </Form.Item>
                         </Col>
-                        <Col span={2}>
-                          <Button type={"dashed"} danger onClick={() => remove(field.name)}
-                                  style={{marginTop: 10}}>
-                            <MinusCircleOutlined
-                            />
-                          </Button>
-                        </Col>
+                        {/*<Col span={2}>*/}
+                        {/*  <Button type={"dashed"} danger onClick={() => remove(field.name)}*/}
+                        {/*          style={{marginTop: 10}}>*/}
+                        {/*    <MinusCircleOutlined*/}
+                        {/*    />*/}
+                        {/*  </Button>*/}
+                        {/*</Col>*/}
                       </Row>
                     </div>
                 );
               })}
-              <Form.Item>
-                <Button type="primary" onClick={() => add()} block
-                        style={{backgroundColor: '#28a745'}}>
-                  Добавить сотрудника
-                </Button>
-              </Form.Item>
+              {/*<Form.Item>*/}
+              {/*  <Button type="primary" onClick={() => add()} block*/}
+              {/*          style={{backgroundColor: '#28a745'}}>*/}
+              {/*    Добавить сотрудника*/}
+              {/*  </Button>*/}
+              {/*</Form.Item>*/}
 
             </>
         )}

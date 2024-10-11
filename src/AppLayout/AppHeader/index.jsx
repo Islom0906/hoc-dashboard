@@ -93,13 +93,14 @@ export  const  UserAccount = ({ user , logOut})=> {
             user?.image ?
                 <Avatar icon={<img
                     src={user?.image}
-                    style={{width: '100%', height: '100%', objectFit: "contain"}}
+                    style={{width: '100%', height: '100%', objectFit: "contain" , flexShrink:0}}
                 /> } size={'small'} key={user?.id}/>
             :
             <UserOutlined className={'icon'} />
           }
-          <span className={'content'}>
-            <Flex className={'title'} gap={5} style={{fontSize:12}}><span>{user.first_name}</span> <span>{user.last_name}</span></Flex>
+          <span className={'content'} style={{padding:'10 0'}}>
+            <Flex className={'title'} gap={5} style={{fontSize:12}}><span>{user.full_name}</span></Flex>
+            <Flex className={'title'} gap={5} style={{fontSize:9}}><span>{user.roles[0].position}</span></Flex>
           </span>
         </Button>
       </Dropdown>
