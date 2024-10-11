@@ -47,7 +47,7 @@ const TaskPostEdit = () => {
     const {
         data: responsibleUser,
         refetch: refetchResponsibleUser
-    } = useGetQuery(false, 'get-responsibleUser', `users/user-filter-by-company?company_id=${companyID}`, false)
+    } = useGetQuery(false, 'get-responsibleUser', `users/user-filter`, false)
     const {
         data: getTag,
         refetch: refetchGetTag
@@ -57,7 +57,7 @@ const TaskPostEdit = () => {
     const {
         data: getModules,
         refetch: refetchGetModules
-    } = useGetQuery(false, 'get-modules', `/users/module-filter?company_id=${companyID}`, false)
+    } = useGetQuery(false, 'get-modules', `/users/modules?company_id=${companyID}`, false)
     // get-user
     const {
         data: getUserByModules,
@@ -127,7 +127,7 @@ const TaskPostEdit = () => {
             const optionModuleStaff = included?.modules?.included_users?.map((option) => {
                 return {
                     value: option?.id,
-                    label: `${option?.full_name}(${option?.position})`,
+                    label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
                 };
             });
             allModuleStaff.push(optionModuleStaff)
@@ -238,7 +238,7 @@ const TaskPostEdit = () => {
     }, [getTag]);
     // option module
     const optionsModules = useMemo(() => {
-        return getModules?.results?.map((option) => {
+        return getModules?.map((option) => {
             return {
                 value: option?.id,
                 label: option?.name,
@@ -250,7 +250,7 @@ const TaskPostEdit = () => {
         return getUserByModules?.results?.map((option) => {
             return {
                 value: option?.id,
-                label: `${option?.full_name}(${option?.position})`,
+                label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
             };
         });
     }, [getUserByModules]);
@@ -406,7 +406,6 @@ const TaskPostEdit = () => {
                                         <AddStaffTask optionsModules={optionsModules}
                                                   optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
                                                   onChangeModules={onChangeModules}
-
                                         />
                                     </Flex>
                                 </Card>
