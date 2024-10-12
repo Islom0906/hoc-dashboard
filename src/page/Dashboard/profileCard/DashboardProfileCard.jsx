@@ -14,6 +14,7 @@ const { TabPane } = Tabs;
 
 const DashboardProfileCard = ({selectCompany , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count , setSelectCompany }) => {
   const handlerCompanyId = () => {
+      console.log(companyID , fullName)
     if(companyID && fullName) setSelectCompany({id:companyID , name:fullName})
   }
 

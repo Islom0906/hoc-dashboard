@@ -58,9 +58,9 @@ const TaskCard = ({
                   <Progress
                       percent={Math.round((doneCountTask / allCountTask) * 100)}
 
-                      size={["100%", 3]}
+                      size={["100%", 5]}
                       style={{fontWeight: 800, fontSize: '16px'}}
-                      strokeColor={`${deadlineColor}`}
+                      strokeColor={`#0C8CE8`}
                       className={"progress"}
                   />
                   <Flex wrap={true} justify={"space-between"} gap={5} align={"center"}>
@@ -136,7 +136,7 @@ const TaskCard = ({
                   }
                   <Col span={user?.id === created_by?.id ? 8 : 24}>
                           <Link to={link}>
-                      <Button shape={user?.id === created_by?.id?"default":"round"} icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%'}}
+                      <Button  icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%'}}
                               type={"primary"}>
                               {
                                   !(user?.id === created_by?.id) &&

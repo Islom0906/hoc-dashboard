@@ -24,7 +24,7 @@ const Dashboard = () => {
   const [selectCompany, setSelectCompany] = useState({name: '', id: ''})
   const roleName = user?.roles[0]?.role?.name
 
-  console.log('roleName' ,roleName)
+
   // modulni getBYID
   const {
     data: GetModulByIDStatistics = [], refetch: refetchGetModulByIDStatistics,
@@ -33,23 +33,23 @@ const Dashboard = () => {
   // modulni Staff GetBYID
   const {
     data: GetModulStaffStatistics = [], refetch: refetchGetModulStaffStatistics,
-  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulsID}?year=${valueYear}&month=${valueMonth}`, false);
+  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulsID}?year=${valueYear}&month=${valueMonth+1}`, false);
 
   // Company Get BY ID
   const {
     data: GetCompanyByIDStatistics, refetch: refetchGetCompanyByIDStatistics
-  } = useGetQuery(false, 'company-data', `/users/tag-statistics/${selectCompany?.id}?year=${valueYear}&month=${valueMonth}`, false)
+  } = useGetQuery(false, 'company-data', `/users/company-statistics/${selectCompany?.id}?year=${valueYear}&month=${valueMonth+1}`, false)
 
-  // Compnays Get
+  // Company Get
   const {
     data: GetCompanyAllForGeneralStatistics, refetch: refetchGetCompanyAllForGeneralStatistics
-  } = useGetQuery(false, 'company-all-data', `/users/tags-statistics?year=${valueYear}&month=${valueMonth}`, false)
+  } = useGetQuery(false, 'company-all-data', `/users/companies-statistics?year=${valueYear}&month=${valueMonth+1}`, false)
 
 
   // general derector
 
   useEffect(() => {
-    if (roleName === 'general_director' && selectCompany.id) {
+    if (roleName === 'general_director' && selectCompany?.id) {
       refetchGetCompanyByIDStatistics()
     }
   }, [valueYear, valueMonth, selectCompany])
@@ -118,11 +118,13 @@ const Dashboard = () => {
                 <Row gutter={5}>
                   {GetCompanyAllForGeneralStatistics?.map(general => (<Col span={6} key={general?.id}>
                         <DashboardProfileCard selectCompany={selectCompany} setSelectCompany={setSelectCompany} companyID={general?.id}
-                                              image={general?.image_dark} fullName={general?.name}
+                                              image={general?.image_dark}
+                                              fullName={general?.title}
                                               in_progress_tasks_count={general?.total_tasks_count - (general?.done_tasks_count - general?.failed_tasks_count)}
                                               done_tasks_count={general?.done_tasks_count}
                                               failed_tasks_count={general?.failed_tasks_count}
-                                              total_tasks_count={general?.total_tasks_count}/>
+                                              total_tasks_count={general?.total_tasks_count}
+                        />
                       </Col>))}
                 </Row>
 
@@ -130,7 +132,7 @@ const Dashboard = () => {
             </>}
 
 
-            {/*--------- Tag Bos ----------*/}
+            {/*--------- derector ----------*/}
             {roleName !== 'boss' && <>
               <Col span={24}>
                 <Title level={4} style={{textAlign: 'center'}}>

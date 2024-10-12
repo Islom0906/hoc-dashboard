@@ -38,7 +38,7 @@ const CreateWorkerPostEdit = () => {
     const {
         data: GetTagCompany =[],
         refetch: refetchGetTagCompany,
-    } = useGetQuery(false, "get-tag-company", `/users/tags/${companyID}` , false);
+    } = useGetQuery(false, "get-company-company", `/users/companies/` , false);
 
     // query-user-roles-get
     const {data: userRoleData, refetch: userRoleFetch} = useGetQuery(false, 'get-user-roles', '/users/roles', false)
@@ -109,9 +109,9 @@ const CreateWorkerPostEdit = () => {
     useEffect(() => {
         if (editCreateWorkerSuccess) {
             const user_roles = [{
-                module: editCreateWorkerData?.user_roles[0]?.module,
-                user_role: editCreateWorkerData?.user_roles[0]?.user_role,
-                tag: editCreateWorkerData?.user_roles[0]?.tag,
+                module: editCreateWorkerData?.roles[0]?.module?.id,
+                user_role: editCreateWorkerData?.roles[0]?.role?.id,
+                tag: editCreateWorkerData?.roles[0]?.company?.id,
             }]
             const image = [{
                 uid: editCreateWorkerData?.images?.id,
@@ -239,14 +239,14 @@ const CreateWorkerPostEdit = () => {
 
 
     // option company
-    // const optionsCompany = useMemo(() => {
-    //     return companyData?.map((option) => {
-    //         return {
-    //             value: option?.id,
-    //             label: option?.title,
-    //         };
-    //     });
-    // }, [companyData]);
+    const optionsCompany = useMemo(() => {
+        return companyData?.map((option) => {
+            return {
+                value: option?.id,
+                label: option?.title,
+            };
+        });
+    }, [companyData]);
     // option user role
     const optionsUserRole = useMemo(() => {
         return userRoleData?.map((option) => {
@@ -435,27 +435,27 @@ const CreateWorkerPostEdit = () => {
                             name={'password'}
                         />
                     </Col>
-                    {/*<Col span={12}>*/}
-                    {/*    <Form.Item*/}
-                    {/*        label={'Компания'}*/}
-                    {/*        name={'company'}*/}
-                    {/*        rules={[{*/}
-                    {/*            required: true, message: 'Выберите компанию'*/}
-                    {/*        }]}*/}
-                    {/*        wrapperCol={{*/}
-                    {/*            span: 24,*/}
-                    {/*        }}*/}
-                    {/*    >*/}
-                    {/*        <Select*/}
-                    {/*            style={{*/}
-                    {/*                width: '100%',*/}
-                    {/*            }}*/}
-                    {/*            placeholder='Выберите одну компания'*/}
-                    {/*            optionLabelProp='label'*/}
-                    {/*            options={optionsCompany}*/}
-                    {/*        />*/}
-                    {/*    </Form.Item>*/}
-                    {/*</Col>*/}
+                    <Col span={12}>
+                        <Form.Item
+                            label={'Компания'}
+                            name={'company'}
+                            rules={[{
+                                required: true, message: 'Выберите компанию'
+                            }]}
+                            wrapperCol={{
+                                span: 24,
+                            }}
+                        >
+                            <Select
+                                style={{
+                                    width: '100%',
+                                }}
+                                placeholder='Выберите одну компания'
+                                optionLabelProp='label'
+                                options={optionsCompany}
+                            />
+                        </Form.Item>
+                    </Col>
                     <Col span={24}>
                         <FormInput
                             required={true}

@@ -160,12 +160,12 @@ export const dateCellRender = (
     }
 
     return (
-        <div className={`custom-td  ${eventClass}`}>
+        <div className={`custom-td  `}>
             <div className={'date-number'}>{value.date()}</div>
             <ul className="events">
 
                 {birthdaysOnDate?.map(birthday => (
-                    <li key={birthday.id}>
+                    <li key={birthday.id} className={'birthday'}>
                         <Popover key={birthday?.id} content={contentPopoverBirthday(birthday)}>
                             <Flex gap={2} align={"center"}>
                                 <div className={'color-badge'}
@@ -179,7 +179,7 @@ export const dateCellRender = (
 
                 ))}
                 {meetingsOnDate?.map((meeting) => (
-                    <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
+                    <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id} className={'meeting'}>
                         <Popover content={contentPopoverMeeting(meeting)}>
                             <Flex gap={2} align={"center"}>
                                 <div className={'color-badge'}
@@ -192,7 +192,7 @@ export const dateCellRender = (
                     </li>
                 ))}
                 {deadlineOnDate?.map((deadline) => (
-                    <li key={deadline.id}>
+                    <li key={deadline.id} className={'deadline'}>
                         <Popover key={deadline?.id} content={contentPopoverDeadline(deadline)}
                                  title={<div>
                                      <Title level={5}>

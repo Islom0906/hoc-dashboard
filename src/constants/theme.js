@@ -98,8 +98,9 @@ export const configLight = {
         colorPrimaryHover: "rgb(118, 188, 51)"
     },
     Calendar: {
-        fontSize: 18
+        fontSize: 14
     }
+
 };
 export const configDark = {
     contentBg:'#252B36',
@@ -221,7 +222,9 @@ export const configDark = {
         colorText: "rgb(255, 255, 255)"
     },
     Calendar: {
-        fontSize: 18
+        fontSize: 14,
+        fullBg: 'rgb(36,39,49)'
     }
 };
+
 

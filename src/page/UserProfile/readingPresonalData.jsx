@@ -15,7 +15,6 @@ const PersonalInfo = () => {
       false
   );
 
-
   useEffect(() => {
     if(user?.id) {
     refetch()
@@ -105,14 +104,14 @@ const PersonalInfo = () => {
               </Flex>
             </Col>
             {
-              data?.user_roles[0]?.module_name &&
+              data?.roles[0]?.module?.name &&
                 <Col span={8}>
                   <Flex vertical={true} gap={3}>
                     <Text type={"secondary"}>
                       Отдел:
                     </Text>
                     <p >
-                      {data?.user_roles[0]?.module_name}
+                      {data?.roles[0]?.module?.name}
                     </p>
                   </Flex>
                 </Col>
