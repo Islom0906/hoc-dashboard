@@ -31,7 +31,7 @@ const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filter
             </Button>));
     }, [colorMeeting, filterForColor]);
     return (
-        <div style={{ padding: 10 }}>
+        <div style={{ padding: 10 ,backgroundColor:"transparent"}} >
             <Row justify={"space-between"}>
                 <Flex gap={10}>
                     <Button type={filterForColor === 'all' ? 'primary' : 'default'} onClick={() => selectFilter('all')}>

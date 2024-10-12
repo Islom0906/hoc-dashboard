@@ -143,62 +143,82 @@ export const dateCellRender = (
         deadlineOnDate = deadlineMap[dateStr] || [];
     }
 
+    let eventClass = '';
+    const hasBirthday = birthdaysOnDate.length > 0;
+    const hasMeeting = meetingsOnDate.length > 0;
+    const hasDeadline = deadlineOnDate.length > 0;
+
+    const eventCount = [hasBirthday, hasMeeting, hasDeadline].filter(Boolean).length
+    if (eventCount >= 2) {
+        eventClass = 'all';  // Two or more events on the same day
+    } else if (hasBirthday) {
+        eventClass = 'birthday';  // Only birthday
+    } else if (hasMeeting) {
+        eventClass = 'meeting';  // Only meeting
+    } else if (hasDeadline) {
+        eventClass = 'deadline';  // Only deadline
+    }
 
     return (
-        <ul className="events">
+        <div className={`custom-td  ${eventClass}`}>
+            <div className={'date-number'}>{value.date()}</div>
+            <ul className="events">
 
-            {birthdaysOnDate?.map(birthday => (
-                <li key={birthday.id}>
-                    <Popover key={birthday?.id} content={contentPopoverBirthday(birthday)}>
-                        <Flex gap={2} align={"center"}>
-                            <div className={'color-badge'}
-                                 style={{backgroundColor: colorMeeting.birthday.color, borderRadius: '100%'}}/>
-                            <Text type="warning">
-                                {birthday.first_name} {birthday.last_name}
-                            </Text>
-                        </Flex>
-                    </Popover>
-                </li>
+                {birthdaysOnDate?.map(birthday => (
+                    <li key={birthday.id}>
+                        <Popover key={birthday?.id} content={contentPopoverBirthday(birthday)}>
+                            <Flex gap={2} align={"center"}>
+                                <div className={'color-badge'}
+                                     style={{backgroundColor: colorMeeting.birthday.color, borderRadius: '100%'}}/>
+                                <Text type="warning">
+                                    {birthday.first_name} {birthday.last_name}
+                                </Text>
+                            </Flex>
+                        </Popover>
+                    </li>
 
-            ))}
-            {meetingsOnDate?.map((meeting) => (
-                <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
-                    <Popover content={contentPopoverMeeting(meeting)}>
-                        <Flex gap={2} align={"center"}>
-                            <div className={'color-badge'}
-                                 style={{backgroundColor: colorMeeting.meeting.color, borderRadius: '100%'}}/>
-                            <Text style={{color: colorMeeting.meeting.color}}>
-                                {meeting.title}
-                            </Text>
-                        </Flex>
-                    </Popover>
-                </li>
-            ))}
-            {deadlineOnDate?.map((deadline) => (
-                <li key={deadline.id}>
-                    <Popover key={deadline?.id} content={contentPopoverDeadline(deadline)}
-                             title={<div>
-                                 <Title level={5}>
-                                     {deadline?.title}
-                                 </Title>
-                                 <Text style={{fontSize: '11px'}} type={"secondary"}>
-                                     срок: {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}
-                                 </Text>
-                                 <Button type={'success'} href={`/task-list/${deadline?.id}`}>
-                                     <FaExternalLinkAlt/>
-                                 </Button>
-                             </div>}
-                             style={{border: `1px , solid ${colorMeeting.deadline.color}`}}>
-                        <Flex gap={2} align={"center"}>
-                            <div className={'color-badge'}
-                                 style={{backgroundColor: colorMeeting.deadline.color, borderRadius: '100%'}}/>
-                            <Text style={{color: colorMeeting.deadline.color}}>
-                                {deadline.title}
-                            </Text>
-                        </Flex>
-                    </Popover>
-                </li>
-            ))}
-        </ul>
+                ))}
+                {meetingsOnDate?.map((meeting) => (
+                    <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id}>
+                        <Popover content={contentPopoverMeeting(meeting)}>
+                            <Flex gap={2} align={"center"}>
+                                <div className={'color-badge'}
+                                     style={{backgroundColor: colorMeeting.meeting.color, borderRadius: '100%'}}/>
+                                <Text style={{color: colorMeeting.meeting.color}}>
+                                    {meeting.title}
+                                </Text>
+                            </Flex>
+                        </Popover>
+                    </li>
+                ))}
+                {deadlineOnDate?.map((deadline) => (
+                    <li key={deadline.id}>
+                        <Popover key={deadline?.id} content={contentPopoverDeadline(deadline)}
+                                 title={<div>
+                                     <Title level={5}>
+                                         {deadline?.title}
+                                     </Title>
+                                     <Text style={{fontSize: '11px'}} type={"secondary"}>
+                                         срок: {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}
+                                     </Text>
+                                     <Button type={'success'} href={`/task-list/${deadline?.id}`}>
+                                         <FaExternalLinkAlt/>
+                                     </Button>
+                                 </div>}
+                                 style={{border: `1px , solid ${colorMeeting.deadline.color}`}}>
+                            <Flex gap={2} align={"center"}>
+                                <div className={'color-badge'}
+                                     style={{backgroundColor: colorMeeting.deadline.color, borderRadius: '100%'}}/>
+                                <Text style={{color: colorMeeting.deadline.color}}>
+                                    {deadline.title}
+                                </Text>
+                            </Flex>
+                        </Popover>
+                    </li>
+                ))}
+            </ul>
+        </div>
+
     );
 };
+

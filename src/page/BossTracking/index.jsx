@@ -80,12 +80,14 @@ const BossTracking = () => {
                 <Col
                     key={task?.main_task_id}
                     className="gutter-row"
-                    xs={{ span: 12 }}
-                    md={{ span: 8 }}
-                    xl={{ span: 6 }}
+                    md={{ span: 24 }}
+                    lg={{ span: 12 }}
+                    xl={{ span: 8 }}
+                    xxl={{ span: 6 }}
+
                 >
                   <TaskCard
-                      tag={task?.main_tag}
+                      tag={task?.main_company}
                       key={task?.main_task_id}
                       title={task?.main_task_title}
                       deadline_status={task?.main_deadline_status}

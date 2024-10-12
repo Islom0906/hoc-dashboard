@@ -7,7 +7,7 @@ import ModalCalendar from "./ModalCalendar";
 import {useDispatch, useSelector} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 
-import {dateCellRender, useBirthdayMap, useDeadlineMap, useMeetingMap} from "./calendar.helper";
+import { dateCellRender, useBirthdayMap, useDeadlineMap, useMeetingMap} from "./calendar.helper";
 import CustomHeader from "./CustomHeader";
 
 dayjs.locale('ru');
@@ -52,7 +52,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
                     <CustomHeader setFilterForColor={setFilterForColor} filterForColor={filterForColor}
                                   colorMeeting={colorMeeting} value={value} setFilterDate={setFilterDate} onChange={onChange} />
                 )}
-                cellRender={(value)=>dateCellRender(
+                dateFullCellRender={(value)=>dateCellRender(
                     value,
                     birthdayMap,
                     meetingMap,

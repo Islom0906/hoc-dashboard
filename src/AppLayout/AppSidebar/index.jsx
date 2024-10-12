@@ -7,6 +7,7 @@ import { samplePagesConfigs} from "../../page/routerPage";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand} from "react-icons/tb";
 
 const AppSidebar = () => {
   const [userRole ,setUserRole] = useState(null)
@@ -71,11 +72,13 @@ useEffect(() => {
                       ))}
               </Menu>
                   <Button
-                      type="primary"
+
+icon={collapsed ?   <TbLayoutSidebarLeftExpand style={{fontSize: 24, height: '100%'}}/>:<TbLayoutSidebarLeftCollapse style={{fontSize: 24, height: '100%'}}/>}
                       onClick={toggleCollapsed}
-                      style={{ marginBottom: 16 }}
+                      style={{ marginBottom: 16,width:'100%' }}
+variant="text"
                   >
-                      {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                      {!collapsed && 'Выход'}
                   </Button>
               </Flex>
 

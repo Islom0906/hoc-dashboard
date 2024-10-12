@@ -38,26 +38,58 @@
   font-size: 12px !important;
 }
 
-.events {
-  li {
-    display: flex;
-    align-items: center;
-    gap: 5px;
 
-    .color-badge {
-      width: 5px;
-      height: 5px;
-      flex-shrink: 0;
-    }
-    span{
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 1;
-      font-size: 12px;
+.custom-td {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f0f0f0;
+  padding: 5px;
+
+
+  .events {
+    overflow-y:auto ;
+    li {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      .color-badge {
+        width: 5px;
+        height: 5px;
+        flex-shrink: 0;
+      }
+      span{
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        font-size: 12px;
+      }
     }
   }
 }
+.custom-td.all{
+  border-left: 5px solid #76BC33;
+  background-color: #e3eaff;
+  border-radius: 5px;
+}
+.custom-td.meeting{
+  border-left: 5px solid #3664BD;
+  background-color: #e3eaff;
+  border-radius: 5px;
+}
+.custom-td.birthday{
+  border-left: 5px solid #CED232;
+  background-color: #e3eaff;
+  border-radius: 5px;
+}
+.custom-td.deadline{
+  border-left: 5px solid #BD3636;
+  background-color: #e3eaff;
+  border-radius: 5px;
+}
+
 .popover-card{
   display: flex;
   flex-direction: column;
@@ -65,3 +97,6 @@
     font-size: 11px;
   }
 }
+
+
+
