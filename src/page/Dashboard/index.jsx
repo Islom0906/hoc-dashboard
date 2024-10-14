@@ -46,6 +46,8 @@ const Dashboard = () => {
   } = useGetQuery(false, 'company-all-data', `/users/companies-statistics?year=${valueYear}&month=${valueMonth+1}`, false)
 
 
+
+
   // general derector
 
   useEffect(() => {
@@ -79,7 +81,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (user?.roles[0].name === 'director') {
-      setSelectCompany({id: user?.tags[0]?.id, name: user?.tags[0]?.name})
+      setSelectCompany({id: user?.company[0]?.id, name: user?.company[0]?.name})
     }
   }, [user])
 
@@ -151,7 +153,7 @@ const Dashboard = () => {
             </>}
             {/*--------  Boss -------- */}
             <Col span={16}>
-              <ForBossTaskChart dataChart={GetModulByIDStatistics} modules={selectModul || user?.roles[0].modul?.name}/>
+              <ForBossTaskChart dataChart={GetModulByIDStatistics} modules={selectModul || user?.roles[0].module?.name}/>
             </Col>
             <Col span={8}>
               <Card
