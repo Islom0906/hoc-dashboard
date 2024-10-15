@@ -1,5 +1,5 @@
 import React, {useEffect, useState,} from 'react';
-import {Col, Flex, Row, Spin, Typography} from 'antd';
+import {Col, Flex, Row, Spin, theme, Typography} from 'antd';
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
@@ -9,15 +9,12 @@ const {Title} = Typography
 
 const colorMeeting = {
     meeting: {
-        color: '#3664BD',
         name: 'Встречи',
     },
     birthday: {
-        color: '#CED232',
         name: 'Дни рождений',
     },
     deadline: {
-        color: '#BD3636',
         name: 'Сроки по задачам',
     }
 }
@@ -27,6 +24,18 @@ const CalendarTask = () => {
         year: '',
         month: ''
     })
+    const {systemMode}=useSelector(state => state.theme)
+    const {
+        token: {
+            meetingBorderColor,
+            meetingBgColor,
+            birthdayBorderColor,
+            birthdayBgColor,
+            deadlineBorderColor,
+            deadlineBgColor,
+            tableBorder
+        },
+    } = theme.useToken();
 
     const {companyID} = useSelector(state => state.companySlice)
 
@@ -61,6 +70,20 @@ const CalendarTask = () => {
             refetchDeadline()
         }
     }, [companyID, filterDate.year, filterDate.month]);
+
+
+
+    useEffect(() => {
+        // Set CSS variables for dark mode
+        document.documentElement.style.setProperty('--meetingBorderColor', meetingBorderColor);
+        document.documentElement.style.setProperty('--meetingBgColor', meetingBgColor);
+        document.documentElement.style.setProperty('--birthdayBorderColor', birthdayBorderColor);
+        document.documentElement.style.setProperty('--birthdayBgColor', birthdayBgColor);
+        document.documentElement.style.setProperty('--deadlineBorderColor', deadlineBorderColor);
+        document.documentElement.style.setProperty('--deadlineBgColor', deadlineBgColor);
+        document.documentElement.style.setProperty('--tableBorder', tableBorder);
+
+    }, [systemMode]);
     return (
         <Spin spinning={getBirthdayLoading || getMeetingLoading || getDeadlineLoading}>
             <Flex gap={10} vertical={true} className={'calendar-card'}>
@@ -76,7 +99,7 @@ const CalendarTask = () => {
                         <span style={{
                             width: 20,
                             height: 20,
-                            background: colorMeeting.meeting.color,
+                            background: meetingBorderColor,
                             borderRadius: '4px'
                         }}/>
                         <p>
@@ -87,7 +110,7 @@ const CalendarTask = () => {
                         <span style={{
                             width: 20,
                             height: 20,
-                            background: colorMeeting.birthday.color,
+                            background: birthdayBorderColor,
                             borderRadius: '4px'
                         }}/>
                         <p>
@@ -98,7 +121,7 @@ const CalendarTask = () => {
                         <span style={{
                             width: 20,
                             height: 20,
-                            background: colorMeeting.deadline.color,
+                            background: deadlineBorderColor,
                             borderRadius: '4px'
                         }}/>
                         <p>

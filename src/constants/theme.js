@@ -2,13 +2,23 @@ export const configLight = {
     colorPrimary: "#76BC33",
     colorChartLabel:'#5F5959',
     colorChartLine:'#5F595920',
+    // calendar
+    colorTextCalendar: '#444543',
+    meetingBorderColor: '#3664BD',
+    meetingBgColor: '#3664BD33',
+    birthdayBorderColor: '#CED232',
+    birthdayBgColor: '#CED23233',
+    deadlineBorderColor: '#BD3636',
+    deadlineBgColor: '#BD363633',
+    tableBorder:'#A4B9D14D',
 
     contentBg:'#FFFFFF',
     mainBg:"#F4F6F3",
     Button: {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
-        defaultBg:"transparent"
+        defaultBg: "transparent",
+        colorPrimaryHover: "rgba(117,188,51,0.8)"
     },
     Input: {
         hoverBorderColor: "rgb(118, 188, 51)",
@@ -106,11 +116,23 @@ export const configDark = {
     contentBg:'#252B36',
     colorChartLabel:'#E8E8E8',
     colorChartLine:'#E8E8E820',
+    // calendar
+    colorTextCalendar: '#444543',
+    meetingBorderColor: '#3664BD',
+    meetingBgColor: '#3664BD33',
+    birthdayBorderColor: '#CED232',
+    birthdayBgColor: '#CED232B2',
+    deadlineBorderColor: '#BD3636',
+    deadlineBgColor: '#BD3636B2',
+    tableBorder:'#A4B9D14D',
+
     mainBg:"rgb(27, 31, 40)",
     Button: {
         colorPrimary: "#76BC33",
         primaryColor: '#ffffff',
-        defaultBg:"transparent"
+        defaultBg: "transparent",
+        colorPrimaryHover: "rgba(117,188,51,0.8)"
+
     },
     Input: {
         hoverBorderColor: "rgb(118, 188, 51)",

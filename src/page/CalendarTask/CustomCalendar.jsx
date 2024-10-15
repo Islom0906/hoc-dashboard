@@ -53,7 +53,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
                                   colorMeeting={colorMeeting} value={value} setFilterDate={setFilterDate} onChange={onChange} />
                 )}
 
-                dateFullCellRender={(value)=>dateCellRender(
+                fullCellRender={(value)=>dateCellRender(
                     value,
                     birthdayMap,
                     meetingMap,
