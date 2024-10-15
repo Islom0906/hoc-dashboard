@@ -36,8 +36,8 @@ const contentPopoverDeadline = () => {
 }
 
 const contentPopoverMeeting = ({meeting}) => {
-    console.log(meeting)
 
+    console.log(meeting)
     return(
     <Card
         style={{

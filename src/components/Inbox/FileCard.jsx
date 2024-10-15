@@ -5,7 +5,6 @@ import {AvatarUserProfile} from "../index";
 const cardStyle = {border: 1, borderStyle: "dashed", borderColor: "black"}
 const {Text} = Typography
 const FileCard = ({files, comment, date, user}) => {
-    console.log(files)
 
     return (
         <Card bordered={true} style={cardStyle} size={"small"}>

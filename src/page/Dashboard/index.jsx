@@ -4,13 +4,14 @@ import 'leaflet/dist/leaflet.css'
 import './Dashboard.css'
 import {useGetQuery} from "../../service/query/Queries";
 import ForBossTaskChart from "./boss-chart/ForBossTaskChart";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import SmallProfileCard from "./profileCard/smallProfileCard";
 import AboutTagList from "./Tag-boss/AboutTagList";
 import AboutTagChart from "./Tag-boss/AboutTagChart";
 import {currentMonth, currentYear} from "../../helper/time.helper";
 import {SelectMountYear} from "../../components";
 import DashboardProfileCard from "./profileCard/DashboardProfileCard";
+import {selectCompany, selectCompanyName} from "../../store/slice/companySlice";
 
 
 const {Title, Text} = Typography;
@@ -21,86 +22,95 @@ const Dashboard = () => {
   const [valueMonth, setValueMonth] = useState(currentMonth)
   const [selectModul, setSelectModul] = useState('')
   const {modulsID} = useSelector(state => state.modulsSlice)
-  const [selectCompany, setSelectCompany] = useState({name: '', id: ''})
+  const {companyID ,companyName} = useSelector(state => state.companySlice)
   const roleName = user?.roles[0]?.role?.name
-
+  const dispatch = useDispatch()
 
   // modulni getBYID
   const {
     data: GetModulByIDStatistics = [], refetch: refetchGetModulByIDStatistics,
-  } = useGetQuery(false, "boss-task-statistics", `users/boss-statistics/${modulsID}?from_year=2024&to_year=${valueYear}&from_month=1&to_month=12`, false);
+  } = useGetQuery(false, "boss-task-statistics", `users/boss-statistics/${modulsID}?company_id=${companyID}&from_year=2024&to_year=${valueYear}&from_month=1&to_month=12`, false);
 
   // modulni Staff GetBYID
   const {
     data: GetModulStaffStatistics = [], refetch: refetchGetModulStaffStatistics,
-  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulsID}?year=${valueYear}&month=${valueMonth+1}`, false);
+  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulsID}?company_id=${companyID}&year=${valueYear}&month=${+valueMonth+1}`, false);
 
   // Company Get BY ID
   const {
     data: GetCompanyByIDStatistics, refetch: refetchGetCompanyByIDStatistics
-  } = useGetQuery(false, 'company-data', `/users/company-statistics/${selectCompany?.id}?year=${valueYear}&month=${valueMonth+1}`, false)
+  } = useGetQuery(false, 'company-data', `/users/company-statistics/${companyID}?year=${valueYear}&month=${+valueMonth+1}`, false)
 
   // Company Get
   const {
     data: GetCompanyAllForGeneralStatistics, refetch: refetchGetCompanyAllForGeneralStatistics
-  } = useGetQuery(false, 'company-all-data', `/users/companies-statistics?year=${valueYear}&month=${valueMonth+1}`, false)
-
-
-
+  } = useGetQuery(false, 'company-all-data', `/users/companies-statistics?year=${valueYear}&month=${+valueMonth+1}`, false)
 
   // general derector
-
-  useEffect(() => {
-    if (roleName === 'general_director' && selectCompany?.id) {
-      refetchGetCompanyByIDStatistics()
-    }
-  }, [valueYear, valueMonth, selectCompany])
 
   useEffect(() => {
     if (roleName === 'general_director') {
       refetchGetCompanyAllForGeneralStatistics()
     }
   }, [user])
+  useEffect(() => {
+    if (GetCompanyAllForGeneralStatistics) {
+      dispatch(selectCompany(GetCompanyAllForGeneralStatistics[0]?.id))
+      dispatch(selectCompanyName(GetCompanyAllForGeneralStatistics[0]?.title))
+    }
+  }, [GetCompanyAllForGeneralStatistics])
+
 
 
   useEffect(() => {
-    if (roleName === 'general_director') {
+    console.log(companyID)
+    if (roleName === 'general_director' && companyID) {
+      console.log(1)
+      refetchGetCompanyByIDStatistics()
+    }
+  }, [valueYear, valueMonth, companyID])
+
+
+
+  useEffect(() => {
+    if (roleName === 'general_director' && companyID) {
       refetchGetModulStaffStatistics()
     }
-  }, [modulsID])
+  }, [modulsID, companyID])
 
 
   // director
 
   useEffect(() => {
-    if (roleName === 'director' && selectCompany?.id) {
+    if (roleName === 'director' && companyID) {
       refetchGetCompanyByIDStatistics()
     }
-  }, [selectCompany, valueYear, valueMonth]);
+  }, [companyID, valueYear, valueMonth]);
 
-
-  useEffect(() => {
-    if (user?.roles[0].name === 'director') {
-      setSelectCompany({id: user?.company[0]?.id, name: user?.company[0]?.name})
-    }
-  }, [user])
+  //
+  // useEffect(() => {
+  //   if (user?.roles[0].name === 'director') {
+  //     setSelectCompany({id: user?.company[0]?.id, name: user?.company[0]?.name})
+  //   }
+  // }, [user])
 
 
   // boss
 
   useEffect(() => {
-    if (modulsID) {
+    if (modulsID && companyID) {
       refetchGetModulStaffStatistics()
-      refetchGetModulByIDStatistics()
     }
   }, [modulsID, valueYear, valueMonth])
 
 
   useEffect(() => {
-    if (GetCompanyAllForGeneralStatistics) {
-      setSelectCompany({name: GetCompanyAllForGeneralStatistics[0].name, id: GetCompanyAllForGeneralStatistics[0].id})
+    if(modulsID && companyID ) {
+      refetchGetModulByIDStatistics()
     }
-  }, [GetCompanyAllForGeneralStatistics])
+  } , [modulsID, valueYear])
+
+
   return (<div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
           <Row gutter={[16, 30]}>
@@ -119,7 +129,7 @@ const Dashboard = () => {
                 </Title>
                 <Row gutter={5}>
                   {GetCompanyAllForGeneralStatistics?.map(general => (<Col span={6} key={general?.id}>
-                        <DashboardProfileCard selectCompany={selectCompany} setSelectCompany={setSelectCompany} companyID={general?.id}
+                        <DashboardProfileCard companyIDSlice={companyID}  companyID={general?.id}
                                               image={general?.image_dark}
                                               fullName={general?.title}
                                               in_progress_tasks_count={general?.total_tasks_count - (general?.done_tasks_count - general?.failed_tasks_count)}
@@ -138,7 +148,7 @@ const Dashboard = () => {
             {roleName !== 'boss' && <>
               <Col span={24}>
                 <Title level={4} style={{textAlign: 'center'}}>
-                  {selectCompany?.name}
+                  {companyName}
                 </Title>
               </Col>
               <Col span={16}>

@@ -7,7 +7,7 @@ const {Text, Title} = Typography;
 
 
 const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDTask}) => {
-  const { data: { user } = {} } = useSelector((state) => state.auth);
+  const {data: {user} = {}} = useSelector((state) => state.auth);
 
   const [checkedState, setCheckedState] = useState({});
   const {
@@ -17,18 +17,18 @@ const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDT
   } = useEditQuery()
   const roles = user?.roles[0]?.role?.name
   const onChangeDoneProject = (id) => {
-    if(task_status === "done" && roles !== "staff") {
-      putProjectDone({url: `/users/tasks-update`, data:{status: 'not_started'}, id})
-      setCheckedState((prevState) => ({ ...prevState, [id]: true }));
-    }else if( roles === "staff" || roles === "boss") {
-      putProjectDone({url: `/users/tasks-update`, data:{status: 'done'}, id})
-      setCheckedState((prevState) => ({ ...prevState, [id]: true }));
+    if (task_status === "done" && roles !== "staff") {
+      putProjectDone({url: `/users/tasks-update`, data: {status: 'not_started'}, id})
+      setCheckedState((prevState) => ({...prevState, [id]: true}));
+    } else if (roles === "staff" || roles === "boss") {
+      // checking
+      putProjectDone({url: `/users/tasks-update`, data: {status: 'done'}, id})
+      setCheckedState((prevState) => ({...prevState, [id]: true}));
     }
   }
-
   useEffect(() => {
-      setCheckedState((prevState) => ({ ...prevState, [id]: task_status === 'done'? true : false }));
-  } , [id])
+    setCheckedState((prevState) => ({...prevState, [id]: task_status === 'done' ? true : false}));
+  }, [id])
 
   const clickHandle = (id) => {
     showModal()
@@ -37,8 +37,8 @@ const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDT
 
   return (
       <div>
-        <Spin spinning={putProjectDoneLoading}  >
-          <Row style={{width:'100%'}}>
+        <Spin spinning={putProjectDoneLoading}>
+          <Row style={{width: '100%'}}>
             <Col span={20}>
               <Flex gap={20} align={"start"}>
                 <Popconfirm
@@ -46,9 +46,9 @@ const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDT
                     okText={'Завершить'}
                     title={'Выполнить задачу?'}
                     description={'Вы уверены, что хотите выполнить задачу?'}
-                    onConfirm={() =>  onChangeDoneProject(id)}
+                    onConfirm={() => onChangeDoneProject(id)}
                 >
-                  <Checkbox  checked={!!checkedState[id]} style={{marginRight: 8}}/>
+                  <Checkbox checked={!!checkedState[id]} style={{marginRight: 8}}/>
                 </Popconfirm>
                 <Flex align={"start"} gap={5} vertical={true}>
                   <Title level={4}>{title}</Title>
@@ -57,8 +57,8 @@ const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDT
               </Flex>
             </Col>
             <Col span={4}>
-              <Flex align={"start"} justify={"end"} style={{width:'100%'}}>
-                <Button  type="primary" onClick={() => clickHandle(id)}>
+              <Flex align={"start"} justify={"end"} style={{width: '100%'}}>
+                <Button type="primary" onClick={() => clickHandle(id)}>
                   <FaRegCommentDots/>
                 </Button>
               </Flex>

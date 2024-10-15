@@ -34,7 +34,6 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
       value: value?.id,
     }));
   }, [getTagCompany]);
-  console.log(getTagCompanyArray)
   const getModulsArray = useMemo(() => {
     return Object.entries(getStaffForModuls).map(([ key , value]) => ({
       label: `${value?.full_name} ${value?.position}`,
@@ -124,6 +123,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
           />
         </Col>
         {
+            getStaffForModuls.length > 0 &&
             <Col span={6}>
               <label htmlFor="selectModulsStaff">
                 <p style={{ fontSize: '14px', marginBottom: 10 }}>Сотрудники:</p>

@@ -43,7 +43,7 @@ const Login = () => {
                 isLoading: false,
                 isAuthenticated: true,
             }));
-            dispatch(selectCompany(userInfo?.company?.id))
+            dispatch(selectCompany(userInfo?.roles[0].company?.id))
 
             navigate('/');
             message.success('Успешно');

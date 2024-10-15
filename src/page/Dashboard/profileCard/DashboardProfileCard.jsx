@@ -6,16 +6,21 @@ import { FaChartPie, FaListAlt, FaTasks } from "react-icons/fa";
 import { MdError } from "react-icons/md";
 import { GrCompliance, GrInProgress } from "react-icons/gr";
 import { RiContractFill } from "react-icons/ri";
+import {useDispatch} from "react-redux";
+import {selectCompany, selectCompanyName} from "../../../store/slice/companySlice";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-const DashboardProfileCard = ({selectCompany , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count , setSelectCompany }) => {
-  const handlerCompanyId = () => {
-      console.log(companyID , fullName)
-    if(companyID && fullName) setSelectCompany({id:companyID , name:fullName})
+const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count  }) => {
+    const dispatch = useDispatch()
+    const handlerCompanyId = () => {
+    if(companyID && fullName) {
+        dispatch(selectCompany(companyID))
+        dispatch(selectCompanyName(fullName))
+    }
   }
 
   const chartData = {
@@ -37,7 +42,7 @@ const DashboardProfileCard = ({selectCompany , companyID, title, image, fullName
             borderRadius: 10,
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             textAlign: 'center',
-            border: `${selectCompany?.id === companyID ? '1px solid #76BC33' : '1px solid transparent'}`
+            border: `${companyIDSlice === companyID ? '1px solid #76BC33' : '1px solid transparent'}`
           }}
           size={"small"}
       >

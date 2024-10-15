@@ -14,7 +14,7 @@ const initialValueForm={
     title: "",
     text: "",
     meeting_date: "",
-    company: null,
+    companies: null,
     tag: '',
     users: []
 }
@@ -29,13 +29,14 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     const {data: {user} = {}} = useSelector((state) => state.auth);
     const {editId} = useSelector(state => state.query)
     const {companyID} = useSelector(state => state.companySlice)
-
+    const role = user.roles[0].role.name
     // get-responsibleUser
     const {
         data: companyData,
         refetch: refetchCompanyData,
         isLoading: loadingCompanyData
     } = useGetQuery(false, 'get-companyData', `users/companies`, false)
+
 
     // get-responsibleUser
     const {
@@ -119,7 +120,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         if(companyID){
             refetchRequiredUser()
         }
-        if (user?.roles[0]?.name === 'general_director') {
+        if (role!== 'staff' || 'boss') {
             refetchCompanyData()
 
         }
@@ -170,13 +171,14 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             }
         })
 
-        const data = {
-            title: value.title,
-            text: value.text,
-            meeting_date: formatDate,
-            company: user?.roles[0]?.name === 'general_director' ? value.company :  companyID,
-            users: isMultipleSelect==='allUser'|| isUser ? [] : value?.users
-        }
+            const data = {
+                title: value.title,
+                text: value.text,
+                meeting_date: formatDate,
+                companies: value.companies ,
+                users: isMultipleSelect==='allUser'|| isUser ? [] : value?.users
+            }
+
         if (editModalMeetingData) {
             putMeeting({url: '/users/meetings', data: data, id: editId})
         } else {
@@ -195,6 +197,8 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         }
     }
     // option Company
+
+    //
     const optionsResponsibleUser = useMemo(() => {
         if(companyID) {
             const requiredUserData = []
@@ -230,7 +234,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
 
 
     const optionsCompany = useMemo(() => {
-        return companyData?.result?.map(company => (
+        return companyData?.map(company => (
             {
                 value: company?.id,
                 label: company?.title
@@ -251,14 +255,13 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             })
     }
 
-    const onChangeSelectCompany = (value) => {
-        console.log(value)
-if (value.length>0){
-    setIsUser(false)
-}else {
-    setIsUser(true)
-}
-    }
+//     const onChangeSelectCompany = (value) => {
+// if (value.length>0){
+//     setIsUser(false)
+// }else {
+//     setIsUser(true)
+// }
+//     }
 
     return (<Modal
             title={title}
@@ -319,12 +322,10 @@ if (value.length>0){
                         />
                     </Col>
                     {
-                        user?.roles[0].name === 'general_director'
-                        &&
                         <Col span={24}>
                             <Form.Item
                                 label={'Компания'}
-                                name={'company'}
+                                name={'companies'}
                                 rules={[{
                                     required: true, message: 'Выберите компания'
                                 }]}
@@ -340,7 +341,7 @@ if (value.length>0){
                                     loading={loadingCompanyData}
                                     placeholder='Выберите компания'
                                     optionLabelProp='label'
-                                    onChange={onChangeSelectCompany}
+                                    // onChange={onChangeSelectCompany}
                                     options={optionsCompany}
                                 />
                             </Form.Item>
