@@ -67,6 +67,7 @@ const TaskList = () => {
                       responsible_user={task?.main_task_responsible_user}
                       lastUpdate={task?.staff_last_sub_task_updated_at}
                       included_users={task?.included_users}
+                      isChecking={task?.is_checking}
                   />
                 </Col>
             ))}

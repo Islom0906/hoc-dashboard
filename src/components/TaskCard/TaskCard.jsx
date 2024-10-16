@@ -1,5 +1,19 @@
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
-import {Avatar, Button, Card, Col, Divider, Flex, Popconfirm, Progress, Row, Space, Tooltip, Typography} from "antd";
+import {
+    Avatar,
+    Badge,
+    Button,
+    Card,
+    Col,
+    Divider,
+    Flex,
+    Popconfirm,
+    Progress,
+    Row,
+    Space,
+    Tooltip,
+    Typography
+} from "antd";
 import {Link} from "react-router-dom";
 import {DeleteOutlined, EditOutlined, FieldTimeOutlined} from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -22,7 +36,8 @@ const TaskCard = ({
                       responsible_user,
                       lastUpdate,
                       included_users,
-                      created_by
+                      created_by,
+                        isChecking
                   }) => {
     const {data: {user} = {}} = useSelector((state) => state.auth);
     const dispatch = useDispatch()
@@ -136,14 +151,16 @@ const TaskCard = ({
                   }
                   <Col span={user?.id === created_by?.id ? 8 : 24}>
                           <Link to={link}>
-                      <Button  icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%'}}
-                              type={"primary"}>
-                              {
-                                  !(user?.id === created_by?.id) &&
+                              <Badge dot={isChecking}>
+                                  <Button  icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%'}}
+                                           type={"primary"}>
+                                      {
+                                          !(user?.id === created_by?.id) &&
 
-                                  "Подробнее"
-                              }
-                      </Button>
+                                          "Подробнее"
+                                      }
+                                  </Button>
+                              </Badge>
                           </Link>
                   </Col>
               </Row>

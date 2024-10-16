@@ -55,6 +55,7 @@ const TaskInner = () => {
                     </>
                 ) : (
                     <TaskHeader
+                        creatBy={taskInner?.created_by}
                         showModal={showModal}
                         task_status={taskInner?.status}
                         setWhichWriteIDTask={setWhichWriteIDTask}

@@ -16,7 +16,7 @@ import {
     SuccessTask,
     ResponsibleUser,
     Dashboard,
-    Inbox, InboxInner, InboxPostEdit, AddLocationMap,PressCenter
+    Inbox, InboxInner, InboxPostEdit, AddLocationMap, PressCenter, NewsInner
 
 } from './index'
 import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
@@ -286,6 +286,13 @@ export const samplePagesConfigs = [
         element: PressCenter,
         permittedRole: [authRole.admin, authRole.user, authRole.boss , authRole.director , authRole.general_director],
         isBackground: false
+    },
+    {
+        noIndex: true,
+        path: '/press-center/:item',
+        element: NewsInner,
+        permittedRole: [authRole.admin, authRole.user, authRole.boss , authRole.director , authRole.general_director],
+        isBackground: true
     },
     {
         key: 12321232312312312,
