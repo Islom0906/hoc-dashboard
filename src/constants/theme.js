@@ -11,6 +11,17 @@ export const configLight = {
     deadlineBorderColor: '#BD3636',
     deadlineBgColor: '#BD363633',
     tableBorder:'#A4B9D14D',
+    // status task
+    allTask: '#646464',
+    allTaskHover:"#64646433",
+    doneTask: '#91CC75',
+    doneTaskHover:'#91CC7533',
+    progressTask: '#5470C6',
+    progressTaskHover: '#5470C633',
+    failedTask: "#EE6666",
+    failedTaskHover: "#EE666633",
+    responsibleTask:'#FAC858',
+    responsibleTaskHover:'#FAC85833',
 
     contentBg:'#FFFFFF',
     mainBg:"#F4F6F3",
@@ -46,15 +57,15 @@ export const configLight = {
         headerBg: "rgb(255, 255, 255)",
         siderBg: "rgb(255, 255, 255)",
         footerBg: "rgb(255, 255, 255)",
-        bodyBg: "#F4F6F3"
+        bodyBg: "#F6F8FF"
     },
     Menu: {
         itemBg: "rgb(255, 255, 255)",
         itemColor: "rgb(81, 90, 100)",
         itemActiveBg: "rgb(244, 250, 239)",
         itemHoverBg: "rgb(244, 250, 239)",
-        itemSelectedBg: "rgb(244, 250, 239)",
-        itemSelectedColor: "rgb(118, 188, 51)",
+        itemSelectedBg: "#76BC33",
+        itemSelectedColor: "#FFFFFF",
         groupTitleColor: "rgb(81, 90, 100)",
         subMenuItemBg: "rgba(255, 255, 255, 0)",
         activeBarBorderWidth: 8,
@@ -125,6 +136,17 @@ export const configDark = {
     deadlineBorderColor: '#BD3636',
     deadlineBgColor: '#BD3636B2',
     tableBorder:'#A4B9D14D',
+    // task status
+    allTask: '#646464',
+    allTaskHover:"#64646433",
+    doneTask: '#91CC75',
+    doneTaskHover:'#91CC7533',
+    progressTask: '#5470C6',
+    progressTaskHover: '#5470C633',
+    failedTask: "#EE6666",
+    failedTaskHover: "#EE6666",
+    responsibleTask:'#FAC858',
+    responsibleTaskHover:'#FAC85833',
 
     mainBg:"rgb(27, 31, 40)",
     Button: {
@@ -161,20 +183,20 @@ export const configDark = {
         labelColor: "rgb(222, 222, 230)"
     },
     Layout: {
-        bodyBg: "#121723",
-        headerBg: "rgb(37, 43, 54)",
-        footerBg: "rgb(37, 43, 54)",
-        siderBg: "rgb(37, 43, 54)"
+        bodyBg: "#171924",
+        headerBg: "#25293C",
+        footerBg: "#25293C",
+        siderBg: "#25293C"
     },
     Menu: {
-        itemBg: "rgb(37, 43, 54)",
+        itemBg: "#25293C",
         itemColor: "rgb(222, 222, 230)",
         itemActiveBg: "rgb(42, 57, 54)",
         itemHoverBg: "rgb(42, 57, 54)",
-        itemSelectedBg: "rgb(42, 57, 54)",
-        itemSelectedColor: "rgb(118, 188, 51)",
+        itemSelectedBg: "#76BC33",
+        itemSelectedColor: "#FFFFFF",
         groupTitleColor: "rgb(222, 222, 230)",
-        subMenuItemBg: "rgb(37, 43, 54)",
+        subMenuItemBg: "#25293C",
         activeBarBorderWidth: 8,
         collapsedIconSize: 25,
         iconSize: 18,
@@ -193,7 +215,7 @@ export const configDark = {
     },
     Card: {
         extraColor: "rgb(81, 90, 100)",
-        colorBgContainer: "rgb(37, 43, 54)",
+        colorBgContainer: "#25293C",
         colorPrimary: "rgb(222, 222, 230)",
         colorText: "rgb(222, 222, 230)",
         colorTextDescription: "rgb(222, 222, 230)",

@@ -23,14 +23,13 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
     const [form] = Form.useForm();
 
     const [isMultipleSelect, setIsMultipleSelect] = useState('show')
-    const [isUser, setIsUser] = useState(false)
 
     const dispatch = useDispatch()
     const {data: {user} = {}} = useSelector((state) => state.auth);
     const {editId} = useSelector(state => state.query)
     const {companyID} = useSelector(state => state.companySlice)
-    const role = user.roles[0].role.name
-    // get-responsibleUser
+
+    // get-companyData
     const {
         data: companyData,
         refetch: refetchCompanyData,
@@ -119,12 +118,11 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
         if (companyID) {
             refetchRequiredUser()
         }
-        if (user?.roles[0]?.name === 'general_director') {
+        if (user?.roles[0]?.role?.name === 'general_director'&&isModalOpen) {
             refetchCompanyData()
 
         }
     }, [isModalOpen, user]);
-
 
 
     //edit meeting
@@ -169,13 +167,13 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                 allUser = true
             }
         })
-
+        console.log(value?.users)
         const data = {
             title: value.title,
             text: value.text,
             meeting_date: formatDate,
-            company: user?.roles[0]?.name === 'general_director' ? value.company : companyID,
-            users: isMultipleSelect === 'allUser' || isUser ? [] : value?.users
+            company: user?.roles[0]?.role?.name === 'general_director' ? value.company : companyID,
+            users: isMultipleSelect === 'allUser'  ? [] : value?.users
         }
         if (editModalMeetingData) {
             putMeeting({url: '/users/meetings', data: data, id: editId})
@@ -251,13 +249,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
         })
     }
 
-    const onChangeSelectCompany = (value) => {
-        if (value.length > 0) {
-            setIsUser(false)
-        } else {
-            setIsUser(true)
-        }
-    }
+
 
     return (<Modal
             title={title}
@@ -318,7 +310,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                             />
                         </Col>
                         {
-                            user?.roles[0].name === 'general_director'
+                            user?.roles[0]?.role?.name === 'general_director'
                             &&
                             <Col span={24}>
                                 <Form.Item
@@ -339,14 +331,12 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                                         loading={loadingCompanyData}
                                         placeholder='Выберите компания'
                                         optionLabelProp='label'
-                                        onChange={onChangeSelectCompany}
                                         options={optionsCompany}
                                     />
                                 </Form.Item>
                             </Col>
                         }
-                        {
-                            isUser &&
+
                             <Col span={24}>
                                 <Form.Item
                                     label={'Участники'}
@@ -371,7 +361,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                                     />
                                 </Form.Item>
                             </Col>
-                        }
                     </Row>
                     <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
                         {editModalMeetingSuccess ? 'Изменить' : 'Создать'}
