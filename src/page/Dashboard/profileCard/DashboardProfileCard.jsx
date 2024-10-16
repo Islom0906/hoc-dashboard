@@ -1,11 +1,9 @@
-import { Avatar, Card, Typography, Tabs } from "antd";
+import {Avatar, Card, Typography, Tabs, theme, Flex, Tag} from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { FaChartPie, FaListAlt, FaTasks } from "react-icons/fa";
-import { MdError } from "react-icons/md";
-import { GrCompliance, GrInProgress } from "react-icons/gr";
-import { RiContractFill } from "react-icons/ri";
+import {selectCompany, selectCompanyName} from "../../../store/slice/companySlice";
+import {useDispatch} from "react-redux";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
