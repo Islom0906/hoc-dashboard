@@ -10,18 +10,20 @@ import {CiSquarePlus} from "react-icons/ci";
 const initialValueForm = {
     first_name: "",
     last_name: "",
+    middle_name: "",
     birthday: "",
     gender: "",
     image: [],
     phone: "",
-    position: "",
     email: "",
     password: "",
-    company: [],
-    user_roles: [
+    roles: [
         {
+            company: null,
             module: null,
-            user_role: null
+            role: null,
+            position: "",
+
         }
     ],
     isDirector:false
@@ -32,18 +34,17 @@ const CreateWorkerPostEdit = () => {
     const {editId} = useSelector(state => state.query)
     const [fileListProps, setFileListProps] = useState([]);
     const [isAddDirector, setIsAddDirector] = useState(false)
-    const {companyID} = useSelector(state => state.companySlice)
+    const [companyId, setCompanyId] = useState(null)
     // query-company-get
     const {data: companyData, refetch: companyFetch} = useGetQuery(false, 'get-company', '/users/companies', false)
-    const {
-        data: GetTagCompany =[],
-        refetch: refetchGetTagCompany,
-    } = useGetQuery(false, "get-company-company", `/users/companies/` , false);
 
     // query-user-roles-get
     const {data: userRoleData, refetch: userRoleFetch} = useGetQuery(false, 'get-user-roles', '/users/roles', false)
     // query-module-get
-    const {data: moduleData, refetch: moduleFetch} = useGetQuery(false, 'get-module', '/users/modules', false)
+    const {
+        data: moduleData,
+        refetch: moduleFetch
+    } = useGetQuery(false, 'get-module', `/users/modules${companyId ? `?company_id=${companyId}` : ''}`, false)
     // query-image
     const {
         mutate: imagesUploadMutate,
@@ -92,13 +93,12 @@ const CreateWorkerPostEdit = () => {
 
     useEffect(() => {
         companyFetch()
-        moduleFetch()
         userRoleFetch()
     }, []);
 
     useEffect(() => {
-        refetchGetTagCompany()
-    } , [companyID])
+        if (companyId) moduleFetch()
+    }, [companyId]);
 
     useEffect(() => {
         form.setFieldsValue({isDirector:isAddDirector})
@@ -108,10 +108,11 @@ const CreateWorkerPostEdit = () => {
     //edit create-worker
     useEffect(() => {
         if (editCreateWorkerSuccess) {
-            const user_roles = [{
+            const roles = [{
                 module: editCreateWorkerData?.roles[0]?.module?.id,
-                user_role: editCreateWorkerData?.roles[0]?.role?.id,
-                tag: editCreateWorkerData?.roles[0]?.company?.id,
+                role: editCreateWorkerData?.roles[0]?.role?.id,
+                company: editCreateWorkerData?.roles[0]?.company?.id,
+                position: editCreateWorkerData?.roles[0]?.position,
             }]
             const image = [{
                 uid: editCreateWorkerData?.images?.id,
@@ -120,12 +121,12 @@ const CreateWorkerPostEdit = () => {
                 url: editCreateWorkerData.images?.image
             }];
             // 2-reliz
-            // editCreateWorkerData?.user_roles?.map(role => {
+            // editCreateWorkerData?.roles?.map(role => {
             //     const data = {
             //         module: role?.module,
             //         user_role: role?.user_role
             //     }
-            //     user_roles.push(data)
+            //     roles.push(data)
             // })
             const edit = {
                 first_name: editCreateWorkerData?.first_name,
@@ -138,11 +139,13 @@ const CreateWorkerPostEdit = () => {
                 position: editCreateWorkerData?.position,
                 email: editCreateWorkerData?.email,
                 password: editCreateWorkerData?.password,
-                user_roles
+                roles
             }
-            if (user_roles[0]?.module===null){
+            if (roles[0]?.module === null) {
                 setIsAddDirector(true)
             }
+            console.log(roles)
+            setCompanyId(editCreateWorkerData?.roles[0]?.company?.id)
             setFileListProps(image)
             form.setFieldsValue(edit)
         }
@@ -159,13 +162,14 @@ const CreateWorkerPostEdit = () => {
             gender: value?.gender,
             image: fileListProps[0]?.uid,
             phone: value?.phone,
-            position: value?.position,
             email: value?.email,
             password: value?.password,
-            company: [
-                companyData[0]?.id
-            ],
-            user_roles: value?.user_roles
+            roles: isAddDirector ? [{
+                    company: value?.roles[0].company,
+                    position: value?.roles[0].position,
+                    role: value?.roles[0].role,
+                }] :
+                value.roles
         }
 
         if (editCreateWorkerData) {
@@ -226,10 +230,13 @@ const CreateWorkerPostEdit = () => {
 
     const onChangeImage = ({fileList: newFileList}) => {
         const formData = new FormData();
+        console.log(fileListProps)
         if (fileListProps.length !== 0 || newFileList.length === 0) {
             form.setFieldsValue({image: []});
             const id = [fileListProps[0]?.uid];
-            imagesDeleteMutate({url: "users/images", id});
+            if (fileListProps[0]?.name) {
+                imagesDeleteMutate({url: "users/images", id});
+            }
             setFileListProps([])
         } else if (newFileList.length !== 0) {
             formData.append("image", newFileList[0].originFileObj);
@@ -266,14 +273,7 @@ const CreateWorkerPostEdit = () => {
         });
     }, [moduleData]);
     // option Tag
-    const optionsTags = useMemo(() => {
-        return GetTagCompany?.map((option) => {
-            return {
-                value: option?.id,
-                label: option?.name,
-            };
-        });
-    }, [GetTagCompany]);
+
     //option gender
     const optionsGender = useMemo(() => {
 
@@ -307,6 +307,9 @@ const CreateWorkerPostEdit = () => {
 
     }, []);
 
+    const onChangeCompany = (value) => {
+        setCompanyId(value)
+    }
 
 
     const selectPosition=(value)=>{
@@ -435,35 +438,8 @@ const CreateWorkerPostEdit = () => {
                             name={'password'}
                         />
                     </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label={'Компания'}
-                            name={'company'}
-                            rules={[{
-                                required: true, message: 'Выберите компанию'
-                            }]}
-                            wrapperCol={{
-                                span: 24,
-                            }}
-                        >
-                            <Select
-                                style={{
-                                    width: '100%',
-                                }}
-                                placeholder='Выберите одну компания'
-                                optionLabelProp='label'
-                                options={optionsCompany}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <FormInput
-                            required={true}
-                            required_text={'Укажите должность'}
-                            label={'Должность'}
-                            name={'position'}
-                        />
-                    </Col>
+
+
                     <Col span={24}>
                         <Form.Item
                             label={'Хотите добавить директор?'}
@@ -487,16 +463,41 @@ const CreateWorkerPostEdit = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Form.List name="user_roles">
+                <Form.List name="roles">
                     {(fields, {add, remove}) => (
                         <>
                             {fields.map((field, index) => {
                                 return (
                                     <div key={field.fieldKey} style={{marginBottom: 20}}>
                                         <Row gutter={20}>
+                                            <Col span={12}>
+                                                <Form.Item
+                                                    label={'Компания'}
+                                                    name={[field.name, 'company']}
+                                                    rules={[{
+                                                        required: true, message: 'Укажите компания'
+                                                    }]}
+                                                    wrapperCol={{
+                                                        span: 24,
+                                                    }}
+                                                >
+                                                    <Select
+                                                        style={{
+                                                            width: '100%',
+                                                        }}
+                                                        placeholder='Укажите только одну компания'
+                                                        optionLabelProp='label'
+                                                        onChange={onChangeCompany}
+                                                        options={optionsCompany}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
                                             {
                                                 !isAddDirector &&
-                                            <Col span={8}>
+                                                <>
+
+
+                                                    <Col span={12}>
                                                 <Form.Item
                                                     label={'Отдел '}
                                                     name={[field.name, 'module']}
@@ -513,13 +514,14 @@ const CreateWorkerPostEdit = () => {
                                                         options={optionsModule}
                                                     />
                                                 </Form.Item>
-
                                             </Col>
+                                                </>
+
                                             }
-                                            <Col span={isAddDirector ? 12 : 8}>
+                                            <Col span={12}>
                                                 <Form.Item
                                                     label={'Роль'}
-                                                    name={[field.name, 'user_role']}
+                                                    name={[field.name, 'role']}
                                                     rules={[{
                                                         required: true, message: 'Укажите роль'
                                                     }]}
@@ -537,26 +539,14 @@ const CreateWorkerPostEdit = () => {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={isAddDirector ? 12 : 8}>
-                                                <Form.Item
-                                                    label={'Компания'}
-                                                    name={[field.name, 'tag']}
-                                                    rules={[{
-                                                        required: true, message: 'Укажите компания'
-                                                    }]}
-                                                    wrapperCol={{
-                                                        span: 24,
-                                                    }}
-                                                >
-                                                    <Select
-                                                        style={{
-                                                            width: '100%',
-                                                        }}
-                                                        placeholder='Укажите только одну компания'
-                                                        optionLabelProp='label'
-                                                        options={optionsTags}
-                                                    />
-                                                </Form.Item>
+
+                                            <Col span={12}>
+                                                <FormInput
+                                                    required={true}
+                                                    required_text={'Укажите должность'}
+                                                    label={'Должность'}
+                                                    name={[field.name, 'position']}
+                                                />
                                             </Col>
                                         </Row>
 

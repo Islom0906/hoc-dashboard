@@ -9,23 +9,23 @@ import setInitialValue from "../../hooks/setInitialValue";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 
-const {Title}=Typography
-const initialValueForm={
+const {Title} = Typography
+const initialValueForm = {
     title: "",
     text: "",
     meeting_date: "",
-    companies: null,
+    company: null,
     tag: '',
     users: []
 }
-const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}) => {
+const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting}) => {
     const queryClient = useQueryClient()
     const [form] = Form.useForm();
 
     const [isMultipleSelect, setIsMultipleSelect] = useState('show')
-    const [isUser, setIsUser] = useState(true)
+    const [isUser, setIsUser] = useState(false)
 
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
     const {data: {user} = {}} = useSelector((state) => state.auth);
     const {editId} = useSelector(state => state.query)
     const {companyID} = useSelector(state => state.companySlice)
@@ -37,12 +37,11 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         isLoading: loadingCompanyData
     } = useGetQuery(false, 'get-companyData', `users/companies`, false)
 
-
     // get-responsibleUser
     const {
         data: requiredUser,
         refetch: refetchRequiredUser,
-        isLoading : loadingRequiredUser
+        isLoading: loadingRequiredUser
     } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company?company_id=${companyID}`, false)
 
     const {
@@ -54,7 +53,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     // put meeting
     const {
         mutate: putMeeting,
-        data:putMeetingDate,
+        data: putMeetingDate,
         isLoading: putMeetingLoading,
         isSuccess: putMeetingSuccess
     } = useEditQuery()
@@ -72,7 +71,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     // delete meeting
     const {
         mutate: deleteMeetingMutate,
-        isSuccess:deleteMeetingSuccess,
+        isSuccess: deleteMeetingSuccess,
         isLoading: deleteMeetingLoading
     } = useDeleteQuery()
 
@@ -80,7 +79,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         if (putMeetingDate) {
             dispatch(editIdQuery(''))
         }
-        if (  putMeetingSuccess ) {
+        if (putMeetingSuccess) {
             queryClient.removeQueries(["edit-meeting", editId])
             refetchMeeting()
             setIsModalOpen(false)
@@ -89,7 +88,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     }, [putMeetingSuccess]);
 
     useEffect(() => {
-        if (postMeetingSuccess){
+        if (postMeetingSuccess) {
             refetchMeeting()
             setIsModalOpen(false)
             form.setFieldsValue(initialValueForm)
@@ -97,16 +96,16 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         }
     }, [postMeetingSuccess]);
     useEffect(() => {
-        if (deleteMeetingSuccess){
+        if (deleteMeetingSuccess) {
             refetchMeeting()
             setIsModalOpen(false)
             form.setFieldsValue(initialValueForm)
         }
     }, [deleteMeetingSuccess]);
 
-    setInitialValue(form,initialValueForm)
+    setInitialValue(form, initialValueForm)
     useEffect(() => {
-        if (putMeetingSuccess){
+        if (putMeetingSuccess) {
             setIsModalOpen(false)
         }
     }, [putMeetingSuccess]);
@@ -117,10 +116,10 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             dispatch(editIdQuery(''))
             form.setFieldsValue(initialValueForm)
         }
-        if(companyID){
+        if (companyID) {
             refetchRequiredUser()
         }
-        if (role!== 'staff' || 'boss') {
+        if (user?.roles[0]?.name === 'general_director') {
             refetchCompanyData()
 
         }
@@ -152,17 +151,17 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     }, [editModalMeetingData])
     const onFinish = (value) => {
         let allUser = false
-        let formatDate=null
+        let formatDate = null
 
         const meetingDate = date
             .hour(value?.meeting_date.hour())
             .minute(value?.meeting_date.minute())
             .second(value?.meeting_date.second())
 
-        if (editId){
-            formatDate= dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss.SSS')
-        }else{
-            formatDate=dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
+        if (editId) {
+            formatDate = dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss.SSS')
+        } else {
+            formatDate = dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
         }
 
         value?.users.map((user) => {
@@ -171,14 +170,13 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             }
         })
 
-            const data = {
-                title: value.title,
-                text: value.text,
-                meeting_date: formatDate,
-                companies: value.companies ,
-                users: isMultipleSelect==='allUser'|| isUser ? [] : value?.users
-            }
-
+        const data = {
+            title: value.title,
+            text: value.text,
+            meeting_date: formatDate,
+            company: user?.roles[0]?.name === 'general_director' ? value.company : companyID,
+            users: isMultipleSelect === 'allUser' || isUser ? [] : value?.users
+        }
         if (editModalMeetingData) {
             putMeeting({url: '/users/meetings', data: data, id: editId})
         } else {
@@ -191,16 +189,14 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
         form.setFieldsValue(initialValueForm)
         setIsModalOpen(false);
     };
-    const deleteMeetingHandle=()=>{
-        if (editId){
-        deleteMeetingMutate({url:'/users/meetings', id: editId})
+    const deleteMeetingHandle = () => {
+        if (editId) {
+            deleteMeetingMutate({url: '/users/meetings', id: editId})
         }
     }
     // option Company
-
-    //
     const optionsResponsibleUser = useMemo(() => {
-        if(companyID) {
+        if (companyID) {
             const requiredUserData = []
             if (isMultipleSelect === 'show') {
                 requiredUserData.push({
@@ -230,7 +226,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
                 return requiredUserData
             }
         }
-    }, [requiredUser, isMultipleSelect ,companyID  ]);
+    }, [requiredUser, isMultipleSelect, companyID]);
 
 
     const optionsCompany = useMemo(() => {
@@ -243,25 +239,25 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
     }, [companyData]);
 
     const onChangeSelect = (value) => {
-        if (!value.length>0){
+        if (!value.length > 0) {
             setIsMultipleSelect('show')
         }
-            value?.map((user) => {
-                if (user === "") {
-                    setIsMultipleSelect('allUser')
-                }else {
-                    setIsMultipleSelect('special')
-                }
-            })
+        value?.map((user) => {
+            if (user === "") {
+                setIsMultipleSelect('allUser')
+            } else {
+                setIsMultipleSelect('special')
+            }
+        })
     }
 
-//     const onChangeSelectCompany = (value) => {
-// if (value.length>0){
-//     setIsUser(false)
-// }else {
-//     setIsUser(true)
-// }
-//     }
+    const onChangeSelectCompany = (value) => {
+        if (value.length > 0) {
+            setIsUser(false)
+        } else {
+            setIsUser(true)
+        }
+    }
 
     return (<Modal
             title={title}
@@ -270,120 +266,123 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date,refetchMeeting}
             footer={null}
         >
             <Spin
-                spinning={postMeetingLoading || editModalMeetingLoading||putMeetingLoading||deleteMeetingLoading}
+                spinning={postMeetingLoading || editModalMeetingLoading || putMeetingLoading || deleteMeetingLoading}
             >
-            <Form
-                form={form}
-                name="basic"
-                labelCol={{
-                    span: 24
-                }}
-                wrapperCol={{
-                    span: 24
-                }}
-                style={{
-                    maxWidth: "100%"
-                }}
-                initialValues={initialValueForm}
-                onFinish={onFinish}
-                autoComplete="off"
-            >
-                <Row gutter={20}>
-                    <Col span={24}>
-                        <Title level={2}>
-                            Создать встречу:
-                        </Title>
-                    </Col>
-                    <Col span={12}>
-                        <FormInput
-                            required={true}
-                            required_text={'Требуется название встречи'}
-                            label={'Название встречи'}
-                            name={'title'}
-                        />
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Выберите время встречи"
-                            name={'meeting_date'}
-                            rules={[{
-                                required: true, message: 'Укажите время встречи.'
-                            }]}
-                        >
-                            <TimePicker format="HH:mm:ss"/>
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <FormTextArea
-                            required={true}
-                            required_text={'Требуется Повестка'}
-                            label={'Повестка'}
-                            name={'text'}
-                        />
-                    </Col>
-                    {
+                <Form
+                    form={form}
+                    name="basic"
+                    labelCol={{
+                        span: 24
+                    }}
+                    wrapperCol={{
+                        span: 24
+                    }}
+                    style={{
+                        maxWidth: "100%"
+                    }}
+                    initialValues={initialValueForm}
+                    onFinish={onFinish}
+                    autoComplete="off"
+                >
+                    <Row gutter={20}>
                         <Col span={24}>
+                            <Title level={2}>
+                                Создать встречу:
+                            </Title>
+                        </Col>
+                        <Col span={12}>
+                            <FormInput
+                                required={true}
+                                required_text={'Требуется название встречи'}
+                                label={'Название встречи'}
+                                name={'title'}
+                            />
+                        </Col>
+                        <Col span={12}>
                             <Form.Item
-                                label={'Компания'}
-                                name={'companies'}
+                                label="Выберите время встречи"
+                                name={'meeting_date'}
                                 rules={[{
-                                    required: true, message: 'Выберите компания'
+                                    required: true, message: 'Укажите время встречи.'
                                 }]}
-                                wrapperCol={{
-                                    span: 24,
-                                }}
                             >
-                                <Select
-                                    style={{
-                                        width: '100%',
-                                    }}
-                                    mode={'multiple'}
-                                    loading={loadingCompanyData}
-                                    placeholder='Выберите компания'
-                                    optionLabelProp='label'
-                                    // onChange={onChangeSelectCompany}
-                                    options={optionsCompany}
-                                />
+                                <TimePicker format="HH:mm:ss"/>
                             </Form.Item>
                         </Col>
-                    }
-                    {
-                        isUser &&
                         <Col span={24}>
-                        <Form.Item
-                            label={'Участники'}
-                            name={'users'}
-                            rules={[{
-                                required: true, message: 'Выберите участников'
-                            }]}
-                            wrapperCol={{
-                                span: 24,
-                            }}
-                        >
-                            <Select
-                                style={{
-                                    width: '100%',
-                                }}
-                                loading={loadingRequiredUser}
-                                onChange={onChangeSelect}
-                                mode={'multiple'}
-                                placeholder='Выберите участников'
-                                optionLabelProp='label'
-                                options={optionsResponsibleUser}
+                            <FormTextArea
+                                required={true}
+                                required_text={'Требуется Повестка'}
+                                label={'Повестка'}
+                                name={'text'}
                             />
-                        </Form.Item>
-                    </Col>
-                    }
-                </Row>
-                <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-                    {editModalMeetingSuccess ? 'Изменить' : 'Создать'}
-                </Button>
-            </Form>
+                        </Col>
+                        {
+                            user?.roles[0].name === 'general_director'
+                            &&
+                            <Col span={24}>
+                                <Form.Item
+                                    label={'Компания'}
+                                    name={'company'}
+                                    rules={[{
+                                        required: true, message: 'Выберите компания'
+                                    }]}
+                                    wrapperCol={{
+                                        span: 24,
+                                    }}
+                                >
+                                    <Select
+                                        style={{
+                                            width: '100%',
+                                        }}
+                                        mode={'multiple'}
+                                        loading={loadingCompanyData}
+                                        placeholder='Выберите компания'
+                                        optionLabelProp='label'
+                                        onChange={onChangeSelectCompany}
+                                        options={optionsCompany}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        }
+                        {
+                            isUser &&
+                            <Col span={24}>
+                                <Form.Item
+                                    label={'Участники'}
+                                    name={'users'}
+                                    rules={[{
+                                        required: true, message: 'Выберите участников'
+                                    }]}
+                                    wrapperCol={{
+                                        span: 24,
+                                    }}
+                                >
+                                    <Select
+                                        style={{
+                                            width: '100%',
+                                        }}
+                                        loading={loadingRequiredUser}
+                                        onChange={onChangeSelect}
+                                        mode={'multiple'}
+                                        placeholder='Выберите участников'
+                                        optionLabelProp='label'
+                                        options={optionsResponsibleUser}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        }
+                    </Row>
+                    <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
+                        {editModalMeetingSuccess ? 'Изменить' : 'Создать'}
+                    </Button>
+                </Form>
                 {
                     editModalMeetingSuccess &&
-                <Button  type="primary" danger htmlType="button" style={{width: "100%", marginTop: "20px"}} onClick={deleteMeetingHandle}>
-                    Удалить встречу
-                </Button>
+                    <Button type="primary" danger htmlType="button" style={{width: "100%", marginTop: "20px"}}
+                            onClick={deleteMeetingHandle}>
+                        Удалить встречу
+                    </Button>
                 }
             </Spin>
         </Modal>

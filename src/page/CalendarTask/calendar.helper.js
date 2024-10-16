@@ -1,8 +1,7 @@
-import {useMemo} from "react";
+import { useMemo} from "react";
 import dayjs from "dayjs";
-import {Button, Card, Flex, Popover, Typography , Tag, Avatar, Switch,} from "antd";
+import {Button, Card, Flex, Popover, Typography, Tag, Avatar, Switch, theme,} from "antd";
 import {FaBirthdayCake, FaExternalLinkAlt} from "react-icons/fa";
-import { EditOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
 const {Title,Text}=Typography
 const contentPopoverBirthday = (content) => {
@@ -16,6 +15,7 @@ const contentPopoverBirthday = (content) => {
                 backgroundColor: '#F9F9F9',
             }}
             bodyStyle={{ padding: '0' }}
+
         >
             <div >
                 <FaBirthdayCake
@@ -116,7 +116,13 @@ export const dateCellRender = (
     colorMeeting,
     changeMeeting
 ) => {
+    const {
+        token: {
+            colorTextCalendar,
 
+        },
+    } = theme.useToken();
+    // const {systemMode}=useSelector(state => state.theme)
     const birthdayStr = value.format('MM-DD');
     const dateStr = value.format('YYYY-MM-DD');
     let meetingsOnDate = [];
@@ -143,34 +149,21 @@ export const dateCellRender = (
         deadlineOnDate = deadlineMap[dateStr] || [];
     }
 
-    let eventClass = '';
-    const hasBirthday = birthdaysOnDate.length > 0;
-    const hasMeeting = meetingsOnDate.length > 0;
-    const hasDeadline = deadlineOnDate.length > 0;
 
-    const eventCount = [hasBirthday, hasMeeting, hasDeadline].filter(Boolean).length
-    if (eventCount >= 2) {
-        eventClass = 'all';  // Two or more events on the same day
-    } else if (hasBirthday) {
-        eventClass = 'birthday';  // Only birthday
-    } else if (hasMeeting) {
-        eventClass = 'meeting';  // Only meeting
-    } else if (hasDeadline) {
-        eventClass = 'deadline';  // Only deadline
-    }
+
+
 
     return (
-        <div className={`custom-td  `}>
+        <div className={`custom-td`}>
             <div className={'date-number'}>{value.date()}</div>
-            <ul className="events">
+            <ul className="events" style={{color:colorTextCalendar}}>
 
                 {birthdaysOnDate?.map(birthday => (
                     <li key={birthday.id} className={'birthday'}>
                         <Popover key={birthday?.id} content={contentPopoverBirthday(birthday)}>
                             <Flex gap={2} align={"center"}>
-                                <div className={'color-badge'}
-                                     style={{backgroundColor: colorMeeting.birthday.color, borderRadius: '100%'}}/>
-                                <Text type="warning">
+
+                                <Text type="" >
                                     {birthday.first_name} {birthday.last_name}
                                 </Text>
                             </Flex>
@@ -182,9 +175,8 @@ export const dateCellRender = (
                     <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id} className={'meeting'}>
                         <Popover content={contentPopoverMeeting(meeting)}>
                             <Flex gap={2} align={"center"}>
-                                <div className={'color-badge'}
-                                     style={{backgroundColor: colorMeeting.meeting.color, borderRadius: '100%'}}/>
-                                <Text style={{color: colorMeeting.meeting.color}}>
+
+                                <Text >
                                     {meeting.title}
                                 </Text>
                             </Flex>
@@ -207,9 +199,8 @@ export const dateCellRender = (
                                  </div>}
                                  style={{border: `1px , solid ${colorMeeting.deadline.color}`}}>
                             <Flex gap={2} align={"center"}>
-                                <div className={'color-badge'}
-                                     style={{backgroundColor: colorMeeting.deadline.color, borderRadius: '100%'}}/>
-                                <Text style={{color: colorMeeting.deadline.color}}>
+
+                                <Text >
                                     {deadline.title}
                                 </Text>
                             </Flex>
