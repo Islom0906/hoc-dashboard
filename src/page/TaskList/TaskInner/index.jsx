@@ -55,6 +55,7 @@ const TaskInner = () => {
                     </>
                 ) : (
                     <TaskHeader
+                        creatBy={taskInner?.created_by}
                         showModal={showModal}
                         task_status={taskInner?.status}
                         setWhichWriteIDTask={setWhichWriteIDTask}
@@ -76,7 +77,7 @@ const TaskInner = () => {
                         deadline_status={taskInner?.deadline_status}
                     />
                 ) : (
-                    <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                    <Space direction="vertical" size="large" style={{ width: '100%' ,  height:400 , overflowY:"scroll"}}>
                       {taskInner?.messages?.map(message => (
                           <CommentUser key={message?.id} comment={message} />
                       ))}

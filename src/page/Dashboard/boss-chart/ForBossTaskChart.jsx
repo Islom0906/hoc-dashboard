@@ -17,104 +17,6 @@ ChartJS.register(
     Legend,
     Filler
 );
-const data1 = [
-  {
-    "year": 2024,
-    "month": 1,
-    "in_progress_tasks_count": 5,
-    "total_tasks_count": 7,
-    "done_tasks_count": 2,
-    "failed_tasks_count": 0
-  },
-  {
-    "year": 2024,
-    "month": 2,
-    "in_progress_tasks_count": 3,
-    "total_tasks_count": 6,
-    "done_tasks_count": 2,
-    "failed_tasks_count": 1
-  },
-  {
-    "year": 2024,
-    "month": 3,
-    "in_progress_tasks_count": 4,
-    "total_tasks_count": 5,
-    "done_tasks_count": 1,
-    "failed_tasks_count": 0
-  },
-  {
-    "year": 2024,
-    "month": 4,
-    "in_progress_tasks_count": 6,
-    "total_tasks_count": 8,
-    "done_tasks_count": 3,
-    "failed_tasks_count": 1
-  },
-  {
-    "year": 2024,
-    "month": 5,
-    "in_progress_tasks_count": 2,
-    "total_tasks_count": 3,
-    "done_tasks_count": 1,
-    "failed_tasks_count": 0
-  },
-  {
-    "year": 2024,
-    "month": 6,
-    "in_progress_tasks_count": 7,
-    "total_tasks_count": 10,
-    "done_tasks_count": 2,
-    "failed_tasks_count": 1
-  },
-  {
-    "year": 2024,
-    "month": 7,
-    "in_progress_tasks_count": 1,
-    "total_tasks_count": 2,
-    "done_tasks_count": 0,
-    "failed_tasks_count": 0
-  },
-  {
-    "year": 2024,
-    "month": 8,
-    "in_progress_tasks_count": 0,
-    "total_tasks_count": 4,
-    "done_tasks_count": 3,
-    "failed_tasks_count": 1
-  },
-  {
-    "year": 2024,
-    "month": 9,
-    "in_progress_tasks_count": 7,
-    "total_tasks_count": 10,
-    "done_tasks_count": 3,
-    "failed_tasks_count": 0
-  },
-  {
-    "year": 2024,
-    "month": 10,
-    "in_progress_tasks_count": 3,
-    "total_tasks_count": 4,
-    "done_tasks_count": 1,
-    "failed_tasks_count": 0
-  },
-  {
-    "year": 2024,
-    "month": 11,
-    "in_progress_tasks_count": 4,
-    "total_tasks_count": 5,
-    "done_tasks_count": 1,
-    "failed_tasks_count": 1
-  },
-  {
-    "year": 2024,
-    "month": 12,
-    "in_progress_tasks_count": 2,
-    "total_tasks_count": 3,
-    "done_tasks_count": 1,
-    "failed_tasks_count": 0
-  }
-];
 
 
 const { Title:AntTitle  } = Typography;
@@ -139,21 +41,20 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
 
 
   useEffect(() => {
-    if (data1) {
-      console.log('data1' , data1)
+    if (dataChart) {
       const aggregatedData = {
         total_tasks_count: [],
         done_tasks_count: [],
         failed_tasks_count: []
       };
-      data1.forEach(item => {
+      dataChart.forEach(item => {
         aggregatedData.total_tasks_count.push(item.total_tasks_count || 0);
         aggregatedData.done_tasks_count.push(item.done_tasks_count || 0);
         aggregatedData.failed_tasks_count.push(item.failed_tasks_count || 0);
         return aggregatedData
       });
 
-      console.log(aggregatedData)
+
       setChart({total_tasks_count: aggregatedData.total_tasks_count ,done_tasks_count: aggregatedData.done_tasks_count , failed_tasks_count: aggregatedData.failed_tasks_count});
     }
   }, [dataChart]);

@@ -33,7 +33,6 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     const deadlineMap = useDeadlineMap(dataDeadline)
 
     function onSelect  (newValue,info)  {
-        console.log(info)
 
         if (user?.roles[0]?.role.name!== 'staff' && user?.roles[0]?.role.name!== 'boss' ) {
             const isPastDate = newValue.isBefore(dayjs(), 'day');

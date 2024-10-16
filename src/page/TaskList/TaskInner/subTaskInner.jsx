@@ -36,10 +36,10 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
     const [subTaskItem] = subTask.filter((subtaskChild) => subtaskChild?.id === whichWriteID);
     if (isPostCommentSuccess && isChecked) {
       if (subTaskItem?.status === "done" && roles !== "staff") {
-        putProjectDone({ url: `/users/staff-subtasks`, data: { status: 'not_started' }, id: whichWriteID });
+        putProjectDone({ url: `/users/staff-subtasks`, data: { status: 'progress' }, id: whichWriteID });
         setCheckedState((prevState) => ({ ...prevState, [whichWriteID]: false }));
       } else if ( roles === "staff" || roles === "boss") {
-        putProjectDone({ url: `/users/staff-subtasks`, data: { status: 'done' }, id: whichWriteID });
+        putProjectDone({ url: `/users/staff-subtasks`, data: { status: 'checking' }, id: whichWriteID });
         setCheckedState((prevState) => ({ ...prevState, [whichWriteID]: true }));
       }
       setIsChecked(false);
@@ -48,7 +48,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
 
   useEffect(() => {
     subTask?.map((item) => {
-      setCheckedState((prevState) => ({ ...prevState, [item?.id]: item?.status === 'done' ? true : false }));
+      setCheckedState((prevState) => ({ ...prevState, [item?.id]: item?.status === 'checking' ? true : false }));
     });
   }, [subTask]);
 
@@ -98,7 +98,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
                       </Flex>
                     </Flex>
                     {task?.messages.length > 0 && <Divider plain>Комментарии</Divider>}
-                    <Space size={'large'} direction={"vertical"} style={{ width: '100%' }}>
+                    <Space size={'large'} direction={"vertical"} style={{ width: '100%' ,  height:400 , overflowY:"scroll"}}>
                       {task?.messages?.map((message) => (
                           <CommentUser key={message?.id} comment={message} />
                       ))}

@@ -43,7 +43,6 @@ const BossTracking = () => {
   useEffect(() => {
     refetchStaffForModuls()
   } , [modulsID])
-  console.log(getTagCompany)
   useEffect(() => {
       refetchStaffGetTask();
   }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany , staffIDs , modulsID]);

@@ -327,7 +327,7 @@ const TaskPostEdit = () => {
                     <Col span={24}>
                         <Form.Item
                             label={'Выберите компанию'}
-                            name={'tag'}
+                            name={'company'}
                             rules={[{
                                 required: true, message: 'Выберите компания'
                             }]}

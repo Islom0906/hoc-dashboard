@@ -1,14 +1,23 @@
-import {Avatar, Card, Flex, Tabs, Tag, theme, Typography} from "antd";
-import {UserOutlined} from "@ant-design/icons";
-import {ArcElement, Chart as ChartJS, Legend, Tooltip} from 'chart.js';
-import {Doughnut} from 'react-chartjs-2';
+import {Avatar, Card, Typography, Tabs, theme, Flex, Tag} from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+import {selectCompany, selectCompanyName} from "../../../store/slice/companySlice";
+import {useDispatch} from "react-redux";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-const DashboardProfileCard = ({selectCompany , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count , setSelectCompany }) => {
+const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count  }) => {
+    const dispatch = useDispatch()
+    const handlerCompanyId = () => {
+    if(companyID && fullName) {
+        dispatch(selectCompany(companyID))
+        dispatch(selectCompanyName(fullName))
+    }
+  }
     const {
         token: {
             allTask,
@@ -23,11 +32,6 @@ const DashboardProfileCard = ({selectCompany , companyID, title, image, fullName
             responsibleTaskHover
         }
     } = theme.useToken();
-
-    const handlerCompanyId = () => {
-      console.log(companyID , fullName)
-    if(companyID && fullName) setSelectCompany({id:companyID , name:fullName})
-  }
 
   const chartData = {
     labels: ['Сделанный', 'В процессе', 'Неуспешный', 'Ответственная задача'],
@@ -69,11 +73,10 @@ const DashboardProfileCard = ({selectCompany , companyID, title, image, fullName
           onClick={handlerCompanyId}
           style={{
             cursor:"pointer",
-
             borderRadius: 10,
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             textAlign: 'center',
-            border: `${selectCompany?.id === companyID ? '1px solid #76BC33' : '1px solid transparent'}`
+            border: `${companyIDSlice === companyID ? '1px solid #76BC33' : '1px solid transparent'}`
           }}
           size={"small"}
       >

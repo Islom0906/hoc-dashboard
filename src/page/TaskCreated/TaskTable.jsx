@@ -1,4 +1,4 @@
-import {Avatar, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip} from "antd";
+import {Avatar, Badge, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip} from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { editIdQuery } from "../../store/slice/querySlice";
 import { useNavigate } from "react-router-dom";
@@ -200,11 +200,15 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     </>
 
             }
+            <Badge dot={record?.is_checking}>
             <Button
                 onClick={() => handleTaskInnerGet(record?.id)}
                 type="dashed"
-                icon={<FaRegEye />}
-            />
+            >
+              <FaRegEye />
+            </Button>
+
+            </Badge>
           </Flex>
       ),
     },

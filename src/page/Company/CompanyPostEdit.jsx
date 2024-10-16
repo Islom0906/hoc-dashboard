@@ -8,7 +8,7 @@ import {useQueryClient} from "react-query";
 
 
 const initialValueForm = {
-    name: "",
+    title: "",
     image_dark: [],
     image_light: []
 };
@@ -18,7 +18,6 @@ const CompanyPostEdit = () => {
     const {editId} = useSelector(state => state.query)
     const [fileListPropsDark, setFileListPropsDark] = useState([]);
     const [fileListPropsLight, setFileListPropsLight] = useState([]);
-    const {companyID} = useSelector(state => state.companySlice)
 
     // query-company
     const {
@@ -64,7 +63,7 @@ const CompanyPostEdit = () => {
             }];
             const edit = {
                 image_light,image_dark,
-                name: editCompanyData?.name
+                title: editCompanyData?.title
             }
             setFileListPropsDark(image_dark)
             setFileListPropsLight(image_light)
@@ -74,7 +73,7 @@ const CompanyPostEdit = () => {
 
     const onFinish = (value) => {
         const formData = new FormData();
-        formData.append('name', value.name);
+        formData.append('title', value.title);
         if (fileListPropsDark[0]?.originFileObj) {
             formData.append('image_dark', fileListPropsDark[0]?.originFileObj);
         }
@@ -118,7 +117,7 @@ const CompanyPostEdit = () => {
                             required={true}
                             required_text={'Требуется название компании'}
                             label={'Название компании'}
-                            name={'name'}
+                            name={'title'}
                         />
                     </Col>
                     <Col span={12}>

@@ -4,7 +4,7 @@ import apiService from "../../../service/apis/api";
 import {authData} from "../../../store/slice/authSlice";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {selectCompany} from "../../../store/slice/companySlice";
+import {selectCompany ,selectCompanyName} from "../../../store/slice/companySlice";
 import {selectModuls} from "../../../store/slice/modulsSlice";
 
 const AuthProvider = ({children}) => {
@@ -68,9 +68,9 @@ const AuthProvider = ({children}) => {
                     isLoading: false,
                     isAuthenticated: true
                 }))
-                dispatch(selectCompany(data?.roles[0].company?.id))
-                if(data?.roles[0].role?.name ==='boss'){
-
+                if(data?.roles[0].role?.name !=='general_director'){
+                    dispatch(selectCompany(data?.roles[0].company?.id))
+                    dispatch(selectCompanyName(data?.roles[0].company?.title))
                     dispatch(selectModuls(data?.roles[0]?.module.id))
                 }
             } catch (error) {

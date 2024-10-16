@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  companyID:localStorage.getItem('companyID') || null
+  companyID:localStorage.getItem('companyID') || null,
+  companyName:localStorage.getItem('companyName') || null,
 };
 
 export const companySlice = createSlice({
@@ -12,13 +13,19 @@ export const companySlice = createSlice({
       state.companyID = payload;
       localStorage.setItem('companyID', JSON.stringify(payload));
     },
+    selectCompanyName: (state, { payload }) => {
+      state.companyName = payload;
+      localStorage.setItem('companyName', JSON.stringify(payload));
+
+    },
     clearCompany: (state) => {
       state.companyID = null;
       localStorage.removeItem('companyID');
+      localStorage.removeItem('companyName');
     }
   }
 });
 
 
-export const { selectCompany, clearCompany } = companySlice.actions;
+export const { selectCompany ,selectCompanyName, clearCompany } = companySlice.actions;
 export default companySlice.reducer;

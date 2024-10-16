@@ -33,7 +33,6 @@ const InboxInner = () => {
             editInboxRefetch()
         }
     }, [id]);
-    console.log(editInboxData)
     return (
         <>
             <Spin spinning={editInboxLoading}>
