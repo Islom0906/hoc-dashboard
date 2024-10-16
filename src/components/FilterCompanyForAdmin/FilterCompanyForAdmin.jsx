@@ -10,17 +10,15 @@ const FilterCompanyForAdmin = () => {
   const dispatch = useDispatch();
   const companyID = useSelector((state) => state.companySlice.companyID);
   const {data:{user}}=useSelector(state => state.auth)
-
+  const roles = user?.roles[0]?.role.name
   const {
     data: getCompany,
     refetch: refetchGetCompany,
   } = useGetQuery(false, "get-company", "/users/companies/", false);
 
   useEffect(() => {
-    if(user?.roles[0]?.role.name === 'admin') {
+    if(roles !== 'staff' && roles !== 'boss' ) {
       refetchGetCompany();
-    }else {
-      // dispatch(selectCompany(id))
     }
     return () => {
       queryClient.removeQueries();

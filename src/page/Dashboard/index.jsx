@@ -49,7 +49,7 @@ const Dashboard = () => {
   // general derector
 
   useEffect(() => {
-    if (roleName === 'general_director') {
+    if (roleName === 'general_director' || roleName === 'admin') {
       refetchGetCompanyAllForGeneralStatistics()
     }
   }, [user])
@@ -64,7 +64,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log(companyID)
-    if (roleName === 'general_director' && companyID) {
+    if ((roleName === 'general_director'  || roleName === 'admin') && companyID) {
       console.log(1)
       refetchGetCompanyByIDStatistics()
     }
@@ -73,7 +73,7 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    if (roleName === 'general_director' && companyID) {
+    if ((roleName === 'general_director'  || roleName === 'admin') && companyID) {
       refetchGetModulStaffStatistics()
     }
   }, [modulsID, companyID])
@@ -122,7 +122,7 @@ const Dashboard = () => {
 
             {/*---- General derector ----*/}
 
-            {roleName === 'general_director' && <>
+            {(roleName === 'general_director' || roleName === 'admin')&& <>
               <Col span={24}>
                 <Title level={4}>
                   Компания

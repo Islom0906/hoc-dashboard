@@ -29,7 +29,7 @@ const TaskHeader = ({ title, text, task_status, id, showModal, setWhichWriteIDTa
   };
 
   const taskStatusChecking = () => {
-    if(roles === 'general_director'|| roles === 'director') {
+    if(roles === 'general_director'|| roles === 'director' || user?.roles[0]?.module?.id ) {
       if(task_status === 'done'){
         return <Tag color="green">Done</Tag>
       }else if(task_status === 'progress'){
@@ -37,7 +37,7 @@ const TaskHeader = ({ title, text, task_status, id, showModal, setWhichWriteIDTa
       }else if(task_status === 'checking'){
         return <Tag color="green">Checking</Tag>
       }
-    }else if(roles === 'admin' ){
+    }else if( creatBy?.id === user?.id || roles === 'admin' ){
       if(task_status === 'done'){
         return <Tag color="green">Done</Tag>
       }else if(task_status === 'progress'){
@@ -67,7 +67,7 @@ const TaskHeader = ({ title, text, task_status, id, showModal, setWhichWriteIDTa
             </Button>
         </Popconfirm>
           </>)
-      }else if(roles === 'staff' ){
+      }else {
         if(task_status === 'done'){
           return <Tag color="green">Done</Tag>
         }else if(task_status === 'progress'){

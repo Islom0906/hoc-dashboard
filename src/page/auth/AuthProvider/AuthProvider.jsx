@@ -71,7 +71,7 @@ const AuthProvider = ({children}) => {
                 if(data?.roles[0].role?.name !=='general_director'){
                     dispatch(selectCompany(data?.roles[0].company?.id))
                     dispatch(selectCompanyName(data?.roles[0].company?.title))
-                    dispatch(selectModuls(data?.roles[0]?.module.id))
+                    dispatch(selectModuls(data?.roles[0]?.module?.id))
                 }
             } catch (error) {
                 dispatch(authData({
