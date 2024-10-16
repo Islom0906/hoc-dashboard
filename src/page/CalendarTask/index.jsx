@@ -1,5 +1,5 @@
-import React, {useEffect, useState,} from 'react';
-import {Col, Flex, Row, Spin, theme, Typography} from 'antd';
+import React, {useEffect, useMemo, useState,} from 'react';
+import {Col, Flex, Row, Select, Spin, theme, Typography} from 'antd';
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
@@ -24,6 +24,7 @@ const CalendarTask = () => {
         year: '',
         month: ''
     })
+    const [companyId, setCompanyId] = useState(null)
     const {systemMode}=useSelector(state => state.theme)
     const {
         token: {
@@ -37,22 +38,25 @@ const CalendarTask = () => {
         },
     } = theme.useToken();
 
-    const {companyID} = useSelector(state => state.companySlice)
-
+    const {
+        data: companyData,
+        refetch: refetchCompanyData,
+        isSuccess:successCompany
+    } = useGetQuery(false, 'get-company-meeting-filter', `users/companies`, false)
     // birthday
     const {
         data: dataBirthDay,
         isLoading: getBirthdayLoading,
         refetch: refetchBirthDay
     } = useGetQuery(false, 'birthDay-get',
-        `/users/user-birthdays?company__id=${companyID}` +
+        `/users/user-birthdays?company__id=${companyId}` +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     // meeting
     const {
         data: dataMeetting,
         isFetching: getMeetingLoading,
         refetch: refetchMeeting
-    } = useGetQuery(false, 'meeting-get', `/users/meetings/?company__id=${companyID}` +
+    } = useGetQuery(false, 'meeting-get', `/users/meetings/?company__id=${companyId}` +
         (filterDate?.year !== 'null' ? `&year=${filterDate?.year}` : '') +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     // deadline
@@ -60,18 +64,27 @@ const CalendarTask = () => {
         data: dataDeadline,
         isLoading: getDeadlineLoading,
         refetch: refetchDeadline
-    } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?company__id=${companyID}` +
+    } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?company__id=${companyId}` +
         (filterDate?.year !== 'null' ? `&year=${filterDate?.year}` : '') +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     useEffect(() => {
-        if (companyID !== null && filterDate?.year !== '' && filterDate?.month !== '') {
+        if (companyData&&filterDate?.year !== '' && filterDate?.month !== '') {
             refetchBirthDay()
             refetchMeeting()
             refetchDeadline()
         }
-    }, [companyID, filterDate.year, filterDate.month]);
+    }, [companyId, filterDate.year, filterDate.month]);
 
+    useEffect(() => {
+        refetchCompanyData()
+    }, []);
 
+    useEffect(() => {
+        if (successCompany){
+            console.log(companyData)
+            setCompanyId(companyData[0]?.id)
+        }
+    }, [companyData]);
 
     useEffect(() => {
         // Set CSS variables for dark mode
@@ -84,6 +97,23 @@ const CalendarTask = () => {
         document.documentElement.style.setProperty('--tableBorder', tableBorder);
 
     }, [systemMode]);
+
+
+
+    const optionsCompany = useMemo(() => {
+        console.log(successCompany && companyData[0]?.id)
+        return companyData?.map(company => (
+            {
+                value: company?.id,
+                label: company?.title
+            }
+        ))
+    }, [companyData]);
+
+    const onChangeCompany=(value)=>{
+        setCompanyId(value)
+    }
+
     return (
         <Spin spinning={getBirthdayLoading || getMeetingLoading || getDeadlineLoading}>
             <Flex gap={10} vertical={true} className={'calendar-card'}>
@@ -92,6 +122,19 @@ const CalendarTask = () => {
                         <Title level={2} style={{marginBottom:0}}>
                             Календарь
                         </Title>
+                    </Col>
+                    <Col span={6}>
+
+                        <Select
+                            style={{
+                                width: '100%',
+                            }}
+                            defaultValue={successCompany && companyData[0]?.id}
+                            placeholder='Выберите компания'
+                            optionLabelProp='label'
+                            onChange={onChangeCompany}
+                            options={optionsCompany}
+                        />
                     </Col>
                 </Row>
                 <Flex align={'center'} gap={20}>

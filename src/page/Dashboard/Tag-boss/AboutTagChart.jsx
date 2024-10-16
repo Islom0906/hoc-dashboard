@@ -139,6 +139,7 @@ const AboutTagChart = ({data}) => {
                 },
             },
         },
+
     };
 
     const dataChart = useMemo(() => {
