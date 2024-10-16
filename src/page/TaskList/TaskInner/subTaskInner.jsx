@@ -98,7 +98,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, setWhichWriteID, inclu
                       </Flex>
                     </Flex>
                     {task?.messages.length > 0 && <Divider plain>Комментарии</Divider>}
-                    <Space size={'large'} direction={"vertical"} style={{ width: '100%' }}>
+                    <Space size={'large'} direction={"vertical"} style={{ width: '100%' ,  height:400 , overflowY:"scroll"}}>
                       {task?.messages?.map((message) => (
                           <CommentUser key={message?.id} comment={message} />
                       ))}

@@ -18,15 +18,7 @@ const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDT
     isSuccess: putProjectDoneSuccess
   } = useEditQuery()
   const roles = user?.roles[0]?.role?.name
-  const onChangeDoneProject = (id) => {
-    if (task_status === "done" && roles !== "staff") {
-      putProjectDone({url: `/users/tasks-update`, data: {status: 'progress'}, id})
-      setCheckedState((prevState) => ({...prevState, [id]: true}));
-    } else if (roles === "staff" || roles === "boss") {
-      putProjectDone({url: `/users/tasks-update`, data: {status: 'checking'}, id})
-      setCheckedState((prevState) => ({...prevState, [id]: true}));
-    }
-  }
+
   useEffect(() => {
     setCheckedState((prevState) => ({...prevState, [id]: task_status === 'checking' ? true : false}));
   }, [id])
@@ -57,6 +49,42 @@ const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDT
       <div>
         <Spin spinning={putProjectDoneLoading}>
           <Row style={{width: '100%'}}>
+            <Col span={24}>
+              {
+                task_status === 'checking' && (roles === 'admin' || creatBy?.id === user?.id  ) ?
+                    <>
+                      <Button type="primary" onClick={() => handleStatusDone(id)}>
+                        <IoMdCheckboxOutline />
+                      </Button>
+                      <Button color="danger" variant="solid" onClick={() => handleStatusProgress(id)}>
+                        <CgDanger />
+                      </Button>
+                    </>
+                    :
+                    <Tag color={'red'}>
+                      Checking
+                    </Tag>
+
+              }
+
+              {
+                task_status === 'checking' && task_status !== 'done' ?
+                    <Tag color={'red'}>
+                      Checking
+                    </Tag>
+                    :
+                    <Button type="primary" onClick={() => handleStatusChecking(id)}>
+                      <IoMdCheckboxOutline />
+                    </Button>
+              }
+              {
+                  task_status === 'done' &&
+                  <Tag color={'red'}>
+                    Done
+                  </Tag>
+
+              }
+            </Col>
             <Col span={20}>
               <Flex gap={20} align={"start"}>
                 {/*<Popconfirm*/}
@@ -93,38 +121,7 @@ const TaskHeader = ({title, text,  task_status , id ,showModal ,setWhichWriteIDT
                 {/*      </Button>*/}
                 {/*}*/}
 
-                {
-                  task_status === 'checking' && (roles === 'admin' || creatBy?.id === user?.id  ) ?
-                      <>
-                        <Button type="primary" onClick={() => handleStatusDone(id)}>
-                          <IoMdCheckboxOutline />
-                        </Button>
-                        <Button color="danger"  onClick={() => handleStatusProgress(id)}>
-                          <CgDanger />
-                        </Button>
-                      </>
-                     : ''
 
-                }
-
-                {/*{*/}
-                {
-                  task_status === 'checking' && task_status !== 'done' ?
-                      <Tag color={'red'}>
-                        Checking
-                      </Tag>
-                      :
-                          <Button type="primary" onClick={() => handleStatusChecking(id)}>
-                            <IoMdCheckboxOutline />
-                          </Button>
-                }
-                {
-                  task_status === 'done' &&
-                      <Tag color={'red'}>
-                        Done
-                      </Tag>
-
-                }
               </Flex>
             </Col>
           </Row>
