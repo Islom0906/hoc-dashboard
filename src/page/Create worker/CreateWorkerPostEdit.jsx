@@ -177,8 +177,6 @@ const CreateWorkerPostEdit = () => {
         } else {
             postCreateWorkerMutate({url: "/users/users/", data});
         }
-
-
     }
 
 

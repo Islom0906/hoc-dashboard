@@ -81,7 +81,6 @@ const CalendarTask = () => {
 
     useEffect(() => {
         if (successCompany){
-            console.log(companyData)
             setCompanyId(companyData[0]?.id)
         }
     }, [companyData]);
@@ -129,7 +128,7 @@ const CalendarTask = () => {
                             style={{
                                 width: '100%',
                             }}
-                            defaultValue={successCompany && companyData[0]?.id}
+                            value={companyId}
                             placeholder='Выберите компания'
                             optionLabelProp='label'
                             onChange={onChangeCompany}
