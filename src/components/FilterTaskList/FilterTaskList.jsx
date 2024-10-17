@@ -20,6 +20,7 @@ const deadlineTime = [
 ];
 const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , getTagCompany , setGetTagCompany ,getStaffForModuls =[] }) => {
   const dispatch = useDispatch()
+
   const {staffIDs} = useSelector(state => state.staffSlice)
   const deadlineColorArray = useMemo(() => {
     return Object.entries(deadlineColor).map(([key, value]) => ({
@@ -115,6 +116,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
               id="selectCompany"
               mode="multiple"
               allowClear
+
               style={{ width: '100%' }}
               placeholder="Выберите компанию"
               optionLabelProp="label"
@@ -132,6 +134,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
                   id="selectModulsStaff"
                   style={{ width: '100%' }}
                   mode="multiple"
+                  value={staffIDs? staffIDs:[]}
                   placeholder="Сотрудники"
                   optionLabelProp="label"
                   options={getModulsArray || []}

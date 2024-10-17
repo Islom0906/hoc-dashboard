@@ -15,9 +15,8 @@ const SmallProfileCard = ({staffID , avatar, fullName, position , done_tasks_cou
   const { data: { user } = {} } = useSelector((state) => state.auth);
   const handlerCard = () => {
     dispatch(selectStaffIDs(staffID))
-    // dispatch(selectModuls(modulID))
     if (user?.roles[0]?.role.name!=='boss'){
-    navigate(`/view-task-director?staff=${fullName}`)
+    navigate(`/view-task-director?staff=${staffID}`)
     }else{
       navigate('/taskEditBoss')
     }

@@ -71,7 +71,7 @@ const BossTracking = () => {
               Создать задачу
             </Button>
           </Col>
-        <FilterTaskList getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} getStaffForModuls={GetStaffForModuls?.results } />
+        <FilterTaskList  getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} getStaffForModuls={GetStaffForModuls?.results } />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>

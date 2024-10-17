@@ -19,6 +19,8 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     const [filterForColor, setFilterForColor] = useState('all');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: { user } } = useSelector(state => state.auth);
+    const {systemMode}=useSelector(state => state.theme)
+
     const dispatch = useDispatch();
     const changeMeeting = (e, id) => {
         e.stopPropagation();
@@ -59,7 +61,8 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
                     deadlineMap,
                     filterForColor,
                     colorMeeting,
-                    changeMeeting
+                    changeMeeting,
+                    systemMode
                 )}
                 onSelect={onSelect}
             />

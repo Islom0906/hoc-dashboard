@@ -133,7 +133,7 @@ const TaskCard = ({
                           <Col span={8}>
                               <Link to={`/task/add`}>
                                   <Button icon={<EditOutlined/>} style={{textAlign: "center", width: '100%'}}
-                                          type={"default"} onClick={Edit(id)}>
+                                          type={"default"} onClick={()=>Edit(id)}>
                                   </Button>
                               </Link>
                           </Col>

@@ -22,7 +22,6 @@ const TaskCreated = () => {
   const location = useReactLocation();
   const queryParams = new URLSearchParams(location.search);
   const staff = queryParams.get('staff');
-
   const [search, setSearch] = useState('');
   const [selectedOptionSearch, setSelectedOptionSearch] = useState('task');
   const [deadlineStatus, setDeadlineStatus] = useState('');
@@ -45,7 +44,7 @@ const TaskCreated = () => {
   const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
       false,
       'get-task',
-      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${getTagCompany && `&company__id=${getTagCompany}`}${debounceInputValue && `&${selectInputSearch[0].value === selectedOptionSearch ? 'search' : 'full_name'}=${debounceInputValue}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`} `,
+      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${getTagCompany && `&company__id=${getTagCompany}`}${debounceInputValue && `&${selectInputSearch[0].value === selectedOptionSearch ? 'search' : 'full_name'}=${debounceInputValue}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`}${staff ? `&user_id=${staff}`:''}`,
       false
   );
 
@@ -67,6 +66,7 @@ const TaskCreated = () => {
     if (staff) {
       setSelectedOptionSearch("staff");
       setSearch(staff);
+      refetch()
     }
   }, [staff]);
 

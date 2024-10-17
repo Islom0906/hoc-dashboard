@@ -1,8 +1,9 @@
 import {useMemo} from "react";
 import dayjs from "dayjs";
-import {Avatar, Button, Card, Flex, Popover, Tag, theme, Typography,} from "antd";
-import {FaBirthdayCake, FaExternalLinkAlt} from "react-icons/fa";
+import {Avatar, Button, Card, Flex, Popover, Space, Tag, theme, Typography,} from "antd";
+import {FaBirthdayCake} from "react-icons/fa";
 import {IoCalendarOutline} from "react-icons/io5";
+import {AvatarUserProfile} from "../../components";
 import {Link} from "react-router-dom";
 
 const {Title,Text}=Typography
@@ -33,29 +34,54 @@ const contentPopoverBirthday = (content) => {
     );
 };
 
-const contentPopoverDeadline = (deadline) => {
-
+const contentPopoverDeadline = (deadline, systemMode) => {
     return (
-        <>
-        <Flex align={"center"} justify={"space-between"}>
+        <Space size={5} direction={"vertical"}>
+            <Flex align={"center"} justify={"space-between"}>
             <Title level={5} style={{marginBottom:0}}>
                 {deadline?.title}
             </Title>
-            {/*<Text style={{fontSize: '11px'}} type={"secondary"}>*/}
-            {/*    срок: {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}*/}
-            {/*</Text>*/}
-            <Link to={`/task-list/${deadline?.id}`}>
-            <Button icon={<FaExternalLinkAlt/>} type={'success'} />
-            </Link>
+                <AvatarUserProfile size={18} key={deadline?.created_by?.id} full_name={deadline?.created_by?.full_name}
+                                   moduls={deadline?.created_by?.roles[0]?.module?.name}
+                                   image={deadline?.created_by?.image}/>
+
 
         </Flex>
         <Flex align={"center"} gap={5}>
-            <IoCalendarOutline/>
-            <Text>
+            <IoCalendarOutline style={{fontSize: 10}}/>
+            <Text style={{fontSize: 10}}>
                 {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}
             </Text>
         </Flex>
-        </>
+            <Flex align={"center"} gap={10} justify={"space-between"}>
+                <img style={{width: 18, height: 18, objectFit: 'cover'}}
+                     src={systemMode === 'dark' ? deadline?.company?.image_dark : deadline?.company?.image_light}
+                     alt={deadline?.company?.title}/>
+
+                <Avatar.Group size={"small"}>
+                    {deadline?.included_users?.map((user) => (
+                        <AvatarUserProfile size={18} key={user?.id} full_name={user?.full_name}
+                                           moduls={user?.roles?.[0]?.name} image={user?.image}/>
+
+                    ))}
+                </Avatar.Group>
+            </Flex>
+                <Flex justify={"end"}>
+            <Link to={`/task-list/${deadline?.id}`}>
+
+            <Button style={{
+                backgroundColor:'#fff',
+                color:'#000',
+                fontSize:10
+            }}
+            shape={'round'}
+                    size={'small'}
+            >
+                Подробнее
+            </Button>
+            </Link>
+                </Flex>
+        </Space>
     )
 
 }
@@ -137,7 +163,8 @@ export const dateCellRender = (
     deadlineMap,
     filterForColor,
     colorMeeting,
-    changeMeeting
+    changeMeeting,
+    systemMode
 ) => {
     const {
         token: {
@@ -145,7 +172,7 @@ export const dateCellRender = (
 
         },
     } = theme.useToken();
-    // const {systemMode}=useSelector(state => state.theme)
+    const today = value.isSame(new Date(), 'day');
     const birthdayStr = value.format('MM-DD');
     const dateStr = value.format('YYYY-MM-DD');
     let meetingsOnDate = [];
@@ -174,11 +201,9 @@ export const dateCellRender = (
 
 
 
-
-
     return (
         <div className={`custom-td`}>
-            <div className={'date-number'}>{value.date()}</div>
+            <div className={`date-number `}><span className={`${today ? 'today' : ""}`}>{value.date()}</span></div>
             <ul className="events" style={{color:colorTextCalendar}}>
 
                 {birthdaysOnDate?.map(birthday => (
@@ -208,16 +233,16 @@ export const dateCellRender = (
                 ))}
                 {deadlineOnDate?.map((deadline) => (
                         <Popover
+                            className={'deadline-popover'}
                             trigger={'click'}
                             placement={"topLeft"}
                             key={deadline?.id}
-                            content={contentPopoverDeadline(deadline)}
+                            content={contentPopoverDeadline(deadline, systemMode)}
                             style={{
                                 border: `1px , solid ${colorMeeting.deadline.color}`,
-                                backgroundColor:'red'
-                        }}
+                            }}
                         >
-                            <li  className={'deadline'}>
+                            <li className={'deadline'} onClick={(e) => e.stopPropagation()}>
 
                             <Flex gap={2} align={"center"}>
 

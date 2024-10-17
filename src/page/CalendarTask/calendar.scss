@@ -5,6 +5,7 @@ $birthdayBgColor:#000;
 $deadlineBorderColor:#000;
 $deadlineBgColor:#000;
 $tableBorder:#000;
+$activeDay:#000;
 
 .calendar-card{
   //height: calc(100vh - 200px);
@@ -62,6 +63,15 @@ $tableBorder:#000;
   padding:  3px 1px;
   .date-number{
     font-size: 14px;
+    padding: 5px;
+
+  }
+  .today{
+    padding: 5px;
+
+    border-radius: 100%;
+    background-color: var(--activeDay);
+    color: #fff;
   }
 
   .events {
@@ -106,6 +116,10 @@ $tableBorder:#000;
   border-left: 4px solid var(--deadlineBorderColor);
   background-color: var(--deadlineBgColor);
   border-radius: 3px;
+}
+
+.deadline-popover .ant-popover-inner {
+  background-color: #f10000; /* Your desired background color */
 }
 
 .popover-card{

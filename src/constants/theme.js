@@ -11,6 +11,7 @@ export const configLight = {
     deadlineBorderColor: '#BD3636',
     deadlineBgColor: '#BD363633',
     tableBorder:'#A4B9D14D',
+    activeDay:"#76BC33",
     // status task
     allTask: '#646464',
     allTaskHover:"#64646433",
@@ -138,6 +139,8 @@ export const configDark = {
     deadlineBorderColor: '#BD3636',
     deadlineBgColor: '#BD3636B2',
     tableBorder:'#A4B9D14D',
+    activeDay:"#76BC33",
+
     // task status
     allTask: '#646464',
     allTaskHover:"#64646433",

@@ -34,7 +34,7 @@ const CalendarTask = () => {
             birthdayBgColor,
             deadlineBorderColor,
             deadlineBgColor,
-            tableBorder
+            tableBorder,activeDay
         },
     } = theme.useToken();
 
@@ -94,6 +94,7 @@ const CalendarTask = () => {
         document.documentElement.style.setProperty('--deadlineBorderColor', deadlineBorderColor);
         document.documentElement.style.setProperty('--deadlineBgColor', deadlineBgColor);
         document.documentElement.style.setProperty('--tableBorder', tableBorder);
+        document.documentElement.style.setProperty('----activeDayBackground', activeDay);
 
     }, [systemMode]);
 
