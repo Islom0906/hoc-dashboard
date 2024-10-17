@@ -6,7 +6,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
-import {FilterCompanyForAdmin} from "../../components";
 
 const {Title} = Typography
 
@@ -54,7 +53,6 @@ const Company = () => {
                             Компания
                         </Title>
                     </Col>
-                    <FilterCompanyForAdmin/>
 
                     <Col span={16}>
                         <Input placeholder="Поиск компании" onChange={(e) => searchFunc(e.target.value)}/>
