@@ -63,9 +63,7 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    console.log(companyID)
     if (roleName === 'general_director' && companyID) {
-      console.log(1)
       refetchGetCompanyByIDStatistics()
     }
   }, [valueYear, valueMonth, companyID])

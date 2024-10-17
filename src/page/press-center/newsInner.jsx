@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Avatar, Button, Col, Flex, Row, Space, Tag, Typography} from "antd";
+import {Avatar, Button, Col, Flex, Row, Space, Spin, Tag, Typography} from "antd";
 import './press-center.scss';
 import {useEditQuery, useGetByIdQuery, useGetQuery} from "../../service/query/Queries";
 import dayjs from "dayjs";
@@ -33,80 +33,89 @@ const NewsInner = () => {
     }, [user]);
 
     const onView = () => {
-        putCompany({url: `/users/news` , id: item})
+        putCompany({url: `/users/news-views` , id: item})
     }
+
+    useEffect(() => {
+        if (putCompanySuccess){
+            refetchGetByIdNews()
+        }
+    }, [putCompanySuccess]);
 
     return (
         <>
-            <Row gutter={[10, 30]}>
-                <Col span={24}>
-                    {
-                        getByIdNews?.image &&
-                        <img src={getByIdNews?.image} alt={getByIdNews?.title}
-                             style={{width: '100%', minHeight: 250, objectFit: "cover", objectPosition: 'top center'}}/>
-
-                    }
-                    <Title level={2}>
-                        {getByIdNews?.title}
-                    </Title>
-                    <Flex justify={"start"} align={"center"} gap={3}>
-                        <IoCalendarOutline />
-                        <Text type={"secondary"}>
-                            {dayjs(getByIdNews?.created_at).format('DD.MM.YYYY')}
-                        </Text>
-                    </Flex>
-                    {
-                        role === 'staff' || role ==='boss' ?
-                        <Flex justify={"start"} align={"center"} gap={3}>
-                        <FaRegEye />
-                        <Text type={"secondary"}>
-                            {getByIdNews?.views}
-                        </Text>
-                        </Flex>
-                            :
-                            <Flex justify={"start"}>
-                                <Avatar.Group size={"large"}>
-                                    {getByIdNews?.views?.map(user => (
-                                        <AvatarUserProfile
-                                            key={user?.id}
-                                            full_name={user?.full_name}
-                                            roles={user?.position}
-                                            image={user?.image}
-                                        />
-                                    ))}
-                                </Avatar.Group>
-                            </Flex>
-                    }
-                </Col>
-
-                <Col span={24}>
-                    <Flex gap={20} vertical={true} >
-                        <Text >
-                            {getByIdNews?.text}
-                        </Text>
-                        <Flex style={{width:300}}>
-                            {
-                                getByIdNews?.file &&
-                                <Tag color={'blue'} icon={<CiLink />} style={{display:"flex" , alignItems:'center' , gap:5}}>
-                                    <a href={getByIdNews?.file} download={true} target={"_blank"} style={{display:"inline"}}>
-                                        {getByIdNews?.file}
-                                    </a>
-                                </Tag>
-                            }
-
-                        </Flex>
-
+            <Spin spinning={isLoadingGetByIdNews||putCompanyLoading}>
+                <Row gutter={[10, 30]}>
+                    <Col span={24}>
                         {
-                            !getByIdNews?.is_read &&
-                            <Button onClick={onView} type={'primary'}>
-                                Я ознакомился
-                            </Button>
+                            getByIdNews?.image &&
+                            <img src={getByIdNews?.image} alt={getByIdNews?.title}
+                                 style={{width: '100%', minHeight: 250, objectFit: "cover", objectPosition: 'top center'}}/>
+
                         }
-                    </Flex>
+                        <Title level={2}>
+                            {getByIdNews?.title}
+                        </Title>
+                        <Flex justify={"start"} align={"center"} gap={3}>
+                            <IoCalendarOutline />
+                            <Text type={"secondary"}>
+                                {dayjs(getByIdNews?.created_at).format('DD.MM.YYYY')}
+                            </Text>
+                        </Flex>
+                        {
+                            role === 'staff' || role ==='boss' ?
+                                <Flex justify={"start"} align={"center"} gap={3}>
+                                    <FaRegEye />
+                                    <Text type={"secondary"}>
+                                        {getByIdNews?.views}
+                                    </Text>
+                                </Flex>
+                                :
+                                <Flex justify={"start"}>
+                                    <Avatar.Group size={"large"}>
+                                        {getByIdNews?.views?.map(user => (
+                                            <AvatarUserProfile
+                                                key={user?.id}
+                                                full_name={user?.full_name}
+                                                roles={user?.position}
+                                                image={user?.image}
+                                            />
+                                        ))}
+                                    </Avatar.Group>
+                                </Flex>
+                        }
+                    </Col>
 
-                </Col>
+                    <Col span={24}>
+                        <Flex gap={20} vertical={true} >
+                            <Text >
+                                {getByIdNews?.text}
+                            </Text>
+                            <Flex style={{width:300}}>
+                                {
+                                    getByIdNews?.file &&
+                                    <Tag color={'blue'} icon={<CiLink />} style={{display:"flex" , alignItems:'center' , gap:5}}>
+                                        <a href={getByIdNews?.file} download={true} target={"_blank"} style={{display:"inline"}}>
+                                            {getByIdNews?.file}
+                                        </a>
+                                    </Tag>
+                                }
 
-            </Row>
+                            </Flex>
+
+                            {
+                                !getByIdNews?.is_read &&
+                                <Button onClick={onView} type={'primary'}>
+                                    Я ознакомился
+                                </Button>
+                            }
+                        </Flex>
+
+                    </Col>
+
+                </Row>
+            </Spin>
+
         </>
     );
 };

@@ -14,7 +14,6 @@ const {Title} = Typography
 const Company = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {companyID} = useSelector(state => state.companySlice)
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     const {data,isLoading:getCompanyLoading,refetch}=useGetQuery(false,'company-get',`/users/companies`,false)
     const [search, setSearch] = useState([]);

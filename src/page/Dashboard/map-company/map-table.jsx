@@ -1,4 +1,4 @@
-import {Button, Popconfirm, Space, Table} from "antd";
+import {Button, Image, Popconfirm, Space, Table} from "antd";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import React from "react";
 import {editIdQuery} from "../../../store/slice/querySlice";
@@ -6,50 +6,12 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
 
-const dataSource = [
-  {
-    key: '1',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street',
-  },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
-  },
-  {
-    key: '1000',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street',
-  },
-  {
-    key: '2000',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
-  },
-  {
-    key: '10',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street',
-  },
-  {
-    key: '20',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
-  },
-];
 
-const MapTable = () => {
+const MapTable = ({data,deleteHandle}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const Delete = async (id) => {
-    // deleteHandle('/users/tag',id)
+    deleteHandle('/users/offices',id)
   };
   const Edit = (id) => {
     localStorage.setItem('editDataId',id)
@@ -57,23 +19,26 @@ const MapTable = () => {
     navigate('/map-add')
   };
 
-
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Заголовок',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Изображение',
+      dataIndex: 'image',
+      id: 'image',
+      render: (image) => {
+        return (
+            <Image
+                width={50}
+                height={50}
+                src={image}
+            />
+        )},
     },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+
     {
       title: 'Редактировать',
       id: 'action',
@@ -97,7 +62,7 @@ const MapTable = () => {
 
   return (
       <div>
-        <Table dataSource={dataSource} columns={columns} pagination={false} />
+        <Table dataSource={data} columns={columns} pagination={false} rowKey={(record) => record.id}/>
       </div>
   );
 };

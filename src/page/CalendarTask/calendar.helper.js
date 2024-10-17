@@ -1,7 +1,9 @@
-import { useMemo} from "react";
+import {useMemo} from "react";
 import dayjs from "dayjs";
-import {Button, Card, Flex, Popover, Typography, Tag, Avatar, Switch, theme,} from "antd";
+import {Avatar, Button, Card, Flex, Popover, Tag, theme, Typography,} from "antd";
 import {FaBirthdayCake, FaExternalLinkAlt} from "react-icons/fa";
+import {IoCalendarOutline} from "react-icons/io5";
+import {Link} from "react-router-dom";
 
 const {Title,Text}=Typography
 const contentPopoverBirthday = (content) => {
@@ -31,13 +33,35 @@ const contentPopoverBirthday = (content) => {
     );
 };
 
-const contentPopoverDeadline = () => {
+const contentPopoverDeadline = (deadline) => {
+
+    return (
+        <>
+        <Flex align={"center"} justify={"space-between"}>
+            <Title level={5} style={{marginBottom:0}}>
+                {deadline?.title}
+            </Title>
+            {/*<Text style={{fontSize: '11px'}} type={"secondary"}>*/}
+            {/*    срок: {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}*/}
+            {/*</Text>*/}
+            <Link to={`/task-list/${deadline?.id}`}>
+            <Button icon={<FaExternalLinkAlt/>} type={'success'} />
+            </Link>
+
+        </Flex>
+        <Flex align={"center"} gap={5}>
+            <IoCalendarOutline/>
+            <Text>
+                {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}
+            </Text>
+        </Flex>
+        </>
+    )
 
 }
 
 const contentPopoverMeeting = ({meeting}) => {
 
-    console.log(meeting)
     return(
     <Card
         style={{
@@ -73,7 +97,6 @@ export const useBirthdayMap = (dataBirthDay) => {
         return dataBirthDay?.reduce((acc, birthday) => {
             const parsedDate = dayjs(birthday.birthday, 'DD.MM.YYYY');
             if (!parsedDate.isValid()) {
-                console.warn(`Invalid Date: ${birthday.birthday}`);
                 return acc;
             }
             const key = parsedDate.format('MM-DD');
@@ -159,53 +182,51 @@ export const dateCellRender = (
             <ul className="events" style={{color:colorTextCalendar}}>
 
                 {birthdaysOnDate?.map(birthday => (
-                    <li key={birthday.id} className={'birthday'}>
                         <Popover key={birthday?.id} content={contentPopoverBirthday(birthday)}>
+                            <li className={'birthday'}>
                             <Flex gap={2} align={"center"}>
 
                                 <Text type="" >
                                     {birthday.first_name} {birthday.last_name}
                                 </Text>
                             </Flex>
+                            </li>
                         </Popover>
-                    </li>
 
                 ))}
                 {meetingsOnDate?.map((meeting) => (
+                    <Popover key={meeting?.id} content={contentPopoverMeeting(meeting)}>
                     <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id} className={'meeting'}>
-                        <Popover content={contentPopoverMeeting(meeting)}>
                             <Flex gap={2} align={"center"}>
 
                                 <Text >
                                     {meeting.title}
                                 </Text>
                             </Flex>
-                        </Popover>
                     </li>
+                        </Popover>
                 ))}
                 {deadlineOnDate?.map((deadline) => (
-                    <li key={deadline.id} className={'deadline'}>
-                        <Popover key={deadline?.id} content={contentPopoverDeadline(deadline)}
-                                 title={<div>
-                                     <Title level={5}>
-                                         {deadline?.title}
-                                     </Title>
-                                     <Text style={{fontSize: '11px'}} type={"secondary"}>
-                                         срок: {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}
-                                     </Text>
-                                     <Button type={'success'} href={`/task-list/${deadline?.id}`}>
-                                         <FaExternalLinkAlt/>
-                                     </Button>
-                                 </div>}
-                                 style={{border: `1px , solid ${colorMeeting.deadline.color}`}}>
+                        <Popover
+                            trigger={'click'}
+                            placement={"topLeft"}
+                            key={deadline?.id}
+                            content={contentPopoverDeadline(deadline)}
+                            style={{
+                                border: `1px , solid ${colorMeeting.deadline.color}`,
+                                backgroundColor:'red'
+                        }}
+                        >
+                            <li  className={'deadline'}>
+
                             <Flex gap={2} align={"center"}>
 
                                 <Text >
                                     {deadline.title}
                                 </Text>
                             </Flex>
+                            </li>
                         </Popover>
-                    </li>
                 ))}
             </ul>
         </div>

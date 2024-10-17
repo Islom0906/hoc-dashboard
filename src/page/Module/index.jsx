@@ -1,12 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Button, Col, Input,  Row, Select, Space, Spin, Typography} from "antd";
-import React, {useEffect, useMemo, useState} from "react";
+import {Button, Col, Input,  Row, Space, Spin, Typography} from "antd";
+import React, {useEffect, useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import ModuleTable from "./ModuleTable";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
-import {FilterCompanyForAdmin} from "../../components";
 const {Title}=Typography
 
 
@@ -60,7 +59,6 @@ const CreateWorker = () => {
                             Отделы
                         </Title>
                     </Col>
-                    <FilterCompanyForAdmin/>
                     <Col span={16}>
                         <Input placeholder="Поиск отделов" onChange={(e) => searchFunc(e.target.value)}/>
                     </Col>

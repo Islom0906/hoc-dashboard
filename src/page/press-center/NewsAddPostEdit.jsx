@@ -1,32 +1,27 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Card, Col, Form, Modal, Row, Select, Upload} from "antd";
+import React, {useEffect, useState} from 'react';
+import {Button, Col, Form, Row, Upload} from "antd";
 
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
-import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
-import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
-import {PlusOutlined} from "@ant-design/icons";
-
+import {useDeleteQuery, useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Queries";
+import {EditGetById, onPreviewImage, SetInitialValue} from "../../hooks";
+import {editIdQuery} from "../../store/slice/querySlice";
 
 
 const initialValueForm = {
     title: "",
     text: "",
-    items: [
-        {
-            files: []
-        }
-    ]
+    image: [],
+    file: []
 }
 
 
-
-
-
-const NewsAddPostEdit = ({link}) => {
+const NewsAddPostEdit = ({setIsModalOpen, refetchGetNews, isAddModalOpen}) => {
     const imageInitial = {
-        files: [[]],
+        file: [],
+        image: []
     }
+    const dispatch = useDispatch()
     const [form] = Form.useForm();
     const {editId} = useSelector(state => state.query)
     const [fileListProps, setFileListProps] = useState(imageInitial);
@@ -43,7 +38,7 @@ const NewsAddPostEdit = ({link}) => {
         data: editNewsData,
         refetch: editNewsRefetch,
         isSuccess: editNewsSuccess
-    } = useGetByIdQuery(false, "edit-news", editId, '/users/')
+    } = useGetByIdQuery(false, "edit-news", editId, '/users/news')
     // put-query
     const {
         mutate: putNews,
@@ -62,40 +57,54 @@ const NewsAddPostEdit = ({link}) => {
     const {mutate: imagesDeleteMutate} = useDeleteQuery()
     // ================================ useEffect =============================
 
-    // news success
-    SuccessCreateAndEdit(postNewsSuccess, putNewsSuccess, link)
     // if edit news
     EditGetById(editNewsRefetch)
     // if no edit news
     SetInitialValue(form, initialValueForm)
+    // news success
+    useEffect(() => {
+        if (putNewsSuccess) {
+            dispatch(editIdQuery(''))
+        }
+
+        if (postNewsSuccess || putNewsSuccess) {
+            form.setFieldsValue(initialValueForm)
+            setFileListProps(imageInitial)
+            localStorage.removeItem('editDataId')
+            setIsModalOpen(false)
+            refetchGetNews()
+        }
+    }, [postNewsSuccess, putNewsSuccess])
 
 
     //edit news
     useEffect(() => {
         if (editNewsSuccess) {
-            const files = editNewsData?.items?.map(item => {
-                let fileEdit = []
-                item.files?.map((fileId) => {
-                    fileEdit.push({
-                        uid: fileId?.id,
-                        name: fileId?.id,
-                        status: "done",
-                        url: fileId.file
-                    })
-                })
-                return fileEdit
-            })
 
 
+            const file = [{
+                uid: editNewsData?.file?.id,
+                name: editNewsData?.file?.id,
+                status: "done",
+                url: editNewsData?.file?.image
+            }];
+            const image = [{
+                uid: editNewsData?.image?.id,
+                name: editNewsData?.image?.id,
+                status: "done",
+                url: editNewsData?.image?.image
+            }];
+            let checkFile = editNewsData?.file ? file : []
             const edit = {
                 title: editNewsData.title,
                 text: editNewsData.text,
+                file: checkFile,
+                image
 
-                items:editNewsData.items
             }
 
             setFileListProps({
-                files
+                file: checkFile, image
             })
             form.setFieldsValue(edit)
         }
@@ -103,53 +112,51 @@ const NewsAddPostEdit = ({link}) => {
     }, [editNewsData])
 
     const onFinish = (value) => {
+        const getFileUid = (file) => (Array.isArray(file) ? file[0]?.uid : file?.uid);
         const data = {
             ...value,
-            items: value?.items.map((item, ind) => ({
-                files: fileListProps.files[ind].map((imageId) => imageId.uid)
-            })),
+            file: value.file.length > 0 ? getFileUid(fileListProps.file) : null,
+            image: getFileUid(fileListProps.image),
         }
 
         if (editNewsData) {
-            putNews({url: '/users/', data, id: editId})
+            putNews({url: '/users/news', data, id: editId})
         } else {
-            postNewsMutate({url: "/users/", data});
+            postNewsMutate({url: "/users/news/", data});
         }
     }
 
 
     // refresh page again get data
-    useEffect(() => {
-
-
-        const handleBeforeUnload = (event) => {
-            event.preventDefault()
-
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            setFileListProps(imageInitial)
-            localStorage.removeItem('editDataId')
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        }
-    }, []);
+    // useEffect(() => {
+    //
+    //
+    //     const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
+    //     if (storedValues) {
+    //         form.setFieldsValue(storedValues);
+    //     }
+    //
+    //     const handleBeforeUnload = () => {
+    //         localStorage.setItem(
+    //             'myFormValues',
+    //             JSON.stringify(form.getFieldsValue()),
+    //         );
+    //     };
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+    //     return () => {
+    //         console.log('render')
+    //         localStorage.removeItem('editDataId')
+    //         localStorage.removeItem('myFormValues')
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     }
+    // }, []);
     // image
 
-    const changeFieldValue = (name, value, index) => {
-        if (name === 'files') {
-
-            const getValueFiles = form.getFieldValue('items')
-            if (!getValueFiles[index].files.length) {
-                getValueFiles[index].files = []
-            }
-            getValueFiles[index].files.push(value)
-            form.setFieldsValue({
-                items: [
-                    ...getValueFiles,
-                ]
-            });
+    const changeFieldValue = (name, value) => {
+        if (name === 'file') {
+            form.setFieldsValue({file: value});
+        } else if (name === 'image') {
+            form.setFieldsValue({image: value});
         }
     }
 
@@ -167,17 +174,17 @@ const NewsAddPostEdit = ({link}) => {
                 url: imagesUpload?.image
 
             }
-            if (initialImage[isUpload][mainIndex]===undefined){
-                initialImage[isUpload][mainIndex]=[]
+            if (mainIndex !== null) {
+                initialImage[isUpload][mainIndex] = [uploadImg]
+            } else {
+                initialImage[isUpload].push(uploadImg)
             }
-            initialImage[isUpload][mainIndex]?.push(uploadImg)
             changeFieldValue(isUpload, [uploadImg], mainIndex)
             setFileListProps(initialImage);
             setIsUpload("")
             setMainIndex(null)
         }
     }, [imagesUpload]);
-
     const onChangeImage = (info, name, index = null, multiple = false) => {
         const {fileList: newFileList, file} = info
         const formData = new FormData();
@@ -190,38 +197,40 @@ const NewsAddPostEdit = ({link}) => {
                 }
             })
         }
-
+        console.log(fileListProps)
         if (file?.status === 'removed') {
             const deleteImageFileProps = {...fileListProps}
-            changeFieldValue(name, {}, index)
-            id = fileListProps[name][index][multipleDeleteIndex]?.uid
-            deleteImageFileProps[name][index].splice(multipleDeleteIndex, 1)
-            imagesDeleteMutate({url: "/users/files", id});
+            if (index === null) {
+                changeFieldValue(name, {}, index)
+
+                id = multiple ? [fileListProps[name][multipleDeleteIndex]?.uid] : [fileListProps[name][0]?.uid]
+
+                if (multiple) {
+                    deleteImageFileProps[name].splice(multipleDeleteIndex, 1)
+                } else {
+                    deleteImageFileProps[name] = []
+                }
+
+            }
+            if (name === 'image') {
+                imagesDeleteMutate({url: "/users/images", id});
+            } else {
+                imagesDeleteMutate({url: "/users/files", id});
+            }
             setFileListProps(deleteImageFileProps)
         } else if (newFileList.length !== 0 && newFileList[newFileList.length - 1].originFileObj) {
             formData.append("image",  newFileList[newFileList.length - 1].originFileObj );
-            imagesUploadMutate({url: "/users/files/", data: formData});
+            if (name === 'image') {
+                imagesUploadMutate({url: "/users/images/", data: formData});
+            } else {
+                imagesUploadMutate({url: "/users/files/", data: formData});
+            }
             setIsUpload(name)
             setMainIndex(index)
         }
 
     };
 
-    const handleRemove = (name, remove, index, fileName) => {
-        const deleteImage = {...fileListProps}
-        const deleteImageUID = deleteImage[fileName][index]
-        if (deleteImageUID) {
-
-            deleteImage[fileName].splice(index, 1)
-            const id = {
-                ids: [deleteImageUID[0]?.uid]
-            };
-            imagesDeleteMutate({url: "/users/files", id});
-            setFileListProps(deleteImage)
-        }
-
-        remove(name);
-    };
 
 
 
@@ -270,60 +279,45 @@ const NewsAddPostEdit = ({link}) => {
                             name={'text'}
                         />
                     </Col>
-
-
-                    <Col span={24} style={{marginTop:20}}>
-
-                        <Card bordered={true} >
-                            <Form.List name="items">
-                                {(fields, {add, remove}) => (
-                                    <>
-                                        {fields.map((field, index) => (
-                                            <Row key={field.key} gutter={20} >
-
-
-                                                <Col span={24}>
-
-                                                    <Form.Item
-                                                        label={`Необходимые изображения #${index + 1}`}
-                                                        name={[field.name, 'files']}
-                                                        rules={[{required: true, message: 'Требуется изображение'}]}
-                                                    >
-                                                        <Upload
-                                                            maxCount={5}
-                                                            fileList={fileListProps?.files ? fileListProps?.files[index] : []}
-                                                            listType='picture-card'
-                                                            onChange={(file) => onChangeImage(file, "files", index, true)}
-                                                            onPreview={onPreviewImage}
-                                                            beforeUpload={() => false}
-                                                        >
-                                                            {fileListProps?.files[index]?.length > 4 ? "" : "Upload"}
-                                                        </Upload>
-                                                    </Form.Item>
-                                                </Col>
-
-
-                                                <Col span={24}>
-                                                    {index > 0 && (
-                                                        <Button type="danger"
-                                                                onClick={() => handleRemove(field.name, remove, index, 'files')}>
-                                                            Удалить
-                                                        </Button>
-                                                    )}
-                                                </Col>
-                                            </Row>
-                                        ))}
-
-                                        <Form.Item>
-                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined/>}>
-                                                Добавить характеристику
-                                            </Button>
-                                        </Form.Item>
-                                    </>
-                                )}
-                            </Form.List>
-                        </Card>
+                    <Col span={12}>
+                        <Form.Item
+                            label={`Необходимые изображения `}
+                            name={'image'}
+                            rules={[{required: true, message: 'Требуется изображение'}]}
+                        >
+                            <Upload
+                                maxCount={1}
+                                fileList={fileListProps?.image ? fileListProps?.image : []}
+                                listType='picture-card'
+                                onChange={(file) => onChangeImage(file, "image", null, false)}
+                                onPreview={onPreviewImage}
+                                beforeUpload={() => false}
+                            >
+                                {fileListProps?.image?.length > 0 ? "" : "Upload"}
+                            </Upload>
+                        </Form.Item>
                     </Col>
+                    <Col span={12}>
+
+                        <Form.Item
+                            label={`Необходимые файл `}
+                            name={'file'}
+
+                        >
+                            <Upload
+                                maxCount={1}
+                                fileList={fileListProps?.file ? fileListProps?.file : []}
+                                listType='picture-card'
+                                onChange={(file) => onChangeImage(file, "file", null, false)}
+                                onPreview={onPreviewImage}
+                                beforeUpload={() => false}
+                            >
+                                {fileListProps?.file?.length > 0 ? "" : "Upload"}
+                            </Upload>
+                        </Form.Item>
+                    </Col>
+
+
                 </Row>
 
 

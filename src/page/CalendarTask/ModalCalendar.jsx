@@ -14,7 +14,7 @@ const initialValueForm = {
     title: "",
     text: "",
     meeting_date: "",
-    company: null,
+    companies: null,
     tag: '',
     users: []
 }
@@ -118,7 +118,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
         if (companyID) {
             refetchRequiredUser()
         }
-        if (user?.roles[0]?.role?.name === 'general_director'&&isModalOpen) {
+        if (isModalOpen) {
             refetchCompanyData()
 
         }
@@ -136,12 +136,18 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                 setIsMultipleSelect('allUser')
                 isAllUser = true
             }
+            const companyIdSelect=editModalMeetingData?.companies.map(company=>{
+                return company.id
+            })
+            const usersIdSelect=editModalMeetingData?.users.map(user=>{
+                return user.id
+            })
             const edit = {
                 title: editModalMeetingData?.title,
                 text: editModalMeetingData?.text,
-                company: editModalMeetingData?.company,
+                companies: companyIdSelect,
                 meeting_date: dayjs(editModalMeetingData?.meeting_date),
-                users: isAllUser > 0 ? [""] : editModalMeetingData?.users
+                users: isAllUser > 0 ? [""] : usersIdSelect
             }
             form.setFieldsValue(edit)
         }
@@ -167,12 +173,11 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                 allUser = true
             }
         })
-        console.log(value?.users)
         const data = {
             title: value.title,
             text: value.text,
             meeting_date: formatDate,
-            company: user?.roles[0]?.role?.name === 'general_director' ? value.company : companyID,
+            companies: value.companies,
             users: isMultipleSelect === 'allUser'  ? [] : value?.users
         }
         if (editModalMeetingData) {
@@ -309,13 +314,11 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                                 name={'text'}
                             />
                         </Col>
-                        {
-                            user?.roles[0]?.role?.name === 'general_director'
-                            &&
+
                             <Col span={24}>
                                 <Form.Item
                                     label={'Компания'}
-                                    name={'company'}
+                                    name={'companies'}
                                     rules={[{
                                         required: true, message: 'Выберите компания'
                                     }]}
@@ -335,7 +338,6 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                                     />
                                 </Form.Item>
                             </Col>
-                        }
 
                             <Col span={24}>
                                 <Form.Item

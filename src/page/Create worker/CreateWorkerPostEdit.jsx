@@ -115,10 +115,10 @@ const CreateWorkerPostEdit = () => {
                 position: editCreateWorkerData?.roles[0]?.position,
             }]
             const image = [{
-                uid: editCreateWorkerData?.images?.id,
-                name: editCreateWorkerData?.images?.id,
+                uid: editCreateWorkerData?.image?.id,
+                name: editCreateWorkerData?.image?.id,
                 status: "done",
-                url: editCreateWorkerData.images?.image
+                url: editCreateWorkerData.image?.image
             }];
             // 2-reliz
             // editCreateWorkerData?.roles?.map(role => {
@@ -141,10 +141,9 @@ const CreateWorkerPostEdit = () => {
                 password: editCreateWorkerData?.password,
                 roles
             }
-            if (roles[0]?.module === null) {
+            if (!roles[0]?.module) {
                 setIsAddDirector(true)
             }
-            console.log(roles)
             setCompanyId(editCreateWorkerData?.roles[0]?.company?.id)
             setFileListProps(image)
             form.setFieldsValue(edit)
@@ -228,7 +227,6 @@ const CreateWorkerPostEdit = () => {
 
     const onChangeImage = ({fileList: newFileList}) => {
         const formData = new FormData();
-        console.log(fileListProps)
         if (fileListProps.length !== 0 || newFileList.length === 0) {
             form.setFieldsValue({image: []});
             const id = [fileListProps[0]?.uid];

@@ -74,7 +74,6 @@ const Support = () => {
     }
   } , [checkInfo])
 
-  console.log('user?.roles[0]?.role?.name', user?.roles[0]?.role?.name)
 
   return (
       <Spin spinning={postCommentLoading}>

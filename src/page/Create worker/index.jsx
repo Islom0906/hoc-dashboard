@@ -57,7 +57,7 @@ const CreateWorker = () => {
                              Cотрудника
                         </Title>
                     </Col>
-                    <FilterCompanyForAdmin/>
+                    {/*<FilterCompanyForAdmin/>*/}
                     <Col span={16}>
                         <Input placeholder="Поиск сотрудников" onChange={(e) => searchFunc(e.target.value)} />
                     </Col>

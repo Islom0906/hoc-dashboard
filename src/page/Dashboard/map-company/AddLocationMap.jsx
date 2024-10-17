@@ -1,23 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Col, Form, Row, Select} from "antd";
+import {Button, Col, Form, Row, Upload} from "antd";
 import L from 'leaflet';
-import {AppLoader, FormInput, FormInputNumber} from "../../../components";
+import {AppLoader, FormInput} from "../../../components";
 import {useSelector} from "react-redux";
-import {EditGetById,  SetInitialValue, SuccessCreateAndEdit} from "../../../hooks";
-import { useEditQuery, useGetByIdQuery, usePostQuery} from "../../../service/query/Queries";
+import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../../hooks";
+import {useDeleteQuery, useEditQuery, useGetByIdQuery, usePostQuery} from "../../../service/query/Queries";
 import {MapContainer, Marker, TileLayer, useMap, useMapEvents} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 
 
 const initialValueForm = {
-  nameRu:"",
-  nameUz:"",
-  addressRu:"",
-  addressUz:"",
-  workingTime:"",
-  tel:"",
-  latlng:[],
-  link:""
+  title: "",
+  latlng: "",
+  image: ""
 };
 
 function SetViewOnClick({ coords }) {
@@ -26,10 +21,17 @@ function SetViewOnClick({ coords }) {
   return null;
 }
 
-const AddLocationMap = ({setIsModalOpen}) => {
+const AddLocationMap = () => {
+  const imageInitial = {
+    image: []
+  }
   const [form] = Form.useForm();
   const {editId} = useSelector(state => state.query)
   const [position, setPosition] = useState([40.7821 ,72.3500])
+  const [fileListProps, setFileListProps] = useState(imageInitial);
+  const [isUpload, setIsUpload] = useState("")
+  const [mainIndex, setMainIndex] = useState(null)
+
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
@@ -45,74 +47,84 @@ const AddLocationMap = ({setIsModalOpen}) => {
 
   const customIcon = new L.Icon({
     iconUrl: '/location.png',
-    iconSize: [30, 30]
+    iconSize: [20, 20]
   });
   // query-map
   const {
-    mutate: postMapMutate,
-    isLoading: postMapLoading,
-    isSuccess: postMapSuccess
+    mutate: postOfficeMutate,
+    isLoading: postOfficeLoading,
+    isSuccess: postOfficeSuccess
   } = usePostQuery()
   // query-edit
   const {
-    isLoading: editMapLoading,
-    data: editMapData,
-    refetch: editMapRefetch,
-    isSuccess: editMapSuccess
-  } = useGetByIdQuery(false, "edit-map", editId, '/map')
+    isLoading: editOfficeLoading,
+    data: editOfficeData,
+    refetch: editOfficeRefetch,
+    isSuccess: editOfficeSuccess
+  } = useGetByIdQuery(false, "edit-map", editId, '/users/offices')
   // put-query
   const {
-    mutate: putMapHome,
-    isLoading: putMapHomeLoading,
-    isSuccess: putMapHomeSuccess
+    mutate: putOfficeHome,
+    isLoading: putOfficeHomeLoading,
+    isSuccess: putOfficeHomeSuccess
   } = useEditQuery()
+  // post image
+  const {
+    mutate: imagesUploadMutate,
+    isSuccess: imagesUploadSuccess,
+    data: imagesUpload
+  } = usePostQuery()
 
+  //delete image
+  const {mutate: imagesDeleteMutate} = useDeleteQuery()
 
   // ================================ useEffect =============================
 
   // map success
-  SuccessCreateAndEdit(postMapSuccess, putMapHomeSuccess, '/dashboard')
+  SuccessCreateAndEdit(postOfficeSuccess, putOfficeHomeSuccess, '/press-center')
   // if edit map
-  EditGetById(editMapRefetch)
+  EditGetById(editOfficeRefetch)
   // if no edit map
   SetInitialValue(form, initialValueForm)
 
 
   //edit map
   useEffect(() => {
-    if (editMapSuccess) {
+    if (editOfficeSuccess) {
+      const image = [{
+        uid: editOfficeData?.image?.id,
+        name: editOfficeData?.image?.id,
+        status: "done",
+        url: editOfficeData?.image?.image
+      }];
       const edit = {
-        nameRu:editMapData.nameRu,
-        nameUz:editMapData.nameUz,
-        addressRu:editMapData.addressRu,
-        addressUz:editMapData.addressUz,
-        workingTime:editMapData.workingTime,
-        tel:editMapData.tel,
-        latlng:[editMapData.lat,editMapData.lng],
-        link:editMapData.link
+        title:editOfficeData.title,
+        latlng:[editOfficeData.latitude,editOfficeData.longitude],
+        image
       }
-      setPosition([Number(editMapData.lat),Number(editMapData.lng)])
+      setPosition([Number(editOfficeData.latitude),Number(editOfficeData.longitude)])
       form.setFieldsValue(edit)
-      setIsModalOpen(false)
+      setFileListProps({
+         image
+      })
     }
-  }, [editMapData])
+  }, [editOfficeData])
 
   const onFinish = (value) => {
+    const getFileUid = (file) => (Array.isArray(file) ? file[0]?.uid : file?.uid);
 
     const data = {
-      nameUz:value.name,
-      addressRu:value.address,
-      workingTime:value.workingTime,
-      tel:`${value.tel}`,
-      lat:`${value.latlng[0]}`,
-      lng:`${value.latlng[1]}`,
-      link:value.link
+      title:value.title,
+      latitude:`${value.latlng[0]}`,
+      longitude:`${value.latlng[1]}`,
+      image: getFileUid(fileListProps.image),
+
     }
 
-    if (editMapData) {
-      putMapHome({url: '/map', data, id: editId})
+    if (editOfficeData) {
+      putOfficeHome({url: '/users/offices', data, id: editId})
     } else {
-      postMapMutate({url: "/map", data});
+      postOfficeMutate({url: "/users/offices/", data});
     }
   }
 
@@ -140,12 +152,83 @@ const AddLocationMap = ({setIsModalOpen}) => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     }
   }, []);
+
+
+  const changeFieldValue = (name, value) => {
+    if (name === 'file') {
+      form.setFieldsValue({file: value});
+    } else if (name === 'image') {
+      form.setFieldsValue({image: value});
+    }
+  }
+
+  useEffect(() => {
+    // images
+    if (imagesUploadSuccess && isUpload) {
+      const initialImage = {...fileListProps}
+      const uploadImg = {
+        uid: imagesUpload?.id,
+        name: imagesUpload?.id,
+        status: "done",
+        url: imagesUpload?.image
+
+      }
+      if (mainIndex !== null) {
+        initialImage[isUpload][mainIndex] = [uploadImg]
+      } else {
+        initialImage[isUpload].push(uploadImg)
+      }
+      changeFieldValue(isUpload, [uploadImg], mainIndex)
+      setFileListProps(initialImage);
+      setIsUpload("")
+      setMainIndex(null)
+    }
+  }, [imagesUpload]);
+  const onChangeImage = (info, name, index = null, multiple = false) => {
+    const {fileList: newFileList, file} = info
+    const formData = new FormData();
+    let id = null
+    let multipleDeleteIndex = null
+    if (multiple && file?.status === 'removed') {
+      fileListProps[name][index].map((item, ind) => {
+        if (item?.uid === file?.uid) {
+          multipleDeleteIndex = ind
+        }
+      })
+    }
+    if (file?.status === 'removed') {
+      const deleteImageFileProps = {...fileListProps}
+      if (index === null) {
+        changeFieldValue(name, {}, index)
+
+        id = multiple ? [fileListProps[name][multipleDeleteIndex]?.uid] : [fileListProps[name][0]?.uid]
+
+        if (multiple) {
+          deleteImageFileProps[name].splice(multipleDeleteIndex, 1)
+        } else {
+          deleteImageFileProps[name] = []
+        }
+
+      }
+      imagesDeleteMutate({url: "/users/images", id});
+
+      setFileListProps(deleteImageFileProps)
+    } else if (newFileList.length !== 0 && newFileList[newFileList.length - 1].originFileObj) {
+      formData.append("image", newFileList[newFileList.length - 1].originFileObj);
+      imagesUploadMutate({url: "/users/images/", data: formData});
+
+      setIsUpload(name)
+      setMainIndex(index)
+    }
+
+  };
+
   return (<div>
-    {(postMapLoading || editMapLoading || putMapHomeLoading) ?
+    {(postOfficeLoading || editOfficeLoading || putOfficeHomeLoading) ?
         <AppLoader/> :
         <Form
             form={form}
-            name="basic"
+            name="map"
             labelCol={{
               span: 24
             }}
@@ -165,42 +248,29 @@ const AddLocationMap = ({setIsModalOpen}) => {
                   required={true}
                   required_text={'Ввод названия филиала обязателен!'}
                   label={'Название филиала'}
-                  name={'name'}
+                  name={'title'}
               />
             </Col>
             <Col span={12}>
-              <FormInput
-                  required={true}
-                  required_text={'Адрес'}
-                  label={'Требуется адрес!'}
-                  name={'address'}
-              />
+              <Form.Item
+                  label={`Необходимые изображения `}
+                  name={'image'}
+                  rules={[{required: true, message: 'Требуется изображение'}]}
+              >
+                <Upload
+                    maxCount={1}
+                    fileList={fileListProps?.image ? fileListProps?.image : []}
+                    listType='picture-card'
+                    onChange={(file) => onChangeImage(file, "image", null, false)}
+                    onPreview={onPreviewImage}
+                    beforeUpload={() => false}
+                >
+                  {fileListProps?.image?.length > 0 ? "" : "Upload"}
+                </Upload>
+              </Form.Item>
             </Col>
 
-            <Col span={12}>
-              <FormInput
-                  required={true}
-                  required_text={'Необходимо ввести часы работы'}
-                  label={'Рабочее время'}
-                  name={'workingTime'}
-              />
-            </Col>
-            <Col span={12}>
-              <FormInputNumber
-                  required={true}
-                  required_text={'Требуется номер телефона!'}
-                  label={'Номер телефона'}
-                  name={'tel'}
-              />
-            </Col>
-            <Col span={24}>
-              <FormInput
-                  required={true}
-                  required_text={'Требуется cсылка на сайт!'}
-                  label={'Ссылка на сайт'}
-                  name={'link'}
-              />
-            </Col>
+
             <Col span={24} >
               <MapContainer style={{height:'300px',cursor:'pointer'}} center={position.length>0 ? position:[40.7821, 72.3500]} zoom={5} scrollWheelZoom={true} >
                 <TileLayer
@@ -232,7 +302,7 @@ const AddLocationMap = ({setIsModalOpen}) => {
 
 
           <Button type="primary" htmlType="submit" style={{width: "100%", marginTop: "20px"}}>
-            {editMapSuccess ? 'Изменить' : 'Создать'}
+            {editOfficeSuccess ? 'Изменить' : 'Создать'}
           </Button>
         </Form>}
   </div>);

@@ -162,7 +162,6 @@ const TaskPostEdit = () => {
                 sub_tasks: subTask,
                 allModuls
             }
-            console.log(edit)
             setFileListProps(editFileProps)
             form.setFieldsValue(edit)
         }
@@ -197,7 +196,6 @@ const TaskPostEdit = () => {
             sub_tasks: value?.sub_tasks ? subTask : [],
             responsible_user: value?.responsible_user,
         }
-        console.log()
         if (editTaskData) {
             putTask({url: '/users/tasks', data: data, id: editId})
         } else {

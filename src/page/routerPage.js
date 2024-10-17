@@ -64,7 +64,6 @@ export const samplePagesConfigs = [
         permittedRole: [authRole.admin],
         isBackground: true
     },
-
     // {
     //     key: 2,
     //     icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,

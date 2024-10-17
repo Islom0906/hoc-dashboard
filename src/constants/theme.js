@@ -114,17 +114,19 @@ export const configLight = {
         colorPrimary: "rgb(118, 188, 51)"
     },
     Select: {
-        colorBorder: "rgb(118, 188, 51)",
         colorPrimary: "rgb(118, 188, 51)",
-        colorPrimaryHover: "rgb(118, 188, 51)"
+        colorPrimaryHover: "rgb(118, 188, 51)",
+        colorBorder: "#84848499",
+        hoverBorderColor: "#84848499"
     },
     Calendar: {
-        fontSize: 14
+        fontSize: 14,
+        fullBg: "#FFFFFF"
     }
 
 };
 export const configDark = {
-    contentBg:'#252B36',
+    contentBg:'#25293C',
     colorChartLabel:'#E8E8E8',
     colorChartLine:'#E8E8E820',
     // calendar
@@ -255,7 +257,6 @@ export const configDark = {
         colorBgContainer: "rgba(255, 255, 255, 0.01)"
     },
     Select: {
-        colorBorder: "rgb(118, 188, 51)",
         colorPrimary: "rgb(118, 188, 51)",
         colorPrimaryHover: "rgb(118, 188, 51)",
         colorBgContainer: "rgba(255, 255, 255, 0)",
@@ -263,11 +264,13 @@ export const configDark = {
         optionSelectedColor: "rgb(255, 255, 255)",
         selectorBg: "rgba(255, 255, 255, 0)",
         colorBgElevated: "rgb(27, 31, 40)",
-        colorText: "rgb(255, 255, 255)"
+        colorText: "rgb(255, 255, 255)",
+        colorBorder: "rgba(255,255,255,0.6)",
+       hoverBorderColor: "rgba(255,255,255,0.6)"
     },
     Calendar: {
         fontSize: 14,
-        fullBg: 'rgb(36,39,49)'
+        fullBg: 'rgb(37,41,60)'
     }
 };
 

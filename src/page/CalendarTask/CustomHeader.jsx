@@ -42,7 +42,8 @@ const CustomHeader = ({ value, onChange, colorMeeting, setFilterForColor, filter
                 <Row gutter={10}>
                     <Col>
                         <Select
-                            style={{ width: '100%' }}
+                            style={{ width: '100%',
+                            }}
                             className="my-year-select"
                             value={String(year)}
                             onChange={(newYear) => handleYearChange(Number(newYear))}

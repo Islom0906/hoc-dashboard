@@ -100,7 +100,6 @@ const CalendarTask = () => {
 
 
     const optionsCompany = useMemo(() => {
-        console.log(successCompany && companyData[0]?.id)
         return companyData?.map(company => (
             {
                 value: company?.id,

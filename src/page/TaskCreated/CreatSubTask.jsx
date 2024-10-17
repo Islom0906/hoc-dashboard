@@ -36,7 +36,6 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
           ...getValueSubTask,
         ]
       });
-      console.log('getValueSubTask' ,getValueSubTask[fileListNumber].file)
 
     }
   }, [imagesUpload, form, imagesUploadSuccess]);
@@ -47,7 +46,6 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
       const id = [fileListProps[index][0]?.uid];
       imagesDeleteMutate({url: "users/files", id});
       deleteFileProps[index] = []
-      console.log(deleteFileProps)
       setFileListProps(deleteFileProps)
     } else if (newFileList.length !== 0) {
       formData.append("image", newFileList[0].originFileObj);

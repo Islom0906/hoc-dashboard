@@ -3,6 +3,8 @@ import { FaPlus, FaMapMarkerAlt, FaListAlt } from "react-icons/fa"; // Import ic
 import { Map } from "../../../components";
 import MapTable from "./map-table";
 import { useNavigate } from "react-router-dom";
+import {useDeleteQuery, useGetQuery} from "../../../service/query/Queries";
+import {useEffect} from "react";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -24,16 +26,22 @@ const positions = [
     category: 'Region',
     icon: 'https://gacauto.uz/icon.png',
   },
-  // ...other positions
 ];
 
 const MapForDashboardStructure = () => {
   const navigate = useNavigate();
+  const { data: getOffice, refetch:refetchGetOffice, isLoading:isLoadingGetOffice, isSuccess  } = useGetQuery(false, 'office-get', `/users/offices`, false);
+  const {mutate,isSuccess:deleteSuccess,isLoading:deleteLoading}=useDeleteQuery()
 
   const showModal = () => {
     navigate('/map-add');
   };
-
+  useEffect(() => {
+    refetchGetOffice()
+  }, [deleteSuccess]);
+  const deleteHandle = (url, id) => {
+    mutate({url, id});
+  };
   return (
       <>
         <Card size={"small"}>
@@ -61,7 +69,7 @@ const MapForDashboardStructure = () => {
                     key="1"
                 >
                   <Col span={24} style={{ borderRadius: 10, overflow: "hidden" }}>
-                    <Map zoom={12} positions={positions} mapHeight={400} />
+                    <Map zoom={12} positions={getOffice?.results} mapHeight={400} />
                   </Col>
                 </TabPane>
                 <TabPane
@@ -73,7 +81,7 @@ const MapForDashboardStructure = () => {
                     key="2"
                 >
                   <Col span={24} style={{ borderRadius: 10, overflow: "hidden" }}>
-                    <MapTable />
+                    <MapTable data={getOffice?.results}  deleteHandle={deleteHandle}/>
                   </Col>
                 </TabPane>
               </Tabs>
