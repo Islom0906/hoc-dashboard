@@ -47,21 +47,15 @@ const TaskCreated = () => {
       `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${getTagCompany && `&company__id=${getTagCompany}`}${debounceInputValue && `&${selectInputSearch[0].value === selectedOptionSearch ? 'search' : 'full_name'}=${debounceInputValue}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`}${staff ? `&user_id=${staff}`:''}`,
       false
   );
-
-  // Get tag company
   const { data: GetTagCompany = [], refetch: refetchGetTagCompany } = useGetQuery(false, "get-tag-company", `users/company-selection`, false);
-
   useEffect(() => {
     refetchGetTagCompany();
   }, []);
-
   useEffect(() => {
     if (getIsSuccess) {
       setPagination(prevState => ({ ...prevState, total: data?.count }));
     }
   }, [data, getIsSuccess]);
-
-  // Handle staff search
   useEffect(() => {
     if (staff) {
       setSelectedOptionSearch("staff");
@@ -69,22 +63,16 @@ const TaskCreated = () => {
       refetch()
     }
   }, [staff]);
-
   useEffect(() => {
     refetch();
   }, [pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering, getTagCompany]);
-
-  // Delete function
   const deleteHandle = (url, id) => {
     mutate({ url, id });
   };
-
-  // Add function
   const addArticle = () => {
     dispatch(editIdQuery(""));
     navigate('/task/add');
   };
-
   const handleTableChange = (pagination, filters, sorter) => {
     setPagination({
       ...pagination,

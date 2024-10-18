@@ -19,13 +19,14 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     const [filterForColor, setFilterForColor] = useState('all');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: { user } } = useSelector(state => state.auth);
+    const roles =user?.roles[0]?.role.name
     const {systemMode}=useSelector(state => state.theme)
 
     const dispatch = useDispatch();
     const changeMeeting = (e, id) => {
         e.stopPropagation();
         dispatch(editIdQuery(id));
-        if (user?.roles[0]?.role.name === 'admin') {
+        if (roles === 'admin') {
             setIsModalOpen(true);
         }
     }
@@ -36,7 +37,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
 
     function onSelect  (newValue,info)  {
 
-        if (user?.roles[0]?.role.name!== 'staff' && user?.roles[0]?.role.name!== 'boss' ) {
+        if (roles !== 'staff' && roles !== 'boss' ) {
             const isPastDate = newValue.isBefore(dayjs(), 'day');
             if (!isPastDate &&info.source==='date') {
                 setValue(newValue);

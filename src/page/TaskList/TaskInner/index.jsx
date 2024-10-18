@@ -55,13 +55,15 @@ const TaskInner = () => {
                     </>
                 ) : (
                     <TaskHeader
-                        creatBy={taskInner?.created_by}
+                        responsible_user_id={taskInner?.responsible_user?.id}
+                        task_manager={taskInner?.task_manager}
                         showModal={showModal}
                         task_status={taskInner?.status}
                         setWhichWriteIDTask={setWhichWriteIDTask}
                         title={taskInner?.title}
                         text={taskInner?.text}
                         id={taskInner?.id}
+                        creat_by_id={taskInner?.created_by?.id}
                     />
                 )}
               </div>
@@ -75,9 +77,11 @@ const TaskInner = () => {
                         setWhichWriteID={setWhichWriteID}
                         showModal={showModal}
                         deadline_status={taskInner?.deadline_status}
+                        creat_by_id={taskInner?.created_by?.id}
+                        responsible_user_id={taskInner?.responsible_user?.id}
                     />
                 ) : (
-                    <Space direction="vertical" size="large" style={{ width: '100%' ,  height:400 , overflowY:"scroll"}}>
+                    <Space direction="vertical" size="large" style={{ width: '100%' ,  height:300 , overflowY:"scroll"}}>
                       {taskInner?.messages?.map(message => (
                           <CommentUser key={message?.id} comment={message} />
                       ))}
@@ -94,7 +98,7 @@ const TaskInner = () => {
                       <AvatarUserProfile
                           key={user?.id}
                           full_name={user?.full_name}
-                          roles={user?.roles?.[0]?.name}
+                          roles={user?.roles[0].position}
                           image={user?.image}
                       />
                   ))}
@@ -108,6 +112,7 @@ const TaskInner = () => {
                     main_task_deadline={taskInner?.deadline}
                     main_task_created_at={taskInner?.created_at}
                     main_deadline_status={taskInner?.deadline_status}
+                    created_by={taskInner?.created_by}
                 />
               </Flex>
             </Space>

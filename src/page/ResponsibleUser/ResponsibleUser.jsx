@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import {Col, Row, Spin, Pagination, Flex} from "antd";
-import {FilterTaskList, TaskCardForBoss} from "../../components";
+import {FilterTaskList, TaskCard, TaskCardForBoss} from "../../components";
 import { useGetQuery } from "../../service/query/Queries";
 
 
@@ -46,7 +46,8 @@ const BossTracking = () => {
                     md={{ span: 8 }}
                     xl={{ span: 6 }}
                 >
-                  <TaskCardForBoss
+                  <TaskCard
+                      tag={task?.company}
                       key={task?.main_task_id}
                       title={task?.main_task_title}
                       deadline_status={task?.main_deadline_status}
@@ -58,6 +59,7 @@ const BossTracking = () => {
                       responsible_user={task?.main_task_responsible_user}
                       lastUpdate={task?.staff_last_sub_task_updated_at}
                       included_users={task?.included_users}
+                      isChecking={task?.is_checking}
                   />
                 </Col>
             ))}

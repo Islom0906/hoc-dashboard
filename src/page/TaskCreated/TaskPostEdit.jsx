@@ -183,13 +183,13 @@ const TaskPostEdit = () => {
        const subTask=value?.sub_tasks?.map((subTask)=>{
             return{
                 ...subTask,
-                deadline:dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS')
+                deadline:dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm')
             }
         })
         const data = {
             title: value.title,
             text: value.text,
-            deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS'),
+            deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm'),
             company: value?.company,
             moduls: !isBoss ? selectAddSubTask ? [] : selectModuls:[user?.roles[0]?.module?.id],
             users: selectAddSubTask ? [] : selectStaff,
@@ -356,12 +356,8 @@ const TaskPostEdit = () => {
                         <Form.Item
                             label="Выберите крайний срок"
                             name={'deadline'}
-                            rules={[{
-                                required: true, message: 'Укажите крайний срок.'
-                            }]}
                         >
                             <DatePicker
-                                showTime
                             />
                         </Form.Item>
                     </Col>
@@ -391,8 +387,6 @@ const TaskPostEdit = () => {
                     </Col>
                         </>
                     }
-
-
                     {
                         selectAddSubTask ?
                             <Col span={24}>
@@ -426,9 +420,6 @@ const TaskPostEdit = () => {
                         <Form.Item
                             label={'Ответственный'}
                             name={'responsible_user'}
-                            rules={[{
-                                required: true, message: 'Выберите человек'
-                            }]}
                             wrapperCol={{
                                 span: 24,
                             }}
