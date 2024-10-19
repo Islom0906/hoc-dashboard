@@ -1,10 +1,11 @@
 import {Button, Card, Col, Flex, Popconfirm, Row, Space, Typography} from "antd";
-import { FaRegEye, FaRegFileAlt } from "react-icons/fa";
+import { FaRegEye} from "react-icons/fa";
 import dayjs from "dayjs";
 import React from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
+import {ImFileText2} from "react-icons/im";
 
 const { Title, Text } = Typography;
 
@@ -25,8 +26,8 @@ const NewsCard = ({ news, onClick,setIsAddModalOpen,deleteNews }) => {
         <Card size={"small"} style={{ position: "relative" }} className={'news-card'}>
 
             {news?.file &&
-                <Flex justify={"center"} align={"center"} style={{padding:4 , background:'blue' , borderRadius:2, position: "absolute", top: 10, right: 10 , }} >
-                    <FaRegFileAlt style={{ fontSize:18 , color:'white', marginBottom:0 }} />
+                <Flex justify={"center"} align={"center"} style={{padding:4 , background:'blue' , borderRadius:4, position: "absolute", top: 10, right: 10 , }} >
+                    <ImFileText2 style={{ fontSize:18 , color:'white', marginBottom:0 }} />
                 </Flex>
             }
             <img src={news?.image} alt={news?.title} />
@@ -73,7 +74,7 @@ const NewsCard = ({ news, onClick,setIsAddModalOpen,deleteNews }) => {
                     <Col span={user?.roles[0]?.role?.name === 'admin' ? 8 : 14}>
 
 
-                                <Button onClick={onClick}  icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%'}}
+                                <Button onClick={onClick}  icon={<FaRegEye style={{fontSize: "18px"}}/>} style={{textAlign: "center", width: '100%'}}
                                          type={"primary"}>
                                     {
                                         !(user?.roles[0]?.role?.name === 'admin') &&

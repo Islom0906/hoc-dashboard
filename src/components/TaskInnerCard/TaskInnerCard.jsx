@@ -9,6 +9,7 @@ import {AvatarUserProfile} from "../index";
                                 main_task_created_at,
                                 taskPercent,
                                 main_deadline_status
+     ,created_by
                               }) => {
   const {Text} = Typography;
 
@@ -30,6 +31,12 @@ import {AvatarUserProfile} from "../index";
               <AvatarUserProfile key={tag?.id} company={tag?.title} image={tag?.image_light}  />
             </Flex>
           </Flex>
+            <Flex align={'center'} justify={'space-between'}>
+                <Text type={'secondary'}> Таскер:</Text>
+                <Flex align={"center"} gap={10}>
+                    <AvatarUserProfile key={created_by?.id} full_name={created_by?.full_name} image={created_by?.image} moduls={created_by?.roles[0].position} />
+                </Flex>
+            </Flex>
           <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Ответственный:</Text>
             <Flex align={"center"} gap={10}>

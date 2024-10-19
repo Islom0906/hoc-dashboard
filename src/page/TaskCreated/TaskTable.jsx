@@ -45,8 +45,8 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
     },
     {
       title: "Компания",
-      dataIndex: "tag",
-      id: "tag",
+      dataIndex: "company",
+      id: "company",
       filters: getTagCompanyArray,
       render: (text , record) =>
           <AvatarUserProfile
@@ -131,7 +131,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
         const users = [...(record.included_users || [])];
         return (
             <Flex justify={"space-between"} align={'center'}>
-              <Avatar.Group size={"small"}>
+              <Avatar.Group >
                 <AvatarUserProfile
                     key={record?.responsible_user?.id}
                     full_name={record?.responsible_user?.full_name}
@@ -139,7 +139,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     image={record?.responsible_user?.image}
                 />
               </Avatar.Group>
-              <Avatar.Group size={"small"} max={{
+              <Avatar.Group  max={{
                 count: 4,
                 style: { color: "#f56a00", backgroundColor: "#fde3cf" },
               }} >
@@ -166,7 +166,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
 
           <Flex gap={10} justify={'end'}>
             {
-              user?.roles[0].name !== 'director' ?
+              user?.roles[0]?.role?.name !== 'director' ?
                 record?.done_sub_tasks_count ===0 &&
                 <>
                   <Button
@@ -183,7 +183,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                   </Popconfirm>
                 </>
                   :
-                  record?.tag?.id === user?.tags[0].id && record?.done_sub_tasks_count ===0  &&
+                  record?.company?.id === user?.roles[0].company.id && record?.done_sub_tasks_count ===0  &&
                     <>
                       <Button
                           onClick={() => Edit(record.id)}

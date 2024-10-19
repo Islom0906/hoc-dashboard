@@ -1,7 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-    editId:localStorage.getItem('editDataId')||""
+    editId:localStorage.getItem('editDataId')||"",
+    editIdCalendar:localStorage.getItem('editIdCalendar')||""
 }
 export const querySlice = createSlice({
     name: 'query',
@@ -9,8 +10,11 @@ export const querySlice = createSlice({
     reducers: {
         editIdQuery: (state, {payload}) => {
             state.editId = payload
+        },
+        editIdCalendarQuery: (state, {payload}) => {
+            state.editIdCalendar = payload
         }
     }
 })
-export const {editIdQuery} = querySlice.actions
+export const {editIdQuery ,editIdCalendarQuery} = querySlice.actions
 export default querySlice.reducer

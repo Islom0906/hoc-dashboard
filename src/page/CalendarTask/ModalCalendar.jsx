@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import {useDispatch, useSelector} from "react-redux";
 import editGetById from "../../hooks/editGetById";
 import setInitialValue from "../../hooks/setInitialValue";
-import {editIdQuery} from "../../store/slice/querySlice";
+import {editIdCalendarQuery} from "../../store/slice/querySlice";
 import {useDeleteQuery, useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 
 const {Title} = Typography
@@ -26,7 +26,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
 
     const dispatch = useDispatch()
     const {data: {user} = {}} = useSelector((state) => state.auth);
-    const {editId} = useSelector(state => state.query)
+    const {editIdCalendar} = useSelector(state => state.query)
     const {companyID} = useSelector(state => state.companySlice)
 
     // get-companyData
@@ -64,7 +64,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
         data: editModalMeetingData,
         refetch: editModalMeetingRefetch,
         isSuccess: editModalMeetingSuccess
-    } = useGetByIdQuery(false, "edit-meeting", editId, '/users/meetings')
+    } = useGetByIdQuery(false, "edit-meeting", editIdCalendar, '/users/meetings')
 
 
     // delete meeting
@@ -76,10 +76,10 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
 
     useEffect(() => {
         if (putMeetingDate) {
-            dispatch(editIdQuery(''))
+            dispatch(editIdCalendarQuery(''))
         }
         if (putMeetingSuccess) {
-            queryClient.removeQueries(["edit-meeting", editId])
+            queryClient.removeQueries(["edit-meeting", editIdCalendar])
             refetchMeeting()
             setIsModalOpen(false)
             form.setFieldsValue(initialValueForm)
@@ -111,8 +111,8 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
     editGetById(editModalMeetingRefetch)
 
     useEffect(() => {
-        if (!isModalOpen && editId !== "") {
-            dispatch(editIdQuery(''))
+        if (!isModalOpen && editIdCalendar !== "") {
+            dispatch(editIdCalendarQuery(''))
             form.setFieldsValue(initialValueForm)
         }
         if (companyID) {
@@ -160,12 +160,10 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
         const meetingDate = date
             .hour(value?.meeting_date.hour())
             .minute(value?.meeting_date.minute())
-            .second(value?.meeting_date.second())
-
-        if (editId) {
-            formatDate = dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss.SSS')
+        if (editIdCalendar) {
+            formatDate = dayjs(value?.meeting_date).format('YYYY-MM-DDTHH:mm:ss')
         } else {
-            formatDate = dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
+            formatDate = dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss')
         }
 
         value?.users.map((user) => {
@@ -181,7 +179,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
             users: isMultipleSelect === 'allUser'  ? [] : value?.users
         }
         if (editModalMeetingData) {
-            putMeeting({url: '/users/meetings', data: data, id: editId})
+            putMeeting({url: '/users/meetings', data: data, id: editIdCalendar})
         } else {
             postMeetingMutate({url: "/users/meetings/", data: data});
         }
@@ -193,8 +191,8 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
         setIsModalOpen(false);
     };
     const deleteMeetingHandle = () => {
-        if (editId) {
-            deleteMeetingMutate({url: '/users/meetings', id: editId})
+        if (editIdCalendar) {
+            deleteMeetingMutate({url: '/users/meetings', id: editIdCalendar})
         }
     }
     // option Company
@@ -299,11 +297,33 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                             <Form.Item
                                 label="Выберите время встречи"
                                 name={'meeting_date'}
-                                rules={[{
-                                    required: true, message: 'Укажите время встречи.'
-                                }]}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Укажите время встречи.',
+                                    },
+                                    {
+                                        validator: (_, value) => {
+                                            if (!value) {
+                                                return Promise.resolve();
+                                            }
+
+                                            const selectedDateTime = date
+                                                .hour(value.hour())
+                                                .minute(value.minute());
+
+                                            const now = dayjs().add(1, 'hour');
+
+                                            if (selectedDateTime.isAfter(now)) {
+                                                return Promise.resolve();
+                                            } else {
+                                                return Promise.reject(new Error('Время встречи должно быть минимум через 1 час от текущего времени.'));
+                                            }
+                                        }
+                                    }
+                                ]}
                             >
-                                <TimePicker format="HH:mm:ss"/>
+                                <TimePicker format="HH:mm" />
                             </Form.Item>
                         </Col>
                         <Col span={24}>

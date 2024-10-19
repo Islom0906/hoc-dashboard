@@ -55,7 +55,7 @@ const TaskList = () => {
                     xl={{ span: 6 }}
                 >
                   <TaskCard
-                      tag={task?.tag}
+                      tag={task?.company}
                       key={task?.main_task_id}
                       title={task?.main_task_title}
                       deadline_status={task?.main_deadline_status}
