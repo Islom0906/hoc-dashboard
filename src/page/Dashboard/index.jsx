@@ -34,7 +34,7 @@ const Dashboard = () => {
   // modulni Staff GetBYID
   const {
     data: GetModulStaffStatistics = [], refetch: refetchGetModulStaffStatistics,
-  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulsID}?company_id=${companyID}&year=${valueYear}&month=${+valueMonth+1}`, false);
+  } = useGetQuery(false, "modul-statistics", `users/modul-statistics/${modulsID ? modulsID :""}?company_id=${companyID}&year=${valueYear}&month=${+valueMonth+1}`, false);
 
   // Company Get BY ID
   const {
