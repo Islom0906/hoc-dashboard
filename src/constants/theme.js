@@ -15,6 +15,8 @@ export const configLight = {
     // popover
     deadlineBg:"#FFE6E6",
     birthdayBg:"#F9FAE8",
+    birthdayColor:'#000000C2',
+
     meetingBg:"#E8EFFC",
     // status task
     allTask: '#646464',
@@ -146,7 +148,8 @@ export const configDark = {
     activeDay:"#76BC33",
     // popover
     deadlineBg:"#A9474D",
-    birthdayBg:"#CED232B2",
+    birthdayBg:"#ACB048",
+    birthdayColor:'#FFFFFFC2',
     meetingBg:"#4161A2",
     // task status
     allTask: '#646464',

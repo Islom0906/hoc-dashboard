@@ -136,10 +136,10 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                 setIsMultipleSelect('allUser')
                 isAllUser = true
             }
-            const companyIdSelect=editModalMeetingData?.companies.map(company=>{
+            const companyIdSelect=editModalMeetingData?.companies?.map(company=>{
                 return company.id
             })
-            const usersIdSelect=editModalMeetingData?.users.map(user=>{
+            const usersIdSelect=editModalMeetingData?.users?.map(user=>{
                 return user.id
             })
             const edit = {
@@ -166,7 +166,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
             formatDate = dayjs(meetingDate).format('YYYY-MM-DDTHH:mm:ss')
         }
 
-        value?.users.map((user) => {
+        value?.users?.map((user) => {
             if (user === "") {
                 allUser = true
             }

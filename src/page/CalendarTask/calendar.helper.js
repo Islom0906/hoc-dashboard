@@ -7,32 +7,19 @@ import {Link} from "react-router-dom";
 import DeadlinePopover from "../../components/CustomPopover/deadlinePopover";
 
 const {Title,Text}=Typography
-const contentPopoverBirthday = (content) => {
+const contentPopoverBirthday = (content,birthdayColor) => {
     return (
-        <Card
-            style={{
-                borderRadius: '10px',
-                textAlign: 'center',
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-                padding: '20px',
-                backgroundColor: '#CED232B2',
 
-
-            }}
-            bodyStyle={{ padding: '0' }}
-
-        >
             <Flex align={"center"} gap={10} >
                 <img src="/birthday.gif" alt="birthday" style={{width:35,height:35}}/>
                 {content.first_name && (
                     <Flex align={"start"}  vertical={true}>
 
-                    <p style={{ fontSize: '10px', color: '#FFFFFF80' }}>День рождения</p>
-                    <p style={{ fontSize: '16px', color: '#FFFFFFC2' }}>{ `${content.first_name} ${content.last_name}`}</p>
+                    <p style={{ fontSize: '10px', color: `${birthdayColor}80` }}>День рождения</p>
+                    <p style={{ fontSize: '16px', color: birthdayColor }}>{ `${content.first_name} ${content.last_name}`}</p>
                     </Flex>
                 )}
             </Flex>
-        </Card>
     );
 };
 
@@ -50,8 +37,8 @@ const contentPopoverDeadline = (deadline, systemMode) => {
 
         </Flex>
         <Flex align={"center"} gap={5}>
-            <IoCalendarOutline style={{fontSize: 10}}/>
-            <Text style={{fontSize: 10}}>
+            <IoCalendarOutline style={{fontSize: 12}}/>
+            <Text style={{fontSize: 12}}>
                 {dayjs(deadline.created_at).format('DD.MM.YYYY')} - {dayjs(deadline.deadline).format('DD.MM.YYYY')}
             </Text>
         </Flex>
@@ -59,14 +46,24 @@ const contentPopoverDeadline = (deadline, systemMode) => {
                 <img style={{width: 25, height: 25, objectFit: 'cover',border:'0.5px solid black',borderRadius:'100%'}}
                      src={systemMode === 'dark' ? deadline?.company?.image_dark : deadline?.company?.image_light}
                      alt={deadline?.company?.title}/>
+                {
+                    deadline?.included_users?.length>0  ?
+                        <Avatar.Group size={"small"}>
+                            {deadline?.included_users?.map((user) => (
+                                <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}
+                                                   moduls={user?.roles?.[0]?.name} image={user?.image}/>
 
-                <Avatar.Group size={"small"}>
-                    {deadline?.included_users?.map((user) => (
-                        <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}
-                                           moduls={user?.roles?.[0]?.name} image={user?.image}/>
+                            ))}
+                        </Avatar.Group>
+                        :<Tag
 
-                    ))}
-                </Avatar.Group>
+                        style={{borderRadius:'20px',margin:0,fontSize:10,padding:'0 5px'}}
+                            color={'#C68488'}>
+                            Все сотрудники
+                        </Tag>
+
+                }
+
             </Flex>
                 <Flex justify={"end"}>
             <Link to={`/task-list/${deadline?.id}`}>
@@ -88,37 +85,76 @@ const contentPopoverDeadline = (deadline, systemMode) => {
 
 }
 
-const contentPopoverMeeting = ({meeting}) => {
+const contentPopoverMeeting = ({meeting,systemMode}) => {
 
     return(
-    <Card
-        style={{
-            borderRadius: '10px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            padding: '16px',
-        }}
-        bodyStyle={{ padding: 0 }}
-    >
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>
-                <h3 style={{ marginBottom: 0 }}>Design Discussion</h3>
-                <p style={{ color: 'gray', marginBottom: '16px' }}>12:30 - 15:45</p>
-            </div>
-        </div>
+        <Space size={5} direction={"vertical"}>
+            <Flex align={"center"} gap={10} justify={"space-between"}>
+                <Title level={5} style={{marginBottom:0}}>
+                    {meeting?.title}
+                </Title>
+                <AvatarUserProfile size={25} key={meeting?.created_by?.id} full_name={meeting?.created_by?.full_name}
+                                   moduls={meeting?.created_by?.roles[0]?.module?.name}
+                                   image={meeting?.created_by?.image}/>
 
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-            <Tag color="blue">Team</Tag>
-            <Tag color="red">Meeting</Tag>
-        </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Avatar.Group maxCount={2}>
-                <Avatar src="https://example.com/avatar1.jpg" />
-                <Avatar src="https://example.com/avatar2.jpg" />
-                <Avatar>+4</Avatar>
-            </Avatar.Group>
-        </div>
-    </Card>)
+            </Flex>
+            <Flex align={"center"} gap={5}>
+                <IoCalendarOutline style={{fontSize: 12}}/>
+                <Text style={{fontSize: 12}}>
+                    {dayjs(meeting?.meeting_date).format('DD.MM.YYYY')}
+                </Text>
+            </Flex>
+            <Flex align={"center"} gap={10} justify={"space-between"}>
+                {
+                    meeting?.companies.map(item=> (
+                        <img style={{
+                            width: 25,
+                            height: 25,
+                            objectFit: 'cover',
+                            border: '0.5px solid black',
+                            borderRadius: '100%'
+                        }}
+                             src={systemMode === 'dark' ? item?.image_dark : item?.image_light}
+                             alt={item?.title}/>
+                    ))
+                }
+
+                {/*{*/}
+                {/*    !deadline?.included_users?.length > 0 ?*/}
+                {/*        <Avatar.Group size={"small"}>*/}
+                {/*            {deadline?.included_users?.map((user) => (*/}
+                {/*                <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}*/}
+                {/*                                   moduls={user?.roles?.[0]?.name} image={user?.image}/>*/}
+
+                {/*            ))}*/}
+                {/*        </Avatar.Group>*/}
+                {/*        :<Tag*/}
+
+                {/*            style={{borderRadius:'20px',margin:0,fontSize:10,padding:'0 5px'}}*/}
+                {/*            color={'#C68488'}>*/}
+                {/*            Все сотрудники*/}
+                {/*        </Tag>*/}
+
+                {/*}*/}
+
+            </Flex>
+            {/*<Flex justify={"end"}>*/}
+            {/*    <Link to={`/task-list/${deadline?.id}`}>*/}
+
+            {/*        <Button style={{*/}
+            {/*            backgroundColor:'#fff',*/}
+            {/*            color:'#000',*/}
+            {/*            fontSize:10*/}
+            {/*        }}*/}
+            {/*                shape={'round'}*/}
+            {/*                size={'small'}*/}
+            {/*        >*/}
+            {/*            Подробнее*/}
+            {/*        </Button>*/}
+            {/*    </Link>*/}
+            {/*</Flex>*/}
+        </Space>)
 }
 export const useBirthdayMap = (dataBirthDay) => {
     return useMemo(() => {
@@ -173,7 +209,7 @@ export const dateCellRender = (
             colorTextCalendar,
             deadlineBg,
             birthdayBg,
-            meetingBg
+            meetingBg,birthdayColor
         },
     } = theme.useToken();
     const today = value.isSame(new Date(), 'day');
@@ -213,9 +249,9 @@ export const dateCellRender = (
                 {birthdaysOnDate?.map(birthday => (
                     <DeadlinePopover bg={birthdayBg}>
                         <Popover
-                            trigger={'click'}
+                            trigger={'hover'}
                             key={birthday?.id}
-                            content={contentPopoverBirthday(birthday)}
+                            content={contentPopoverBirthday(birthday,birthdayColor)}
                         >
                             <li className={'birthday'}>
                             <Flex gap={2} align={"center"}>
@@ -232,7 +268,7 @@ export const dateCellRender = (
                 {meetingsOnDate?.map((meeting) => (
                     <DeadlinePopover bg={meetingBg}>
 
-                    <Popover key={meeting?.id} content={contentPopoverMeeting(meeting)}>
+                    <Popover key={meeting?.id} content={contentPopoverMeeting(meeting,systemMode)}>
                     <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id} className={'meeting'}>
                             <Flex gap={2} align={"center"}>
 
@@ -248,7 +284,7 @@ export const dateCellRender = (
                     <DeadlinePopover bg={deadlineBg}>
                     <Popover
                             className={'deadline-popover'}
-                            trigger={'click'}
+                            trigger={'hover'}
                             placement={"topLeft"}
                             key={deadline?.id}
                             content={contentPopoverDeadline(deadline, systemMode)}
