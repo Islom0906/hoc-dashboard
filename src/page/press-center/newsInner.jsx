@@ -48,10 +48,9 @@ const NewsInner = () => {
                 <Row gutter={[10, 30]}>
                     <Col span={24}>
                         {
-                            getByIdNews?.image &&
-                            <img src={getByIdNews?.image} alt={getByIdNews?.title}
-                                 style={{width: '100%', minHeight: 250, objectFit: "cover", objectPosition: 'top center'}}/>
-
+                            getByIdNews?.image?.image &&
+                            <img src={getByIdNews?.image?.image} alt={getByIdNews?.title}
+                                 style={{width: '100%', minHeight: 250, maxHeight:500, objectFit: "contain", objectPosition: 'top center'}}/>
                         }
                         <Title level={2}>
                             {getByIdNews?.title}
@@ -70,6 +69,7 @@ const NewsInner = () => {
                                         {getByIdNews?.views}
                                     </Text>
                                 </Flex>
+
                                 :
                                 <Flex justify={"start"}>
                                     <Avatar.Group size={"large"}>
@@ -93,16 +93,14 @@ const NewsInner = () => {
                             </Text>
                             <Flex style={{width:300}}>
                                 {
-                                    getByIdNews?.file &&
+                                    getByIdNews?.file?.file &&
                                     <Tag color={'blue'} icon={<CiLink />} style={{display:"flex" , alignItems:'center' , gap:5}}>
-                                        <a href={getByIdNews?.file} download={true} target={"_blank"} style={{display:"inline"}}>
-                                            {getByIdNews?.file}
+                                        <a href={getByIdNews?.file?.file} download={true} target={"_blank"} style={{display:"inline"}}>
+                                            {getByIdNews?.file?.file}
                                         </a>
                                     </Tag>
                                 }
-
                             </Flex>
-
                             {
                                 !getByIdNews?.is_read &&
                                 <Button onClick={onView} type={'primary'}>
