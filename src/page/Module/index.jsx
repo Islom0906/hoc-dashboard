@@ -15,9 +15,6 @@ const CreateWorker = () => {
     const {companyID} = useSelector(state => state.companySlice)
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     const {data,isLoading:getLoading,refetch}=useGetQuery(false,'module-get',`/users/modules?company_id=${companyID}`,false)
-
-
-
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 

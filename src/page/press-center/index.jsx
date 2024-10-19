@@ -70,7 +70,7 @@ const PressCenter = () => {
                     ))
                 }
                 <Col span={24}>
-                    <Flex align={'center'} justify={'center'}>
+                    <Flex align={'center'} justify={'end'}>
                         <Pagination
                             current={currentPage}
                             pageSize={pageSize}
