@@ -12,6 +12,10 @@ export const configLight = {
     deadlineBgColor: '#BD363633',
     tableBorder:'#A4B9D14D',
     activeDay:"#76BC33",
+    // popover
+    deadlineBg:"#FFE6E6",
+    birthdayBg:"#F9FAE8",
+    meetingBg:"#E8EFFC",
     // status task
     allTask: '#646464',
     allTaskHover:"#64646433",
@@ -23,7 +27,7 @@ export const configLight = {
     failedTaskHover: "#EE666633",
     responsibleTask:'#FAC858',
     responsibleTaskHover:'#FAC85833',
-
+    //
     contentBg:'#FFFFFF',
     mainBg:"#F4F6F3",
     Button: {
@@ -140,6 +144,10 @@ export const configDark = {
     deadlineBgColor: '#BD3636B2',
     tableBorder:'#A4B9D14D',
     activeDay:"#76BC33",
+    // popover
+    deadlineBg:"#A9474D",
+    birthdayBg:"#CED232B2",
+    meetingBg:"#4161A2",
     // task status
     allTask: '#646464',
     allTaskHover:"#64646433",
@@ -148,7 +156,7 @@ export const configDark = {
     progressTask: '#5470C6',
     progressTaskHover: '#5470C633',
     failedTask: "#EE6666",
-    failedTaskHover: "#EE6666",
+    failedTaskHover: "#EE666633",
     responsibleTask:'#FAC858',
     responsibleTaskHover:'#FAC85833',
 

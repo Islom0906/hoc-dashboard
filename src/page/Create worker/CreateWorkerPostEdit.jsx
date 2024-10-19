@@ -556,10 +556,10 @@ const CreateWorkerPostEdit = () => {
                                 );
                             })}
                             {/*<Form.Item>*/}
-                            {/*    <Button type="primary" onClick={() => add()} block*/}
+                            {/*    <CustomButton type="primary" onClick={() => add()} block*/}
                             {/*            style={{backgroundColor: '#28a745'}}>*/}
                             {/*        Открыть новый раздел для характеристика*/}
-                            {/*    </Button>*/}
+                            {/*    </CustomButton>*/}
                             {/*</Form.Item>*/}
 
                         </>

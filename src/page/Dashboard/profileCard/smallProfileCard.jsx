@@ -9,14 +9,15 @@ import {selectStaffIDs} from "../../../store/slice/staffSlice";
 
 const {Text} = Typography
 
-const SmallProfileCard = ({staffID , avatar, fullName, position , done_tasks_count , failed_tasks_count , total_tasks_count , in_progress_tasks_count }) => {
+const SmallProfileCard = ({staffID,companyID , avatar, fullName, position , done_tasks_count , failed_tasks_count , total_tasks_count , in_progress_tasks_count }) => {
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const { data: { user } = {} } = useSelector((state) => state.auth);
+  const roles=user?.roles[0]?.role.name
   const handlerCard = () => {
     dispatch(selectStaffIDs(staffID))
-    if (user?.roles[0]?.role.name!=='boss'){
-    navigate(`/view-task-director?staff=${staffID}`)
+    if (roles!=='boss'){
+    navigate(`/view-task-director?staff=${fullName}&companyID=${companyID}`)
     }else{
       navigate('/taskEditBoss')
     }

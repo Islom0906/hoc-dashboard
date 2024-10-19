@@ -69,11 +69,11 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules, is
                               !isBoss &&
                               <>
                         {/*<Col span={2}>*/}
-                        {/*  <Button type={"dashed"} danger onClick={() => remove(field.name)}*/}
+                        {/*  <CustomButton type={"dashed"} danger onClick={() => remove(field.name)}*/}
                         {/*          style={{marginTop: 10}}>*/}
                         {/*    <MinusCircleOutlined*/}
                         {/*    />*/}
-                        {/*  </Button>*/}
+                        {/*  </CustomButton>*/}
                         {/*</Col>*/}
                               </>
                           }
@@ -85,10 +85,10 @@ const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules, is
                     !isBoss &&
                     <>
               {/*<Form.Item>*/}
-              {/*  <Button type="primary" onClick={() => add()} block*/}
+              {/*  <CustomButton type="primary" onClick={() => add()} block*/}
               {/*          style={{backgroundColor: '#28a745'}}>*/}
               {/*    Добавить сотрудника*/}
-              {/*  </Button>*/}
+              {/*  </CustomButton>*/}
               {/*</Form.Item>*/}
                     </>
                 }

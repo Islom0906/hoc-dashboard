@@ -5,12 +5,8 @@ const EyeButton = ({children}) => {
     return <ConfigProvider
         theme={{
             token: {
-                // Seed Token
-                colorPrimary: '#fff',
-                borderRadius: 2,
-                colorPrimaryHover:'rgb(13,202,240,50)',
-                // Alias Token
-                colorBgContainer: 'rgb(13,202,240)',
+                colorPrimary: "#0dcaf0",  // Primary color
+                colorPrimaryHover: "#0bb7dd",  // Hover color
             },
         }}
     >

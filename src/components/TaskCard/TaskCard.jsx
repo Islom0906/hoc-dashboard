@@ -43,13 +43,14 @@ const TaskCard = ({
     const dispatch = useDispatch()
     const deadlineColor = DeadlineStatusColor(deadline_status);
     const { Text } = Typography;
-
+    console.log(created_by)
     const Edit = (id) => {
         localStorage.setItem("editDataId", id);
         dispatch(editIdQuery(id));
     };
     const Delete = (id) => {
     };
+    console.log(tag)
   return (
       <Card
           className={"TaskCard"}
@@ -100,11 +101,14 @@ const TaskCard = ({
               </Space>
 
               <Space style={{width: "100%"}} size={5} direction={"vertical"}>
-                  <Flex align={"center"} justify={"space-between"} gap={5}>
-                      <Text style={{fontSize: '12px'}}>Ответственный:</Text>
-                      <AvatarUserProfile size={30} key={responsible_user?.id} full_name={responsible_user?.full_name}
-                                         moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image}/>
-                  </Flex>
+                  {
+                      responsible_user?.id && <Flex align={"center"} justify={"space-between"} gap={5}>
+                          <Text style={{fontSize: '12px'}}>Ответственный:</Text>
+                          <AvatarUserProfile size={30} key={responsible_user?.id} full_name={responsible_user?.full_name}
+                                             moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image}/>
+                      </Flex>
+                  }
+
 
                   <Flex align={"center"} wrap={true} gap={5} justify={"space-between"}>
                       {/*<Text type={"secondary"}>*/}

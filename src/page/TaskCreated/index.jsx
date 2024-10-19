@@ -1,12 +1,11 @@
-import { Button, Col, Input, Row, Select, Space, Spin, Typography } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
-import { editIdQuery } from "../../store/slice/querySlice";
-import { useNavigate } from "react-router-dom";
+import {Button, Col, Input, Row, Select, Space, Spin, Typography} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import React, {useEffect, useMemo, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {editIdQuery} from "../../store/slice/querySlice";
+import {useLocation as useReactLocation, useNavigate} from "react-router-dom";
 import TaskTable from "./TaskTable";
-import { useLocation as useReactLocation } from 'react-router-dom';
-import { useDeleteQuery, useGetQuery } from "../../service/query/Queries";
+import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 import useDebounce from "../../hooks/useDebounce";
 
 const { Title } = Typography;
@@ -22,21 +21,21 @@ const TaskCreated = () => {
   const location = useReactLocation();
   const queryParams = new URLSearchParams(location.search);
   const staff = queryParams.get('staff');
+  // const companyID = queryParams.get('companyID');
+  const {companyID}=useSelector(state => state.companySlice)
   const [search, setSearch] = useState('');
-  const [selectedOptionSearch, setSelectedOptionSearch] = useState('task');
+  const [selectedOptionSearch, setSelectedOptionSearch] = useState(selectInputSearch[0].value);
   const [deadlineStatus, setDeadlineStatus] = useState('');
   const [ordering, setOrdering] = useState('');
   const [getTagCompany, setGetTagCompany] = useState('');
-
   const { Option } = Select;
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     total: 0,
   });
-
   const debounceInputValue = useDebounce(search, 500);
-
+  console.log(companyID)
   // Delete
   const { mutate, isLoading: deleteLoading } = useDeleteQuery();
 
@@ -44,7 +43,7 @@ const TaskCreated = () => {
   const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
       false,
       'get-task',
-      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${getTagCompany && `&company__id=${getTagCompany}`}${debounceInputValue && `&${selectInputSearch[0].value === selectedOptionSearch ? 'search' : 'full_name'}=${debounceInputValue}`}${deadlineStatus && `&deadline_status=${deadlineStatus}`}${ordering && `&ordering=${ordering}`}${staff ? `&user_id=${staff}`:''}`,
+      `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${getTagCompany ? `&company__id=${getTagCompany}` : ''}${debounceInputValue ? `&${selectedOptionSearch === 'task' ? 'search' : 'full_name'}=${staff || debounceInputValue}` : staff ? `&full_name=${staff}` : ''}${deadlineStatus ? `&deadline_status=${deadlineStatus}` : ''}${ordering ? `&ordering=${ordering}` : ''}`,
       false
   );
   const { data: GetTagCompany = [], refetch: refetchGetTagCompany } = useGetQuery(false, "get-tag-company", `users/company-selection`, false);
@@ -57,15 +56,38 @@ const TaskCreated = () => {
     }
   }, [data, getIsSuccess]);
   useEffect(() => {
-    if (staff) {
+    if (staff && companyID) {
       setSelectedOptionSearch("staff");
       setSearch(staff);
+    }
+
+  }, [staff, companyID]);
+
+  console.log(getTagCompany)
+  // useEffect(() => {
+  //   console.log(staff,selectedOptionSearch)
+  //   if (staff && companyID){
+  //     refetch()
+  //   }
+  // }, [search,getTagCompany]);
+
+  useEffect(() => {
+    if (companyID) {
+      setGetTagCompany(companyID)
+    }
+  }, [companyID]);
+
+  useEffect(() => {
+    if (getTagCompany){
+      console.log(search,getTagCompany)
+      refetch()
+    }else {
+      console.log(2)
       refetch()
     }
-  }, [staff]);
-  useEffect(() => {
-    refetch();
-  }, [pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering, getTagCompany]);
+
+  }, [pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering,search,getTagCompany]);
+
   const deleteHandle = (url, id) => {
     mutate({ url, id });
   };
@@ -78,7 +100,7 @@ const TaskCreated = () => {
       ...pagination,
       current: pagination.current,
     });
-    setGetTagCompany(filters?.tag ? filters.tag.join(',') : '');
+    setGetTagCompany(filters?.company ? filters.company.join(',') : '');
     setDeadlineStatus(filters?.deadline_status?.toString() || '');
     setOrdering(sorter.order ? (sorter.order === 'descend' ? `-${sorter.field}` : sorter.field) : '');
   };
@@ -99,7 +121,7 @@ const TaskCreated = () => {
   };
 
   const selectBefore = (
-      <Select onChange={selectedSearchInput} defaultValue={selectInputSearch[0].value}>
+      <Select onChange={selectedSearchInput} value={selectedOptionSearch}>
         {selectInputSearch.map(item => (
             <Option key={item.value} value={item.value}>{item.name}</Option>
         ))}
@@ -117,6 +139,7 @@ const TaskCreated = () => {
             </Col>
             <Col span={16}>
               <Input
+                  value={staff ? staff:search }
                   addonBefore={selectBefore}
                   placeholder={`Поиск ${selectedOptionSearch === 'task' ? ' задач' : 'участники'}`}
                   onChange={(e) => searchFunc(e.target.value)}

@@ -12,6 +12,7 @@ import {currentMonth, currentYear} from "../../helper/time.helper";
 import {SelectMountYear} from "../../components";
 import DashboardProfileCard from "./profileCard/DashboardProfileCard";
 import {selectCompany, selectCompanyName} from "../../store/slice/companySlice";
+import {selectModuls} from "../../store/slice/modulsSlice";
 
 
 const {Title, Text} = Typography;
@@ -63,7 +64,6 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    console.log(companyID)
     if ((roleName === 'general_director'  || roleName === 'admin') && companyID) {
       console.log(1)
       refetchGetCompanyByIDStatistics()
@@ -73,7 +73,7 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    if ((roleName === 'general_director'  || roleName === 'admin') && companyID) {
+    if ((roleName === 'general_director' || roleName === 'admin') && modulsID) {
       refetchGetModulStaffStatistics()
     }
   }, [modulsID, companyID])
@@ -86,7 +86,12 @@ const Dashboard = () => {
       refetchGetCompanyByIDStatistics()
     }
   }, [companyID, valueYear, valueMonth]);
-
+  console.log(GetCompanyByIDStatistics)
+  useEffect(() => {
+    if ((roleName !== 'boss' || roleName !== 'staff') && GetCompanyByIDStatistics) {
+      dispatch(selectModuls(GetCompanyByIDStatistics[0]?.id))
+    }
+  }, [GetCompanyByIDStatistics]);
   //
   // useEffect(() => {
   //   if (user?.roles[0].name === 'director') {
@@ -109,7 +114,7 @@ const Dashboard = () => {
       refetchGetModulByIDStatistics()
     }
   } , [modulsID, valueYear])
-
+  console.log(modulsID)
 
   return (<div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
@@ -184,7 +189,10 @@ const Dashboard = () => {
                                    valueMonth={valueMonth}/>
                 </Row>
                 <div style={{height: 400, overflowY: "scroll"}}>
-                  {GetModulStaffStatistics.map((staff) => (<SmallProfileCard key={staff?.id} staffID={staff?.id}
+                  {GetModulStaffStatistics.map((staff) => (<SmallProfileCard
+                      key={staff?.id}
+                      staffID={staff?.id}
+                      companyID={companyID}
                                                                              failed_tasks_count={staff?.failed_tasks_count}
                                                                              total_tasks_count={staff?.total_tasks_count}
                                                                              in_progress_tasks_count={staff?.in_progress_tasks_count}

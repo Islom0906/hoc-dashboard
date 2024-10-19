@@ -233,7 +233,7 @@ const TaskPostEdit = () => {
         return responsibleUser?.results?.map((option) => {
             return {
                 value: option?.id,
-                label: `${option?.full_name}  Позиция- (${option?.position})`,
+                label: `${option?.full_name}  Позиция- (${option?.roles[0]?.position})`,
             };
         });
     }, [responsibleUser]);

@@ -1,12 +1,12 @@
 import {Avatar, Badge, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip} from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { editIdQuery } from "../../store/slice/querySlice";
-import { useNavigate } from "react-router-dom";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {editIdQuery} from "../../store/slice/querySlice";
+import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
-import { AvatarUserProfile } from "../../components";
-import { deadlineColor } from "../../constants/deadlineColor";
+import {AvatarUserProfile, EyeButton} from "../../components";
+import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
 
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
@@ -201,12 +201,15 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
 
             }
             <Badge dot={record?.is_checking}>
-            <Button
+                <EyeButton>
+                <Button
+
                 onClick={() => handleTaskInnerGet(record?.id)}
-                type="dashed"
+                type="primary"
             >
               <FaRegEye />
             </Button>
+                </EyeButton>
 
             </Badge>
           </Flex>

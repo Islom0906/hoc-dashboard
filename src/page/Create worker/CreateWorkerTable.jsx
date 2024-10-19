@@ -61,9 +61,9 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
         },
         {
             title: 'Должность ',
-            dataIndex: 'position',
-            id: 'position',
-            render: (text) => <p>{text}</p>,
+            dataIndex: 'roles',
+            id: 'roles',
+            render: (text) => <p>{text[0]?.position}</p>,
         },
         {
             title: 'Электронная почта',

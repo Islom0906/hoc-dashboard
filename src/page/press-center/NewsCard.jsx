@@ -86,9 +86,9 @@ const NewsCard = ({ news, onClick,setIsAddModalOpen,deleteNews }) => {
 
                     </Col>
                     {/*<Col span={10}>*/}
-                    {/*    <Button type={'primary'} style={{ width: '100%' }} onClick={onClick}>*/}
+                    {/*    <CustomButton type={'primary'} style={{ width: '100%' }} onClick={onClick}>*/}
                     {/*        Подробнее*/}
-                    {/*    </Button>*/}
+                    {/*    </CustomButton>*/}
                     {/*</Col>*/}
                 </Row>
             </Space>

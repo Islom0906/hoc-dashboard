@@ -1,10 +1,10 @@
 import {useMemo} from "react";
 import dayjs from "dayjs";
 import {Avatar, Button, Card, Flex, Popover, Space, Tag, theme, Typography,} from "antd";
-import {FaBirthdayCake} from "react-icons/fa";
 import {IoCalendarOutline} from "react-icons/io5";
 import {AvatarUserProfile} from "../../components";
 import {Link} from "react-router-dom";
+import DeadlinePopover from "../../components/CustomPopover/deadlinePopover";
 
 const {Title,Text}=Typography
 const contentPopoverBirthday = (content) => {
@@ -39,11 +39,11 @@ const contentPopoverBirthday = (content) => {
 const contentPopoverDeadline = (deadline, systemMode) => {
     return (
         <Space size={5} direction={"vertical"}>
-            <Flex align={"center"} justify={"space-between"}>
+            <Flex align={"center"} gap={10} justify={"space-between"}>
             <Title level={5} style={{marginBottom:0}}>
                 {deadline?.title}
             </Title>
-                <AvatarUserProfile size={18} key={deadline?.created_by?.id} full_name={deadline?.created_by?.full_name}
+                <AvatarUserProfile size={25} key={deadline?.created_by?.id} full_name={deadline?.created_by?.full_name}
                                    moduls={deadline?.created_by?.roles[0]?.module?.name}
                                    image={deadline?.created_by?.image}/>
 
@@ -56,13 +56,13 @@ const contentPopoverDeadline = (deadline, systemMode) => {
             </Text>
         </Flex>
             <Flex align={"center"} gap={10} justify={"space-between"}>
-                <img style={{width: 18, height: 18, objectFit: 'cover'}}
+                <img style={{width: 25, height: 25, objectFit: 'cover',border:'0.5px solid black',borderRadius:'100%'}}
                      src={systemMode === 'dark' ? deadline?.company?.image_dark : deadline?.company?.image_light}
                      alt={deadline?.company?.title}/>
 
                 <Avatar.Group size={"small"}>
                     {deadline?.included_users?.map((user) => (
-                        <AvatarUserProfile size={18} key={user?.id} full_name={user?.full_name}
+                        <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}
                                            moduls={user?.roles?.[0]?.name} image={user?.image}/>
 
                     ))}
@@ -171,7 +171,9 @@ export const dateCellRender = (
     const {
         token: {
             colorTextCalendar,
-
+            deadlineBg,
+            birthdayBg,
+            meetingBg
         },
     } = theme.useToken();
     const today = value.isSame(new Date(), 'day');
@@ -209,6 +211,7 @@ export const dateCellRender = (
             <ul className="events" style={{color:colorTextCalendar}}>
 
                 {birthdaysOnDate?.map(birthday => (
+                    <DeadlinePopover bg={birthdayBg}>
                         <Popover
                             trigger={'click'}
                             key={birthday?.id}
@@ -223,9 +226,12 @@ export const dateCellRender = (
                             </Flex>
                             </li>
                         </Popover>
+                    </DeadlinePopover>
 
                 ))}
                 {meetingsOnDate?.map((meeting) => (
+                    <DeadlinePopover bg={meetingBg}>
+
                     <Popover key={meeting?.id} content={contentPopoverMeeting(meeting)}>
                     <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id} className={'meeting'}>
                             <Flex gap={2} align={"center"}>
@@ -236,9 +242,11 @@ export const dateCellRender = (
                             </Flex>
                     </li>
                         </Popover>
+                    </DeadlinePopover>
                 ))}
                 {deadlineOnDate?.map((deadline) => (
-                        <Popover
+                    <DeadlinePopover bg={deadlineBg}>
+                    <Popover
                             className={'deadline-popover'}
                             trigger={'click'}
                             placement={"topLeft"}
@@ -258,6 +266,7 @@ export const dateCellRender = (
                             </Flex>
                             </li>
                         </Popover>
+                    </DeadlinePopover>
                 ))}
             </ul>
         </div>

@@ -55,7 +55,7 @@ const TaskList = () => {
                     xl={{ span: 6 }}
                 >
                   <TaskCard
-                      tag={task?.company}
+                      tag={task?.main_company}
                       key={task?.main_task_id}
                       title={task?.main_task_title}
                       deadline_status={task?.main_deadline_status}
@@ -68,6 +68,7 @@ const TaskList = () => {
                       lastUpdate={task?.staff_last_sub_task_updated_at}
                       included_users={task?.included_users}
                       isChecking={task?.is_checking}
+                      created_by={task?.main_task_created_by}
                   />
                 </Col>
             ))}
