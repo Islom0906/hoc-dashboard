@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     editId:localStorage.getItem('editDataId')||"",
-    editIdCalendar:localStorage.getItem('editIdCalendar')||""
+    editIdCalendar:""
 }
 export const querySlice = createSlice({
     name: 'query',

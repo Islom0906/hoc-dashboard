@@ -113,12 +113,19 @@ const Dashboard = () => {
 
   return (<div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
-          <Row gutter={[16, 30]}>
-            <Col span={18}>
+          <Row gutter={5} style={{paddingBottom: 5}}>
+            <Col span={12}>
               <Title level={2} style={{marginBottom: 0}}>
                 Панель
               </Title>
             </Col>
+            <SelectMountYear valueYear={valueYear} setValueYear={setValueYear} setValueMonth={setValueMonth}
+                             valueMonth={valueMonth}/>
+          </Row>
+          <Row gutter={[16, 30]}>
+
+
+
 
             {/*---- General derector ----*/}
 

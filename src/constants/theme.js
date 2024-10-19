@@ -140,7 +140,6 @@ export const configDark = {
     deadlineBgColor: '#BD3636B2',
     tableBorder:'#A4B9D14D',
     activeDay:"#76BC33",
-
     // task status
     allTask: '#646464',
     allTaskHover:"#64646433",

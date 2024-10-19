@@ -49,14 +49,14 @@ const CalendarTask = () => {
         isLoading: getBirthdayLoading,
         refetch: refetchBirthDay
     } = useGetQuery(false, 'birthDay-get',
-        `/users/user-birthdays?company__id=${companyId}` +
+        `/users/user-birthdays?${companyId && `company__id=${companyId}`}` +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     // meeting
     const {
         data: dataMeetting,
         isFetching: getMeetingLoading,
         refetch: refetchMeeting
-    } = useGetQuery(false, 'meeting-get', `/users/meetings/?company__id=${companyId}` +
+    } = useGetQuery(false, 'meeting-get', `/users/meetings/?${companyId && `company__id=${companyId}`}` +
         (filterDate?.year !== 'null' ? `&year=${filterDate?.year}` : '') +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     // deadline
@@ -64,7 +64,7 @@ const CalendarTask = () => {
         data: dataDeadline,
         isLoading: getDeadlineLoading,
         refetch: refetchDeadline
-    } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?company__id=${companyId}` +
+    } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?${companyId && `company__id=${companyId}`}` +
         (filterDate?.year !== 'null' ? `&year=${filterDate?.year}` : '') +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     useEffect(() => {
@@ -94,19 +94,24 @@ const CalendarTask = () => {
         document.documentElement.style.setProperty('--deadlineBorderColor', deadlineBorderColor);
         document.documentElement.style.setProperty('--deadlineBgColor', deadlineBgColor);
         document.documentElement.style.setProperty('--tableBorder', tableBorder);
-        document.documentElement.style.setProperty('----activeDayBackground', activeDay);
+        document.documentElement.style.setProperty('--activeDayBackground', activeDay);
 
     }, [systemMode]);
 
 
 
     const optionsCompany = useMemo(() => {
-        return companyData?.map(company => (
-            {
-                value: company?.id,
-                label: company?.title
-            }
-        ))
+        let data=[{
+            value: "",
+            label: "Все"
+        }]
+         companyData?.map(company => {
+             data.push({
+                 value: company?.id,
+                 label: company?.title
+             })
+         })
+        return data
     }, [companyData]);
 
     const onChangeCompany=(value)=>{
