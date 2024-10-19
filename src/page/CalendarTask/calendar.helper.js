@@ -15,21 +15,21 @@ const contentPopoverBirthday = (content) => {
                 textAlign: 'center',
                 boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                 padding: '20px',
-                backgroundColor: '#F9F9F9',
+                backgroundColor: '#CED232B2',
             }}
             bodyStyle={{ padding: '0' }}
 
         >
-            <div >
-                <FaBirthdayCake
-                    size={50}
-                    color="#2176FF"
-                    style={{ marginBottom: '20px' }}
-                />
+            <Flex align={"center"} gap={10} >
+                <img src="/birthday.gif" alt="birthday" style={{width:35,height:35}}/>
                 {content.first_name && (
-                    <p style={{ fontSize: '16px', color: '#333' }}>{`День рождения: ${content.first_name} ${content.last_name}`}</p>
+                    <Flex align={"start"}  vertical={true}>
+
+                    <p style={{ fontSize: '10px', color: '#FFFFFF80' }}>День рождения</p>
+                    <p style={{ fontSize: '16px', color: '#FFFFFFC2' }}>{ `${content.first_name} ${content.last_name}`}</p>
+                    </Flex>
                 )}
-            </div>
+            </Flex>
         </Card>
     );
 };
@@ -207,7 +207,11 @@ export const dateCellRender = (
             <ul className="events" style={{color:colorTextCalendar}}>
 
                 {birthdaysOnDate?.map(birthday => (
-                        <Popover key={birthday?.id} content={contentPopoverBirthday(birthday)}>
+                        <Popover
+                            trigger={'click'}
+                            key={birthday?.id}
+                            content={contentPopoverBirthday(birthday)}
+                        >
                             <li className={'birthday'}>
                             <Flex gap={2} align={"center"}>
 
