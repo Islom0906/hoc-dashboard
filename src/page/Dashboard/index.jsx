@@ -53,7 +53,7 @@ const Dashboard = () => {
     if (roleName === 'general_director' || roleName === 'admin') {
       refetchGetCompanyAllForGeneralStatistics()
     }
-  }, [user])
+  }, [user,valueMonth,valueYear])
   useEffect(() => {
     if (GetCompanyAllForGeneralStatistics) {
       dispatch(selectCompany(GetCompanyAllForGeneralStatistics[0]?.id))

@@ -37,7 +37,7 @@ const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullNa
     labels: ['Сделанный', 'В процессе', 'Неуспешный', 'Ответственная задача'],
     datasets: [
       {
-        data: [done_tasks_count || 10, in_progress_tasks_count || 4, failed_tasks_count || 5, responsible_tasks_count || 0],
+        data: [done_tasks_count || 0, in_progress_tasks_count || 0, failed_tasks_count || 0, responsible_tasks_count || 0],
           backgroundColor: [
               doneTask,
               progressTask,
