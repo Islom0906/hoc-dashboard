@@ -65,7 +65,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if ((roleName === 'general_director'  || roleName === 'admin') && companyID) {
-      console.log(1)
       refetchGetCompanyByIDStatistics()
     }
   }, [valueYear, valueMonth, companyID])
@@ -124,14 +123,16 @@ const Dashboard = () => {
                 Панель
               </Title>
             </Col>
-            <SelectMountYear valueYear={valueYear} setValueYear={setValueYear} setValueMonth={setValueMonth}
-                             valueMonth={valueMonth}/>
+
+            {
+
+                (roleName === 'general_director' || roleName === 'admin')&&
+                <SelectMountYear valueYear={valueYear} setValueYear={setValueYear} setValueMonth={setValueMonth}
+                                 valueMonth={valueMonth}/>
+
+            }
           </Row>
           <Row gutter={[16, 30]}>
-
-
-
-
             {/*---- General derector ----*/}
 
             {(roleName === 'general_director' || roleName === 'admin')&& <>

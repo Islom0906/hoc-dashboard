@@ -28,7 +28,7 @@ const positions = [
   },
 ];
 
-const MapForDashboardStructure = () => {
+const MapForDashboardStructure = ({roleName}) => {
   const navigate = useNavigate();
   const { data: getOffice, refetch:refetchGetOffice, isLoading:isLoadingGetOffice, isSuccess  } = useGetQuery(false, 'office-get', `/users/offices`, false);
   const {mutate,isSuccess:deleteSuccess,isLoading:deleteLoading}=useDeleteQuery()
@@ -51,13 +51,17 @@ const MapForDashboardStructure = () => {
                 Наши офисы:
               </Title>
             </Col>
-            <Col span={12}>
-              <Flex align={"end"} justify={"end"}>
-                <Button onClick={showModal} size={"small"} type={"primary"}>
-                  <FaPlus />
-                </Button>
-              </Flex>
-            </Col>
+            {
+              roleName === 'admin' &&
+                <Col span={12}>
+                  <Flex align={"end"} justify={"end"}>
+                    <Button onClick={showModal} size={"small"} type={"primary"}>
+                      <FaPlus />
+                    </Button>
+                  </Flex>
+                </Col>
+            }
+
             <Col span={24} style={{ marginTop: 10 }}>
               <Tabs defaultActiveKey="1">
                 <TabPane

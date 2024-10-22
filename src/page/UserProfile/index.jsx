@@ -13,12 +13,10 @@ import {useSelector} from "react-redux";
 
 const UserProfile = () => {
   const {data: {user} = {}} = useSelector((state) => state.auth);
-  const [valueYear, setValueYear] = useState(currentYear)
-  const [valueMonth, setValueMonth] = useState(currentMonth)
   const [checkInfo, setCheckInfo] = useState('personal')
   const {
     data: GetUserTaskStatistics = [], refetch: refetchGetUserTaskStatistics,
-  } = useGetQuery(false, "user-task-statistics", `users/staff-statistics?year=${valueYear}&month=${valueMonth}`, false);
+  } = useGetQuery(false, "user-task-statistics", `users/staff-statistics`, false);
   const handleMenu = (key) => {
     setCheckInfo(key)
   }
@@ -44,8 +42,8 @@ const UserProfile = () => {
           {/*</Menu>*/}
 
           {/*</div>*/}
-          <DashboardProfileCard title={'Мой профиль'} image={user?.image} position={user?.position}
-                                fullName={`${user?.first_name} ${user?.last_name} ${user?.middle_name}`}
+          <DashboardProfileCard title={'Мой профиль'} image={user?.image} position={user.roles[0]?.position}
+                                fullName={`${user?.full_name}`}
                                 total_tasks_count={GetUserTaskStatistics?.total_tasks_count}
                                 failed_tasks_count={GetUserTaskStatistics?.failed_tasks_count}
                                 done_tasks_count={GetUserTaskStatistics?.done_tasks_count}

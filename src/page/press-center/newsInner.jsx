@@ -93,10 +93,10 @@ const NewsInner = () => {
                             </Text>
                             <Flex style={{width:300}}>
                                 {
-                                    getByIdNews?.file?.file &&
+                                    getByIdNews?.file?.image &&
                                     <Tag color={'blue'} icon={<CiLink />} style={{display:"flex" , alignItems:'center' , gap:5}}>
-                                        <a href={getByIdNews?.file?.file} download={true} target={"_blank"} style={{display:"inline"}}>
-                                            {getByIdNews?.file?.file}
+                                        <a href={getByIdNews?.file?.image} download={true} target={"_blank"} style={{display:"inline"}}>
+                                            {getByIdNews?.file?.image}
                                         </a>
                                     </Tag>
                                 }

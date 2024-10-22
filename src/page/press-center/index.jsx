@@ -16,10 +16,11 @@ const PressCenter = () => {
     const navigator = useNavigate()
     const [pageSize, setPageSize] = useState(12);
     const [currentPage, setCurrentPage] = useState(1);
-
+    const {data: {user} = {}} = useSelector((state) => state.auth);
     const { data: getNews, refetch:refetchGetNews, isLoading:isLoadingGetNews, isSuccess  } = useGetQuery(false, 'module-get', `/users/news?page=${currentPage}&page_size=${pageSize}`, false);
     const {mutate: deleteNews, isSuccess: newsSuccess, isLoading: deleteLoading} = useDeleteQuery()
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const roleName = user?.roles[0]?.role?.name
 
     const onPaginationChange = (page, pageSize) => {
         setCurrentPage(page);
@@ -53,15 +54,19 @@ const PressCenter = () => {
                         Пресс-центр
                     </Title>
                 </Col>
-                <Col offset={6} span={6}>
-                    <Button
-                        type='primary'
-                        icon={<PlusOutlined />}
-                        style={{ width: '100%' }}
-                        onClick={addNews}>
-                        Добавить новость
-                    </Button>
-                </Col>
+
+                {
+                    roleName === 'admin' &&
+                    <Col offset={6} span={6}>
+                        <Button
+                            type='primary'
+                            icon={<PlusOutlined />}
+                            style={{ width: '100%' }}
+                            onClick={addNews}>
+                            Добавить новость
+                        </Button>
+                    </Col>
+                }
                 {
                     getNews?.results?.map((news) => (
                         <Col span={6} key={news?.id}>
@@ -81,7 +86,7 @@ const PressCenter = () => {
                     </Flex>
                 </Col>
                 <Col span={16}>
-                    <MapForDashboardStructure />
+                    <MapForDashboardStructure roleName={roleName} />
                 </Col>
                 <Modal title={'Добавить новость'} open={isAddModalOpen} footer={null} onCancel={handleAddModalClose}>
                     <NewsAddPostEdit setIsModalOpen={setIsAddModalOpen} isAddModalOpen={isAddModalOpen}  refetchGetNews={refetchGetNews} />

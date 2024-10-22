@@ -134,8 +134,8 @@ export const samplePagesConfigs = [
     {
         key: 5,
         icon: <InboxOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-        path: '/inbox',
         label: 'Избранный',
+        path: '/inbox',
         element: Inbox,
         permittedRole: [authRole.admin,authRole.boss,authRole.user,authRole.director , authRole.general_director],
         isBackground: false
@@ -293,13 +293,13 @@ export const samplePagesConfigs = [
         permittedRole: [authRole.admin, authRole.user, authRole.boss , authRole.director , authRole.general_director],
         isBackground: true
     },
-    {
-        key: 12321232312312312,
-        icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
-        path: '/support',
-        label: 'Поддерживать',
-        element: Support,
-        permittedRole: [authRole.admin, authRole.user, authRole.boss ,  authRole.director , authRole.general_director],
-        isBackground: false
-    },
+    // {
+    //     key: 12321232312312312,
+    //     icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     path: '/support',
+    //     label: 'Поддерживать',
+    //     element: Support,
+    //     permittedRole: [authRole.admin, authRole.user, authRole.boss ,  authRole.director , authRole.general_director],
+    //     isBackground: false
+    // },
 ];

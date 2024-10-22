@@ -35,7 +35,7 @@ const PersonalInfo = () => {
                 <Text type={"secondary"}>
                   Фотография:
                 </Text>
-                <img src={data?.images?.image} className={'logo'} alt={'company light'}
+                <img src={data?.image?.image} className={'logo'} alt={'company light'}
                      style={{width: '100px', height: '100px', objectFit: 'contain'}}/>
               </Flex>
             </Col>

@@ -3,13 +3,15 @@ import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import React from "react";
 import {editIdQuery} from "../../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 
 
 const MapTable = ({data,deleteHandle}) => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
+  const {data: {user} = {}} = useSelector((state) => state.auth);
+  const roleName = user?.roles[0]?.role?.name
   const Delete = async (id) => {
     deleteHandle('/users/offices',id)
   };
@@ -43,6 +45,9 @@ const MapTable = ({data,deleteHandle}) => {
       title: 'Редактировать',
       id: 'action',
       render: (_, record) => (
+
+            roleName === 'admin' &&
+
           <Space size={20}>
             <Button
                 onClick={() => Edit(record.id)}
@@ -56,6 +61,8 @@ const MapTable = ({data,deleteHandle}) => {
               <Button  type='primary' danger icon={<DeleteOutlined />} />
             </Popconfirm>
           </Space>
+
+
       ),
     },
   ];

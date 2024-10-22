@@ -105,7 +105,7 @@ const TaskCard = ({
                       responsible_user?.id && <Flex align={"center"} justify={"space-between"} gap={5}>
                           <Text style={{fontSize: '12px'}}>Ответственный:</Text>
                           <AvatarUserProfile size={30} key={responsible_user?.id} full_name={responsible_user?.full_name}
-                                             moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image}/>
+                                             moduls={responsible_user?.roles[0]?.position} image={responsible_user?.image}/>
                       </Flex>
                   }
 
@@ -117,7 +117,7 @@ const TaskCard = ({
                       <Avatar.Group size={"small"}>
                           {included_users?.map((user) => (
                               <AvatarUserProfile size={30} key={user?.id} full_name={user?.full_name}
-                                                 moduls={user?.roles?.[0]?.name} image={user?.image}/>
+                                                 moduls={user?.roles[0]?.position} image={user?.image}/>
 
                           ))}
                       </Avatar.Group>
@@ -126,7 +126,7 @@ const TaskCard = ({
                   <Flex align={"center"} justify={"space-between"} gap={5}>
                       <Text style={{fontSize: '12px'}}>{created_by?.full_name}</Text>
                       <AvatarUserProfile size={30} key={created_by?.id} full_name={created_by?.full_name}
-                                         moduls={responsible_user?.roles[0]?.module} image={created_by?.image}/>
+                                         moduls={created_by?.roles[0]?.position} image={created_by?.image}/>
                   </Flex>
               </Space>
 
