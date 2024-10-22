@@ -1,10 +1,11 @@
 import {useMemo} from "react";
 import dayjs from "dayjs";
-import {Avatar, Button, Card, Flex, Popover, Space, Tag, theme, Typography,} from "antd";
+import {Avatar, Button, Flex, Popover, Space, Tag, theme, Typography,} from "antd";
 import {IoCalendarOutline} from "react-icons/io5";
 import {AvatarUserProfile} from "../../components";
 import {Link} from "react-router-dom";
 import DeadlinePopover from "../../components/CustomPopover/deadlinePopover";
+import {MdAccessTime} from "react-icons/md";
 
 const {Title,Text}=Typography
 const contentPopoverBirthday = (content,birthdayColor) => {
@@ -85,29 +86,32 @@ const contentPopoverDeadline = (deadline, systemMode) => {
 
 }
 
-const contentPopoverMeeting = ({meeting,systemMode}) => {
-
+const contentPopoverMeeting = (meeting, systemMode) => {
     return(
         <Space size={5} direction={"vertical"}>
-            <Flex align={"center"} gap={10} justify={"space-between"}>
+            <Flex align={"center"} gap={20} justify={"space-between"}>
                 <Title level={5} style={{marginBottom:0}}>
                     {meeting?.title}
                 </Title>
-                <AvatarUserProfile size={25} key={meeting?.created_by?.id} full_name={meeting?.created_by?.full_name}
-                                   moduls={meeting?.created_by?.roles[0]?.module?.name}
-                                   image={meeting?.created_by?.image}/>
+                <AvatarUserProfile
+                    size={25}
+                    key={meeting?.created_by?.id}
+                    full_name={meeting?.created_by?.full_name}
+                    moduls={meeting?.created_by?.roles[0]?.module?.name}
+                    image={meeting?.created_by?.image}/>
 
 
             </Flex>
             <Flex align={"center"} gap={5}>
-                <IoCalendarOutline style={{fontSize: 12}}/>
+                <MdAccessTime style={{fontSize: 14}}/>
                 <Text style={{fontSize: 12}}>
-                    {dayjs(meeting?.meeting_date).format('DD.MM.YYYY')}
+                    {dayjs(meeting?.meeting_date).format('hh:mm')}
                 </Text>
             </Flex>
-            <Flex align={"center"} gap={10} justify={"space-between"}>
+            <Flex align={"center"} gap={2}  style={{marginRight:10}}>
                 {
-                    meeting?.companies.map(item=> (
+                    meeting?.companies.map((item,ind)=> (
+                        <>
                         <img style={{
                             width: 25,
                             height: 25,
@@ -117,43 +121,36 @@ const contentPopoverMeeting = ({meeting,systemMode}) => {
                         }}
                              src={systemMode === 'dark' ? item?.image_dark : item?.image_light}
                              alt={item?.title}/>
+                            {
+                                ind!==meeting?.companies.length-1 && '|'
+                            }
+
+                        </>
                     ))
                 }
 
-                {/*{*/}
-                {/*    !deadline?.included_users?.length > 0 ?*/}
-                {/*        <Avatar.Group size={"small"}>*/}
-                {/*            {deadline?.included_users?.map((user) => (*/}
-                {/*                <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}*/}
-                {/*                                   moduls={user?.roles?.[0]?.name} image={user?.image}/>*/}
 
-                {/*            ))}*/}
-                {/*        </Avatar.Group>*/}
-                {/*        :<Tag*/}
-
-                {/*            style={{borderRadius:'20px',margin:0,fontSize:10,padding:'0 5px'}}*/}
-                {/*            color={'#C68488'}>*/}
-                {/*            Все сотрудники*/}
-                {/*        </Tag>*/}
-
-                {/*}*/}
 
             </Flex>
-            {/*<Flex justify={"end"}>*/}
-            {/*    <Link to={`/task-list/${deadline?.id}`}>*/}
+            <Flex justify={'end'}>
+                {
+                    meeting?.users?.length>0 ?
+            <Avatar.Group size={"small"} >
+                {meeting?.users?.map((user) => (
+                    <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}
+                                       moduls={user?.roles?.[0]?.name} image={user?.image}/>
 
-            {/*        <Button style={{*/}
-            {/*            backgroundColor:'#fff',*/}
-            {/*            color:'#000',*/}
-            {/*            fontSize:10*/}
-            {/*        }}*/}
-            {/*                shape={'round'}*/}
-            {/*                size={'small'}*/}
-            {/*        >*/}
-            {/*            Подробнее*/}
-            {/*        </Button>*/}
-            {/*    </Link>*/}
-            {/*</Flex>*/}
+                ))}
+            </Avatar.Group>
+                    :
+                        <Tag
+
+                            style={{borderRadius:'20px',margin:'0 0 0 10px',fontSize:10,padding:'0 5px'}}
+                            color={'#a8b6d3'}>
+                            Все сотрудники
+                        </Tag>
+                }
+            </Flex>
         </Space>)
 }
 export const useBirthdayMap = (dataBirthDay) => {
@@ -240,7 +237,6 @@ export const dateCellRender = (
     }
 
 
-
     return (
         <div className={`custom-td`}>
             <div className={`date-number `}><span className={`${today ? 'today' : ""}`}>{value.date()}</span></div>
@@ -268,7 +264,11 @@ export const dateCellRender = (
                 {meetingsOnDate?.map((meeting) => (
                     <DeadlinePopover bg={meetingBg}>
 
-                    <Popover key={meeting?.id} content={contentPopoverMeeting(meeting,systemMode)}>
+                        <Popover
+                            trigger={'hover'}
+                            key={meeting?.id}
+                            content={contentPopoverMeeting(meeting, systemMode)}
+                        >
                     <li onClick={(e) => changeMeeting(e, meeting?.id)} key={meeting.id} className={'meeting'}>
                             <Flex gap={2} align={"center"}>
 
