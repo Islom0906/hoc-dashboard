@@ -102,6 +102,7 @@ const BossTracking = () => {
                     xxl={{ span: 6 }}
 
                 >
+
                   <TaskCard
                       tag={task?.main_company}
                       key={task?.main_task_id}
