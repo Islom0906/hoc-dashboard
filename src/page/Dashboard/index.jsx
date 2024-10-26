@@ -68,24 +68,17 @@ const Dashboard = () => {
       refetchGetCompanyByIDStatistics()
     }
   }, [valueYear, valueMonth, companyID])
-
-
-
   useEffect(() => {
     if ((roleName === 'general_director' || roleName === 'admin') && modulsID) {
       refetchGetModulStaffStatistics()
     }
-  }, [modulsID, companyID])
-
-
+  }, [modulsID, companyID ,valueYear, valueMonth])
   // director
-
   useEffect(() => {
     if (roleName === 'director' && companyID) {
       refetchGetCompanyByIDStatistics()
     }
   }, [companyID, valueYear, valueMonth]);
-  console.log(GetCompanyByIDStatistics)
   useEffect(() => {
     if ((roleName !== 'boss' || roleName !== 'staff') && GetCompanyByIDStatistics) {
       dispatch(selectModuls(GetCompanyByIDStatistics[0]?.id))

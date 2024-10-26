@@ -21,7 +21,6 @@ const TaskCreated = () => {
   const location = useReactLocation();
   const queryParams = new URLSearchParams(location.search);
   const staff = queryParams.get('staff');
-  // const companyID = queryParams.get('companyID');
   const {companyID}=useSelector(state => state.companySlice)
   const [search, setSearch] = useState('');
   const [selectedOptionSearch, setSelectedOptionSearch] = useState(selectInputSearch[0].value);
@@ -35,7 +34,6 @@ const TaskCreated = () => {
     total: 0,
   });
   const debounceInputValue = useDebounce(search, 500);
-  console.log(companyID)
   // Delete
   const { mutate, isLoading: deleteLoading } = useDeleteQuery();
 

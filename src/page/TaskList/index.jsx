@@ -26,8 +26,6 @@ const TaskList = () => {
   useEffect(() => {
       refetchStaffGetTask();
   }, [user, currentPage, pageSize , ordering , deadlineStatus , getTagCompany ]);
-
-
   useEffect(() => {
     refetchGetTagCompany()
   } , [companyID])

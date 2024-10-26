@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import AvatarUserProfile from "../../../components/AvatarUserProfile/AvatarUserProfile";
 import { UserOutlined } from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
-import { selectModuls } from "../../../store/slice/modulsSlice";
+import { selectModuls ,selectModulsName } from "../../../store/slice/modulsSlice";
 import {SelectMountYear} from "../../../components";
 
 const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth , setSelectModul }) => {
@@ -15,7 +15,9 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
         if (data) {
             dispatch(selectModuls(data[0]?.id));
             setSelectModul(data[0].name)
+            dispatch(selectModulsName(data[0].name));
         }
+        // console.log('data', data)
     }, [data]);
 
     const { Title } = Typography;

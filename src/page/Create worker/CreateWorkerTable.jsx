@@ -2,13 +2,19 @@ import {Button, Image, Popconfirm, Space, Table, Tag} from "antd";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {IoLinkOutline} from "react-icons/io5";
 import {useEffect} from "react";
+import {FaRegEye} from "react-icons/fa";
 
 const CreateWorkerTable = ({data,deleteHandle}) => {
     const navigate=useNavigate()
+
+
     const dispatch=useDispatch()
+    const {data: {user} = {}} = useSelector((state) => state.auth);
+    const roleName = user?.roles[0]?.role?.name
+
     const Delete = async (id) => {
         deleteHandle('/users/users',id)
     };
@@ -17,8 +23,9 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
         dispatch(editIdQuery(id))
         navigate('/create-worker/add')
     };
-
-
+    const handleUserProfile = (id) => {
+        navigate(`/vie-user?user=${id}`)
+    }
     const columns = [
         {
             title: 'Изображение',
@@ -112,20 +119,41 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             fixed: 'right',
             render: (_, record) => (
                 <Space size={20}>
-                    <Button
-                        onClick={() => Edit(record.id)}
-                        type='dashed'
-                        out
-                        icon={<EditOutlined />}/>
+
                     {
-                        record?.position !== 'admin' &&
-                    <Popconfirm
-                        title={'Вы уверены, что хотите удалить это?'}
-                        description={'Удалить'}
-                        onConfirm={() => Delete(record.id)}>
-                        <Button  type='primary' danger icon={<DeleteOutlined />} />
-                    </Popconfirm>
+                        roleName === 'admin' &&
+
+                        <>
+
+                        <Button
+                            onClick={() => Edit(record.id)}
+                            type='dashed'
+                            out
+                            icon={<EditOutlined />}/>
+                        {
+                            record?.roles[0].position !== 'admin' &&
+                            <Popconfirm
+                                title={'Вы уверены, что хотите удалить это?'}
+                                description={'Удалить'}
+                                onConfirm={() => Delete(record.id)}>
+                                <Button  type='primary' danger icon={<DeleteOutlined />} />
+                            </Popconfirm>
+                        }
+
+                        </>
+
+}
+                    {
+                        roleName === 'general_director' &&
+                        <Button
+
+                            onClick={() => handleUserProfile(record?.id)}
+                            type="primary"
+                        >
+                            <FaRegEye />
+                        </Button>
                     }
+
                 </Space>
 
             ),

@@ -119,7 +119,7 @@ export const samplePagesConfigs = [
         path: '/success-task',
         label: 'Выполненные задачи',
         element: SuccessTask,
-        permittedRole: [authRole.user ,authRole.boss ,authRole.director, authRole.general_director],
+        permittedRole: [authRole.user ,authRole.boss],
         isBackground: true
     },
     {
@@ -242,7 +242,7 @@ export const samplePagesConfigs = [
         icon: <AiOutlineUsergroupAdd className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/create-worker',
         element: CreateWorker,
-        permittedRole: [authRole.admin],
+        permittedRole: [authRole.admin , authRole.general_director],
         isBackground: true
     },
     {
@@ -276,6 +276,13 @@ export const samplePagesConfigs = [
         element: UserProfile,
         permittedRole: [authRole.admin, authRole.user, authRole.boss , authRole.director , authRole.general_director],
         isBackground: false
+    },
+    {
+        path: '/vie-user',
+        element: UserProfile,
+        permittedRole: [ authRole.general_director],
+        isBackground: false,
+        noIndex: true
     },
     {
         key: 900000,

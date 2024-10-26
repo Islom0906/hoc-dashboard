@@ -72,6 +72,7 @@ const AuthProvider = ({children}) => {
                     dispatch(selectCompany(data?.roles[0].company?.id))
                     dispatch(selectCompanyName(data?.roles[0].company?.title))
                     dispatch(selectModuls(data?.roles[0]?.module?.id))
+                    console.log('data?.roles[0]?.module?.id)' ,data?.roles[0]?.module?.id)
                 }
             } catch (error) {
                 dispatch(authData({

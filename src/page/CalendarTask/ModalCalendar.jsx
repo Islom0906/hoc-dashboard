@@ -207,7 +207,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                 requiredUser?.results?.map((option) => {
                     requiredUserData.push({
                         value: option?.id,
-                        label: `${option?.full_name}(${option?.position})`,
+                        label: `${option?.full_name} (${option?.roles[0]?.position})`,
                     })
                 });
                 return requiredUserData
@@ -215,7 +215,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                 requiredUser?.results?.map((option) => {
                     requiredUserData.push({
                         value: option?.id,
-                        label: `${option?.full_name}(${option?.position})`,
+                        label: `${option?.full_name}(${option?.roles[0]?.position})`,
                     })
                 });
                 return requiredUserData

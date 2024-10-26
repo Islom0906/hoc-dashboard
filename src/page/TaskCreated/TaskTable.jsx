@@ -10,12 +10,12 @@ import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
 
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
   const {data:{user}}=useSelector(state => state.auth)
   const dispatch = useDispatch();
 
   const Delete =  (id) => {
-    deleteHandle("/users/tasks", id);
+      deleteHandle("/users/tasks", id);
   };
 
   const Edit = (id) => {
@@ -64,7 +64,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
           <AvatarUserProfile
               size={'large'}
               key={record?.created_by?.id}
-              company={record?.created_by?.position}
+              company={record?.created_by?.roles[0].position}
               full_name={record?.created_by?.full_name}
               image={record?.created_by?.image}
           />,
@@ -135,7 +135,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                 <AvatarUserProfile
                     key={record?.responsible_user?.id}
                     full_name={record?.responsible_user?.full_name}
-                    moduls={record?.responsible_user?.roles?.[0]?.name}
+                    moduls={record?.responsible_user?.roles[0].position}
                     image={record?.responsible_user?.image}
                 />
               </Avatar.Group>
@@ -147,7 +147,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     <AvatarUserProfile
                         key={user?.id}
                         full_name={user?.full_name}
-                        moduls={user?.roles?.[0]?.name}
+                        moduls={user?.roles[0].position}
                         image={user?.image}
                     />
                 ))}

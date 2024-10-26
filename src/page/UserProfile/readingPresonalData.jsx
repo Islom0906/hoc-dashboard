@@ -1,30 +1,9 @@
-import {Col, Flex, Row, Space, Spin, Typography} from "antd";
-import {
-  useGetQuery,
-} from "../../service/query/Queries";
-import {useEffect} from "react";
-import {useSelector} from "react-redux";
+import {Col, Flex, Row, Space,  Typography} from "antd";
 const {Text ,Title} = Typography
 
-const PersonalInfo = () => {
-  const {data: {user}} = useSelector(state => state.auth)
-  const { data, isLoading: getTaskLoading, refetch } = useGetQuery(
-      false,
-      'get-task',
-      `users/users/${user?.id}`,
-      false
-  );
-
-  useEffect(() => {
-    if(user?.id) {
-    refetch()
-    }
-  } , [user])
-
+const PersonalInfo = ({data}) => {
 
   return (
-      <Spin spinning={getTaskLoading}>
-
         <Space style={{width:'100%' ,  paddingBottom:20}} direction={"vertical"}  className={'UserProfile'}>
           <Title level={3}>
             Пользовательские настройки
@@ -119,21 +98,20 @@ const PersonalInfo = () => {
 
 
             {
-              data?.position &&
+              data?.roles[0]?.position &&
             <Col span={8}>
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Должность:
                 </Text>
                 <p >
-                  {data?.position}
+                  { data?.roles[0]?.position }
                 </p>
               </Flex>
             </Col>
             }
           </Row>
         </Space>
-      </Spin>
 
   );
 };

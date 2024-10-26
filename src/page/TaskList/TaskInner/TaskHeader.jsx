@@ -1,10 +1,11 @@
-import {Button, Col, Row, Spin, Tag, Typography, Flex, Popconfirm} from "antd";
+import {Button, Col, Row, Spin, Tag, Typography, Flex, Popconfirm, Tooltip} from "antd";
 import React, { useEffect, useState } from "react";
 import { useEditQuery } from "../../../service/query/Queries";
 import { FaRegCommentDots } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { CgDanger } from "react-icons/cg";
+import {ProfileHoverActive} from "../../../components";
 
 const { Text, Title } = Typography;
 
@@ -36,9 +37,14 @@ const TaskHeader = ({ task_manager, responsible_user_id ,title, text, task_statu
             description={'Вы уверены, что хотите завершить задачу?'}
             onConfirm={() => updateStatus(id, 'checking')}
         >
+          <Tooltip
+              title={'Установить для проверки'}
+              placement="top"
+          >
           <Button type="primary">
-            <IoMdCheckboxOutline /> Set to Checking
+            <IoMdCheckboxOutline />
           </Button>
+          </Tooltip>
         </Popconfirm>
       }else if(task_status === 'checking'){
         return<Tag color="green">Checking</Tag>
@@ -59,6 +65,7 @@ const TaskHeader = ({ task_manager, responsible_user_id ,title, text, task_statu
         return <Tag color="green">Progress</Tag>
       }else if(task_status === 'checking'){
         return(<>
+
         <Popconfirm
             cancelText={'Отменить'}
             okText={'Завершить'}
@@ -66,9 +73,14 @@ const TaskHeader = ({ task_manager, responsible_user_id ,title, text, task_statu
             description={'Вы уверены, что хотите завершить задачу?'}
             onConfirm={() => updateStatus(id, 'done')}
         >
+          <Tooltip
+              title={'Сделанный'}
+              placement="top"
+          >
           <Button type="primary">
-            <IoMdCheckboxOutline /> Done
+            <IoMdCheckboxOutline />
           </Button>
+          </Tooltip>
         </Popconfirm>
         <Popconfirm
             cancelText={'Отменить'}
@@ -77,9 +89,15 @@ const TaskHeader = ({ task_manager, responsible_user_id ,title, text, task_statu
             description={'Вы уверены, что хотите завершить задачу?'}
             onConfirm={() => updateStatus(id, 'progress')}
         >
-            <Button type="danger">
-              <CgDanger /> Set to Progress
+          <Tooltip
+              title={'Установить на Прогресс'}
+              placement="top"
+          >
+            <Button type="primary" danger>
+              <CgDanger />
             </Button>
+          </Tooltip>
+
         </Popconfirm>
           </>)
       }
@@ -91,9 +109,7 @@ const TaskHeader = ({ task_manager, responsible_user_id ,title, text, task_statu
         <Spin spinning={isUpdating}>
           <Row style={{ width: "100%" }}>
             <Col span={24}>
-              {
-                taskStatusChecking()
-              }
+
             </Col>
             <Col span={20}>
               <Flex gap={20} align="start">
@@ -104,10 +120,18 @@ const TaskHeader = ({ task_manager, responsible_user_id ,title, text, task_statu
               </Flex>
             </Col>
             <Col span={4}>
-              <Flex align="start" justify="end" style={{ width: "100%" }}>
+
+              <Flex align="start" gap={5} justify="end" style={{ width: "100%" }}>
+                {
+                  taskStatusChecking()
+                }
+                <Tooltip
+                    title={'Написать комментарий'}
+                    placement="top">
                 <Button type="primary" onClick={() => clickHandle(id)}>
                   <FaRegCommentDots />
                 </Button>
+                </Tooltip>
               </Flex>
             </Col>
           </Row>

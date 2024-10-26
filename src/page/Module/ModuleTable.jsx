@@ -29,8 +29,8 @@ const ModuleTable = ({data,deleteHandle}) => {
 
         {
             title: 'Компания',
-            dataIndex: 'companies',
-            id: 'companies',
+            dataIndex: 'company',
+            id: 'company',
             render: (text) =><p>{text?.title}</p>,
         },
 

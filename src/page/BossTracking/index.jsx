@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Col, Row, Spin, Pagination, Flex, Button} from "antd";
-import {FilterTaskList, TaskCard, TaskCardForBoss} from "../../components";
-import { useGetQuery } from "../../service/query/Queries";
+import {FilterTaskList, TaskCard} from "../../components";
+import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
@@ -12,14 +12,15 @@ const BossTracking = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
   const navigate=useNavigate()
   const dispatch=useDispatch()
-  const {companyID} = useSelector(state => state.companySlice)
   const {modulsID} = useSelector(state => state.modulsSlice)
   const {staffIDs} = useSelector(state => state.staffSlice)
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
-  const [ordering, setOrdering] = useState('');
   const [deadlineStatus, setDeadlineStatus] = useState('');
+  const [ordering, setOrdering] = useState('');
   const [getTagCompany, setGetTagCompany] = useState('');
+  const [deleteBossTaskID, setDeleteBossTaskID] = useState('');
+  const { mutate, isLoading: deleteLoading } = useDeleteQuery();
   const {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
@@ -38,10 +39,12 @@ const BossTracking = () => {
   } = useGetQuery(false, "get-staff-moduls", `/users/user-filter?module_id=${modulsID}` ,false);
 
   useEffect(() => {
-    refetchGetTagCompany()
-  } , [companyID])
+      refetchGetTagCompany()
+  } , [])
   useEffect(() => {
-    refetchStaffForModuls()
+    if(modulsID) {
+      refetchStaffForModuls()
+    }
   } , [modulsID])
   useEffect(() => {
       refetchStaffGetTask();
@@ -55,6 +58,20 @@ const BossTracking = () => {
     dispatch(editIdQuery(""));
     navigate('/task/add');
   };
+
+  useEffect(() => {
+    if(deleteBossTaskID) {
+      mutate({ url:'/users/tasks' , deleteBossTaskID });
+    }
+  } , [deleteBossTaskID])
+
+  const handleDeleteBossTask = (id) => {
+    mutate({ url:'/users/tasks' , deleteBossTaskID });
+
+  }
+
+
+  console.log('staffGetTask', staffGetTask)
 
   return (
       <div>
@@ -94,12 +111,16 @@ const BossTracking = () => {
                       link={`/task-list/${task?.main_task_id}`}
                       created_at={task?.main_task_created_at}
                       created_by={task?.main_task_created_by}
+                      main_task_status={task?.main_task_status}
                       deadline={task?.main_task_deadline}
                       doneCountTask={task?.done_sub_tasks_count}
                       allCountTask={task?.sub_tasks_count}
                       responsible_user={task?.main_task_responsible_user}
                       lastUpdate={task?.staff_last_sub_task_updated_at}
                       included_users={task?.included_users}
+                      setDeleteBossTaskID={setDeleteBossTaskID}
+                      isChecking={task?.is}
+                      handleDeleteBossTask={handleDeleteBossTask}
                   />
                 </Col>
             ))}

@@ -37,12 +37,15 @@ import {AvatarUserProfile} from "../index";
                     <AvatarUserProfile key={created_by?.id} full_name={created_by?.full_name} image={created_by?.image} moduls={created_by?.roles[0].position} />
                 </Flex>
             </Flex>
-          <Flex align={'center'} justify={'space-between'}>
-            <Text type={'secondary'}> Ответственный:</Text>
-            <Flex align={"center"} gap={10}>
-              <AvatarUserProfile key={main_task_responsible_user?.id} full_name={main_task_responsible_user?.full_name} image={main_task_responsible_user?.image}  />
-            </Flex>
-          </Flex>
+            {
+                main_task_responsible_user?.id &&
+                <Flex align={'center'} justify={'space-between'}>
+                    <Text type={'secondary'}> Ответственный:</Text>
+                    <Flex align={"center"} gap={10}>
+                        <AvatarUserProfile key={main_task_responsible_user?.id} full_name={main_task_responsible_user?.full_name} image={main_task_responsible_user?.image}  />
+                    </Flex>
+                </Flex>
+            }
           <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Время начала:</Text>
             <Text type={'secondary'}>{dayjs(main_task_created_at).format('DD.MM.YYYY')}</Text>

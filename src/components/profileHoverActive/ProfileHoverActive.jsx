@@ -11,22 +11,22 @@ import {FaBuildingColumns} from "react-icons/fa6";
         {
           full_name &&
             <Flex gap={5} align={'center'}>
-              <FaRegUserCircle />
-              <p>{full_name}</p>
+              <FaRegUserCircle style={{flexShrink:0}} />
+              <p style={{fontSize:12}}>{full_name}</p>
             </Flex>
         }
         {
           moduls &&
             <Flex gap={2} align={'center'}>
-              <VscFileSubmodule />
-              <p>{moduls}</p>
+              <VscFileSubmodule style={{flexShrink:0}} />
+              <p style={{fontSize:12}}>{moduls}</p>
             </Flex>
         }
         {
             company &&
             <Flex gap={2} align={'center'}>
-              <FaBuildingColumns />
-              <p>{company}</p>
+              <FaBuildingColumns style={{flexShrink:0}} />
+              <p style={{fontSize:12}}>{company}</p>
             </Flex>
         }
 

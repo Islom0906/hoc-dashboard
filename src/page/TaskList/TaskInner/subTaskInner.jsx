@@ -85,7 +85,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
               description={'Вы уверены, что хотите завершить задачу?'}
               onConfirm={() => updateStatus(id, 'progress')}
           >
-            <Button type="danger">
+            <Button color="danger">
               <CgDanger /> Set to Progress
             </Button>
           </Popconfirm>
@@ -127,9 +127,13 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                             {dayjs(task?.deadline).format("DD.MM.YYYY")}
                           </Tag>
                         </Tooltip>
-                        {
-                          taskStatusChecking(task?.id ,task?.task_manager ,task?.status )
-                        }
+                        <Flex justify={'end'} align={'center'}>
+                          {
+                            taskStatusChecking(task?.id ,task?.task_manager ,task?.status )
+                          }
+
+                        </Flex>
+
                         <Button type="primary" size={"small"} onClick={() => clickHandle(task?.id)}>
                           <FaRegCommentDots />
                         </Button>

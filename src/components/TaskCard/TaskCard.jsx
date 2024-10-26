@@ -34,23 +34,29 @@ const TaskCard = ({
                       doneCountTask,
                       allCountTask,
                       responsible_user,
+                      main_task_status,
                       lastUpdate,
                       included_users,
                       created_by,
-                        isChecking
+                        isChecking,
+                      setDeleteBossTaskID,
+                      handleDeleteBossTask
                   }) => {
     const {data: {user} = {}} = useSelector((state) => state.auth);
     const dispatch = useDispatch()
     const deadlineColor = DeadlineStatusColor(deadline_status);
     const { Text } = Typography;
-    console.log(created_by)
+    console.log('id', id)
     const Edit = (id) => {
         localStorage.setItem("editDataId", id);
         dispatch(editIdQuery(id));
     };
     const Delete = (id) => {
+        setDeleteBossTaskID(id)
+        handleDeleteBossTask(id)
     };
-    console.log(tag)
+
+
   return (
       <Card
           className={"TaskCard"}
@@ -132,7 +138,7 @@ const TaskCard = ({
 
               <Row gutter={5}>
                   {
-                      user?.id === created_by?.id &&
+                      user?.id === created_by?.id && main_task_status !== 'done'   ?
                       <>
                           <Col span={8}>
                               <Link to={`/task/add`}>
@@ -145,28 +151,34 @@ const TaskCard = ({
                               <Popconfirm
                                   title={"Вы уверены, что хотите удалить это?"}
                                   description={"Удалить"}
-                                  onConfirm={() => Delete(id)}
+                                  onConfirm={(id) => Delete(id)}
                               >
                                   <Button style={{textAlign: "center", width: '100%'}} type="primary" danger
                                           icon={<DeleteOutlined/>}/>
                               </Popconfirm>
                           </Col>
-                      </>
+                          <Col span={8}>
+                              <Link to={link}  style={{textAlign: "center", width: '100%' , display:'block'}}>
+                                  <Badge dot={isChecking} >
+                                      <Button   style={{textAlign: "center", width: '100%' , display:'block'}}
+                                               type={"primary"}>
+                                          <FaRegEye style={{fontSize: "23px" , width:'100%'}}/>
+                                      </Button>
+                                  </Badge>
+                              </Link>
+                          </Col>
+                      </>:
+                          <Col span={ 24 }>
+                              <Link to={link}  style={{textAlign: "center", width: '100%' , display:'block'}}>
+                                  <Badge dot={isChecking} >
+                                      <Button  icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%' , display:'flex', alignItems:'center'}}
+                                               type={"primary"}>
+                                              Подробнее
+                                      </Button>
+                                  </Badge>
+                              </Link>
+                          </Col>
                   }
-                  <Col span={user?.id === created_by?.id ? 8 : 24}>
-                          <Link to={link}>
-                              <Badge dot={isChecking}>
-                                  <Button  icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%'}}
-                                           type={"primary"}>
-                                      {
-                                          !(user?.id === created_by?.id) &&
-
-                                          "Подробнее"
-                                      }
-                                  </Button>
-                              </Badge>
-                          </Link>
-                  </Col>
               </Row>
 
           </Space>
