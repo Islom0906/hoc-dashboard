@@ -16,4 +16,5 @@ export {default as FileCard} from './Inbox/FileCard'
 export {default as Map} from './Map/Map'
 export {default as EyeButton} from './CustomButton/eyeButton'
 export {default as SelectMountYear} from './selectMountYear/index'
+export {default as TaskTable} from './TaskTable/TaskTable'
 

@@ -1,11 +1,13 @@
-import {Col, Menu, Row, theme} from "antd";
+import {Col, Flex, Menu, Row, Tabs, Tag, theme} from "antd";
 import './index.scss'
 import {useEffect, useState} from "react";
 import ReadingPresonalData from "./readingPresonalData";
 import DashboardProfileCard from "../Dashboard/profileCard/DashboardProfileCard";
-import {useGetQuery} from "../../service/query/Queries";
+import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 import {useSelector} from "react-redux";
 import {useLocation as useReactLocation, useNavigate} from "react-router-dom";
+import {Doughnut} from "react-chartjs-2";
+import {TaskTable} from "../../components";
 // import Personal from "./personal";
 // import ChangePassword from "./ChangePassword";
 // import {RiLockPasswordFill} from "react-icons/ri";
@@ -14,9 +16,20 @@ const UserProfile = () => {
   const {data: {user} = {}} = useSelector((state) => state.auth);
   const [checkInfo, setCheckInfo] = useState('personal')
     const [userID , setUserID] = useState('')
+    const { TabPane } = Tabs;
     const location = useReactLocation();
     const queryParams = new URLSearchParams(location.search);
     const queryUserID = queryParams.get('user');
+    const [taskStatus , setTaskStatus] = useState('progress');
+    const [deadlineStatus, setDeadlineStatus] = useState('');
+    const [ordering, setOrdering] = useState('');
+    const [getTagCompany, setGetTagCompany] = useState('');
+    const { mutate, isLoading: deleteLoading } = useDeleteQuery();
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10,
+        total: 0,
+    });
     const roleName = user?.roles[0]?.role?.name
     const { data: getUserInfo, isLoading: loadingGetUserInfo, refetch:refetchGetUserInfo } = useGetQuery(
         false,
@@ -27,7 +40,25 @@ const UserProfile = () => {
   const {
     data: GetUserTaskStatistics = [], refetch: refetchGetUserTaskStatistics,
   } = useGetQuery(false, "user-task-statistics", `users/staff-statistics/${userID && userID}/`, false);
-  const handleMenu = (key) => {
+
+    const {
+        data: GetUserTaskStatusFailed = [], refetch: refetchGetUserTaskStatusFailed, isSuccess:isSuccessGetUserTaskStatusFailed
+    } = useGetQuery(false, "user-status-failed-progress", `users/staff-subtasks/?${userID && `staff_id=${userID}`}&status=${taskStatus}`, false);
+    // status=progress
+    // status=failed
+
+    const handleTableChange = (pagination, filters, sorter) => {
+        setPagination({
+            ...pagination,
+            current: pagination.current,
+        });
+        setGetTagCompany(filters?.company ? filters.company.join(',') : '');
+        setDeadlineStatus(filters?.deadline_status?.toString() || '');
+        setOrdering(sorter.order ? (sorter.order === 'descend' ? `-${sorter.field}` : sorter.field) : '');
+    };
+
+
+    const handleMenu = (key) => {
     setCheckInfo(key)
   }
   useEffect(() => {
@@ -45,9 +76,20 @@ const UserProfile = () => {
         if(userID) {
             refetchGetUserTaskStatistics()
             refetchGetUserInfo()
+            refetchGetUserTaskStatusFailed()
         }
     } , [userID])
 
+    const deleteHandle = (url, id) => {
+        mutate({ url, id });
+    };
+
+
+    useEffect(() => {
+        if (isSuccessGetUserTaskStatusFailed) {
+            setPagination(prevState => ({ ...prevState, total: GetUserTaskStatusFailed?.count }));
+        }
+    }, [GetUserTaskStatusFailed, isSuccessGetUserTaskStatusFailed]);
   const {
     token: {contentBg},
   } = theme.useToken();
@@ -87,6 +129,35 @@ const UserProfile = () => {
 
           </div>
         </Col>
+
+      {
+
+          roleName !== 'staff' &&
+          <Col span={24}>
+
+              <Tabs defaultActiveKey="1" >
+                  <TabPane
+                      tab={
+                          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                 Статистика
+              </span>
+                      }
+                      key="1"
+                  >
+                      <TaskTable
+                          data={GetUserTaskStatusFailed?.results}
+                          deleteHandle={deleteHandle}
+                          pagination={pagination}
+                          setPagination={setPagination}
+                          handleTableChange={handleTableChange} />
+                  </TabPane>
+              </Tabs>
+
+          </Col>
+      }
+
+
+
       </Row>);
 };
 

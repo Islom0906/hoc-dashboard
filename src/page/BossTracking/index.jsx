@@ -19,13 +19,18 @@ const BossTracking = () => {
   const [deadlineStatus, setDeadlineStatus] = useState('');
   const [ordering, setOrdering] = useState('');
   const [getTagCompany, setGetTagCompany] = useState('');
-  const [deleteBossTaskID, setDeleteBossTaskID] = useState('');
   const { mutate, isLoading: deleteLoading } = useDeleteQuery();
   const {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
   } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks/${modulsID}?page=${currentPage}&page_size=${pageSize}${staffIDs?.length !== 0 ? `&staff_id=${staffIDs}` : ''}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}${getTagCompany && `&company_id=${getTagCompany}`}` , false);
+
+  // const {
+  //   data: staffGetDoneTask = {},
+  //   refetch: refetchGetDoneTask,
+  //   isLoading: isLoadingGetDoneTask,
+  // } = useGetQuery(false, "staff-get-task", `users/module-staff-tasks/${modulsID}?page=${currentPage}&page_size=${pageSize}${staffIDs?.length !== 0 ? `&staff_id=${staffIDs}` : ''}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}${getTagCompany && `&company_id=${getTagCompany}`}` , false);
 
 
   const {
@@ -53,25 +58,17 @@ const BossTracking = () => {
     setCurrentPage(page);
     setPageSize(pageSize);
   };
-  const taskData = staffGetTask;
   const addArticle = () => {
     dispatch(editIdQuery(""));
     navigate('/task/add');
   };
 
-  useEffect(() => {
-    if(deleteBossTaskID) {
-      mutate({ url:'/users/tasks' , deleteBossTaskID });
-    }
-  } , [deleteBossTaskID])
-
   const handleDeleteBossTask = (id) => {
-    mutate({ url:'/users/tasks' , deleteBossTaskID });
+    mutate({ url:'/users/tasks' , id:`${id}/` });
 
   }
 
 
-  console.log('staffGetTask', staffGetTask)
 
   return (
       <div>
@@ -90,9 +87,9 @@ const BossTracking = () => {
           </Col>
         <FilterTaskList  getTagCompany={GetTagCompany} setGetTagCompany={setGetTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering} getStaffForModuls={GetStaffForModuls?.results } />
         </Row>
-        <Spin spinning={isLoadingStaffGetTask}>
+        <Spin spinning={isLoadingStaffGetTask  || deleteLoading}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>
-            {taskData?.results?.map((task) => (
+            {staffGetTask?.results?.map((task) => (
                 <Col
                     key={task?.main_task_id}
                     className="gutter-row"
@@ -102,7 +99,6 @@ const BossTracking = () => {
                     xxl={{ span: 6 }}
 
                 >
-
                   <TaskCard
                       tag={task?.main_company}
                       key={task?.main_task_id}
@@ -119,8 +115,7 @@ const BossTracking = () => {
                       responsible_user={task?.main_task_responsible_user}
                       lastUpdate={task?.staff_last_sub_task_updated_at}
                       included_users={task?.included_users}
-                      setDeleteBossTaskID={setDeleteBossTaskID}
-                      isChecking={task?.is}
+                      isChecking={task?.is_checking}
                       handleDeleteBossTask={handleDeleteBossTask}
                   />
                 </Col>
@@ -130,7 +125,7 @@ const BossTracking = () => {
               <Pagination
                   current={currentPage}
                   pageSize={pageSize}
-                  total={taskData?.count || 0}
+                  total={staffGetTask?.count || 0}
                   onChange={onPaginationChange}
                   showSizeChanger
               />

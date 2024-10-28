@@ -144,7 +144,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
 
 }
                     {
-                        roleName === 'general_director' &&
+                        roleName === 'admin' &&
                         <Button
 
                             onClick={() => handleUserProfile(record?.id)}

@@ -194,7 +194,7 @@ export const samplePagesConfigs = [
         path: '/view-task-director',
         noIndex: true,
         element: TaskCreated,
-        permittedRole: [authRole.director ,authRole.general_director],
+        permittedRole: [authRole.director ,authRole.general_director , authRole.admin],
         isBackground: true
     },
     {
@@ -280,7 +280,7 @@ export const samplePagesConfigs = [
     {
         path: '/vie-user',
         element: UserProfile,
-        permittedRole: [ authRole.general_director],
+        permittedRole: [ authRole.general_director , authRole.admin],
         isBackground: false,
         noIndex: true
     },

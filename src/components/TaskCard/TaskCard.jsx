@@ -39,20 +39,17 @@ const TaskCard = ({
                       included_users,
                       created_by,
                         isChecking,
-                      setDeleteBossTaskID,
                       handleDeleteBossTask
                   }) => {
     const {data: {user} = {}} = useSelector((state) => state.auth);
     const dispatch = useDispatch()
     const deadlineColor = DeadlineStatusColor(deadline_status);
     const { Text } = Typography;
-    console.log('id', id)
     const Edit = (id) => {
         localStorage.setItem("editDataId", id);
         dispatch(editIdQuery(id));
     };
     const Delete = (id) => {
-        setDeleteBossTaskID(id)
         handleDeleteBossTask(id)
     };
 
@@ -138,7 +135,7 @@ const TaskCard = ({
 
               <Row gutter={5}>
                   {
-                      user?.id === created_by?.id && main_task_status !== 'done'   ?
+                      user?.id === created_by?.id && main_task_status !== 'done' && !isChecking   ?
                       <>
                           <Col span={8}>
                               <Link to={`/task/add`}>
@@ -151,7 +148,7 @@ const TaskCard = ({
                               <Popconfirm
                                   title={"Вы уверены, что хотите удалить это?"}
                                   description={"Удалить"}
-                                  onConfirm={(id) => Delete(id)}
+                                  onConfirm={()=> Delete(id)}
                               >
                                   <Button style={{textAlign: "center", width: '100%'}} type="primary" danger
                                           icon={<DeleteOutlined/>}/>
