@@ -1,3 +1,5 @@
+import TaskNoFilterTable from "./TaskTable/TaskNoFilterTable";
+
 export {default as AppLoader} from './AppLoader'
 export {default as FormInput} from './Form/FormInput'
 export {default as FormInputEmail} from './Form/FormInputEmail'
@@ -17,4 +19,7 @@ export {default as Map} from './Map/Map'
 export {default as EyeButton} from './CustomButton/eyeButton'
 export {default as SelectMountYear} from './selectMountYear/index'
 export {default as TaskTable} from './TaskTable/TaskTable'
+export {default as TaskNoFilterTable} from './TaskTable/TaskNoFilterTable'
+export {default as TaskDoneTable} from './TaskTable/TaskDoneTable'
+// TaskNoFilterTable
 

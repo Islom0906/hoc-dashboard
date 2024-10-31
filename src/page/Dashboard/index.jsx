@@ -133,9 +133,9 @@ const Dashboard = () => {
                 <Title level={4}>
                   Компания
                 </Title>
-                <Row gutter={5}>
+                <Row gutter={[16 ,14]}>
                   {GetCompanyAllForGeneralStatistics?.map(general => (<Col span={6} key={general?.id}>
-                        <DashboardProfileCard companyIDSlice={companyID}  companyID={general?.id}
+                        <DashboardProfileCard card={general} companyIDSlice={companyID}  companyID={general?.id}
                                               image={general?.image_dark}
                                               fullName={general?.title}
                                               in_progress_tasks_count={general?.total_tasks_count - (general?.done_tasks_count - general?.failed_tasks_count)}

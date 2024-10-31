@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {IoLinkOutline} from "react-icons/io5";
 import {useEffect} from "react";
-import {FaRegEye} from "react-icons/fa";
+import {FaFileDownload, FaRegEye} from "react-icons/fa";
 
 const CreateWorkerTable = ({data,deleteHandle}) => {
     const navigate=useNavigate()
@@ -25,6 +25,9 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
     };
     const handleUserProfile = (id) => {
         navigate(`/vie-user?user=${id}`)
+    }
+    const handleUserProfileForTaskFile = (id) => {
+        console.log(id)
     }
     const columns = [
         {
@@ -144,14 +147,24 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
 
 }
                     {
-                        roleName === 'admin' &&
-                        <Button
+                        roleName === 'general_director' &&
+                        <>
+                            <Button
 
-                            onClick={() => handleUserProfile(record?.id)}
-                            type="primary"
-                        >
-                            <FaRegEye />
-                        </Button>
+                                onClick={() => handleUserProfile(record?.id)}
+                                type="primary"
+                            >
+                                <FaRegEye />
+                            </Button>
+                            <Button
+
+                                onClick={() => handleUserProfileForTaskFile(record?.id)}
+                                type="primary"
+                            >
+                                <FaFileDownload />
+                            </Button>
+                        </>
+
                     }
 
                 </Space>

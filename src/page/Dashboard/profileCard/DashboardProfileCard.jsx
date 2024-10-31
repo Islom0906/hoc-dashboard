@@ -10,7 +10,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count  }) => {
+const DashboardProfileCard = ({ card,  companyIDSlice , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count  }) => {
     const dispatch = useDispatch()
     const handlerCompanyId = () => {
     if(companyID && fullName) {
@@ -18,6 +18,9 @@ const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullNa
         dispatch(selectCompanyName(fullName))
     }
   }
+
+
+
     const {
         token: {
             allTask,
@@ -32,8 +35,7 @@ const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullNa
             responsibleTaskHover
         }
     } = theme.useToken();
-
-  const chartData = {
+   const chartData = {
     labels: ['Сделанный', 'В процессе', 'Неуспешный', 'Ответственная задача'],
     datasets: [
       {
@@ -60,13 +62,13 @@ const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullNa
             legend: {
                 position: 'bottom',
                 labels: {
-                    usePointStyle: true, // Makes the labels circular
-                    pointStyle: "circle", // Circle-shaped points next to labels
+                    usePointStyle: true,
+                    pointStyle: "circle",
                 },
             },
         },
         responsive: true,
-        cutout: '50%', // Size of the doughnut hole (cutout)
+        cutout: '50%',
     };
   return (
       <Card
@@ -114,7 +116,7 @@ const DashboardProfileCard = ({ companyIDSlice , companyID, title, image, fullNa
                           <Text style={{margin: 0, fontSize: 12}}>Все задачи</Text>
                       </Flex>
                       <Tag color={allTaskHover} style={{fontSize:'14px',color:allTask,fontWeight:600,padding:'2px 10px'}}>
-                          {total_tasks_count || 0}
+                          {done_tasks_count + in_progress_tasks_count + failed_tasks_count || 0}
                       </Tag>
                   </Flex>
                   <Flex gap={5} align={"center"} justify={"space-between"} style={{
