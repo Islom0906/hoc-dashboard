@@ -7,7 +7,7 @@ import {IoLinkOutline} from "react-icons/io5";
 import {useEffect} from "react";
 import {FaFileDownload, FaRegEye} from "react-icons/fa";
 
-const CreateWorkerTable = ({data,deleteHandle}) => {
+const CreateWorkerTable = ({data,deleteHandle , userProfileForTaskFile}) => {
     const navigate=useNavigate()
 
 
@@ -25,9 +25,6 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
     };
     const handleUserProfile = (id) => {
         navigate(`/vie-user?user=${id}`)
-    }
-    const handleUserProfileForTaskFile = (id) => {
-        console.log(id)
     }
     const columns = [
         {
@@ -81,34 +78,12 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
             id: 'email',
             render: (text) => <p>{text}</p>,
         },
-
-
         {
             title: 'Телефон',
             dataIndex: 'phone',
             id: 'phone',
             render: (text) => <p>{text}</p>,
         },
-        // {
-        //     title: 'Социальная сеть',
-        //     dataIndex: 'messenger_link1',
-        //     id: 'messenger_link1',
-        //     render: (text , record) => <Tag color={"blue"} icon={<IoLinkOutline />} style={{display:"flex" , alignItems:"center" , gap:5}}>{record?.messenger_link1}</Tag>,
-        // },
-        // {
-        //     title: 'Компания',
-        //     dataIndex: 'companies',
-        //     id: 'companies',
-        //     render: (text) => (
-        //         text?.map(company=> (
-        //             <Space key={company?.id} direction={"vertical"} size={"small"}>
-        //             <p>{company?.title}</p>
-        //
-        //             </Space>
-        //         ))
-        //     ),
-        // },
-
         {
             title: 'День рождения',
             dataIndex: 'birthday',
@@ -134,7 +109,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
                             out
                             icon={<EditOutlined />}/>
                         {
-                            record?.roles[0].position !== 'admin' &&
+                            roleName !== 'admin' &&
                             <Popconfirm
                                 title={'Вы уверены, что хотите удалить это?'}
                                 description={'Удалить'}
@@ -147,7 +122,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
 
 }
                     {
-                        roleName === 'general_director' &&
+                        roleName === 'general_director'  &&
                         <>
                             <Button
 
@@ -157,8 +132,7 @@ const CreateWorkerTable = ({data,deleteHandle}) => {
                                 <FaRegEye />
                             </Button>
                             <Button
-
-                                onClick={() => handleUserProfileForTaskFile(record?.id)}
+                                href={`https://hoc.evms.uz/hoc/backend/api/users/export-excel/?staff_id=${record?.id}`}
                                 type="primary"
                             >
                                 <FaFileDownload />

@@ -43,7 +43,7 @@ const UserProfile = () => {
     } = useGetQuery(false, "user-status-failed-progress", `users/tasks/?${userID && `staff_id=${userID}`}&status=${taskStatusTab}`, false);
     const {
         data: GetUserTaskStatusDone = [], refetch: refetchGetUserTaskStatusDone, isSuccess:isSuccessGetUserTaskStatusDone
-    } = useGetQuery(false, "user-status-failed-progress", `users/done-tasks/?${userID && `staff_id=${userID}`}`, false);
+    } = useGetQuery(false, "user-status-done", `users/done-tasks/?${userID && `staff_id=${userID}`}`, false);
 
 
     const handleTableChange = (pagination, ) => {
@@ -72,11 +72,12 @@ const UserProfile = () => {
     } , [userID])
 
     useEffect(() => {
-        console.log(taskStatusTab)
-        if(userID && (taskStatusTab === 'failed'|| 'progress')) {
-            refetchGetUserTaskStatusProgressFailed()
-        }else if(userID && taskStatusTab === 'done') {
-             refetchGetUserTaskStatusDone()
+        if(userID){
+            if((taskStatusTab === 'failed'|| taskStatusTab ===  'progress')) {
+                refetchGetUserTaskStatusProgressFailed()
+            }else if( taskStatusTab === 'done') {
+                refetchGetUserTaskStatusDone()
+            }
         }
     } ,[taskStatusTab , userID])
 

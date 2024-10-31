@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Button, Col, Input, Row,  Space, Spin, Typography} from "antd";
+import {Button, Col, Input, notification, Row, Space, Spin, Typography} from "antd";
 import React, {useEffect,  useState} from "react";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {PlusOutlined} from "@ant-design/icons";
@@ -29,6 +29,7 @@ const CreateWorker = () => {
     const deleteHandle = (url, id) => {
         mutate({url, id});
     };
+
     // add
     const addArticle = () => {
         dispatch(editIdQuery(""));
@@ -40,13 +41,10 @@ const CreateWorker = () => {
         } else {
             setIsSearch(true);
         }
-
         const filterData = data?.filter(
             (data) => data?.first_name.toLowerCase().includes(value.toLowerCase()));
         setSearch(filterData);
     };
-
-
 
     return (
         <div className={'site-space-compact-wrapper'}>
