@@ -65,6 +65,13 @@ export const samplePagesConfigs = [
         isBackground: true
     },
     // {
+    //             key: 'success-task',
+    //             path: '/success-task',
+    //             label: 'Выполненные задачи',
+    //             icon: <IoCheckmarkDoneOutline className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //             element: SuccessTask,
+    //         },
+    // {
     //     key: 2,
     //     icon: <OrderedListOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
     //     label: 'Задачи',
@@ -119,7 +126,7 @@ export const samplePagesConfigs = [
         path: '/success-task',
         label: 'Выполненные задачи',
         element: SuccessTask,
-        permittedRole: [authRole.user ,authRole.boss],
+        permittedRole: [authRole.user ,authRole.boss , authRole.admin , authRole.general_director , authRole.director ],
         isBackground: true
     },
     {

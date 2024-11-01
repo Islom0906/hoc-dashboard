@@ -128,9 +128,6 @@ const UserProfile = () => {
         </Col>
 
       {
-
-
-
           roleName === 'general_director' && userID &&
           <Col span={24}>
       <Card size={"small"}>

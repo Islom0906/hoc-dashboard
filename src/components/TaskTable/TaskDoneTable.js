@@ -121,12 +121,12 @@ const TaskTable = ({ data,  getTagCompanyArray , pagination, setPagination, hand
         <Table
             size={"medium"}
             columns={columns}
-            pagination={{
-                current: pagination.current,
-                pageSize: pagination.pageSize,
-                total: pagination.total,
-            }}
-            onChange={handleTableChange}
+            // pagination={{
+            //     current: pagination.current,
+            //     pageSize: pagination.pageSize,
+            //     total: pagination.total,
+            // }}
+            // onChange={handleTableChange}
             dataSource={data}
             rowKey={(record) => record?.id}
         />

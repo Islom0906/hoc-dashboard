@@ -125,13 +125,17 @@ const TaskHeader = ({ task_manager, responsible_user_id ,title, text, task_statu
                 {
                   taskStatusChecking()
                 }
-                <Tooltip
-                    title={'Написать комментарий'}
-                    placement="top">
-                <Button type="primary" onClick={() => clickHandle(id)}>
-                  <FaRegCommentDots />
-                </Button>
-                </Tooltip>
+                {
+                  task_status !== 'done' &&
+                    <Tooltip
+                        title={'Написать комментарий'}
+                        placement="top">
+                      <Button type="primary" onClick={() => clickHandle(id)}>
+                        <FaRegCommentDots />
+                      </Button>
+                    </Tooltip>
+                }
+
               </Flex>
             </Col>
           </Row>
