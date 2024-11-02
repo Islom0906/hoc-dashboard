@@ -41,7 +41,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
         data: requiredUser,
         refetch: refetchRequiredUser,
         isLoading: loadingRequiredUser
-    } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company?company_id=${companyID}`, false)
+    } = useGetQuery(false, 'get-requiredUser', `users/user-filter-by-company`, false)
 
     const {
         mutate: postMeetingMutate,
@@ -204,7 +204,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                     value: "",
                     label: `Все сотрудники`,
                 })
-                requiredUser?.results?.map((option) => {
+                requiredUser?.map((option) => {
                     requiredUserData.push({
                         value: option?.id,
                         label: `${option?.full_name} (${option?.roles[0]?.position})`,
@@ -212,7 +212,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
                 });
                 return requiredUserData
             } else if (isMultipleSelect === 'special') {
-                requiredUser?.results?.map((option) => {
+                requiredUser?.map((option) => {
                     requiredUserData.push({
                         value: option?.id,
                         label: `${option?.full_name}(${option?.roles[0]?.position})`,

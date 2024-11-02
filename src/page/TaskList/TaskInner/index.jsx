@@ -4,10 +4,10 @@ import {
   Row,
   Space,
   Modal,
-  Spin, Flex,
+  Spin, Flex, Card, Tag,
 } from "antd";
 import { useParams } from "react-router-dom";
-import  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AvatarUserProfile, TaskInnerCard } from "../../../components";
 import { useSelector } from "react-redux";
 import { useGetByIdQuery } from "../../../service/query/Queries";
@@ -15,6 +15,9 @@ import WriteComment from "./writeComment";
 import SubTaskInner from "./subTaskInner";
 import CommentUser from "./commentUser";
 import TaskHeader from "./TaskHeader";
+import {IoMdArrowDropright} from "react-icons/io";
+import dayjs from "dayjs";
+import HistoryCard from "../../../components/TaskTable/HistoryCard";
 
 const TaskInner = () => {
   const [open, setOpen] = useState(false);
@@ -115,6 +118,15 @@ const TaskInner = () => {
                     created_by={taskInner?.created_by}
                 />
               </Flex>
+              <Card title={'История процесса'}  size={"small"} bordered={true}>
+                <Flex vertical={true} gap={5} style={{ width: '100%' ,  height:300 , overflowY:"scroll"}}>
+                  {
+                    taskInner?.histories?.map(history => (
+                        <HistoryCard history={history} isVertical={false} key={history.id}  />
+                    ))
+                  }
+                </Flex>
+              </Card>
             </Space>
           </Col>
           <Modal

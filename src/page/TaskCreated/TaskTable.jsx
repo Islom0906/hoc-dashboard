@@ -9,7 +9,7 @@ import {AvatarUserProfile, EyeButton} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
 
-const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
+const TaskTable = ({ data, deleteHandle, getTagCompanyArray , isLoading , pagination, handleTableChange }) => {
     const navigate = useNavigate();
   const {data:{user}}=useSelector(state => state.auth)
   const dispatch = useDispatch();
@@ -225,6 +225,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             pageSize: pagination.pageSize,
             total: pagination.total,
           }}
+          loading={isLoading}
           onChange={handleTableChange}
           dataSource={data}
           rowKey={(record) => record?.id}

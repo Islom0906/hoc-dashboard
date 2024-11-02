@@ -8,8 +8,9 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile, EyeButton} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
+import HistoryCard from "./HistoryCard";
 
-const TaskTable = ({ data,  getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
+const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, handleTableChange }) => {
     const navigate = useNavigate();
 
     const handleTaskInnerGet = (id) => {
@@ -58,6 +59,20 @@ const TaskTable = ({ data,  getTagCompanyArray , pagination, setPagination, hand
             id: "deadline",
             width: 150,
             render: (_, record) =>  <Tag color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
+        },
+        {
+            title: "История",
+            dataIndex: "history",
+            id: "history",
+            width: 150,
+            render: (_, record) => <Flex justify={"space-between"} align={'center'}>
+                {
+                    record?.histories.map(item => (
+                        <HistoryCard history={item} />
+
+                    ))
+                }
+            </Flex>,
         },
         {
             title: "Ответственный и Участники",
@@ -121,15 +136,16 @@ const TaskTable = ({ data,  getTagCompanyArray , pagination, setPagination, hand
         <Table
             size={"medium"}
             columns={columns}
-            // pagination={{
-            //     current: pagination.current,
-            //     pageSize: pagination.pageSize,
-            //     total: pagination.total,
-            // }}
-            // onChange={handleTableChange}
+            pagination={{
+                current: pagination.current,
+                pageSize: pagination.pageSize,
+                total: pagination.total,
+            }}
+            onChange={handleTableChange}
+            loading={isLoading}
             dataSource={data}
             rowKey={(record) => record?.id}
         />
     );
 };
-export default TaskTable;
+export default TaskDoneTable;

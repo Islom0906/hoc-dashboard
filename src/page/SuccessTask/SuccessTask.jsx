@@ -7,8 +7,6 @@ import { useGetQuery } from "../../service/query/Queries";
 
 const SuccessTask = () => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
   const roleName = user?.roles[0]?.role?.name
   const [pagination, setPagination] = useState({
     current: 1,
@@ -16,43 +14,45 @@ const SuccessTask = () => {
     total: 0,
   });
 
-  console.log('roleName' ,roleName)
   const {
     data: staffGetTask ,
     refetch: refetchStaffGetTask,
     isLoading: isLoadingStaffGetTask,
-  } = useGetQuery(false, "get-staff-done-task", `users/staff-done-subtasks/?page=${currentPage}&page_size=${pageSize}` , false);
+  } = useGetQuery(false, "get-staff-done-task", `users/staff-done-subtasks/?page=${pagination.current}&page_size=${pagination.pageSize}` , false);
   const {
     data: getTask,
     refetch: refetchGetTask,
     isLoading: isLoadingGetTask,
-  } = useGetQuery(false, "get-done-task", `users/done-tasks/?page=${currentPage}&page_size=${pageSize}` , false);
-  // useEffect(() => {
-  //   refetchGetTagCompany()
-  // } , [companyID])
-  // useEffect(() => {
-  //   refetchStaffGetTask();
-  // }, [user, currentPage, pageSize , ordering , deadlineStatus , getTagCompany  ]);
+      isSuccess: isSuccessGetTask
+  } = useGetQuery(false, "get-done-task", `users/done-tasks/?page=${pagination.current}&page_size=${pagination.pageSize}` , false);
+
+  useEffect(() => {
+    if (isSuccessGetTask) {
+      setPagination(prevState => ({ ...prevState, total: getTask?.count }));
+    }
+  }, [isSuccessGetTask]);
+
   // const onPaginationChange = (page, pageSize) => {
   //   setCurrentPage(page);
   //   setPageSize(pageSize);
   // };
 
   useEffect(() =>{
-    if(roleName !== 'staff')  {
-      refetchStaffGetTask()
+    if(roleName === 'admin' || roleName === 'general_director') {
       refetchGetTask()
-    }if(roleName === 'staff') {
+    } else if(roleName === 'boss' || roleName === 'director')  {
+       refetchGetTask()
+      refetchStaffGetTask()
+    }else if(roleName === 'staff') {
       refetchStaffGetTask()
     }
-  }, [])
-  const handleTableChange = (pagination, ) => {
+  }, [user,pagination.current, pagination.pageSize ])
+  const handleTableChange = (pagination) => {
     setPagination({
       ...pagination,
       current: pagination.current,
     });
   };
-
 
   return (
       <>
@@ -64,13 +64,14 @@ const SuccessTask = () => {
                   <h2>Ваши выполненные задачи:</h2>
                 </Col>
                 <Col span={24}>
+                  {/*<Spin spinning={isLoadingStaffGetTask}>*/}
                   <TaskDoneTable
                       data={staffGetTask?.results}
                       pagination={pagination}
                       setPagination={setPagination}
-                      filter={false}
                       handleTableChange={handleTableChange}
                   />
+                  {/*</Spin>*/}
                 </Col>
               </Row>
           }
@@ -87,25 +88,22 @@ const SuccessTask = () => {
                       < h2 > Ваши компания задачи:</h2>
                   }
                   {
-                      (roleName === 'admin') || roleName === 'general_director' &&
+                      (roleName === 'admin' || roleName === 'general_director') &&
                       < h2 > Ваши компании задачи:</h2>
                   }
                 </Col>
                 <Col span={24}>
                   <TaskDoneTable
+                      isLoading={isLoadingGetTask}
                       data={getTask?.results}
                       pagination={pagination}
                       setPagination={setPagination}
-                      filter={false}
                       handleTableChange={handleTableChange}
                   />
                 </Col>
               </Row>
           }
         </Space>
-
-
-
       </>
   );
 };

@@ -4,10 +4,9 @@ import React, {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useLocation as useReactLocation, useNavigate} from "react-router-dom";
-import TaskTable from "./TaskTable";
 import {useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 import useDebounce from "../../hooks/useDebounce";
-
+import {TaskTable} from '../../components'
 const { Title } = Typography;
 
 const TaskCreated = () => {
@@ -44,7 +43,7 @@ const TaskCreated = () => {
       `/users/tasks/?page=${pagination.current}&page_size=${pagination.pageSize}${getTagCompany ? `&company__id=${getTagCompany}` : ''}${debounceInputValue ? `&${selectedOptionSearch === 'task' ? 'search' : 'full_name'}=${staff || debounceInputValue}` : staff ? `&full_name=${staff}` : ''}${deadlineStatus ? `&deadline_status=${deadlineStatus}` : ''}${ordering ? `&ordering=${ordering}` : ''}`,
       false
   );
-  const { data: GetTagCompany = [], refetch: refetchGetTagCompany } = useGetQuery(false, "get-tag-company", `users/company-selection`, false);
+  const { data: GetTagCompany = [], refetch: refetchGetTagCompany } = useGetQuery(false, "get-tag-company", `/users/company-selection/`, false);
   useEffect(() => {
     refetchGetTagCompany();
   }, []);
@@ -61,7 +60,6 @@ const TaskCreated = () => {
 
   }, [staff, companyID]);
 
-  console.log(getTagCompany)
   // useEffect(() => {
   //   console.log(staff,selectedOptionSearch)
   //   if (staff && companyID){
@@ -77,10 +75,8 @@ const TaskCreated = () => {
 
   useEffect(() => {
     if (getTagCompany){
-      console.log(search,getTagCompany)
       refetch()
     }else {
-      console.log(2)
       refetch()
     }
 
@@ -154,9 +150,7 @@ const TaskCreated = () => {
               </Button>
             </Col>
           </Row>
-          <Spin
-              size='medium'
-              spinning={getTaskLoading || deleteLoading}>
+          <Spin spinning={getTaskLoading || deleteLoading}>
             <TaskTable
                 getTagCompanyArray={getTagCompanyArray}
                 data={data?.results}
@@ -166,6 +160,7 @@ const TaskCreated = () => {
                 handleTableChange={handleTableChange}
             />
           </Spin>
+
         </Space>
       </div>
   );

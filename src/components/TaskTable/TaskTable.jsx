@@ -1,4 +1,4 @@
-import {Avatar, Badge, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip} from "antd";
+import {Avatar, Badge, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip, Typography} from "antd";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
@@ -8,11 +8,13 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile, EyeButton} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
+import HistoryCard from "./HistoryCard";
 
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
     const navigate = useNavigate();
     const {data:{user}}=useSelector(state => state.auth)
     const dispatch = useDispatch();
+    const {Title, Text} = Typography
 
     const Delete =  (id) => {
         deleteHandle("/users/tasks", id);
@@ -122,6 +124,20 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     />
                 );
             },
+        },
+        {
+            title: "История",
+            dataIndex: "history",
+            id: "history",
+            width: 150,
+            render: (_, record) => <Flex justify={"space-between"} align={'center'}>
+                {
+                    record?.histories.map(item => (
+                        <HistoryCard history={item} />
+
+                    ))
+                }
+            </Flex>,
         },
         {
             title: "Ответственный и Участники",
