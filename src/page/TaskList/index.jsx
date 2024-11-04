@@ -33,7 +33,8 @@ const TaskList = () => {
     setCurrentPage(page);
     setPageSize(pageSize);
   };
-  const taskData = staffGetTask;
+
+
   return (
       <div>
         <Row gutter={[16 , 30]}>
@@ -44,7 +45,7 @@ const TaskList = () => {
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[12, 12]} style={{ marginTop: 15 }}>
-            {taskData?.results?.map((task) => (
+            {staffGetTask?.results?.map((task) => (
                 <Col
                     key={task?.main_task_id}
                     className="gutter-row"
@@ -75,7 +76,7 @@ const TaskList = () => {
               <Pagination
                   current={currentPage}
                   pageSize={pageSize}
-                  total={taskData?.count || 0}
+                  total={staffGetTask?.count || 0}
                   onChange={onPaginationChange}
                   showSizeChanger
               />

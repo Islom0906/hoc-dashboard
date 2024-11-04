@@ -39,7 +39,7 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
 
         if (roles !== 'staff' && roles !== 'boss' ) {
             const isPastDate = newValue.isBefore(dayjs(), 'day');
-            if (!isPastDate &&info.source==='date') {
+            if (!isPastDate && info.source==='date') {
                 setValue(newValue);
                 setIsModalOpen(true);
             }

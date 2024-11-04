@@ -37,16 +37,19 @@ const SuccessTask = () => {
   //   setPageSize(pageSize);
   // };
 
-  useEffect(() =>{
-    if(roleName === 'admin' || roleName === 'general_director') {
-      refetchGetTask()
-    } else if(roleName === 'boss' || roleName === 'director')  {
-       refetchGetTask()
-      refetchStaffGetTask()
-    }else if(roleName === 'staff') {
-      refetchStaffGetTask()
-    }
-  }, [user,pagination.current, pagination.pageSize ])
+  useEffect(() => {
+    const fetchData = () => {
+      if (roleName === 'admin' || roleName === 'general_director') {
+        refetchGetTask();
+      } else if (roleName === 'boss' || roleName === 'director') {
+        refetchGetTask();
+        refetchStaffGetTask();
+      } else if (roleName === 'staff') {
+        refetchStaffGetTask();
+      }
+    };
+    fetchData();
+  }, [user, pagination.current, pagination.pageSize]);
   const handleTableChange = (pagination) => {
     setPagination({
       ...pagination,

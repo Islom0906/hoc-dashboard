@@ -4,20 +4,19 @@ import {
   Row,
   Space,
   Modal,
-  Spin, Flex, Card, Tag,
+  Spin,
+  Card,
+  Tag,
 } from "antd";
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { AvatarUserProfile, TaskInnerCard } from "../../../components";
+import { AvatarUserProfile, TaskInnerCard ,HistoryCard } from "../../../components";
 import { useSelector } from "react-redux";
 import { useGetByIdQuery } from "../../../service/query/Queries";
 import WriteComment from "./writeComment";
 import SubTaskInner from "./subTaskInner";
 import CommentUser from "./commentUser";
 import TaskHeader from "./TaskHeader";
-import {IoMdArrowDropright} from "react-icons/io";
-import dayjs from "dayjs";
-import HistoryCard from "../../../components/TaskTable/HistoryCard";
 
 const TaskInner = () => {
   const [open, setOpen] = useState(false);
@@ -25,13 +24,13 @@ const TaskInner = () => {
   const [whichWriteIDTask, setWhichWriteIDTask] = useState(null);
   const [isPostCommentSuccess, setIsPostCommentSuccess] = useState(null);
   const { item } = useParams();
-  const { data: { user } } = useSelector(state => state.auth);
+  const { data: { user } } = useSelector((state) => state.auth);
 
   const {
     data: taskInner,
     refetch: refetchTaskInner,
     isLoading: loadingTaskInner,
-  } = useGetByIdQuery(false, "taskInner", item, 'users/staff-subtask-retrieve');
+  } = useGetByIdQuery(false, "taskInner", item, "users/staff-subtask-retrieve");
 
   useEffect(() => {
     refetchTaskInner();
@@ -48,13 +47,17 @@ const TaskInner = () => {
   return (
       <Spin spinning={loadingTaskInner}>
         <Row gutter={[16, 16]}>
-          <Col span={16}>
-            <Space style={{width:'100%'}} direction={"vertical"} size="middle">
+          <Col xs={24} md={16}>
+            <Space style={{ width: "100%" }} direction="vertical" size="middle">
               <div>
                 {taskInner?.sub_tasks?.length > 0 ? (
                     <>
-                      <h1>{taskInner?.title}</h1>
-                      <p>{taskInner?.text}</p>
+                      <h1 style={{ fontSize: "1.5rem", wordWrap: "break-word" }}>
+                        {taskInner?.title}
+                      </h1>
+                      <p style={{ fontSize: "1rem", wordWrap: "break-word" }}>
+                        {taskInner?.text}
+                      </p>
                     </>
                 ) : (
                     <TaskHeader
@@ -84,8 +87,16 @@ const TaskInner = () => {
                         responsible_user_id={taskInner?.responsible_user?.id}
                     />
                 ) : (
-                    <Space direction="vertical" size="large" style={{ width: '100%' ,  height:300 , overflowY:"scroll"}}>
-                      {taskInner?.messages?.map(message => (
+                    <Space
+                        direction="vertical"
+                        size="large"
+                        style={{
+                          width: "100%",
+                          maxHeight: "300px",
+                          overflowY: "scroll",
+                        }}
+                    >
+                      {taskInner?.messages?.map((message) => (
                           <CommentUser key={message?.id} comment={message} />
                       ))}
                     </Space>
@@ -93,11 +104,11 @@ const TaskInner = () => {
               </div>
             </Space>
           </Col>
-          <Col span={8}>
-            <Space style={{width:"100%"}} direction={"vertical"} size="large">
-              <Flex justify={"end"}>
+          <Col xs={24} md={8}>
+            <Space style={{ width: "100%" }} direction="vertical" size="large">
+              <div style={{ textAlign: "end" }}>
                 <Avatar.Group>
-                  {taskInner?.included_users?.map(user => (
+                  {taskInner?.included_users?.map((user) => (
                       <AvatarUserProfile
                           key={user?.id}
                           full_name={user?.full_name}
@@ -106,35 +117,35 @@ const TaskInner = () => {
                       />
                   ))}
                 </Avatar.Group>
-              </Flex>
-              <Flex style={{width:'100%'}} justify={"end"} >
+              </div>
+              <div style={{ width: "100%", textAlign: "end" }}>
                 <TaskInnerCard
                     tag={taskInner?.company}
                     main_task_responsible_user={taskInner?.responsible_user}
-                    taskPercent={taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count * 100}
+                    taskPercent={
+                        (taskInner?.done_sub_tasks_count / taskInner?.sub_tasks_count) *
+                        100
+                    }
                     main_task_deadline={taskInner?.deadline}
                     main_task_created_at={taskInner?.created_at}
                     main_deadline_status={taskInner?.deadline_status}
                     created_by={taskInner?.created_by}
                 />
-              </Flex>
-              <Card title={'История процесса'}  size={"small"} bordered={true}>
-                <Flex vertical={true} gap={5} style={{ width: '100%' ,  height:300 , overflowY:"scroll"}}>
-                  {
-                    taskInner?.histories?.map(history => (
-                        <HistoryCard history={history} isVertical={false} key={history.id}  />
-                    ))
-                  }
-                </Flex>
-              </Card>
+              </div>
+              {
+                taskInner?.histories.length > 0 &&
+                  <Card title="История процесса" size="small" bordered={true}>
+                    <div style={{ maxHeight: "300px", overflowY: "scroll" }}>
+                      {taskInner?.histories?.map((history) => (
+                          <HistoryCard history={history} isVertical={false} key={history.id} />
+                      ))}
+                    </div>
+                  </Card>
+              }
+
             </Space>
           </Col>
-          <Modal
-              open={open}
-              title="Добавить комментарий"
-              onCancel={handleCancel}
-              footer={null}
-          >
+          <Modal open={open} title="Добавить комментарий" onCancel={handleCancel} footer={null}>
             <WriteComment
                 whichWriteID={whichWriteID}
                 whichWriteIDTask={whichWriteIDTask}

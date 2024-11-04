@@ -5,10 +5,9 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
-import {AvatarUserProfile, EyeButton} from "../../components";
+import {AvatarUserProfile, EyeButton ,HistoryCard} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
-import HistoryCard from "./HistoryCard";
 
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
     const navigate = useNavigate();

@@ -30,18 +30,22 @@ const AppHeader = () => {
     navigate('/login')
   }
 
+    console.log('process.env', process.env)
+
+
     return (
         <Header className={'app-header'}>
           <Flex style={{width:100 ,height:30 }} align={"center"} justify={"center"}>
               {
                 systemMode === 'light' ?
-                  <img
-                      className={'logo'}
-                      src={`https://hoc.evms.uz/media/EHOC-dark.png`}
+                  <img className={'logo'}
+                      src={`${process.env.REACT_APP_LOGO_API_URL}logo-light.png`}
+                      style={{width:'100%', height:'100%', objectFit: "contain"}}
                   /> :
                   <img
                       className={'logo'}
-                      src={'https://hoc.evms.uz/media/EHOC.png'}
+                      src={`${process.env.REACT_APP_LOGO_API_URL}logo-dark.png`}
+                      style={{width:'100%', height:'100%', objectFit: "contain"}}
                   />
             }
           </Flex>

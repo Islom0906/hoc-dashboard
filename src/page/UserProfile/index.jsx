@@ -91,7 +91,21 @@ const UserProfile = () => {
     token: {contentBg},
   } = theme.useToken();
   return (<Row gutter={[10  , 16]}>
-        <Col span={8}>
+
+      {
+          roleName === 'general_director' !==
+          <Col span={8}>
+            <DashboardProfileCard title={'Мой профиль'} image={getUserInfo?.image?.image } position={getUserInfo?.roles[0]?.position}
+                                fullName={(`${getUserInfo?.last_name} ${getUserInfo?.first_name} ${getUserInfo?.middle_name}`)}
+                                total_tasks_count={GetUserTaskStatistics?.total_tasks_count}
+                                failed_tasks_count={GetUserTaskStatistics?.failed_tasks_count}
+                                done_tasks_count={GetUserTaskStatistics?.done_tasks_count}
+                                in_progress_tasks_count={GetUserTaskStatistics?.in_progress_tasks_count}
+                                responsible_tasks_count={GetUserTaskStatistics?.responsible_tasks_count}
+            />
+          </Col>
+      }
+        {/*<Col span={8}>*/}
           {/*<div className={'card-personal'} style={{backgroundColor: contentBg}}>*/}
           {/*<Menu*/}
           {/*    mode="inline"*/}
@@ -103,18 +117,9 @@ const UserProfile = () => {
           {/*    <Menu.Item key="personal" icon={<FaUser/>}>Личная информация</Menu.Item>*/}
           {/*    /!*<Menu.Item key="password" icon={<RiLockPasswordFill/>}>Пароль</Menu.Item>*!/*/}
           {/*</Menu>*/}
-
           {/*</div>*/}
-          <DashboardProfileCard title={'Мой профиль'} image={getUserInfo?.image?.image } position={getUserInfo?.roles[0]?.position}
-                                fullName={(`${getUserInfo?.last_name} ${getUserInfo?.first_name} ${getUserInfo?.middle_name}`)}
-                                total_tasks_count={GetUserTaskStatistics?.total_tasks_count}
-                                failed_tasks_count={GetUserTaskStatistics?.failed_tasks_count}
-                                done_tasks_count={GetUserTaskStatistics?.done_tasks_count}
-                                in_progress_tasks_count={GetUserTaskStatistics?.in_progress_tasks_count}
-                                responsible_tasks_count={GetUserTaskStatistics?.responsible_tasks_count}
-          />
-        </Col>
-        <Col span={16}>
+        {/*</Col>*/}
+        <Col span={ roleName === 'general_director' ? '24': '8'}>
           <div className={'card-personal'} style={{backgroundColor: contentBg}}>
             {/*<Personal/>*/}
             <ReadingPresonalData data={getUserInfo}/>
@@ -128,7 +133,7 @@ const UserProfile = () => {
         </Col>
 
       {
-          roleName === 'general_director' && userID &&
+          roleName !== 'general_director' && userID &&
           <Col span={24}>
       <Card size={"small"}>
               <Tabs defaultActiveKey="failed"  >
