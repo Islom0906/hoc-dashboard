@@ -1,9 +1,10 @@
 import React, {useEffect, useMemo, useState,} from 'react';
-import {Col, Flex, Row, Select, Spin, theme, Typography} from 'antd';
+import {Button, Col, Flex, Row, Select, Spin, theme, Typography} from 'antd';
 import CustomCalendar from "./CustomCalendar";
 import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
 import {useSelector} from "react-redux";
+import {FaFileDownload} from "react-icons/fa";
 
 const {Title} = Typography
 
@@ -121,24 +122,30 @@ const CalendarTask = () => {
     return (
         <Spin spinning={getBirthdayLoading || getMeetingLoading || getDeadlineLoading}>
             <Flex gap={10} vertical={true} className={'calendar-card'}>
-                <Row gutter={20}>
-                    <Col span={18}>
+                <Row gutter={10}>
+                    <Col span={16}>
                         <Title level={2} style={{marginBottom:0}}>
                             Календарь
                         </Title>
                     </Col>
-                    <Col span={6}>
-
-                        <Select
-                            style={{
-                                width: '100%',
-                            }}
-                            value={companyId}
-                            placeholder='Выберите компания'
-                            optionLabelProp='label'
-                            onChange={onChangeCompany}
-                            options={optionsCompany}
-                        />
+                    <Col span={8}>
+                        <Flex gap={5} >
+                            <Select
+                                style={{
+                                    width: '100%',
+                                }}
+                                value={companyId}
+                                placeholder='Выберите компания'
+                                optionLabelProp='label'
+                                onChange={onChangeCompany}
+                                options={optionsCompany}
+                            />
+                            <Button href={`${process.env.REACT_APP_CALENDAR_EXCEL_EXPORT_API_URL}?${companyId && `company__id=${companyId}`}\` +
+        (filterDate?.year !== 'null' ? \`&year=${filterDate?.year}\` : '') +
+        (filterDate?.month !== 'null' ? \`&month=${filterDate?.month}\` : '')`}>
+                                <FaFileDownload />
+                            </Button>
+                        </Flex>
                     </Col>
                 </Row>
                 <Flex align={'center'} gap={20}>
