@@ -1,17 +1,17 @@
-import { Button, Card, Divider, Flex, Space, Spin, Tag, Tooltip, Typography } from "antd";
+import {Button, Card, Flex, Space, Spin, Tag, Tooltip, Typography, Tabs, Steps} from "antd";
 import { useEditQuery } from "../../../service/query/Queries";
 import CommentUser from "./commentUser";
-import { FaRegCommentDots } from "react-icons/fa";
+import {FaFileDownload, FaRegCommentDots} from "react-icons/fa";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { AvatarUserProfile } from "../../../components";
 import { MdOutlineUpdate } from "react-icons/md";
 import DeadlineStatusColor from "../../../hooks/deadlineStatusColor";
-import { CiLink } from "react-icons/ci";
 import TaskStatusChecking from "./taskStatusChecking";
-import {IoMdArrowDropright} from "react-icons/io";
 import HistoryCard from "../../../components/TaskTable/HistoryCard";
-const { Title } = Typography;
+import './index.scss'
+const { Title , Text } = Typography;
+const { TabPane } = Tabs;
 
 const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, creat_by_id, setWhichWriteID, includedUser, deadline_status, isPostCommentSuccess }) => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
@@ -36,33 +36,38 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
         <Spin spinning={isLoadingUpdateSubTaskStatus}>
           <Flex vertical={true} gap={30}>
             {subTask?.map((task) => (
-                <Card key={task?.id} size={"small"} bordered={true}>
-                  <Flex vertical={true} style={{ padding: '10px', paddingTop: '25px', borderRadius: 10, position: 'relative' }}>
+                <Card className={"card--sub-task"} key={task?.id} size={"small"} bordered={true}>
+                  <Flex className={"card--sub-task__card"} vertical={true} >
                     <Flex justify={"space-between"} gap={10}>
-                      <Flex gap={10} align={"start"}>
+                      <Space size={[6 , 12]} >
                         <Flex align={"start"} gap={5} vertical={true}>
-                          <Title level={4}>{task?.title}</Title>
-                          <p>{task?.text}</p>
-                          {
-                              task?.file &&
-                              <Tag color={'blue'} icon={<CiLink />} style={{display:"flex" , alignItems:'center' , gap:5}}>
+                          <Title className={'page--title'} level={4}>{task?.title}</Title>
+                          <Text type={'secondary'}>{task?.text}</Text>
+                          {task?.file && (
+                              <Tag className={'file'} color={'blue'} icon={<FaFileDownload  style={{ fontSize:14 ,flexShrink:0}} />} style={{display:"flex" , alignItems:'center' , gap:5 ,width:'100%'}}>
                                 <a href={task?.file} download={true} target={"_blank"}>
-                                  {extractFilename(task.file)}
+                                  <p >{extractFilename(task.file)}</p>
                                 </a>
                               </Tag>
-                          }
+                          )}
                         </Flex>
-                      </Flex>
-                      <Flex vertical={true} gap={10}>
-                        {(roles === 'admin' || roles === 'general_director') && includedUser?.find(user => user?.id === task?.task_manager) &&
-                            <AvatarUserProfile key={includedUser?.find(user => user?.id === task?.task_manager)?.id} full_name={includedUser?.find(user => user?.id === task?.task_manager)?.full_name} moduls={includedUser?.find(user => user?.id === task?.task_manager)?.position} image={includedUser?.find(user => user?.id === task?.task_manager)?.image}  />
-                        }
+                      </Space>
+                      <Space size={[5 ,10]}>
+                        <Flex align={"start"}  gap={2}>
+                        {(roles === 'admin' || roles === 'general_director') && includedUser?.find(user => user?.id === task?.task_manager) && (
+                            <AvatarUserProfile
+                                key={includedUser?.find(user => user?.id === task?.task_manager)?.id}
+                                full_name={includedUser?.find(user => user?.id === task?.task_manager)?.full_name}
+                                moduls={includedUser?.find(user => user?.id === task?.task_manager)?.position}
+                                image={includedUser?.find(user => user?.id === task?.task_manager)?.image}
+                            />
+                        )}
                         <Tooltip key={task?.id} title={'Крайний срок'}>
-                          <Tag color={`${StatusDeadlineColor}`} icon={<MdOutlineUpdate />} style={{ position: "absolute", transform: 'translateX(50%)', right: '50%', top: '0', display: "flex", alignItems: "center", gap: 10 }}>
+                          <Tag color={`${StatusDeadlineColor}`} icon={<MdOutlineUpdate />} style={{ position: "absolute", transform: 'translateX(50%)', right: '50%', top: '0', display: "flex", alignItems: "center", gap: 5 }}>
                             {dayjs(task?.deadline).format("DD.MM.YYYY")}
                           </Tag>
                         </Tooltip>
-                        <Flex justify={'end'} align={'center'}>
+                        <Flex justify={'end'} align={'start'}>
                           <TaskStatusChecking
                               id={task.id}
                               task_manager={task.task_manager}
@@ -74,31 +79,37 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                               responsible_user_id={responsible_user_id}
                           />
                         </Flex>
-                        {task?.status !== 'done' &&
+                        {task?.status !== 'done' && (
                             <Button type="primary" size={"small"} onClick={() => clickHandle(task?.id)}>
                               <FaRegCommentDots />
                             </Button>
-                        }
-                      </Flex>
+                        )}
+                        </Flex>
+
+                      </Space>
                     </Flex>
 
-                    {task?.histories?.length > 0 && <Divider plain>История процесса</Divider>}
-                    {task?.histories?.length > 0 && (
-                        <Flex gap={10} wrap={"nowrap"} style={{ width: '100%', overflowX: "scroll" }}>
-                          {task?.histories.map((history) => (
-                              <HistoryCard history={history} key={history.id}  />
-                          ))}
-                        </Flex>
-                    )}
+                    <Tabs defaultActiveKey="1">
+                      {task?.histories?.length > 0 && (
+                          <TabPane tab="История процесса" key="2">
+                            <Space size={'small'} direction={"vertical"} style={{ width: '100%', height: 250, overflowY: "scroll" }}>
+                              {task?.histories.map((history) => (
+                                  <HistoryCard history={history} key={history.id} />
+                              ))}
+                            </Space>
+                          </TabPane>
+                      )}
 
-                    {task?.messages?.length > 0 && <Divider plain>Комментарии</Divider>}
-                    {task?.messages?.length > 0 && (
-                        <Space size={'small'} direction={"vertical"} style={{ width: '100%', height: 250, overflowY: "scroll" }}>
-                          {task?.messages.map((message) => (
-                              <CommentUser key={message?.id} comment={message} />
-                          ))}
-                        </Space>
-                    )}
+                      {task?.messages?.length > 0 && (
+                          <TabPane tab="Комментарии" key="1">
+                            <Space size={'small'} direction={"vertical"} style={{ width: '100%', height: 250, overflowY: "scroll" }}>
+                              {task?.messages.map((message) => (
+                                  <CommentUser key={message?.id} comment={message} />
+                              ))}
+                            </Space>
+                          </TabPane>
+                      )}
+                    </Tabs>
                   </Flex>
                 </Card>
             ))}
@@ -107,4 +118,5 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
       </div>
   );
 };
+
 export default SubTaskInner;

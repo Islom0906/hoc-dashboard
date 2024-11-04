@@ -27,7 +27,7 @@ const BossTracking = () => {
 
   useEffect(() => {
     refetchGetTagCompany()
-  })
+  } , [])
 
   useEffect(() => {
     refetchStaffGetTask();
