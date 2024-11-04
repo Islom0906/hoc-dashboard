@@ -3,6 +3,7 @@ import {Bar} from "react-chartjs-2";
 import {Card, theme} from "antd";
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from 'chart.js';
 import {chartColor} from "../config.dashboard";
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
 // Register necessary chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -108,10 +109,12 @@ const AboutTagChart = ({data}) => {
     const {
         token: {colorChartLabel,colorChartLine},
     } = theme.useToken();
-
+    const screens = useBreakpoint();
+    const chartHeight = screens.lg ? 200 : 400;
 
     const options = {
         responsive:true,
+        maintainAspectRatio:false,
         scales: {
             y: {
                 beginAtZero: true,
@@ -125,6 +128,8 @@ const AboutTagChart = ({data}) => {
             },
             x:{
                 ticks: {
+                    maxRotation: 90,       // Rotate labels to 90 degrees
+                    minRotation: 90,// Ensure labels stay at 90 degrees
                     color: colorChartLabel, // Change the label color on the y-axis
                 },
                 grid: {
@@ -148,6 +153,9 @@ const AboutTagChart = ({data}) => {
         const failedTasks = data?.map(item => item.failed_tasks_count);
         const doneTasks = data?.map(item => item.done_tasks_count);
         const inProgressTasks = data?.map(item => item.in_progress_tasks_count);
+
+
+
         return {
             labels: labels,
             datasets: [
@@ -172,7 +180,7 @@ const AboutTagChart = ({data}) => {
 
     return (
         <Card size={'small'} >
-            <Bar data={dataChart} options={options}/>
+            <Bar height={chartHeight} data={dataChart} options={options}/>
         </Card>
     );
 };

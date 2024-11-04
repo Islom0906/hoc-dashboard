@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import {selectCompany, selectCompanyName} from "../../../store/slice/companySlice";
 import {useDispatch} from "react-redux";
-
+import './profile-card.scss'
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const { Title, Text } = Typography;
@@ -72,6 +72,7 @@ const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, full
     };
   return (
       <Card
+          className={'profile-card'}
           onClick={handlerCompanyId}
           style={{
             cursor:"pointer",
@@ -82,13 +83,13 @@ const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, full
           }}
           size={"small"}
       >
-        <Title level={4} style={{ textAlign: 'left', margin: '0 0 10px 20px' }}>
+        <Title  level={4} style={{ textAlign: 'left', margin: '0 0 10px 20px' }}>
           {title}
         </Title>
 
-          <Avatar size={60} src={image} icon={<UserOutlined/>}/>
+          <Avatar style={{flexShrink:0}} size={60} src={image} icon={<UserOutlined/>}/>
 
-        <Title level={4} style={{ marginTop: 10 }}>
+        <Title className={'profile-card-title'} level={4} style={{ marginTop: 10 }}>
           {fullName}
         </Title>
         <Text type="secondary">{position}</Text>
@@ -103,9 +104,10 @@ const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, full
                 }
                 key="1"
             >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div className={'statistics'} >
                   <Flex align={"center"} justify={"space-between"} gap={5}
-                        style={{borderBottom: '1px solid #DADCDD', padding: '10px 0'}}>
+                        className={'statistics-item'}
+                        style={{borderBottom: '1px solid #DADCDD'}}>
                       <Flex gap={10} align={"center"}>
                           <div style={{
                               width: 16,
@@ -119,9 +121,11 @@ const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, full
                           {done_tasks_count + in_progress_tasks_count + failed_tasks_count || 0}
                       </Tag>
                   </Flex>
-                  <Flex gap={5} align={"center"} justify={"space-between"} style={{
+                  <Flex gap={5} align={"center"} justify={"space-between"}
+                        className={'statistics-item'}
+                        style={{
                       borderBottom: '1px solid #DADCDD',
-                      padding: '10px 0', color: '#11c15b'
+                       color: '#11c15b'
                   }}>
                       <Flex gap={10} align={"center"}>
                           <div style={{
@@ -137,10 +141,11 @@ const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, full
                       </Tag>
                   </Flex>
 
-                  <Flex gap={5} align={"center"} justify={'space-between'} style={{
-
+                  <Flex gap={5} align={"center"} justify={'space-between'}
+                        className={'statistics-item'}
+                        style={{
                       borderBottom: '1px solid #DADCDD',
-                      padding: '10px 0', color: 'rgb(10, 143, 220)'
+                       color: 'rgb(10, 143, 220)'
                   }}>
                       <Flex gap={10} align={"center"}>
                           <div style={{
@@ -156,10 +161,12 @@ const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, full
                       </Tag>
                   </Flex>
 
-                  <Flex gap={5} align={"center"} justify={"space-between"} style={{
+                  <Flex gap={5} align={"center"} justify={"space-between"}
+                        className={'statistics-item'}
+                        style={{
 
                       borderBottom: '1px solid #DADCDD',
-                      padding: '10px 0',
+
                       color: 'rgb(240, 79, 71)'
                   }}>
                       <Flex gap={10} align={"center"}>
@@ -178,7 +185,8 @@ const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, full
                   {
                       responsible_tasks_count ?
                           <Flex align={"center"} justify={"space-between"} gap={5}
-                                style={{width: '100%', borderBottom: '1px solid #DADCDD', padding: '10px 0'}}>
+                                className={'statistics-item'}
+                                style={{width: '100%', borderBottom: '1px solid #DADCDD',}}>
                               <Flex gap={10} align={"center"}>
 
                                   <div style={{

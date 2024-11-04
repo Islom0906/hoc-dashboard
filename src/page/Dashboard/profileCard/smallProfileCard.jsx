@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {selectModuls} from "../../../store/slice/modulsSlice";
 import {selectStaffIDs} from "../../../store/slice/staffSlice";
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
 const {Text} = Typography
 
@@ -14,6 +15,8 @@ const SmallProfileCard = ({staffID,companyID , avatar, fullName, position , done
   const dispatch = useDispatch()
   const { data: { user } = {} } = useSelector((state) => state.auth);
   const roles=user?.roles[0]?.role.name
+
+
   const handlerCard = () => {
     dispatch(selectStaffIDs(staffID))
     if (roles!=='boss'){

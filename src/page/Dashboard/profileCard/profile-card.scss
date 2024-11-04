@@ -1,0 +1,32 @@
+.profile-card {
+  .profile-card-title {
+    font-size: 20px !important;
+    margin-top:  10px ;
+  }
+
+  .statistics {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .statistics-item {
+      padding: 10px 0;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .profile-card {
+    .profile-card-title {
+      font-size: 16px !important;
+      margin-top:  8px ;
+    }
+
+    .statistics {
+      gap: 6px;
+      .statistics-item {
+        padding: 6px 0;
+      }
+    }
+  }
+}

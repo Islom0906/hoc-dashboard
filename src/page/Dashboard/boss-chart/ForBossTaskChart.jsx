@@ -11,11 +11,12 @@ import {
   Filler,
   LineController, BarController
 } from 'chart.js';
-import { Chart } from 'react-chartjs-2';
+import { Chart ,Bar} from 'react-chartjs-2';
 import {Card, Col, Row, Select, theme, Typography} from "antd";
 import dayjs from "dayjs";
 import {useEffect, useState} from "react";
 import {chartColor} from "../config.dashboard";
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
 
 ChartJS.register(
@@ -39,7 +40,8 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
   const {
     token: {colorChartLabel,colorChartLine},
   } = theme.useToken();
-
+  const screens = useBreakpoint();
+  const chartHeight = screens.lg ? 200 : 400;
   const value = dayjs()
   const year = value.year();
   const month = value.month();
@@ -131,6 +133,8 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
 
 
   const options = {
+    responsive: true,
+    // maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
@@ -169,9 +173,9 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
     const newValue = value.month(newMonth);
     // onChange(newValue);
   };
+  console.log(chartHeight)
   return (
-      <Card>
-
+      <Card size={"small"}>
         <Row gutter={10} justify={"space-between"}>
           <Col span={6}>
             <AntTitle level={4} style={{marginBottom:0}}>
@@ -210,7 +214,7 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
           {/*  </Select>*/}
           {/*</Col>*/}
         </Row>
-        <Chart type="bar" style={{height:400 , width:'100%'}} data={data} options={options} />
+        <Bar  height={400} data={data} options={options} />
       </Card>
   );
 };

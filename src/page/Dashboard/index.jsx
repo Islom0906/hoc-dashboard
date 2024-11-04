@@ -106,13 +106,13 @@ const Dashboard = () => {
       refetchGetModulByIDStatistics()
     }
   } , [modulsID, valueYear])
-  console.log(modulsID)
+
 
   return (<div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
           <Row gutter={5} style={{paddingBottom: 5}}>
             <Col span={12}>
-              <Title level={2} style={{marginBottom: 0}}>
+              <Title className={'page--title'} level={2} style={{marginBottom: 0}}>
                 Панель
               </Title>
             </Col>
@@ -130,11 +130,12 @@ const Dashboard = () => {
 
             {(roleName === 'general_director' || roleName === 'admin')&& <>
               <Col span={24}>
-                <Title level={4}>
+                <Title level={4} className={'company-title'}>
                   Компания
                 </Title>
                 <Row gutter={[16 ,14]}>
-                  {GetCompanyAllForGeneralStatistics?.map(general => (<Col span={6} key={general?.id}>
+                  {GetCompanyAllForGeneralStatistics?.map(general => (
+                      <Col xs={24} sm={12} md={8} xxl={6} key={general?.id}>
                         <DashboardProfileCard card={general} companyIDSlice={companyID}  companyID={general?.id}
                                               image={general?.image_dark}
                                               fullName={general?.title}
@@ -153,14 +154,14 @@ const Dashboard = () => {
             {/*--------- derector ----------*/}
             {roleName !== 'boss' && <>
               <Col span={24}>
-                <Title level={4} style={{textAlign: 'center'}}>
+                <Title level={4} className={'company-title'} style={{textAlign: 'center'}}>
                   {companyName}
                 </Title>
               </Col>
-              <Col span={16}>
+              <Col span={24} xl={16}>
                 <AboutTagChart data={GetCompanyByIDStatistics}/>
               </Col>
-              <Col span={8}>
+              <Col span={24} xl={8}>
                 <AboutTagList setSelectModul={setSelectModul} setValueMonth={setValueMonth} valueMonth={valueMonth}
                               valueYear={valueYear}
                               setValueYear={setValueYear} data={GetCompanyByIDStatistics}
@@ -168,16 +169,16 @@ const Dashboard = () => {
               </Col>
             </>}
             {/*--------  Boss -------- */}
-            <Col span={16}>
+            <Col span={24} xl={16}>
               <ForBossTaskChart dataChart={GetModulByIDStatistics} modules={selectModul || user?.roles[0].module?.name}/>
             </Col>
-            <Col span={8}>
+            <Col span={24} xl={8}>
               <Card
                   className={'staff-card'}
               >
                 <Row gutter={5} style={{paddingBottom: 5}}>
                   <Col span={12}>
-                    <Title level={5}>Сотрудники:</Title>
+                    <Title className={'company-title'} level={5}>Сотрудники:</Title>
                   </Col>
                   <SelectMountYear valueYear={valueYear} setValueYear={setValueYear} setValueMonth={setValueMonth}
                                    valueMonth={valueMonth}/>
@@ -187,13 +188,13 @@ const Dashboard = () => {
                       key={staff?.id}
                       staffID={staff?.id}
                       companyID={companyID}
-                                                                             failed_tasks_count={staff?.failed_tasks_count}
-                                                                             total_tasks_count={staff?.total_tasks_count}
-                                                                             in_progress_tasks_count={staff?.in_progress_tasks_count}
-                                                                             avatar={staff?.image}
-                                                                             fullName={staff?.full_name}
-                                                                             position={staff?.position}
-                                                                             done_tasks_count={staff?.done_tasks_count}/>))}
+                      failed_tasks_count={staff?.failed_tasks_count}
+                      total_tasks_count={staff?.total_tasks_count}
+                      in_progress_tasks_count={staff?.in_progress_tasks_count}
+                      avatar={staff?.image}
+                      fullName={staff?.full_name}
+                      position={staff?.position}
+                      done_tasks_count={staff?.done_tasks_count}/>))}
                 </div>
               </Card>
             </Col>

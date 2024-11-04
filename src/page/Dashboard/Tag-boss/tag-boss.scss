@@ -1,0 +1,23 @@
+
+.tag--boss {
+
+  .tag--boss-item {
+    padding: 10px;
+
+    .item-name {
+      font-size: 14px !important;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .tag--boss {
+
+    .tag--boss-item {
+      padding: 6px;
+      .item-name {
+        font-size: 12px !important;
+      }
+    }
+  }
+}

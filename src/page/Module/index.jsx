@@ -52,7 +52,7 @@ const CreateWorker = () => {
             <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
                 <Row gutter={20}>
                     <Col span={18}>
-                        <Title level={2}>
+                        <Title  level={2}>
                             Отделы
                         </Title>
                     </Col>

@@ -1,4 +1,3 @@
-
 import {Avatar, Col, Progress, Row, Select, Typography, Flex, Card} from "antd";
 import React, { useEffect } from "react";
 import AvatarUserProfile from "../../../components/AvatarUserProfile/AvatarUserProfile";
@@ -6,11 +5,13 @@ import { UserOutlined } from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import { selectModuls ,selectModulsName } from "../../../store/slice/modulsSlice";
 import {SelectMountYear} from "../../../components";
-
+import './tag-boss.scss'
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth , setSelectModul }) => {
     const dispatch = useDispatch();
     const {modulsID} = useSelector(state => state.modulsSlice)
-
+    const screens = useBreakpoint();
+    const progressSize = screens.sm ? 40 : 30;
     useEffect(() => {
         if (data) {
             dispatch(selectModuls(data[0]?.id));
@@ -44,7 +45,7 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
     };
 
     return (
-        <Card size={"small"}>
+        <Card size={"small"} className={'tag--boss'}>
             <Row gutter={5}>
                 <Col span={12} style={{paddingBottom:5}}>
                     <Title level={5}>Информация о Отдел</Title>
@@ -62,24 +63,25 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
                     );
                     return (
                         <Flex
+                            className={'tag--boss-item'}
                             key={record.id}
                             justify="space-between"
                             align="center"
-                            style={{ padding: 10, borderBottom: `${modulsID === record.id ? '1px solid #76BC33': '0.1px solid #e8e8e8' } ` ,cursor:"pointer" }}
+                            style={{  borderBottom: `${modulsID === record.id ? '1px solid #76BC33': '0.1px solid #e8e8e8' } ` ,cursor:"pointer" }}
                             onClick={() => handleRowClick(record)}
                         >
                             <Flex align="center" gap={20}>
                                 <Progress
-                                    size={40}
+                                    size={progressSize}
                                     type="circle"
                                     percent={percent}
                                     strokeColor={"#11c15b"}
                                 />
-                                <Typography.Text>{record?.name}</Typography.Text>
+                                <Typography.Text className={'item-name'}>{record?.name}</Typography.Text>
                             </Flex>
 
                             <Avatar.Group
-                                size={30}
+                                size={progressSize}
                                 max={{
                                     count: 2,
                                     style: { color: "#f56a00", backgroundColor: "#fde3cf" },
@@ -89,7 +91,7 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
                                     record?.staffs?.map((staff) => (
                                         <AvatarUserProfile
                                             key={staff?.id}
-                                            size={30}
+                                            size={progressSize}
                                             full_name={staff?.full_name}
                                             image={staff?.image}
                                         />
