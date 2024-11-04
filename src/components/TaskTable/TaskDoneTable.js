@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile, EyeButton} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
-import {FaRegEye} from "react-icons/fa";
+import {FaFileDownload, FaRegEye} from "react-icons/fa";
 import HistoryCard from "./HistoryCard";
 
 const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, handleTableChange }) => {
@@ -114,20 +114,23 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             fixed: "right",
             width: 140,
             render: (_, record) => (
-
-                <Flex gap={10} justify={'end'}>
+                <Flex gap={3} >
                     <Badge dot={record?.is_checking}>
                         <EyeButton>
                             <Button
-
                                 onClick={() => handleTaskInnerGet(record?.id)}
                                 type="primary"
                             >
                                 <FaRegEye />
                             </Button>
                         </EyeButton>
-
                     </Badge>
+                    <Button
+                        href={`${process.env.EXCEL_EXPORT_API_URL/record?.id}`}
+                        type="primary"
+                    >
+                        <FaFileDownload  />
+                    </Button>
                 </Flex>
             ),
         },

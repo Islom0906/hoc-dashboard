@@ -132,7 +132,7 @@ const CreateWorkerTable = ({data,deleteHandle , userProfileForTaskFile}) => {
                                 <FaRegEye />
                             </Button>
                             <Button
-                                href={`https://hoc.evms.uz/hoc/backend/api/users/export-excel/?staff_id=${record?.id}`}
+                                href={`${process.env.EXCEL_EXPORT_API_URL}?staff_id=${record?.id}`}
                                 type="primary"
                             >
                                 <FaFileDownload />

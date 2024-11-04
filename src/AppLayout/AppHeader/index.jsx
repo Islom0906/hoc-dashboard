@@ -29,17 +29,21 @@ const AppHeader = () => {
     navigate('/login')
   }
 
+    console.log('process.env', process.env)
+    console.log('process.env.REACT_APP_API_URL', process.env.REACT_APP_API_URL)
+    console.log('process.env.REACT_APP_EXCEL_EXPORT_API_URL', process.env.REACT_APP_EXCEL_EXPORT_API_URL)
+
     return (
         <Header className={'app-header'}>
           <Flex style={{width:100 ,height:30 }} align={"center"} justify={"center"}>
               {
                 systemMode === 'light' ?
                   <img
-                      src={`https://hoc.evms.uz/media/EHOC-dark.png`}
+                      src={`${process.env.LOGO_API_URL}logo-light.png`}
                       style={{width:'100%', height:'100%', objectFit: "contain"}}
                   /> :
                   <img
-                      src={'https://hoc.evms.uz/media/EHOC.png'}
+                      src={`${process.env.LOGO_API_URL}logo-dark.png`}
                       style={{width:'100%', height:'100%', objectFit: "contain"}}
                   />
             }

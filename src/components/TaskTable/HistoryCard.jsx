@@ -8,6 +8,7 @@ const HistoryCard = ({history , isVertical}) => {
 
 
 
+    console.log(history)
     return (
         <Card size={"small"} key={history?.id}>
             <Flex vertical={ isVertical } justify={"space-between"} align={"start"} gap={5}>

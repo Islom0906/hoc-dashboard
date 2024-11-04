@@ -31,7 +31,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
   }, [deadlineColor]);
   const getTagCompanyArray = useMemo(() => {
     return Object.entries(getTagCompany).map(([key, value]) => ({
-      label: value?.title,
+      label: `${value?.title} (${value?.count})`,
       value: value?.id,
     }));
   }, [getTagCompany]);
@@ -64,7 +64,7 @@ const FilterTaskList = ({ setOrdering, setDeadlineStatus, deadlineColorAlert , g
     }else {
       user = getStaffForModuls.filter((item) => item?.id === staffIDs)
       return {
-        label: `${user[0]?.full_name} ${user[0]?.roles[0].position}`,
+        label: `${user[0]?.full_name} ${user[0]?.roles[0]?.position}`,
         value: user[0]?.id,
       }
     }

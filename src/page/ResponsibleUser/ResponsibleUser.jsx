@@ -20,6 +20,15 @@ const BossTracking = () => {
   } = useGetQuery(false, "staff-get-task",
       `users/staff-responsible-tasks/?page=${currentPage}&page_size=${pageSize}${ordering && `&ordering=${ordering}`}${deadlineStatus && `&deadline_status__in=${deadlineStatus}`}` , false);
 
+  const {
+    data: GetTagCompany =[],
+    refetch: refetchGetTagCompany,
+  } = useGetQuery(false, "get-tag-company", `/users/responsible-company-selection/` , false);
+
+  useEffect(() => {
+    refetchGetTagCompany()
+  })
+
   useEffect(() => {
     refetchStaffGetTask();
   }, [user, currentPage, pageSize , ordering , deadlineStatus , getTagCompany ]);
@@ -32,9 +41,9 @@ const BossTracking = () => {
       <div>
         <Row gutter={[16 , 30]}>
           <Col span={24}>
-            <h1>Контроль задач в отделе</h1>
+            <h1>Контроль задач в ответственный</h1>
           </Col>
-          <FilterTaskList setGetTagCompany={setGetTagCompany} getTagCompany={getTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering}  />
+          <FilterTaskList setGetTagCompany={setGetTagCompany} getTagCompany={GetTagCompany}  setDeadlineStatus={setDeadlineStatus} setOrdering={setOrdering}  />
         </Row>
         <Spin spinning={isLoadingStaffGetTask}>
           <Row gutter={[24, 24]} style={{ marginTop: 15 }}>
