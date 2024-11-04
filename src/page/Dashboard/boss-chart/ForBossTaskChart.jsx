@@ -1,4 +1,16 @@
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend,Filler } from 'chart.js';
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+  LineController, BarController
+} from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import {Card, Col, Row, Select, theme, Typography} from "antd";
 import dayjs from "dayjs";
@@ -15,7 +27,9 @@ ChartJS.register(
     Title,
     Tooltip,
     Legend,
-    Filler
+    Filler,
+    BarController,
+    LineController
 );
 
 

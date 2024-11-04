@@ -10,7 +10,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-const DashboardProfileCard = ({ card,  companyIDSlice , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count  }) => {
+const DashboardProfileCard = ({   companyIDSlice , companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count  }) => {
     const dispatch = useDispatch()
     const handlerCompanyId = () => {
     if(companyID && fullName) {
