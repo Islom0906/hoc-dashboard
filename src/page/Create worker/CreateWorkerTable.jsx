@@ -7,7 +7,7 @@ import {IoLinkOutline} from "react-icons/io5";
 import {useEffect} from "react";
 import {FaFileDownload, FaRegEye} from "react-icons/fa";
 
-const CreateWorkerTable = ({data,deleteHandle , userProfileForTaskFile}) => {
+const CreateWorkerTable = ({data,deleteHandle }) => {
     const navigate=useNavigate()
 
 
@@ -132,7 +132,7 @@ const CreateWorkerTable = ({data,deleteHandle , userProfileForTaskFile}) => {
                                 <FaRegEye />
                             </Button>
                             <Button
-                                href={`${process.env.EXCEL_EXPORT_API_URL}?staff_id=${record?.id}`}
+                                href={`${process.env.REACT_APP_EXCEL_EXPORT_API_URL}?staff_id=${record?.id}`}
                                 type="primary"
                             >
                                 <FaFileDownload />

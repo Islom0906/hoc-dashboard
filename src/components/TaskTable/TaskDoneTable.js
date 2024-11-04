@@ -1,14 +1,8 @@
-import {Avatar, Badge, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip} from "antd";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {editIdQuery} from "../../store/slice/querySlice";
+import {Avatar, Badge, Button, Flex,  Table, Tag, } from "antd";
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import dayjs from "dayjs";
-import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
-import {AvatarUserProfile, EyeButton} from "../../components";
-import {deadlineColor} from "../../constants/deadlineColor";
+import {AvatarUserProfile, EyeButton ,HistoryCard} from "../../components";
 import {FaFileDownload, FaRegEye} from "react-icons/fa";
-import HistoryCard from "./HistoryCard";
 
 const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, handleTableChange }) => {
     const navigate = useNavigate();
@@ -126,7 +120,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
                         </EyeButton>
                     </Badge>
                     <Button
-                        href={`${process.env.EXCEL_EXPORT_API_URL/record?.id}`}
+                        href={`${process.env.REACT_APP_EXCEL_EXPORT_API_URL}?task_id=${record?.id}`}
                         type="primary"
                     >
                         <FaFileDownload  />

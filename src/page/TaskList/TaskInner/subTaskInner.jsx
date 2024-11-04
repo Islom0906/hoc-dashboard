@@ -4,11 +4,10 @@ import CommentUser from "./commentUser";
 import {FaFileDownload, FaRegCommentDots} from "react-icons/fa";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
-import { AvatarUserProfile } from "../../../components";
+import { AvatarUserProfile , HistoryCard } from "../../../components";
 import { MdOutlineUpdate } from "react-icons/md";
 import DeadlineStatusColor from "../../../hooks/deadlineStatusColor";
 import TaskStatusChecking from "./taskStatusChecking";
-import HistoryCard from "../../../components/TaskTable/HistoryCard";
 import './index.scss'
 const { Title , Text } = Typography;
 const { TabPane } = Tabs;

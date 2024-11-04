@@ -1,17 +1,22 @@
-import React from 'react';
-import {Card, Flex, Tag} from "antd";
-import {AvatarUserProfile} from "../index";
-import {IoMdArrowDropright} from "react-icons/io";
+import { Card, Flex, Tag } from "antd";
+import { AvatarUserProfile } from "../index";
+import { IoMdArrowDropright } from "react-icons/io";
 import dayjs from "dayjs";
 
-const HistoryCard = ({history , isVertical}) => {
+// Define color mapping for status states
+const statusColors = {
+    Done: "green",
+    Progress: "orange",
+    Checking: "blue",
+};
 
+const HistoryCard = ({ history, isVertical }) => {
+    const fromStatusColor = statusColors[history?.from_status] || "default";
+    const toStatusColor = statusColors[history?.to_status] || "default";
 
-
-    console.log(history)
     return (
         <Card size={"small"} key={history?.id}>
-            <Flex vertical={ isVertical } justify={"space-between"} align={"start"} gap={5}>
+            <Flex vertical={isVertical} justify={"space-between"} align={"start"} gap={5}>
                 <AvatarUserProfile
                     key={history?.user?.id}
                     full_name={history?.user?.full_name}
@@ -20,11 +25,11 @@ const HistoryCard = ({history , isVertical}) => {
                 />
                 <Flex vertical={true} gap={5} justify={"center"} align={"center"}>
                     <Flex gap={2} align={"center"}>
-                        <Tag style={{ fontSize: 11 }}>
+                        <Tag style={{ fontSize: 11, backgroundColor: fromStatusColor }}>
                             {history?.from_status}
                         </Tag>
                         <IoMdArrowDropright />
-                        <Tag style={{ fontSize: 11 }}>
+                        <Tag style={{ fontSize: 11, backgroundColor: toStatusColor }}>
                             {history?.to_status}
                         </Tag>
                     </Flex>
@@ -36,8 +41,6 @@ const HistoryCard = ({history , isVertical}) => {
                 </Flex>
             </Flex>
         </Card>
-
-
     );
 };
 

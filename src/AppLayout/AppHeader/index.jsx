@@ -30,8 +30,7 @@ const AppHeader = () => {
   }
 
     console.log('process.env', process.env)
-    console.log('process.env.REACT_APP_API_URL', process.env.REACT_APP_API_URL)
-    console.log('process.env.REACT_APP_EXCEL_EXPORT_API_URL', process.env.REACT_APP_EXCEL_EXPORT_API_URL)
+
 
     return (
         <Header className={'app-header'}>
@@ -39,11 +38,11 @@ const AppHeader = () => {
               {
                 systemMode === 'light' ?
                   <img
-                      src={`${process.env.LOGO_API_URL}logo-light.png`}
+                      src={`${process.env.REACT_APP_LOGO_API_URL}logo-light.png`}
                       style={{width:'100%', height:'100%', objectFit: "contain"}}
                   /> :
                   <img
-                      src={`${process.env.LOGO_API_URL}logo-dark.png`}
+                      src={`${process.env.REACT_APP_LOGO_API_URL}logo-dark.png`}
                       style={{width:'100%', height:'100%', objectFit: "contain"}}
                   />
             }

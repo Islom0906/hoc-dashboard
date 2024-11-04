@@ -10,16 +10,13 @@ import {
 } from "antd";
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { AvatarUserProfile, TaskInnerCard } from "../../../components";
+import { AvatarUserProfile, TaskInnerCard ,HistoryCard } from "../../../components";
 import { useSelector } from "react-redux";
 import { useGetByIdQuery } from "../../../service/query/Queries";
 import WriteComment from "./writeComment";
 import SubTaskInner from "./subTaskInner";
 import CommentUser from "./commentUser";
 import TaskHeader from "./TaskHeader";
-import { IoMdArrowDropright } from "react-icons/io";
-import dayjs from "dayjs";
-import HistoryCard from "../../../components/TaskTable/HistoryCard";
 
 const TaskInner = () => {
   const [open, setOpen] = useState(false);
