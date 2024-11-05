@@ -5,7 +5,7 @@ import {authData} from "../../../store/slice/authSlice";
 import apiService from "../../../service/apis/api";
 import './index.scss'
 import {useNavigate} from "react-router-dom";
-import  {useCallback} from "react";
+import {useCallback, useEffect} from "react";
 import {BsMoon} from "react-icons/bs";
 import {SunOutlined} from "@ant-design/icons";
 import {changeThemeMode} from "../../../store/slice/themeSlice";
@@ -56,6 +56,13 @@ const Login = () => {
             }));
         }
     }, [dispatch, navigate]);
+
+    useEffect(() => {
+        if(user) {
+
+        }
+    } , [user])
+
     return (
         <div
             style={{
@@ -67,11 +74,11 @@ const Login = () => {
                             {
                                 systemMode === 'light' ?
                                     <img
-                                        src={'https://hoc.evms.uz/media/EHOC-dark.png'}
+                                        src={`${process.env.REACT_APP_LOGO_API_URL}logo-light.png`}
                                         style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
                                     /> :
                                     <img
-                                        src={'https://hoc.evms.uz/media/EHOC.png'}
+                                        src={`${process.env.REACT_APP_LOGO_API_URL}logo-dark.png`}
                                         style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
                                     />
                             }

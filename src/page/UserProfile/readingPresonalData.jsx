@@ -5,7 +5,7 @@ const PersonalInfo = ({data}) => {
 
   return (
         <Space style={{width:'100%' ,  paddingBottom:20}} direction={"vertical"}  className={'UserProfile'}>
-          <Title level={3}>
+          <Title level={3} className={'page--title'} >
             Пользовательские настройки
           </Title>
           <Row style={{width:'100%'}} gutter={[10 ,20]}>
@@ -18,7 +18,7 @@ const PersonalInfo = ({data}) => {
                      style={{width: '100px', height: '100px', objectFit: 'contain'}}/>
               </Flex>
             </Col>
-            <Col span={8}>
+            <Col xs={12}  md={8} >
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Фамилия:
@@ -28,7 +28,7 @@ const PersonalInfo = ({data}) => {
                 </p>
               </Flex>
             </Col>
-            <Col span={8}  >
+            <Col xs={12} md={8}   >
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Имя:
@@ -40,7 +40,7 @@ const PersonalInfo = ({data}) => {
 
             </Col>
 
-            <Col span={8}>
+            <Col xs={12} md={8} >
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Отчество:
@@ -51,7 +51,7 @@ const PersonalInfo = ({data}) => {
               </Flex>
 
             </Col>
-            <Col span={8}  >
+            <Col xs={12} md={8}   >
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Дата рождения:
@@ -62,7 +62,7 @@ const PersonalInfo = ({data}) => {
               </Flex>
 
             </Col>
-            <Col span={8}>
+            <Col xs={12} md={8}>
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Номер телефона:
@@ -72,7 +72,7 @@ const PersonalInfo = ({data}) => {
                 </p>
               </Flex>
             </Col>
-            <Col span={8}>
+            <Col xs={12} md={8}>
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Электронная почта:
@@ -84,7 +84,7 @@ const PersonalInfo = ({data}) => {
             </Col>
             {
               data?.roles[0]?.module?.name &&
-                <Col span={8}>
+                <Col xs={12} md={8}>
                   <Flex vertical={true} gap={3}>
                     <Text type={"secondary"}>
                       Отдел:
@@ -99,7 +99,7 @@ const PersonalInfo = ({data}) => {
 
             {
               data?.roles[0]?.position &&
-            <Col span={8}>
+            <Col xs={12} md={8}>
               <Flex vertical={true} gap={3}>
                 <Text type={"secondary"}>
                   Должность:
