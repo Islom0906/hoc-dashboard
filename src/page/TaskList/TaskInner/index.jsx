@@ -62,7 +62,7 @@ const TaskInner = () => {
                 ) : (
                     <TaskHeader
                         responsible_user_id={taskInner?.responsible_user?.id}
-                        task_manager={taskInner?.task_manager}
+                        task_manager={taskInner?.task_manager?.id}
                         showModal={showModal}
                         task_status={taskInner?.status}
                         setWhichWriteIDTask={setWhichWriteIDTask}

@@ -111,8 +111,6 @@ const CalendarTask = () => {
 
     }, [systemMode]);
 
-
-
     const optionsCompany = useMemo(() => {
         let data=[{
             value: "",
@@ -156,10 +154,11 @@ const CalendarTask = () => {
                             />
                             </Col>
                             <Col span={8}>
-
-                            <Button style={{width:'100%'}} href={`${process.env.REACT_APP_CALENDAR_EXCEL_EXPORT_API_URL}?${companyId && `company__id=${companyId}`}\` +
-        (filterDate?.year !== 'null' ? \`&year=${filterDate?.year}\` : '') +
-        (filterDate?.month !== 'null' ? \`&month=${filterDate?.month}\` : '')`}>
+                            <Button
+                                style={{width:'100%'}}                  href={`${process.env.REACT_APP_CALENDAR_EXCEL_EXPORT_API_URL}?${companyId ? `company_id=${companyId}` : ''}${
+                                    filterDate?.year && filterDate?.year !== 'null' ? `&year=${filterDate.year}` : ''
+                                }${filterDate?.month && filterDate?.month !== 'null' ? `&month=${filterDate.month}` : ''}`}
+                            >
                                 <FaFileDownload />
                             </Button>
                             </Col>
