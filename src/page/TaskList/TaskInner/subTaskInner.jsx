@@ -53,12 +53,12 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                       </Space>
                       <Space size={[5 ,10]}>
                         <Flex align={"start"}  gap={2}>
-                        {(roles === 'admin' || roles === 'general_director') && includedUser?.find(user => user?.id === task?.task_manager) && (
+                        {(roles === 'admin' || roles === 'general_director')  && (
                             <AvatarUserProfile
-                                key={includedUser?.find(user => user?.id === task?.task_manager)?.id}
-                                full_name={includedUser?.find(user => user?.id === task?.task_manager)?.full_name}
-                                moduls={includedUser?.find(user => user?.id === task?.task_manager)?.position}
-                                image={includedUser?.find(user => user?.id === task?.task_manager)?.image}
+                                key={task?.task_manager?.id}
+                                full_name={task?.task_manager?.full_name}
+                                moduls={task?.task_manager?.position}
+                                image={task?.task_manager?.image}
                             />
                         )}
                         <Tooltip key={task?.id} title={'Крайний срок'}>
@@ -68,11 +68,11 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                         </Tooltip>
                         <Flex justify={'end'} align={'start'}>
                           <TaskStatusChecking
-                              id={task.id}
-                              task_manager={task.task_manager}
-                              task_status={task.status}
+                              id={task?.id}
+                              task_manager={task?.task_manager?.id}
+                              task_status={task?.status}
                               roles={roles}
-                              user_id={user.id}
+                              user_id={user?.id}
                               creat_by_id={creat_by_id}
                               updateStatus={updateStatus}
                               responsible_user_id={responsible_user_id}

@@ -87,7 +87,7 @@ const TaskEdit = () => {
                 data.push({
                     title: item.title,
                     text: item.text,
-                    deadline: dayjs(item.deadline).format('YYYY-MM-DDTHH:mm:ss.SSS'),
+                    deadline: dayjs(item.deadline).format('YYYY-MM-DDTHH:mm:ss'),
                     staff:  item.staff,
                     task: dataGetAddSubTask?.main_task_id,
                 })
