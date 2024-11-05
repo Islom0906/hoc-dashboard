@@ -125,13 +125,23 @@ const TaskCreated = () => {
   return (
       <div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{ width: '100%' }}>
-          <Row gutter={[16, 30]}>
+          <Row gutter={[{
+            xs: 10,
+            sm: 10,
+            md: 16,
+
+          }, {
+            xs: 10,
+            sm:10,
+            md: 30,
+
+          }]}>
             <Col span={18}>
-              <Title level={2} style={{ marginBottom: 0 }}>
+              <Title className={'page--title'} level={2} style={{ marginBottom: 0 }}>
                 Создать задачу
               </Title>
             </Col>
-            <Col span={16}>
+            <Col span={24} md={16}>
               <Input
                   value={staff ? staff:search }
                   addonBefore={selectBefore}
@@ -140,7 +150,7 @@ const TaskCreated = () => {
                   
               />
             </Col>
-            <Col span={8}>
+            <Col span={24} md={8}>
               <Button
                   type='primary'
                   icon={<PlusOutlined />}

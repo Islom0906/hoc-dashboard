@@ -52,7 +52,7 @@ const TaskPostEdit = () => {
     const {
         data: responsibleUser,
         refetch: refetchResponsibleUser
-    } = useGetQuery(false, 'get-responsibleUser', `users/user-filter`, false)
+    } = useGetQuery(false, 'get-responsibleUser', `users/user-filter-by-company`, false)
     const {
         data: getTag,
         refetch: refetchGetTag
@@ -183,13 +183,13 @@ const TaskPostEdit = () => {
        const subTask=value?.sub_tasks?.map((subTask)=>{
             return{
                 ...subTask,
-                deadline:dayjs(subTask.deadline).format('YYYY-MM-DDTHH:mm')
+                deadline:dayjs(subTask.deadline).add(21,"hour").format('YYYY-MM-DDTHH:mm')
             }
         })
         const data = {
             title: value.title,
             text: value.text,
-            deadline: dayjs(value?.deadline).format('YYYY-MM-DDTHH:mm'),
+            deadline: dayjs(value?.deadline).add(21,"hour").format('YYYY-MM-DDTHH:mm'),
             company: value?.company,
             moduls: !isBoss ? selectAddSubTask ? [] : selectModuls:[user?.roles[0]?.module?.id],
             users: selectAddSubTask ? [] : selectStaff,
@@ -230,7 +230,7 @@ const TaskPostEdit = () => {
     }, []);
     // option Company
     const optionsResponsibleUser = useMemo(() => {
-        return responsibleUser?.results?.map((option) => {
+        return responsibleUser?.map((option) => {
             return {
                 value: option?.id,
                 label: `${option?.full_name}  Позиция- (${option?.roles[0]?.position})`,

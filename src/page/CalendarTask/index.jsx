@@ -5,18 +5,24 @@ import './calendar.scss'
 import {useGetQuery} from "../../service/query/Queries";
 import {useSelector} from "react-redux";
 import {FaFileDownload} from "react-icons/fa";
+import {FaUsersViewfinder} from "react-icons/fa6";
+import {GrTask} from "react-icons/gr";
+import {LiaBirthdayCakeSolid} from "react-icons/lia";
 
 const {Title} = Typography
 
 const colorMeeting = {
     meeting: {
         name: 'Встречи',
+        icon:<FaUsersViewfinder style={{fontSize:16}}/>
     },
     birthday: {
         name: 'Дни рождений',
+        icon:<LiaBirthdayCakeSolid style={{fontSize:16}}/>
     },
     deadline: {
         name: 'Сроки по задачам',
+        icon:<GrTask style={{fontSize:16}}/>
     }
 }
 
@@ -25,7 +31,7 @@ const CalendarTask = () => {
         year: '',
         month: ''
     })
-    const [companyId, setCompanyId] = useState(null)
+    const [companyId, setCompanyId] = useState("")
     const {systemMode}=useSelector(state => state.theme)
     const {
         token: {
@@ -50,7 +56,7 @@ const CalendarTask = () => {
         isLoading: getBirthdayLoading,
         refetch: refetchBirthDay
     } = useGetQuery(false, 'birthDay-get',
-        `/users/user-birthdays?${companyId && `company__id=${companyId}`}` +
+        `/users/user-birthdays?` +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
     // meeting
     const {
@@ -68,23 +74,29 @@ const CalendarTask = () => {
     } = useGetQuery(false, 'deadline-get', `/users/user-deadlines-calendar/?${companyId && `company__id=${companyId}`}` +
         (filterDate?.year !== 'null' ? `&year=${filterDate?.year}` : '') +
         (filterDate?.month !== 'null' ? `&month=${filterDate?.month}` : ''), false)
+
     useEffect(() => {
-        if (companyData&&filterDate?.year !== '' && filterDate?.month !== '') {
+        if (filterDate?.year !== '' && filterDate?.month !== '') {
             refetchBirthDay()
             refetchMeeting()
             refetchDeadline()
         }
-    }, [companyId, filterDate.year, filterDate.month]);
-
+    }, [ filterDate.year, filterDate.month]);
+    useEffect(() => {
+        if (companyData) {
+            refetchMeeting()
+            refetchDeadline()
+        }
+    }, [companyId]);
     useEffect(() => {
         refetchCompanyData()
     }, []);
 
-    useEffect(() => {
-        if (successCompany){
-            setCompanyId(companyData[0]?.id)
-        }
-    }, [companyData]);
+    // useEffect(() => {
+    //     if (successCompany){
+    //         setCompanyId(companyData[0]?.id)
+    //     }
+    // }, [companyData]);
 
     useEffect(() => {
         // Set CSS variables for dark mode
@@ -122,14 +134,16 @@ const CalendarTask = () => {
     return (
         <Spin spinning={getBirthdayLoading || getMeetingLoading || getDeadlineLoading}>
             <Flex gap={10} vertical={true} className={'calendar-card'}>
-                <Row gutter={10}>
-                    <Col span={16}>
-                        <Title level={2} style={{marginBottom:0}}>
+                <Row gutter={[10,10]}>
+                    <Col span={24} sm={16}>
+                        <Title className={'page--title'} level={2} style={{marginBottom:0}}>
                             Календарь
                         </Title>
                     </Col>
-                    <Col span={8}>
-                        <Flex gap={5} >
+                    <Col span={24} sm={8}>
+                        <Row gutter={5} >
+                            <Col span={16}>
+
                             <Select
                                 style={{
                                     width: '100%',
@@ -140,45 +154,45 @@ const CalendarTask = () => {
                                 onChange={onChangeCompany}
                                 options={optionsCompany}
                             />
-                            <Button href={`${process.env.REACT_APP_CALENDAR_EXCEL_EXPORT_API_URL}?${companyId && `company__id=${companyId}`}\` +
+                            </Col>
+                            <Col span={8}>
+
+                            <Button style={{width:'100%'}} href={`${process.env.REACT_APP_CALENDAR_EXCEL_EXPORT_API_URL}?${companyId && `company__id=${companyId}`}\` +
         (filterDate?.year !== 'null' ? \`&year=${filterDate?.year}\` : '') +
         (filterDate?.month !== 'null' ? \`&month=${filterDate?.month}\` : '')`}>
                                 <FaFileDownload />
                             </Button>
-                        </Flex>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
-                <Flex align={'center'} gap={20}>
+                <Flex align={'center'}  className={'info-tags'}>
                     <Flex align={'center'} gap={5}>
-                        <span style={{
-                            width: 20,
-                            height: 20,
+                        <span className={'info-tag'} style={{
                             background: meetingBorderColor,
-                            borderRadius: '4px'
+
                         }}/>
-                        <p>
+                        <p className={'info-tag-name'}>
                             {colorMeeting.meeting.name}
                         </p>
                     </Flex>
                     <Flex align={'center'} gap={5}>
-                        <span style={{
-                            width: 20,
-                            height: 20,
+                        <span className={'info-tag'} style={{
                             background: birthdayBorderColor,
-                            borderRadius: '4px'
+
                         }}/>
-                        <p>
+                        <p className={'info-tag-name'}>
                             {colorMeeting.birthday.name}
                         </p>
                     </Flex>
                     <Flex align={'center'} gap={5}>
-                        <span style={{
-                            width: 20,
-                            height: 20,
+                        <span className={'info-tag'} style={{
+
+
                             background: deadlineBorderColor,
-                            borderRadius: '4px'
+
                         }}/>
-                        <p>
+                        <p className={'info-tag-name'}>
                             {colorMeeting.deadline.name}
                         </p>
                     </Flex>

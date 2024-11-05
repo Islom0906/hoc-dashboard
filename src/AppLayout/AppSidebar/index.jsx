@@ -7,6 +7,7 @@ import {samplePagesConfigs} from "../../page/routerPage";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand} from "react-icons/tb";
+import {BsBoxArrowInLeft, BsBoxArrowInRight, BsBoxArrowLeft} from "react-icons/bs";
 
 const AppSidebar = () => {
     const [userRole, setUserRole] = useState(null)
@@ -94,13 +95,13 @@ const AppSidebar = () => {
                     </Menu>
                     <Button
 
-                        icon={collapsed ? <TbLayoutSidebarLeftExpand style={{fontSize: 24, height: '100%'}}/> :
-                            <TbLayoutSidebarLeftCollapse style={{fontSize: 24, height: '100%'}}/>}
+                        icon={collapsed ? <BsBoxArrowInRight style={{fontSize: 24, height: '100%'}}/> :
+                            <BsBoxArrowInLeft style={{fontSize: 24, height: '100%'}}/>}
                         onClick={toggleCollapsed}
-                        style={{marginBottom: 16, width: '100%'}}
+                        style={{marginBottom: 16, width: '100%',border:0}}
                         variant="text"
                     >
-                        {!collapsed && 'Выход'}
+                        {!collapsed && 'Закрыть '}
                     </Button>
                 </Flex>
 

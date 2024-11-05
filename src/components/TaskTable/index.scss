@@ -1,0 +1,70 @@
+.task-table{
+  table{
+
+    .ant-table-tbody{
+      tr{
+        td{
+
+          .tag-status{
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .task-table{
+    table{
+      .ant-table-thead{
+        tr{
+          th{
+            font-size: 12px;
+            padding: 10px;
+          }
+        }
+      }
+      .ant-table-tbody{
+        tr{
+          td{
+            padding: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .task-table{
+    table{
+      .ant-table-thead{
+        tr{
+          th{
+            font-size: 10px;
+            padding: 6px;
+          }
+        }
+      }
+      .ant-table-tbody{
+        tr{
+          td{
+            font-size: 10px;
+            padding: 6px;
+
+            .deadline-tag{
+              padding: 0 4px;
+              font-size: 8px;
+            }
+            .tag-status{
+              width: 15px;
+              height: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
