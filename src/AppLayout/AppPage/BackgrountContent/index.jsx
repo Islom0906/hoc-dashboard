@@ -1,15 +1,15 @@
 import React from 'react';
 import {theme} from "antd";
-
+import './background-content.scss'
 const BackgroundContent = ({children}) => {
     const {
         token: {  borderRadiusLG,contentBg },
     } = theme.useToken();
     return (
         <div
+            className={'bg-content'}
             style={{
-                padding:20,
-                minHeight: '40vh',
+
                 background: contentBg,
                 borderRadius: borderRadiusLG,
             }}

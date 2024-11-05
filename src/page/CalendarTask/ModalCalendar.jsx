@@ -115,7 +115,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
             dispatch(editIdCalendarQuery(''))
             form.setFieldsValue(initialValueForm)
         }
-        if (companyID) {
+        if (companyID &&isModalOpen) {
             refetchRequiredUser()
         }
         if (isModalOpen) {

@@ -8,99 +8,136 @@ $tableBorder:#000;
 $activeDayBackground:#000;
 
 .calendar-card{
-  //height: calc(100vh - 200px);
-}
-.ant-picker-calendar {
-  th {
-    font-size: 14px !important;
+  .ant-picker-calendar {
+    order: 3;
+    th {
+      font-size: 14px !important;
+      padding: 0 12px 4px 0 !important;
+    }
+
+    .ant-picker-content {
+      border-collapse: collapse;
+
+      td, th {
+        border: 1px solid var(--tableBorder);
+      }
+    }
+
+    //.ant-picker-calendar-date-content {
+    //  height: 100% !important;
+    //
+    //}
+
+    ::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+    }
+
+    ::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #76bc33;
+      border: 0 none #ffffff;
+      border-radius: 50px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #515a64;
+      border: 0 none #ffffff;
+      border-radius: 75px;
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
   }
 
-  //.ant-picker-calendar-date-content {
-  //  height: 100% !important;
-  //
-  //}
+  .info-tags {
+    order: 2;
+    gap: 20px;
 
-  ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
+    .info-tag {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .info-tag-name {
+      font-size: 14px;
+    }
   }
-  ::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
+
+  .calendar-filter {
+    gap: 10px;
+
+    .calendar-filter-button {
+
+      p{
+        font-size: 16px;
+      }
+    }
   }
-  ::-webkit-scrollbar-thumb {
-    background: #76bc33;
-    border: 0 none #ffffff;
-    border-radius: 50px;
+
+  .custom-td {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    padding: 3px 1px;
+
+    .date-number {
+      font-size: 14px;
+      padding: 5px;
+
+    }
+
+    .today {
+      padding: 4px 8px;
+
+      border-radius: 100%;
+      background-color: var(--activeDayBackground);
+      color: #fff;
+    }
+
+    .events {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow-y: auto;
+      padding: 0 2px;
+
+      li {
+        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        //.color-badge {
+        //  width: 5px;
+        //  height: 5px;
+        //  flex-shrink: 0;
+        //}
+        span {
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          font-size: 12px;
+        }
+      }
+    }
   }
-  ::-webkit-scrollbar-track {
-    background: #515a64;
-    border: 0 none #ffffff;
-    border-radius: 75px;
-  }
-  ::-webkit-scrollbar-corner {
-    background: transparent;
-  }
+
 }
+
 
 .ant-picker-calendar-date-value {
   font-size: 12px !important;
 }
 
-.ant-picker-content{
- border-collapse: collapse;
-
-  td,th{
-    border: 1px solid var(--tableBorder);
-  }
-}
-
-.custom-td {
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-
-  padding:  3px 1px;
-  .date-number{
-    font-size: 14px;
-    padding: 5px;
-
-  }
-  .today{
-    padding:  4px 8px;
-
-    border-radius: 100%;
-    background-color: var(--activeDayBackground);
-    color: #fff;
-  }
-
-  .events {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    overflow-y:auto;
-    padding: 0 2px;
-    li {
-      padding: 0 5px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-
-      //.color-badge {
-      //  width: 5px;
-      //  height: 5px;
-      //  flex-shrink: 0;
-      //}
-      span{
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        font-size: 12px;
-      }
-    }
-  }
-}
 
 .ant-picker-cell .meeting{
   border-left: 4px solid var(--meetingBorderColor) ;
@@ -130,41 +167,157 @@ $activeDayBackground:#000;
   }
 }
 
+@media (max-width: 1200px) {
 
-@media (max-width: 768px) {
-  .custom-td {
-    height: 50px;
+  .calendar-card {
+    .ant-picker-calendar {
+      th {
+        font-size: 12px !important;
+        padding: 0 10px 3px 0 !important;
 
-    padding:  2px 0.5px;
-    .date-number{
-      font-size: 10px;
-      padding: 3px;
+      }
 
     }
-    .today{
-      padding:  3px 6px;
+    .calendar-filter {
+      gap: 5px;
 
-
-      border-radius: 100%;
-      background-color: var(--activeDayBackground);
-      color: #fff;
-    }
-
-    .events {
-      gap: 2px;
-      overflow-y:auto;
-      padding: 0 2px;
-      li {
-        padding: 0 5px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        span{
-          font-size: 10px;
-        }
+      .calendar-filter-button {
+        padding: 2px 7px;
+        p{
+          font-size: 12px;
         }
       }
     }
+    .custom-td{
+      height: 70px;
+
+
+      .date-number {
+        font-size: 12px;
+        padding: 4px;
+
+      }
+
+
+
+      .events {
+        gap: 1px;
+        overflow-y: auto;
+        padding: 0 2px;
+
+        li {
+          padding: 0 3px;
+          gap: 3px;
+
+          span {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+
+  }
+  .ant-picker-cell .meeting{
+    border-left: 3px solid var(--meetingBorderColor) ;
+    border-radius: 2px;
+  }
+  .ant-picker-cell .birthday{
+    border-left: 3px solid var(--birthdayBorderColor);
+    border-radius: 2px;
+  }
+  .ant-picker-cell .deadline{
+    border-left: 3px solid var(--deadlineBorderColor);
+    border-radius: 2px;
+  }
+
+
+}
+
+@media (max-width: 768px) {
+
+  .calendar-card {
+
+    .ant-picker-calendar {
+      order: 2;
+      th {
+        font-size: 10px !important;
+        padding: 0 8px 2px 0 !important;
+      }
+
+    }
+    .info-tags {
+      order: 3;
+      gap: 10px;
+      align-items: start;
+    flex-direction: column;
+      .info-tag {
+        width: 14px;
+        height: 14px;
+        border-radius: 2px;
+        font-size: 12px !important;
+      }
+
+      .info-tag-name {
+        font-size: 12px;
+      }
+    }
+
+    .calendar-filter {
+      gap: 5px;
+      justify-content: space-between;
+      .calendar-filter-button {
+        width: 100%;
+
+      }
+    }
+
+    .custom-td {
+      height: 40px;
+
+      padding: 2px 0.5px;
+
+      .date-number {
+        font-size: 10px;
+        padding: 3px;
+
+      }
+
+      .today {
+        padding: 3px 6px;
+
+
+        border-radius: 100%;
+        background-color: var(--activeDayBackground);
+        color: #fff;
+      }
+
+      .events {
+        gap: 2px;
+        overflow-y: auto;
+        padding: 0 2px;
+
+        li {
+          padding: 0 2px;
+
+          span {
+            font-size: 8px;
+          }
+        }
+      }
+    }
+  }
+  .ant-picker-cell .meeting{
+    border-left: 2px solid var(--meetingBorderColor) ;
+    border-radius:  1px;
+  }
+  .ant-picker-cell .birthday{
+    border-left: 2px solid var(--birthdayBorderColor);
+    border-radius:  1px;
+  }
+  .ant-picker-cell .deadline{
+    border-left: 2px solid var(--deadlineBorderColor);
+    border-radius:  1px;
+  }
 
 }
 

@@ -20,7 +20,7 @@ import {
 
 } from './index'
 import {RiContractFill, RiPlayListAddLine} from "react-icons/ri";
-import { BsBuildingAdd } from "react-icons/bs";
+import {BsBookmarkDash, BsBuildingAdd} from "react-icons/bs";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { VscFileSubmodule } from "react-icons/vsc";
 import {IoCalendarOutline, IoCheckmarkDoneOutline} from "react-icons/io5";
@@ -140,7 +140,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 5,
-        icon: <InboxOutlined className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        icon: <BsBookmarkDash className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         label: 'Избранный',
         path: '/inbox',
         element: Inbox,
@@ -309,7 +309,7 @@ export const samplePagesConfigs = [
     },
     // {
     //     key: 12321232312312312,
-    //     icon: <BiSupport className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+    //     icon: <GrStatusInfo className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
     //     path: '/support',
     //     label: 'Поддерживать',
     //     element: Support,

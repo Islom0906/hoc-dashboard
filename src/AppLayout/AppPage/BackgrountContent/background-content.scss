@@ -1,0 +1,10 @@
+.bg-content{
+  padding: 20px;
+  min-height: 40vh;
+}
+
+@media (max-width: 576px) {
+  .bg-content{
+    padding: 10px;
+  }
+}

@@ -8,13 +8,15 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile, EyeButton ,HistoryCard} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
-
+import './index.scss'
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
     const navigate = useNavigate();
     const {data:{user}}=useSelector(state => state.auth)
     const dispatch = useDispatch();
     const {Title, Text} = Typography
-
+    const screens = useBreakpoint();
+    console.log(screens)
     const Delete =  (id) => {
         deleteHandle("/users/tasks", id);
     };
@@ -38,7 +40,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             render: (text, record) => {
                 return(
                     <Tooltip key={record?.id} title={`${record?.done_sub_tasks_count} / ${record?.sub_tasks_count}`} >
-                        <Progress size={50} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
+                        <Progress size={screens.xl ? 50:screens.xs ? 30 : 40} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
                         }/>
 
                     </Tooltip>)
@@ -51,7 +53,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             filters: getTagCompanyArray,
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={'large'}
+                    size={screens.xl ? 40:screens.xs ? 30 : 40}
                     key={record?.company?.id}
                     company={record?.company?.title}
                     image={record?.company?.image_light}
@@ -63,7 +65,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             id: "created_by",
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={'large'}
+                    size={screens.xl ? 50:screens.xs ? 30 : 40}
                     key={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
@@ -83,15 +85,13 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             title: "Крайний срок",
             dataIndex: "deadline",
             id: "deadline",
-            width: 150,
             sorter: {multiple: 3},
-            render: (_, record) =>  <Tag color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
+            render: (_, record) =>  <Tag className={'deadline-tag'} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
         },
         {
             title: "Статус",
             dataIndex: "deadline_status",
             id: "deadline_status",
-            width: 150,
             filters: [
                 {
                     text: deadlineColor.started.name,
@@ -114,9 +114,9 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                 const color = DeadlineStatusColor(deadline_status) || "black";
                 return (
                     <div
+                        className={'tag-status'}
                         style={{
-                            width: "20px",
-                            height: "20px",
+
                             borderRadius: "100%",
                             backgroundColor: color,
                         }}
@@ -128,7 +128,6 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             title: "История",
             dataIndex: "history",
             id: "history",
-            width: 150,
             render: (_, record) => <Flex justify={"space-between"} align={'center'}>
                 {
                     record?.histories.map(item => (
@@ -148,6 +147,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     <Flex justify={"space-between"} align={'center'}>
                         <Avatar.Group >
                             <AvatarUserProfile
+                                size={screens.xl ? 50:screens.xs ? 30 : 40}
                                 key={record?.responsible_user?.id}
                                 full_name={record?.responsible_user?.full_name}
                                 moduls={record?.responsible_user?.roles[0].position}
@@ -164,6 +164,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}
                                     image={user?.image}
+                                    size={screens.xl ? 50:screens.xs ? 30 : 40}
                                 />
                             ))}
                         </Avatar.Group>
@@ -175,8 +176,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
         {
             title: "Редактировать",
             id: "action",
-            fixed: "right",
-            width: 140,
+
             render: (_, record) => (
 
                 <Flex gap={10} justify={'end'}>
@@ -185,6 +185,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                             record?.done_sub_tasks_count ===0 &&
                             <>
                                 <Button
+                                    size={screens.xs ?'small':"middle"}
                                     onClick={() => Edit(record.id)}
                                     type="primary"
                                     icon={<EditOutlined />}
@@ -194,13 +195,15 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                                     description={"Удалить"}
                                     onConfirm={() => Delete(record.id)}
                                 >
-                                    <Button type="primary" danger icon={<DeleteOutlined />} />
+                                    <Button
+                                        size={screens.xs ?'small':"middle"} type="primary" danger icon={<DeleteOutlined />} />
                                 </Popconfirm>
                             </>
                             :
                             record?.company?.id === user?.roles[0].company.id && record?.done_sub_tasks_count ===0  &&
                             <>
                                 <Button
+                                    size={screens.xs ?'small':"middle"}
                                     onClick={() => Edit(record.id)}
                                     type="primary"
                                     icon={<EditOutlined />}
@@ -210,7 +213,11 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                                     description={"Удалить"}
                                     onConfirm={() => Delete(record.id)}
                                 >
-                                    <Button type="primary" danger icon={<DeleteOutlined />} />
+                                    <Button
+                                        size={screens.xs ?'small':"middle"}
+                                        type="primary"
+                                        danger
+                                        icon={<DeleteOutlined />} />
                                 </Popconfirm>
                             </>
 
@@ -218,7 +225,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                     <Badge dot={record?.is_checking}>
                         <EyeButton>
                             <Button
-
+                                size={screens.xs ?'small':"middle"}
                                 onClick={() => handleTaskInnerGet(record?.id)}
                                 type="primary"
                             >
@@ -233,6 +240,8 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
     ];
     return (
         <Table
+            className={'task-table'}
+            scroll={{ x: "max-content" }}
             size={"medium"}
             columns={columns}
             pagination={{

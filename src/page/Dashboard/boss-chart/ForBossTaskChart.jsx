@@ -214,7 +214,7 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
           {/*  </Select>*/}
           {/*</Col>*/}
         </Row>
-        <Bar  height={400} data={data} options={options} />
+        <Bar   data={data} options={options} />
       </Card>
   );
 };
