@@ -21,6 +21,26 @@ const AppSidebar = () => {
         }
     }, [user])
 
+    useEffect(() => {
+        // Function to check window width and update the collapsed state
+        const handleResize = () => {
+            if (window.innerWidth < 992) {
+                setCollapsed(true);
+            } else {
+                setCollapsed(false);
+            }
+        };
+
+        // Initial check
+        handleResize();
+
+        // Event listener for window resize
+        window.addEventListener("resize", handleResize);
+
+        // Cleanup the event listener on component unmount
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const isPermitted = (roles) => roles.some(role => userRole.includes(role));
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
@@ -30,6 +50,7 @@ const AppSidebar = () => {
 
             <Sider
                 width={300}
+                collapsedWidth={60}
                 breakpoint={'lg'}
                 style={{position: 'relative'}}
                 collapsed={collapsed}
@@ -53,19 +74,19 @@ const AppSidebar = () => {
                                             {menu.items
                                                 .filter(menuItem => isPermitted(menuItem.permittedRole) && !menuItem.noIndex)
                                                 .map((menuItem) => (
-                                                    <Menu.Item key={menuItem.key}>
+                                                    <Menu.Item key={menuItem.key} >
                                                         <Link to={`${menuItem.path}`}>
                                                             <LinkItem icon={menuItem?.icon}
-                                                                      label={collapsed ? '' : menuItem.label}/>
+                                                                      label={menuItem.label}/>
                                                         </Link>
                                                     </Menu.Item>
                                                 ))}
                                         </Menu.ItemGroup>
                                     </SubMenu>
                                 ) : (
-                                    <Menu.Item key={menu.key}>
+                                    <Menu.Item key={menu.key} >
                                         <Link to={`${menu.path}`}>
-                                            <LinkItem icon={menu?.icon} label={collapsed ? '' : menu.label}/>
+                                            <LinkItem icon={menu?.icon} label={menu.label}/>
                                         </Link>
                                     </Menu.Item>
                                 )
@@ -90,9 +111,9 @@ const AppSidebar = () => {
 export default AppSidebar;
 export const LinkItem = ({icon, label}) => {
     return (
-        <Flex gap={20}>
+        <Flex gap={20} >
             <span>{icon}</span>
-            <span>{label}</span>
+            {label && <span className="link-label">{label}</span>}
         </Flex>
     );
 };
