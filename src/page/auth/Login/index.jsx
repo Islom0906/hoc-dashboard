@@ -5,14 +5,15 @@ import {authData} from "../../../store/slice/authSlice";
 import apiService from "../../../service/apis/api";
 import './index.scss'
 import {useNavigate} from "react-router-dom";
-import  {useCallback} from "react";
+import {useCallback, useEffect} from "react";
 import {BsMoon} from "react-icons/bs";
 import {SunOutlined} from "@ant-design/icons";
 import {changeThemeMode} from "../../../store/slice/themeSlice";
-import {selectCompany} from "../../../store/slice/companySlice";
+import {clearCompany, selectCompany} from "../../../store/slice/companySlice";
 import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
+import {clearModuls} from "../../../store/slice/modulsSlice";
 const Login = () => {
-    const {data:{isLoading}}=useSelector(state => state.auth)
+    const {data:{isLoading , isAuthenticated}}=useSelector(state => state.auth)
     const dispatch = useDispatch()
     const navigate=useNavigate()
     const {systemMode}=useSelector(state => state.theme)
@@ -44,7 +45,6 @@ const Login = () => {
                 isAuthenticated: true,
             }));
             dispatch(selectCompany(userInfo?.roles[0].company?.id))
-
             navigate('/');
             message.success('Успешно');
         } catch (error) {
@@ -56,6 +56,16 @@ const Login = () => {
             }));
         }
     }, [dispatch, navigate]);
+
+
+    useEffect(() => {
+        if(isAuthenticated && localStorage.getItem('app-version') === 1 ) {
+            dispatch(clearCompany())
+            dispatch(clearModuls())
+            localStorage.setItem('app-version'  , 1)
+        }
+    } , [isAuthenticated])
+
     return (
         <div
             style={{
@@ -67,11 +77,11 @@ const Login = () => {
                             {
                                 systemMode === 'light' ?
                                     <img
-                                        src={'https://hoc.evms.uz/media/EHOC-dark.png'}
+                                        src={`${process.env.REACT_APP_LOGO_API_URL}logo-light.png`}
                                         style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
                                     /> :
                                     <img
-                                        src={'https://hoc.evms.uz/media/EHOC.png'}
+                                        src={`${process.env.REACT_APP_LOGO_API_URL}logo-dark.png`}
                                         style={{width: '150px', height: '70px', objectFit: "contain", background: "#fff30"}}
                                     />
                             }

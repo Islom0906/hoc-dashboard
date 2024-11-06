@@ -7,6 +7,7 @@ import {PlusOutlined} from "@ant-design/icons";
 import CreateWorkerTable from "./CreateWorkerTable";
 import {  useDeleteQuery, useGetQuery} from "../../service/query/Queries";
 import {FilterCompanyForAdmin} from "../../components";
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 const {Title}=Typography
 
 
@@ -18,6 +19,7 @@ const CreateWorker = () => {
     const {data,isLoading:getLoading,refetch}=useGetQuery(false,'create-worker-get',`/users/users` , false)
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
+    const ScreenMD = useBreakpoint().md;
 
     useEffect(() => {
         if(companyID) {
@@ -49,9 +51,9 @@ const CreateWorker = () => {
     return (
         <div className={'site-space-compact-wrapper'}>
             <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
-                <Row gutter={20}>
+                <Row gutter={[10 , 20]}>
                     <Col span={18}>
-                        <Title level={2}>
+                        <Title className={'page--title'} level={2}>
                              Cотрудника
                         </Title>
                     </Col>
@@ -65,7 +67,9 @@ const CreateWorker = () => {
                             icon={<PlusOutlined/>}
                             style={{width: '100%'}}
                             onClick={addArticle}>
-                            Добавить
+                            {
+                                ScreenMD && 'Добавить'
+                            }
                         </Button>
                     </Col>
 

@@ -1,12 +1,13 @@
-import {Card, Col, Row, Tabs, theme} from "antd";
+import {Card, Col, Row, Spin, Tabs, theme} from "antd";
 import './index.scss'
 import {useEffect, useState} from "react";
 import ReadingPresonalData from "./readingPresonalData";
 import DashboardProfileCard from "../Dashboard/profileCard/DashboardProfileCard";
 import { useGetQuery} from "../../service/query/Queries";
 import {useSelector} from "react-redux";
-import {useLocation as useReactLocation,  useParams} from "react-router-dom";
+import {useLocation, useLocation as useReactLocation, useNavigate, useParams} from "react-router-dom";
 import {TaskDoneTable, TaskNoFilterTable} from "../../components";
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 // import Personal from "./personal";
 // import ChangePassword from "./ChangePassword";
 // import {RiLockPasswordFill} from "react-icons/ri";
@@ -16,17 +17,18 @@ const UserProfile = () => {
   const [checkInfo, setCheckInfo] = useState('personal')
     const [userID , setUserID] = useState('')
     const { TabPane } = Tabs;
-    const location = useReactLocation();
+    const location = useLocation();
+    const ScreenMD = useBreakpoint().md;
+    const { pathname } = location;
     const queryParams = new URLSearchParams(location.search);
     const queryUserID = queryParams.get('user');
     const [taskStatusTab, setTaskStatusTab] = useState('failed');
-    const { item } = useParams();
-    console.log( 'item', item)
     const [pagination, setPagination] = useState({
         current: 1,
         pageSize: 10,
         total: 0,
     });
+    console.log('location' , location)
     const roleName = user?.roles[0]?.role?.name
     const { data: getUserInfo, isLoading: loadingGetUserInfo, refetch:refetchGetUserInfo } = useGetQuery(
         false,
@@ -81,6 +83,8 @@ const UserProfile = () => {
         }
     } ,[taskStatusTab , userID])
 
+    console.log('roleName' , roleName )
+
     //
     // useEffect(() => {
     //     if (isSuccessGetUserTaskStatusFailed) {
@@ -93,17 +97,23 @@ const UserProfile = () => {
   return (<Row gutter={[10  , 16]}>
 
       {
-          roleName === 'general_director' !==
-          <Col span={8}>
-            <DashboardProfileCard title={'Мой профиль'} image={getUserInfo?.image?.image } position={getUserInfo?.roles[0]?.position}
-                                fullName={(`${getUserInfo?.last_name} ${getUserInfo?.first_name} ${getUserInfo?.middle_name}`)}
-                                total_tasks_count={GetUserTaskStatistics?.total_tasks_count}
-                                failed_tasks_count={GetUserTaskStatistics?.failed_tasks_count}
-                                done_tasks_count={GetUserTaskStatistics?.done_tasks_count}
-                                in_progress_tasks_count={GetUserTaskStatistics?.in_progress_tasks_count}
-                                responsible_tasks_count={GetUserTaskStatistics?.responsible_tasks_count}
-            />
-          </Col>
+          roleName !== 'general_director' &&
+          <>
+              {/*xs={24} sm={12} md={8} xxl={6}*/}
+              <Col xs={24} md={8}>
+                  <Spin spinning={loadingGetUserInfo}>
+                      <DashboardProfileCard title={'Мой профиль'} image={getUserInfo?.image?.image } position={getUserInfo?.roles[0]?.position}
+                                            fullName={(`${getUserInfo?.last_name} ${getUserInfo?.first_name} ${getUserInfo?.middle_name}`)}
+                                            total_tasks_count={GetUserTaskStatistics?.total_tasks_count}
+                                            failed_tasks_count={GetUserTaskStatistics?.failed_tasks_count}
+                                            done_tasks_count={GetUserTaskStatistics?.done_tasks_count}
+                                            in_progress_tasks_count={GetUserTaskStatistics?.in_progress_tasks_count}
+                                            responsible_tasks_count={GetUserTaskStatistics?.responsible_tasks_count}
+                      />
+                  </Spin>
+              </Col>
+          </>
+
       }
         {/*<Col span={8}>*/}
           {/*<div className={'card-personal'} style={{backgroundColor: contentBg}}>*/}
@@ -119,27 +129,25 @@ const UserProfile = () => {
           {/*</Menu>*/}
           {/*</div>*/}
         {/*</Col>*/}
-        <Col span={ roleName === 'general_director' ? '24': '8'}>
-          <div className={'card-personal'} style={{backgroundColor: contentBg}}>
+        <Col xs={24}  md={roleName === 'general_director' ? 24: 16} >
             {/*<Personal/>*/}
-            <ReadingPresonalData data={getUserInfo}/>
+              <Card size={"small"} >
+                  <ReadingPresonalData data={getUserInfo}/>
+              </Card>
             {/*{*/}
             {/*    checkInfo === 'personal' ?*/}
             {/*        <Personal/> :*/}
             {/*        <ChangePassword setCheckInfo={setCheckInfo}/>*/}
             {/*}*/}
-
-          </div>
         </Col>
-
       {
-          roleName !== 'general_director' && userID &&
+          roleName === 'general_director' && ('/vie-user' === pathname)  && userID &&
           <Col span={24}>
       <Card size={"small"}>
-              <Tabs defaultActiveKey="failed"  >
+              <Tabs defaultActiveKey="failed" className={'user-profile_tabs'} size={ScreenMD ? '' : 'small'}>
                   <TabPane
                       tab={
-                          <span onClick={() => setTaskStatusTab( prev => 'failed')} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                          <span className={'header_btn'} onClick={() => setTaskStatusTab( prev => 'failed')} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
 Неуспешный
               </span>
                       }

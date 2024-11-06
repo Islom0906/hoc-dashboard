@@ -1,0 +1,28 @@
+
+
+
+@media (max-width: 1200px) {
+  .create-worker {
+    th {
+      font-size: 14px !important;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .create-worker {
+    th {
+      font-size: 9px !important;
+    }
+    .ant-tag {
+      font-size: 9px;
+    }
+    p {
+      font-size: 9px;
+    }
+  }
+
+}
