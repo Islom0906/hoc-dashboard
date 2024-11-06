@@ -9,10 +9,11 @@ import {useCallback, useEffect} from "react";
 import {BsMoon} from "react-icons/bs";
 import {SunOutlined} from "@ant-design/icons";
 import {changeThemeMode} from "../../../store/slice/themeSlice";
-import {selectCompany} from "../../../store/slice/companySlice";
+import {clearCompany, selectCompany} from "../../../store/slice/companySlice";
 import BackgroundContent from "../../../AppLayout/AppPage/BackgrountContent";
+import {clearModuls} from "../../../store/slice/modulsSlice";
 const Login = () => {
-    const {data:{isLoading}}=useSelector(state => state.auth)
+    const {data:{isLoading , isAuthenticated}}=useSelector(state => state.auth)
     const dispatch = useDispatch()
     const navigate=useNavigate()
     const {systemMode}=useSelector(state => state.theme)
@@ -44,7 +45,6 @@ const Login = () => {
                 isAuthenticated: true,
             }));
             dispatch(selectCompany(userInfo?.roles[0].company?.id))
-
             navigate('/');
             message.success('Успешно');
         } catch (error) {
@@ -57,11 +57,14 @@ const Login = () => {
         }
     }, [dispatch, navigate]);
 
-    useEffect(() => {
-        if(user) {
 
+    useEffect(() => {
+        if(isAuthenticated && localStorage.getItem('app-version') === 1 ) {
+            dispatch(clearCompany())
+            dispatch(clearModuls())
+            localStorage.setItem('app-version'  , 1)
         }
-    } , [user])
+    } , [isAuthenticated])
 
     return (
         <div
