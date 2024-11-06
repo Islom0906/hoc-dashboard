@@ -1,13 +1,12 @@
-import {Avatar, Badge, Button, Flex, Popconfirm, Progress, Table, Tag, Tooltip} from "antd";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import {Avatar, Badge, Button, Flex, Progress, Table, Tag, Tooltip} from "antd";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile, EyeButton} from "../../components";
-import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
+import './index.scss'
 
 const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
     const navigate = useNavigate();
@@ -163,6 +162,8 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
     ];
     return (
         <Table
+            className={'task-table'}
+            scroll={{ x: "max-content" }}
             size={"medium"}
             columns={columns}
             pagination={{

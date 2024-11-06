@@ -16,7 +16,6 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
     const dispatch = useDispatch();
     const {Title, Text} = Typography
     const screens = useBreakpoint();
-    console.log(screens)
     const Delete =  (id) => {
         deleteHandle("/users/tasks", id);
     };
@@ -53,7 +52,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             filters: getTagCompanyArray,
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={screens.xl ? 40:screens.xs ? 30 : 40}
+                    size={screens.xl ? 50:screens.xs ? 30 : 40}
                     key={record?.company?.id}
                     company={record?.company?.title}
                     image={record?.company?.image_light}

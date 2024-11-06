@@ -16,7 +16,7 @@ const initialValueForm = {
     text: '',
     deadline: '',
     company: null,
-    moduls: [],
+    // moduls: [],
     responsible_user: null,
     users: [],
     allModuls: [
@@ -133,23 +133,27 @@ const TaskPostEdit = () => {
 
         editTaskData?.included_users?.map(included => {
             allModuls.push({
-                moduls: included?.modules?.id,
+                moduls: included?.roles[0]?.module.id,
                 user: included?.id
             })
-            const optionModuleStaff = included?.modules?.included_users?.map((option) => {
-                return {
-                    value: option?.id,
-                    label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
-                };
-            });
-            allModuleStaff.push(optionModuleStaff)
+            // const optionModuleStaff = included?.modules?.included_users?.map((option) => {
+            //     return {
+            //         value: option?.id,
+            //         label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
+            //     };
+            // });
+            // allModuleStaff.push([{
+            //     value: editTaskData.module?.id,
+            //     label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
+            // }])
 
         })
-        if (!editTaskData?.moduls?.length > 0 && editTaskSuccess) {
+        if (!editTaskData?.module  && editTaskSuccess) {
             setSelectAddSubTask(true)
             setSubTaskStaffs(subModuleStaff)
         } else {
-            setSubTaskStaffs(allModuleStaff)
+            setSelectModulesID(editTaskData?.module?.id)
+            // setSubTaskStaffs(allModuleStaff)
         }
         if (editTaskSuccess) {
             const edit = {
@@ -158,7 +162,7 @@ const TaskPostEdit = () => {
                 deadline: dayjs(editTaskData?.deadline),
                 responsible_user: editTaskData?.responsible_user?.id,
                 company: editTaskData?.company?.id,
-                moduls: editTaskData?.moduls,
+                // moduls: editTaskData?.moduls,
                 sub_tasks: subTask,
                 allModuls
             }
@@ -170,6 +174,7 @@ const TaskPostEdit = () => {
         console.log(value)
     }
     const onFinish = (value) => {
+        console.log(value)
         const selectStaff = []
         const selectModuls = []
         value?.allModuls?.map(item => {
@@ -196,6 +201,7 @@ const TaskPostEdit = () => {
             sub_tasks: value?.sub_tasks ? subTask : [],
             responsible_user: value?.responsible_user,
         }
+        console.log(data)
         if (editTaskData) {
             putTask({url: '/users/tasks', data: data, id: editId})
         } else {
@@ -408,7 +414,7 @@ const TaskPostEdit = () => {
                                     <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
                                         <AddStaffTask
                                             optionsModules={optionsModules}
-                                            optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
+                                            optionsUserByModules={optionsUserByModules}
                                             onChangeModules={onChangeModules}
                                             isBoss={isBoss}
                                         />
