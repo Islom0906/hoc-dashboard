@@ -108,6 +108,7 @@ const Dashboard = () => {
   } , [modulsID, valueYear])
 
 
+  console.log('GetCompanyAllForGeneralStatistics' ,GetCompanyAllForGeneralStatistics)
   return (<div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
           <Row gutter={5} style={{paddingBottom: 5}}>
@@ -135,8 +136,8 @@ const Dashboard = () => {
                 </Title>
                 <Row gutter={[16 ,14]}>
                   {GetCompanyAllForGeneralStatistics?.map(general => (
-                      <Col xs={24} sm={12} md={8} xxl={6} key={general?.id}>
-                        <DashboardProfileCard card={general} companyIDSlice={companyID}  companyID={general?.id}
+                      <Col xs={24} sm={12} md={8} xxl={6} key={general?.id} >
+                        <DashboardProfileCard key={general?.id} card={general} companyIDSlice={companyID}  companyID={general?.id}
                                               image={general?.image_dark}
                                               fullName={general?.title}
                                               in_progress_tasks_count={general?.total_tasks_count - (general?.done_tasks_count - general?.failed_tasks_count)}
