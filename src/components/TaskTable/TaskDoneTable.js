@@ -5,6 +5,7 @@ import {AvatarUserProfile, EyeButton ,HistoryCard} from "../../components";
 import {FaFileDownload, FaRegEye} from "react-icons/fa";
 import './index.scss'
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
+
 const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, handleTableChange }) => {
     const navigate = useNavigate();
     const screens = useBreakpoint();
@@ -103,7 +104,6 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
         {
             title: "Редактировать",
             id: "action",
-            fixed: "right",
             render: (_, record) => (
                 <Flex gap={3} >
                     <Badge dot={record?.is_checking}>
@@ -131,7 +131,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
     return (
         <Table
             className={'task-table'}
-            scroll={{ x: "max-content" }}
+            scroll={{ x: 1200 }}
             size={"medium"}
             columns={columns}
             pagination={{

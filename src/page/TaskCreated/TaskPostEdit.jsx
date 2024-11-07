@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Button, Card, Col, DatePicker, Flex, Form, Row, Select, Typography} from "antd";
+import {Button, Card, Col, DatePicker, Flex, Form, Row, Select, Tabs, Typography} from "antd";
 import {AppLoader, FormInput, FormTextArea} from "../../components";
 import {useSelector} from "react-redux";
 import successCreateAndEdit from "../../hooks/successCreateAndEdit";
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 import CreatSubTask from "./CreatSubTask";
 import AddStaffTask from "./AddStaffTask";
+import TabPane from "antd/es/tabs/TabPane";
 
 const {Title,Text} = Typography
 const initialValueForm = {
@@ -47,6 +48,11 @@ const TaskPostEdit = () => {
     const {companyID} = useSelector(state => state.companySlice)
     const [selectAddSubTask, setSelectAddSubTask] = useState(false)
     const [subTaskStaffs, setSubTaskStaffs] = useState([])
+
+    const handleTabChange = (key) => {
+        console.log(selectAddSubTask)
+        setSelectAddSubTask(key === '1')
+    };
     const {editId} = useSelector(state => state.query)
     // get-responsibleUser
     const {
@@ -92,7 +98,6 @@ const TaskPostEdit = () => {
     successCreateAndEdit(postTaskSuccess, putTaskSuccess, isBoss ? "/taskEditBoss":'/taskCreated')
     editGetById(editTaskRefetch)
     setInitialValue(form, initialValueForm)
-
     useEffect(() => {
         if (isBoss){
             setSelectModulesID(user?.roles[0]?.module?.id)
@@ -111,17 +116,19 @@ const TaskPostEdit = () => {
                 title: item?.title,
                 text: item?.text,
                 deadline: dayjs(item?.deadline) || null,
-                staff: item?.staff,
+                staff: item?.staff.id,
                 module: item?.module?.id,
-                file: item?.file_id
+                file: item?.file?.id
             })
-            editFileProps.push([{
-                uid: item?.file_id,
-                name:item?.file_url,
+            if (item.file) {
+                editFileProps.push([{
+                uid: item?.file?.id,
+                name:item?.file?.image,
                 status: "done",
-                url: item?.file_url
+                url: item?.file?.image
             }])
-            const optionSubModuleStaff = item?.module?.staffs?.map((option) => {
+            }
+            const optionSubModuleStaff = item?.module?.users?.map((option) => {
                 return {
                     value: option?.id,
                     label: `${option?.full_name}(${option?.position})`,
@@ -136,22 +143,13 @@ const TaskPostEdit = () => {
                 moduls: included?.roles[0]?.module.id,
                 user: included?.id
             })
-            // const optionModuleStaff = included?.modules?.included_users?.map((option) => {
-            //     return {
-            //         value: option?.id,
-            //         label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
-            //     };
-            // });
-            // allModuleStaff.push([{
-            //     value: editTaskData.module?.id,
-            //     label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
-            // }])
+
 
         })
         if (!editTaskData?.module  && editTaskSuccess) {
             setSelectAddSubTask(true)
             setSubTaskStaffs(subModuleStaff)
-        } else {
+        } else if (editTaskSuccess) {
             setSelectModulesID(editTaskData?.module?.id)
             // setSubTaskStaffs(allModuleStaff)
         }
@@ -162,7 +160,6 @@ const TaskPostEdit = () => {
                 deadline: dayjs(editTaskData?.deadline),
                 responsible_user: editTaskData?.responsible_user?.id,
                 company: editTaskData?.company?.id,
-                // moduls: editTaskData?.moduls,
                 sub_tasks: subTask,
                 allModuls
             }
@@ -174,7 +171,6 @@ const TaskPostEdit = () => {
         console.log(value)
     }
     const onFinish = (value) => {
-        console.log(value)
         const selectStaff = []
         const selectModuls = []
         value?.allModuls?.map(item => {
@@ -273,7 +269,7 @@ const TaskPostEdit = () => {
     }, [getUserByModules]);
 
 
-
+    console.log(getUserByModules)
     const onChangeModules = (id, index) => {
         setSelectModulesID(id)
         setSubTaskStaffs([])
@@ -299,6 +295,7 @@ const TaskPostEdit = () => {
 
     useEffect(() => {
         if (selectModulesID) {
+
             refetchGetUserByModules()
         }
     }, [selectModulesID]);
@@ -375,43 +372,74 @@ const TaskPostEdit = () => {
                             name={'text'}
                         />
                     </Col>
-                    {
-                        !isBoss &&
-                        <>
-                    <Col>
-                            <Button  type={"primary"} style={{marginBottom: 30}}
-                                     onClick={() => setSelectAddSubTask(prev => !prev)}>
-                                {
-                                    selectAddSubTask ? 'Добавить сотрудника' : '  Добавить подзадачу'
+
+                    <Col span={24}>
+                        {
+                            !isBoss ?
+
+                        <Tabs activeKey={selectAddSubTask ? '1' : '2'} onChange={handleTabChange} defaultActiveKey="1">
+                            <TabPane
+                                tab={
+                                    <span style={{display: 'flex', alignItems: 'center', gap: 5}}>
+                                      Добавить подзадачу
+                                    </span>
                                 }
-                            </Button>
-                    </Col>
-                    <Col>
-                        <div style={{marginTop: '10px'}}>
-                            <Text type="danger" >{ selectAddSubTask ? 'А теперь  вы добавите подзадачу!' : ' Щас вы добавите  сотрудника!'}</Text>
-                        </div>
-                    </Col>
-                        </>
-                    }
-                    {
-                        selectAddSubTask ?
-                            <Col span={24}>
-                                <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
-                                    <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
-                                        <CreatSubTask  form={form}  onChangeModules={onChangeModules} optionsModules={optionsModules}
-                                                       optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}
-                                                       fileListProps={fileListProps}
-                                                       setFileListProps={setFileListProps}
-                                        />
-                                    </Flex>
-                                </Card>
+                                key="1"
+                            >
+                                {
+                                    selectAddSubTask
+                                    &&
+                                    <Card bordered={true}
+                                          style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
+                                        <Flex align={'center'} vertical={true} justify={'center'}
+                                              style={{height: '100%'}}>
+                                            <CreatSubTask
+                                                form={form}
+                                                onChangeModules={onChangeModules}
+                                                optionsModules={optionsModules}
+                                                optionsUserByModules={
+                                                    editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules
+                                                }
+                                                fileListProps={fileListProps}
+                                                setFileListProps={setFileListProps}
+                                            />
+                                        </Flex>
+                                    </Card>
+                                }
+                            </TabPane>
+                            <TabPane
+                                tab={
+                                    <span style={{display: 'flex', alignItems: 'center', gap: 5}}>
+                                        Добавить сотрудника
+                                      </span>
+                                }
+                                key="2"
+                            >
+                                {!selectAddSubTask && (
+                                    <Card bordered={true}
+                                          style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
+                                        <Flex align={'center'} vertical={true} justify={'center'}
+                                              style={{height: '100%'}}>
+                                            <AddStaffTask
+                                                optionsModules={optionsModules}
+                                                optionsUserByModules={optionsUserByModules}
+                                                onChangeModules={onChangeModules}
+                                                isBoss={isBoss}
+                                            />
+                                        </Flex>
+                                    </Card>
+                                )}
 
-                            </Col>
-                            :
-                            <Col span={24}>
 
-                                <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>
-                                    <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>
+                            </TabPane>
+
+
+                        </Tabs>
+                                :
+                                <Card bordered={true}
+                                      style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
+                                    <Flex align={'center'} vertical={true} justify={'center'}
+                                          style={{height: '100%'}}>
                                         <AddStaffTask
                                             optionsModules={optionsModules}
                                             optionsUserByModules={optionsUserByModules}
@@ -420,8 +448,39 @@ const TaskPostEdit = () => {
                                         />
                                     </Flex>
                                 </Card>
-                            </Col>
-                    }
+                        }
+
+                    </Col>
+
+                    {/*    {*/}
+                    {/*    selectAddSubTask ?*/}
+                    {/*        <Col span={24}>*/}
+                    {/*            <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>*/}
+                    {/*                <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>*/}
+                    {/*                    <CreatSubTask  form={form}  onChangeModules={onChangeModules} optionsModules={optionsModules}*/}
+                    {/*                                   optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}*/}
+                    {/*                                   fileListProps={fileListProps}*/}
+                    {/*                                   setFileListProps={setFileListProps}*/}
+                    {/*                    />*/}
+                    {/*                </Flex>*/}
+                    {/*            </Card>*/}
+
+                    {/*        </Col>*/}
+                    {/*        :*/}
+                    {/*        <Col span={24}>*/}
+
+                    {/*            <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>*/}
+                    {/*                <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>*/}
+                    {/*                    <AddStaffTask*/}
+                    {/*                        optionsModules={optionsModules}*/}
+                    {/*                        optionsUserByModules={optionsUserByModules}*/}
+                    {/*                        onChangeModules={onChangeModules}*/}
+                    {/*                        isBoss={isBoss}*/}
+                    {/*                    />*/}
+                    {/*                </Flex>*/}
+                    {/*            </Card>*/}
+                    {/*        </Col>*/}
+                    {/*}*/}
                     <Col span={24}>
                         <Form.Item
                             label={'Ответственный'}

@@ -15,9 +15,11 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
     const {data:{user}}=useSelector(state => state.auth)
     const dispatch = useDispatch();
     const {Title, Text} = Typography
+    const ScreenMD = useBreakpoint().md;
+
     const screens = useBreakpoint();
     const Delete =  (id) => {
-        deleteHandle("/users/tasks", id);
+        deleteHandle("/users/tasks", `${id}/`);
     };
 
     const Edit = (id) => {
@@ -31,7 +33,6 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
     };
 
     const columns = [
-
         {
             title: "Процесс",
             dataIndex: "process",
@@ -49,6 +50,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             title: "Компания",
             dataIndex: "company",
             id: "company",
+            width: 120,
             filters: getTagCompanyArray,
             render: (text , record) =>
                 <AvatarUserProfile
@@ -85,6 +87,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             dataIndex: "deadline",
             id: "deadline",
             sorter: {multiple: 3},
+            width:150,
             render: (_, record) =>  <Tag className={'deadline-tag'} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
         },
         {
@@ -175,10 +178,11 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
         {
             title: "Редактировать",
             id: "action",
-
+            fixed:'right',
+            width: 130,
             render: (_, record) => (
 
-                <Flex gap={10} justify={'end'}>
+                <Flex gap={5} justify={'end'}>
                     {
                         user?.roles[0]?.role?.name !== 'director' ?
                             record?.done_sub_tasks_count ===0 &&
@@ -227,9 +231,8 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                                 size={screens.xs ?'small':"middle"}
                                 onClick={() => handleTaskInnerGet(record?.id)}
                                 type="primary"
-                            >
-                                <FaRegEye />
-                            </Button>
+                                icon={<FaRegEye />}
+                            />
                         </EyeButton>
 
                     </Badge>
@@ -240,7 +243,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
     return (
         <Table
             className={'task-table'}
-            scroll={{ x: "max-content" }}
+            scroll={{ x: ScreenMD ? 1200 : 800 }}
             size={"medium"}
             columns={columns}
             pagination={{

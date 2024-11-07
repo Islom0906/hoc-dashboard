@@ -22,7 +22,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {editIdQuery} from "../../store/slice/querySlice";
 import {IoCalendarOutline} from "react-icons/io5";
 import {FaRegEye} from "react-icons/fa";
-
+import './index.scss'
 const TaskCard = ({
                       id,
                       title,
@@ -156,7 +156,7 @@ const TaskCard = ({
                           </Col>
                           <Col span={8}>
                               <Link to={link}  style={{textAlign: "center", width: '100%' , display:'block'}}>
-                                  <Badge dot={isChecking} >
+                                  <Badge dot={isChecking} style={{width:'100%',display:'block'}} >
                                       <Button   style={{textAlign: "center", width: '100%' , display:'block'}}
                                                type={"primary"}>
                                           <FaRegEye style={{fontSize: "23px" , width:'100%'}}/>
@@ -165,9 +165,9 @@ const TaskCard = ({
                               </Link>
                           </Col>
                       </>:
-                          <Col span={ 24 }>
+                          <Col span={24}>
                               <Link to={link}  style={{textAlign: "center", width: '100%' , display:'block'}}>
-                                  <Badge dot={isChecking} >
+                                  <Badge dot={isChecking}  >
                                       <Button  icon={<FaRegEye style={{fontSize: "23px"}}/>} style={{textAlign: "center", width: '100%' , display:'flex', alignItems:'center'}}
                                                type={"primary"}>
                                               Подробнее

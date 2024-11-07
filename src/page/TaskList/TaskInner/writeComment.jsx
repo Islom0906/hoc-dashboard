@@ -3,7 +3,7 @@ import {Button, Form, Spin} from "antd";
 import {FormTextArea , ImageUploader} from "../../../components";
 import {usePostQuery} from "../../../service/query/Queries";
 
-const WriteComment = ({whichWriteID, handleCancel, whichWriteIDTask, setIsPostCommentSuccess}) => {
+const WriteComment = ({refetchTaskInner,whichWriteID, handleCancel, whichWriteIDTask, setIsPostCommentSuccess}) => {
   const [form] = Form.useForm();
   const initialValueForm = {
     message: '',
@@ -15,7 +15,11 @@ const WriteComment = ({whichWriteID, handleCancel, whichWriteIDTask, setIsPostCo
     isLoading: postCommentLoading,
     isSuccess: postCommentSuccess
   } = usePostQuery();
-
+  useEffect(() => {
+    if (postCommentSuccess){
+      refetchTaskInner()
+    }
+  }, [postCommentSuccess]);
   useEffect(() => {
     setIsPostCommentSuccess(postCommentSuccess);
   }, [postCommentSuccess, setIsPostCommentSuccess]);

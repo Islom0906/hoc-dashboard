@@ -12,13 +12,14 @@ const AvatarUserProfile = ({ full_name , moduls  , image , key ,size ,company}) 
           placement="top"
       >
         <Avatar
+            style={{flexShrink:0}}
             size={size}
             icon={
               image ? (
                   <img
                       src={image}
                       alt={full_name}
-                      style={{width:'100%' , height:'100%' , objectFit:"contain"}}
+                      style={{width:'100%' , height:'100%' , objectFit:"contain",flexShrink:0}}
                   />
               ) : (
                   <UserOutlined />

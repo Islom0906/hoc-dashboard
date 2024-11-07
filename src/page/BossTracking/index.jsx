@@ -19,7 +19,7 @@ const BossTracking = () => {
   const [deadlineStatus, setDeadlineStatus] = useState('');
   const [ordering, setOrdering] = useState('');
   const [getTagCompany, setGetTagCompany] = useState('');
-  const { mutate, isLoading: deleteLoading } = useDeleteQuery();
+  const { mutate, isLoading: deleteLoading,isSuccess:deleteSuccess } = useDeleteQuery();
   const {
     data: staffGetTask = {},
     refetch: refetchStaffGetTask,
@@ -53,7 +53,7 @@ const BossTracking = () => {
   } , [modulsID])
   useEffect(() => {
       refetchStaffGetTask();
-  }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany , staffIDs , modulsID]);
+  }, [user, currentPage, pageSize , ordering , deadlineStatus  , getTagCompany , staffIDs , modulsID,deleteSuccess]);
   const onPaginationChange = (page, pageSize) => {
     setCurrentPage(page);
     setPageSize(pageSize);

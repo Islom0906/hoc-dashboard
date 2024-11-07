@@ -62,21 +62,23 @@ const SuccessTask = () => {
         <Space direction={"vertical"} size={30}>
           {
               (roleName !== 'admin' && roleName !== 'general_director') &&
+              <>
               <Row gutter={[16 , 30]}>
                 <Col span={24}>
                   <h2>Ваши выполненные задачи:</h2>
                 </Col>
                 <Col span={24}>
                   {/*<Spin spinning={isLoadingStaffGetTask}>*/}
+                  {/*</Spin>*/}
+                </Col>
+              </Row>
                   <TaskDoneTable
                       data={staffGetTask?.results}
                       pagination={pagination}
                       setPagination={setPagination}
                       handleTableChange={handleTableChange}
                   />
-                  {/*</Spin>*/}
-                </Col>
-              </Row>
+              </>
           }
           {
               roleName  !== 'staff' &&

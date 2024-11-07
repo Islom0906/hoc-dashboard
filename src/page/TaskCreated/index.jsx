@@ -34,7 +34,7 @@ const TaskCreated = () => {
   });
   const debounceInputValue = useDebounce(search, 500);
   // Delete
-  const { mutate, isLoading: deleteLoading } = useDeleteQuery();
+  const { mutate, isLoading: deleteLoading,isSuccess:deleteSuccess } = useDeleteQuery();
 
   // Get tasks
   const { data, isLoading: getTaskLoading, refetch, isSuccess: getIsSuccess } = useGetQuery(
@@ -80,7 +80,7 @@ const TaskCreated = () => {
       refetch()
     }
 
-  }, [pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering,search,getTagCompany]);
+  }, [pagination.current, pagination.pageSize, debounceInputValue, deadlineStatus, ordering,search,getTagCompany,deleteSuccess]);
 
   const deleteHandle = (url, id) => {
     mutate({ url, id });

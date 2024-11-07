@@ -82,7 +82,7 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                               }]}
                           >
                             <DatePicker
-                                showTime
+
                             />
                           </Form.Item>
                         </Col>

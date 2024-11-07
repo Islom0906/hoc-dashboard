@@ -9,20 +9,27 @@ import { MdOutlineUpdate } from "react-icons/md";
 import DeadlineStatusColor from "../../../hooks/deadlineStatusColor";
 import TaskStatusChecking from "./taskStatusChecking";
 import './index.scss'
+import {useEffect} from "react";
 const { Title , Text } = Typography;
 const { TabPane } = Tabs;
 
-const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, creat_by_id, setWhichWriteID, includedUser, deadline_status, isPostCommentSuccess }) => {
+const SubTaskInner = ({ refetchTaskInner,subTask, showModal, whichWriteID, responsible_user_id, creat_by_id, setWhichWriteID, includedUser, deadline_status, isPostCommentSuccess }) => {
   const { data: { user } = {} } = useSelector((state) => state.auth);
   const StatusDeadlineColor = DeadlineStatusColor(deadline_status);
   const roles = user?.roles[0]?.role?.name;
-  const { mutate: updateSubTaskStatus, isLoading: isLoadingUpdateSubTaskStatus } = useEditQuery();
+  const { mutate: updateSubTaskStatus, isLoading: isLoadingUpdateSubTaskStatus,isSuccess } = useEditQuery();
 
   const clickHandle = (id) => {
     setWhichWriteID(id);
     showModal();
   };
 
+  useEffect(() => {
+    if (isSuccess){
+    refetchTaskInner()
+
+    }
+  }, [isSuccess]);
   const extractFilename = (url) => url.substring(url.lastIndexOf('/') + 1);
 
   const updateStatus = (id, newStatus) => {
@@ -44,7 +51,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                           <Text type={'secondary'}>{task?.text}</Text>
                           {task?.file && (
                               <Tag className={'file'} color={'blue'} icon={<FaFileDownload  style={{ fontSize:14 ,flexShrink:0}} />} style={{display:"flex" , alignItems:'center' , gap:5 ,width:'100%'}}>
-                                <a href={task?.file} download={true} target={"_blank"}>
+                                <a role={'button'} href={task?.file} download={task?.file} target={"_blank"}>
                                   <p >{extractFilename(task.file)}</p>
                                 </a>
                               </Tag>
@@ -79,7 +86,7 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                           />
                         </Flex>
                         {task?.status !== 'done' && (
-                            <Button type="primary" size={"small"} onClick={() => clickHandle(task?.id)}>
+                            <Button type="primary" onClick={() => clickHandle(task?.id)}>
                               <FaRegCommentDots />
                             </Button>
                         )}
@@ -89,17 +96,14 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                     </Flex>
 
                     <Tabs defaultActiveKey="1">
-                      {task?.histories?.length > 0 && (
-                          <TabPane tab="История процесса" key="2">
+                          <TabPane tab="История процесса" key="2" style={{height:50}}>
                             <Space size={'small'} direction={"vertical"} style={{ width: '100%', height: 250, overflowY: "scroll" }}>
                               {task?.histories.map((history) => (
                                   <HistoryCard history={history} key={history.id} />
                               ))}
                             </Space>
                           </TabPane>
-                      )}
 
-                      {task?.messages?.length > 0 && (
                           <TabPane tab="Комментарии" key="1">
                             <Space size={'small'} direction={"vertical"} style={{ width: '100%', height: 250, overflowY: "scroll" }}>
                               {task?.messages.map((message) => (
@@ -107,7 +111,6 @@ const SubTaskInner = ({ subTask, showModal, whichWriteID, responsible_user_id, c
                               ))}
                             </Space>
                           </TabPane>
-                      )}
                     </Tabs>
                   </Flex>
                 </Card>

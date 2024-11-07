@@ -7,12 +7,14 @@ import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile, EyeButton} from "../../components";
 import {FaRegEye} from "react-icons/fa";
 import './index.scss'
+import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
 const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
     const navigate = useNavigate();
     const {data:{user}}=useSelector(state => state.auth)
     const dispatch = useDispatch();
-
+    const screens = useBreakpoint();
+    const ScreenMD = useBreakpoint().md;
     const Delete =  (id) => {
         deleteHandle("/users/tasks", id);
     };
@@ -36,7 +38,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             render: (text, record) => {
                 return(
                     <Tooltip key={record?.id} title={`${record?.done_sub_tasks_count} / ${record?.sub_tasks_count}`} >
-                        <Progress size={50} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
+                        <Progress size={screens.xl ? 50:screens.xs ? 30 : 40} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
                         }/>
 
                     </Tooltip>)
@@ -49,7 +51,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             filters: getTagCompanyArray,
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={'large'}
+                    size={screens.xl ? 50:screens.xs ? 30 : 40}
                     key={record?.company?.id}
                     company={record?.company?.title}
                     image={record?.company?.image_light}
@@ -61,7 +63,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             id: "created_by",
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={'large'}
+                    size={screens.xl ? 50:screens.xs ? 30 : 40}
                     key={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
@@ -81,21 +83,21 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Крайний срок",
             dataIndex: "deadline",
             id: "deadline",
-            width: 150,
-            render: (_, record) =>  <Tag color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
+
+            render: (_, record) =>  <Tag className={'deadline-tag'} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
         },
         {
             title: "Статус",
             dataIndex: "deadline_status",
             id: "deadline_status",
-            width: 150,
+
             render: (deadline_status) => {
                 const color = DeadlineStatusColor(deadline_status) || "black";
                 return (
                     <div
+                        className={'tag-status'}
                         style={{
-                            width: "20px",
-                            height: "20px",
+
                             borderRadius: "100%",
                             backgroundColor: color,
                         }}
@@ -117,6 +119,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
                                 full_name={record?.responsible_user?.full_name}
                                 moduls={record?.responsible_user?.roles[0].position}
                                 image={record?.responsible_user?.image}
+                                size={screens.xl ? 50:screens.xs ? 30 : 40}
                             />
                         </Avatar.Group>
                         <Avatar.Group  max={{
@@ -129,6 +132,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}
                                     image={user?.image}
+                                    size={screens.xl ? 50:screens.xs ? 30 : 40}
                                 />
                             ))}
                         </Avatar.Group>
@@ -141,18 +145,18 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Редактировать",
             id: "action",
             fixed: "right",
-            width: 140,
             render: (_, record) => (
 
                 <Flex gap={10} justify={'end'}>
                     <Badge dot={record?.is_checking}>
                         <EyeButton>
                             <Button
+                                style={{width:'100%'}}
+                                size={screens.xs ?'small':"middle"}
                                 onClick={() => handleTaskInnerGet(record?.id)}
                                 type="primary"
-                            >
-                                <FaRegEye />
-                            </Button>
+                                icon={<FaRegEye />}
+                            />
                         </EyeButton>
 
                     </Badge>
@@ -163,7 +167,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
     return (
         <Table
             className={'task-table'}
-            scroll={{ x: "max-content" }}
+            scroll={{ x: ScreenMD ? 1200 : 800 }}
             size={"medium"}
             columns={columns}
             pagination={{

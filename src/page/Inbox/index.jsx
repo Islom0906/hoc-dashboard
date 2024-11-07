@@ -20,7 +20,7 @@ const Inbox = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [checkCategory, setCheckCategory] = useState("")
     const [search, setSearch] = useState('');
-    const ScreenMD = useBreakpoint().md;
+    const screen = useBreakpoint();
     const debounceInputValue=useDebounce(search,500)
     const {
         data, isLoading: getInboxLoading, refetch
@@ -71,23 +71,38 @@ const Inbox = () => {
   return (
 
       <Spin spinning={deleteLoading || getInboxLoading || deleteCategoryLoading}>
-          <Row  className={'inbox'}  gutter={{
-              xs: 10,
-              md: 20,
-          }} >
+          <Row  className={'inbox'}  gutter={[
+              {
+                  xs: 10,
+                  md: 20,
+              },
+              {
+                  xs: 10,
+                  md: 20,
+              }
+          ]} >
               <Col span={24}
               >
                   <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
-                      <Row gutter={[16, 30]}>
-                          <Col span={20} xs={24} sm={12} md={8} xxl={6}>
+                      <Row gutter={[ {
+                          xs: 10,
+                          sm:14,
+                          md: 16,
+                      },
+                          {
+                              xs: 10,
+                              sm:14,
+                              md: 30,
+                          }]}>
+                          <Col  xs={24} sm={12} md={16} xxl={18}>
                               <Title className={'page--title'} level={2} style={{marginBottom: 0}}>
                                   Избранный
                               </Title>
                           </Col>
-                          <Col span={4}>
+                          <Col xs={24} sm={12} md={8} xxl={6}>
                               <Button
                                   type='primary'
-                                  size={ScreenMD ? '' :'small'}
+                                  size={screen.sm ? '' :'small'}
                                   icon={<PlusOutlined/>}
                                   style={{width: '100%'}}
                                   onClick={addCategory}>
@@ -95,11 +110,12 @@ const Inbox = () => {
                               </Button>
                           </Col>
 
-                          <Col span={16}>
+                          <Col xs={24} sm={16}>
                               <Input placeholder="Поиск из избранного" onChange={(e) => searchFunc(e.target.value)}/>
                           </Col>
-                          <Col span={8}>
+                          <Col xs={24} sm={8}>
                               <Button
+                                  size={screen.sm ? '' :'small'}
                                   type='primary'
                                   icon={<PlusOutlined/>}
                                   style={{width: '100%'}}
@@ -172,7 +188,8 @@ const Inbox = () => {
                                                   </Text>
                                               </Flex>
                                           </Card>
-                                      </Popover>))}
+                                      </Popover>
+                                  ))}
 
                               </Flex>
                           </Col>
@@ -182,15 +199,18 @@ const Inbox = () => {
           {
               data?.map((message) => (
                   <Col
-                      span={6}
+
                       xl={{
                           span:6
                       }}
                       md={{
                           span:8
                       }}
-                      xs={{
+                      sm={{
                           span:12
+                      }}
+                      xs={{
+                          span:24
                       }}
                        key={message?.id}>
                       <InboxCard created_at={message?.created_at} title={message?.title} id={message?.id} deleteHandle={deleteHandle}/>
@@ -207,3 +227,4 @@ const Inbox = () => {
 };
 
 export default Inbox;
+

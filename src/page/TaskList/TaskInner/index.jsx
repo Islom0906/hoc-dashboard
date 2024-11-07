@@ -76,6 +76,7 @@ const TaskInner = () => {
               <div>
                 {taskInner?.sub_tasks.length > 0 ? (
                     <SubTaskInner
+                        refetchTaskInner={refetchTaskInner}
                         whichWriteID={whichWriteID}
                         isPostCommentSuccess={isPostCommentSuccess}
                         includedUser={taskInner?.included_users}
@@ -147,6 +148,7 @@ const TaskInner = () => {
           </Col>
           <Modal open={open} title="Добавить комментарий" onCancel={handleCancel} footer={null}>
             <WriteComment
+                refetchTaskInner={refetchTaskInner}
                 whichWriteID={whichWriteID}
                 whichWriteIDTask={whichWriteIDTask}
                 handleCancel={handleCancel}

@@ -15,7 +15,7 @@ console.log('files', files)
                             // const isImage = file?.file?.match(/\.(jpeg|jpg|png|gif)$/i); // Check for image extensions
                             // return !isImage ?
                             //     (
-                                    <a key={file?.id} href={file?.file} download rel="noopener noreferrer">
+                                    <a key={file?.id} href={file?.file} download={'download'} rel="noopener noreferrer">
                                         {file?.file}
                                     </a>
                                 // )
