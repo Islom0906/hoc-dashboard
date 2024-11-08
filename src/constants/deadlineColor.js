@@ -25,3 +25,5 @@ export const deadlineColor = {
     text:'Выполненные'
   }
 }
+
+

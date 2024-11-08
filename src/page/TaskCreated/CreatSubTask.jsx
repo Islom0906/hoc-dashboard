@@ -55,23 +55,26 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
   };
 
   return (
-      <Form.List name="sub_tasks">
+      <Form.List name="sub_tasks" >
         {(fields, {add, remove}) => (
             <>
               {fields.map((field, index) => {
                 return (
-                    <div key={field.fieldKey} style={{marginBottom: 10}}>
-                      <Row gutter={[20, 10]}>
+                    <div key={field.fieldKey} style={{marginBottom: 10, }}>
+                      <Row gutter={[20, 10]} >
                         <Col span={20}>
                           <Title level={3}>
                             Добавить подзадачу:
                           </Title>
                         </Col>
                         <Col span={2}>
-                          <Button type={"dashed"} danger onClick={() => remove(field.name)}>
+                          {
+                            index>0 &&
+                          <Button  danger onClick={() => remove(field.name)}>
                             <MinusCircleOutlined
                             />
                           </Button>
+                          }
                         </Col>
                         <Col span={24}>
                           <Form.Item

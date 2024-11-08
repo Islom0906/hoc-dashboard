@@ -22,5 +22,6 @@ export {default as TaskTable} from './TaskTable/TaskTable'
 export {default as TaskNoFilterTable} from './TaskTable/TaskNoFilterTable'
 export {default as TaskDoneTable} from './TaskTable/TaskDoneTable'
 export {default as HistoryCard} from './HistoryCard/HistoryCard'
+export {default as StatusTag} from './StatusTag/status-tag'
 // TaskNoFilterTable
 

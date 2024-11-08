@@ -9,21 +9,10 @@ import {FaRegEye} from "react-icons/fa";
 import './index.scss'
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
-const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
+const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination, handleTableChange }) => {
     const navigate = useNavigate();
-    const {data:{user}}=useSelector(state => state.auth)
-    const dispatch = useDispatch();
-    const screens = useBreakpoint();
-    const ScreenMD = useBreakpoint().md;
-    const Delete =  (id) => {
-        deleteHandle("/users/tasks", id);
-    };
 
-    const Edit = (id) => {
-        localStorage.setItem("editDataId", id);
-        dispatch(editIdQuery(id));
-        navigate("/task/add");
-    };
+    const {md,xs,xl} = useBreakpoint();
 
     const handleTaskInnerGet = (id) => {
         navigate(`/task-list/${id}`);
@@ -35,10 +24,11 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Процесс",
             dataIndex: "process",
             id: "process",
+            width:md ? 120:80,
             render: (text, record) => {
                 return(
                     <Tooltip key={record?.id} title={`${record?.done_sub_tasks_count} / ${record?.sub_tasks_count}`} >
-                        <Progress size={screens.xl ? 50:screens.xs ? 30 : 40} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
+                        <Progress size={xl ? 50:xs ? 30 : 40} type="circle" percent={ Math.round(record?.done_sub_tasks_count / record?.sub_tasks_count * 100)
                         }/>
 
                     </Tooltip>)
@@ -48,10 +38,11 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Компания",
             dataIndex: "company",
             id: "company",
+            width: md ? 120:80,
             filters: getTagCompanyArray,
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={screens.xl ? 50:screens.xs ? 30 : 40}
+                    size={xl ? 50:xs ? 30 : 40}
                     key={record?.company?.id}
                     company={record?.company?.title}
                     image={record?.company?.image_light}
@@ -61,9 +52,10 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Создано",
             dataIndex: "created_by",
             id: "created_by",
+            width: md ? 120:80,
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={screens.xl ? 50:screens.xs ? 30 : 40}
+                    size={xl ? 50:xs ? 30 : 40}
                     key={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
@@ -75,6 +67,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Задача",
             dataIndex: "title",
             id: "title",
+            width: 200,
             render: (title) => <p>{title}</p>,
         },
 
@@ -83,14 +76,14 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Крайний срок",
             dataIndex: "deadline",
             id: "deadline",
-
+            width:md ? 150:180,
             render: (_, record) =>  <Tag className={'deadline-tag'} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
         },
         {
             title: "Статус",
             dataIndex: "deadline_status",
             id: "deadline_status",
-
+            width: md ? 100:80,
             render: (deadline_status) => {
                 const color = DeadlineStatusColor(deadline_status) || "black";
                 return (
@@ -109,6 +102,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Ответственный и Участники",
             dataIndex: "included_users",
             id: "team",
+            width: md ? 250:200,
             render: (text, record) => {
                 const users = [...(record.included_users || [])];
                 return (
@@ -119,7 +113,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
                                 full_name={record?.responsible_user?.full_name}
                                 moduls={record?.responsible_user?.roles[0].position}
                                 image={record?.responsible_user?.image}
-                                size={screens.xl ? 50:screens.xs ? 30 : 40}
+                                size={xl ? 40:xs ? 25 : 30}
                             />
                         </Avatar.Group>
                         <Avatar.Group  max={{
@@ -132,7 +126,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}
                                     image={user?.image}
-                                    size={screens.xl ? 50:screens.xs ? 30 : 40}
+                                    size={xl ? 40:xs ? 25 : 30}
                                 />
                             ))}
                         </Avatar.Group>
@@ -145,18 +139,21 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             title: "Редактировать",
             id: "action",
             fixed: "right",
+            width: 80,
             render: (_, record) => (
 
-                <Flex gap={10} justify={'end'}>
-                    <Badge dot={record?.is_checking}>
+                <Flex gap={10} justify={'center'}>
+                    <Badge dot={record?.is_checking} style={{width:'100%'}}>
                         <EyeButton>
                             <Button
                                 style={{width:'100%'}}
-                                size={screens.xs ?'small':"middle"}
+                                size={xs ?'small':"middle"}
                                 onClick={() => handleTaskInnerGet(record?.id)}
                                 type="primary"
-                                icon={<FaRegEye />}
-                            />
+
+                            >
+                                <FaRegEye />
+                            </Button>
                         </EyeButton>
 
                     </Badge>
@@ -167,7 +164,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
     return (
         <Table
             className={'task-table'}
-            scroll={{ x: ScreenMD ? 1200 : 800 }}
+            scroll={{ x: md ? 1200 : 800 }}
             size={"medium"}
             columns={columns}
             pagination={{

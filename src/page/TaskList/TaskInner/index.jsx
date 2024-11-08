@@ -136,11 +136,11 @@ const TaskInner = () => {
               {
                 taskInner?.histories.length > 0 &&
                   <Card title="История процесса" size="small" bordered={true}>
-                    <div style={{ maxHeight: "300px", overflowY: "scroll" }}>
+                    <Space direction={"vertical"} size={5} style={{ maxHeight: "300px", overflowY: "scroll",width:'100%' }}>
                       {taskInner?.histories?.map((history) => (
                           <HistoryCard history={history} isVertical={false} key={history.id} />
                       ))}
-                    </div>
+                    </Space>
                   </Card>
               }
 

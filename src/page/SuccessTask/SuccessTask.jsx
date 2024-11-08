@@ -59,7 +59,7 @@ const SuccessTask = () => {
 
   return (
       <>
-        <Space direction={"vertical"} size={30}>
+        <Space direction={"vertical"} size={30} style={{width:'100%'}}>
           {
               (roleName !== 'admin' && roleName !== 'general_director') &&
               <>

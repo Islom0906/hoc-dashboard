@@ -6,12 +6,12 @@ const {Title} = Typography
 const AddStaffTask = ({optionsUserByModules, optionsModules, onChangeModules, isBoss}) => {
 
   return (
-      <Form.List name="allModuls">
+      <Form.List name="allModuls" >
         {(fields, {add, remove}) => (
             <>
               {fields.map((field, index) => {
                 return (
-                    <div key={field.fieldKey} style={{marginBottom: 20}}>
+                    <div key={field.fieldKey} style={{marginBottom: 20 , width:'100%'}}>
                       <Row gutter={20}>
                           {
                               !isBoss &&

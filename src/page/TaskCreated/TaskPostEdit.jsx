@@ -389,7 +389,7 @@ const TaskPostEdit = () => {
                                 {
                                     selectAddSubTask
                                     &&
-                                    <Card bordered={true}
+                                    <Card bordered={true} size={"small"}
                                           style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
                                         <Flex align={'center'} vertical={true} justify={'center'}
                                               style={{height: '100%'}}>
@@ -417,6 +417,7 @@ const TaskPostEdit = () => {
                             >
                                 {!selectAddSubTask && (
                                     <Card bordered={true}
+                                          size={"small"}
                                           style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
                                         <Flex align={'center'} vertical={true} justify={'center'}
                                               style={{height: '100%'}}>
@@ -436,7 +437,7 @@ const TaskPostEdit = () => {
 
                         </Tabs>
                                 :
-                                <Card bordered={true}
+                                <Card bordered={true} size={"small"}
                                       style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
                                     <Flex align={'center'} vertical={true} justify={'center'}
                                           style={{height: '100%'}}>
