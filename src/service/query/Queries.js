@@ -135,7 +135,6 @@ export const useDeleteImagesQuery=()=>{
         },
         onError: (error) => {
             message.error(error.response.data)
-            console.log(error.response)
             // for (let obj in error.response.data) {
             //     message.error(`${obj}: ${error.response.data[obj][0]}`)
             // }

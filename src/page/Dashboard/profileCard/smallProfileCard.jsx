@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectModuls} from "../../../store/slice/modulsSlice";
 import {selectStaffIDs} from "../../../store/slice/staffSlice";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
+import {memo} from "react";
 
 const {Text} = Typography
 
@@ -73,4 +74,4 @@ const SmallProfileCard = ({staffID,companyID , avatar, fullName, position , done
   )
 };
 
-export default SmallProfileCard;
+export default memo(SmallProfileCard);

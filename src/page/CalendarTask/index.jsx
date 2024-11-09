@@ -92,11 +92,7 @@ const CalendarTask = () => {
         refetchCompanyData()
     }, []);
 
-    // useEffect(() => {
-    //     if (successCompany){
-    //         setCompanyId(companyData[0]?.id)
-    //     }
-    // }, [companyData]);
+
 
     useEffect(() => {
         // Set CSS variables for dark mode

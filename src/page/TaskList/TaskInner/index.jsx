@@ -111,7 +111,7 @@ const TaskInner = () => {
                 <Avatar.Group>
                   {taskInner?.included_users?.map((user) => (
                       <AvatarUserProfile
-                          key={user?.id}
+                          keyId={user?.id}
                           full_name={user?.full_name}
                           roles={user?.roles[0].position}
                           image={user?.image}

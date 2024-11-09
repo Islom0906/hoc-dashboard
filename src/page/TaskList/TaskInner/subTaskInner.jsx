@@ -62,7 +62,7 @@ const SubTaskInner = ({ refetchTaskInner,subTask, showModal, whichWriteID, respo
                         <Flex align={"start"}  gap={2}>
                         {(roles === 'admin' || roles === 'general_director')  && (
                             <AvatarUserProfile
-                                key={task?.task_manager?.id}
+                                keyId={task?.task_manager?.id}
                                 full_name={task?.task_manager?.full_name}
                                 moduls={task?.task_manager?.position}
                                 image={task?.task_manager?.image}

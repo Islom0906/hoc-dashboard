@@ -43,7 +43,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             render: (text , record) =>
                 <AvatarUserProfile
                     size={xl ? 50:xs ? 30 : 40}
-                    key={record?.company?.id}
+                    keyId={record?.company?.id}
                     company={record?.company?.title}
                     image={record?.company?.image_light}
                 />,
@@ -56,7 +56,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
             render: (text , record) =>
                 <AvatarUserProfile
                     size={xl ? 50:xs ? 30 : 40}
-                    key={record?.created_by?.id}
+                    keyId={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
                     image={record?.created_by?.image}
@@ -109,7 +109,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
                     <Flex justify={"space-between"} align={'center'}>
                         <Avatar.Group >
                             <AvatarUserProfile
-                                key={record?.responsible_user?.id}
+                                keyId={record?.responsible_user?.id}
                                 full_name={record?.responsible_user?.full_name}
                                 moduls={record?.responsible_user?.roles[0].position}
                                 image={record?.responsible_user?.image}
@@ -123,6 +123,7 @@ const TaskNoFilterTable = ({ data, deleteHandle, getTagCompanyArray , pagination
                             {users.map((user) => (
                                 <AvatarUserProfile
                                     key={user?.id}
+                                    keyId={user?.id}
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}
                                     image={user?.image}

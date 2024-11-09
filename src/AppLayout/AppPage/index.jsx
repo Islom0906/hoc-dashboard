@@ -12,7 +12,7 @@ const AppPage = () => {
         <Content
             style={{
                 padding: 10,
-                overflowY: "scroll"
+                overflowY: "scroll",
             }}
         >
             <Routes>

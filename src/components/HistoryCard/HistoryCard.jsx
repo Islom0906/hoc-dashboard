@@ -22,7 +22,7 @@ const HistoryCard = ({ history, isVertical }) => {
             <Flex gap={5} vertical={true}>
                 <Flex vertical={isVertical} justify={"space-between"} align={"start"} gap={5}>
                     <AvatarUserProfile
-                        key={history?.user?.id}
+                        keyId={history?.user?.id}
                         full_name={history?.user?.full_name}
                         moduls={history?.user?.roles[0].position}
                         image={history?.user?.image}

@@ -50,7 +50,6 @@ const TaskPostEdit = () => {
     const [subTaskStaffs, setSubTaskStaffs] = useState([])
 
     const handleTabChange = (key) => {
-        console.log(selectAddSubTask)
         setSelectAddSubTask(key === '1')
     };
     const {editId} = useSelector(state => state.query)
@@ -197,7 +196,6 @@ const TaskPostEdit = () => {
             sub_tasks: value?.sub_tasks ? subTask : [],
             responsible_user: value?.responsible_user,
         }
-        console.log(data)
         if (editTaskData) {
             putTask({url: '/users/tasks', data: data, id: editId})
         } else {

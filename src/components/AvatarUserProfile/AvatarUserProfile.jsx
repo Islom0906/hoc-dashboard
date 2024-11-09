@@ -2,10 +2,11 @@ import {Avatar,  Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import {ProfileHoverActive} from "../index";
 
-const AvatarUserProfile = ({ full_name , moduls  , image , key ,size ,company}) => {
+const AvatarUserProfile = ({ full_name , moduls  , image , keyId ,size ,company}) => {
+
   return (
       <Tooltip
-          key={key}
+          key={keyId}
           title={
             <ProfileHoverActive  moduls={moduls} full_name={full_name} company={company} />
           }

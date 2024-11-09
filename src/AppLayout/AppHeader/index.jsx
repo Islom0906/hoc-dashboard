@@ -30,7 +30,6 @@ const AppHeader = () => {
     navigate('/login')
   }
 
-    console.log('process.env', process.env)
 
 
     return (
@@ -71,7 +70,6 @@ export default AppHeader;
 export  const  UserAccount = ({ user , logOut})=> {
     const screens = useBreakpoint();
     const chartHeight = screens.md;
-    console.log(chartHeight)
     const items = [
         // {
         //     key: '1',

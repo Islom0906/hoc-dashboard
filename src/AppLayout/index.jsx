@@ -40,7 +40,7 @@ const AppLayout = () => {
                                 <AppSidebar/>
                                 <Layout className={'ant--page'}>
                                     <AppPage/>
-                                    <AppFooter/>
+                                    {/*<AppFooter/>*/}
                                 </Layout>
                             </Layout>
                         </Layout>

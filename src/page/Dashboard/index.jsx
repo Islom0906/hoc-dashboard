@@ -1,4 +1,4 @@
-import {Card, Col, Row, Space, Typography} from "antd";
+import {Card, Col, Row, Skeleton, Space, Typography} from "antd";
 import React, {useEffect, useState} from "react";
 import 'leaflet/dist/leaflet.css'
 import './Dashboard.css'
@@ -44,7 +44,7 @@ const Dashboard = () => {
 
   // Company Get
   const {
-    data: GetCompanyAllForGeneralStatistics, refetch: refetchGetCompanyAllForGeneralStatistics
+    data: GetCompanyAllForGeneralStatistics, refetch: refetchGetCompanyAllForGeneralStatistics,isLoading:isLoadingGetCompanyAllForGeneralStatistics
   } = useGetQuery(false, 'company-all-data', `/users/companies-statistics?year=${valueYear}&month=${+valueMonth+1}`, false)
 
   // general derector
@@ -108,7 +108,6 @@ const Dashboard = () => {
   } , [modulsID, valueYear])
 
 
-  console.log('GetCompanyAllForGeneralStatistics' ,GetCompanyAllForGeneralStatistics)
   return (<div className={'site-space-compact-wrapper'}>
         <Space direction={'vertical'} size={"large"} style={{width: '100%'}}>
           <Row gutter={5} style={{paddingBottom: 5}}>
@@ -135,17 +134,29 @@ const Dashboard = () => {
                   Компания
                 </Title>
                 <Row gutter={[16 ,14]}>
-                  {GetCompanyAllForGeneralStatistics?.map(general => (
+
+                  {
+                    isLoadingGetCompanyAllForGeneralStatistics ?
+
+                        Array(4).fill('').map((_,ind)=>(
+                          <Col xs={24} sm={12} md={8} xxl={6} key={ind}>
+                            <Skeleton.Input active={true} size={'large'} block={true} style={{height:300}}/>
+                          </Col>
+                        ))
+                        :
+                    GetCompanyAllForGeneralStatistics?.map(general => (
                       <Col xs={24} sm={12} md={8} xxl={6} key={general?.id} >
                         <DashboardProfileCard key={general?.id} card={general} companyIDSlice={companyID}  companyID={general?.id}
                                               image={general?.image_dark}
                                               fullName={general?.title}
-                                              in_progress_tasks_count={general?.total_tasks_count - (general?.done_tasks_count - general?.failed_tasks_count)}
+                                              in_progress_tasks_count={general?.in_progress_tasks_count}
                                               done_tasks_count={general?.done_tasks_count}
                                               failed_tasks_count={general?.failed_tasks_count}
                                               total_tasks_count={general?.total_tasks_count}
                         />
-                      </Col>))}
+                      </Col>))
+
+                  }
                 </Row>
 
               </Col>

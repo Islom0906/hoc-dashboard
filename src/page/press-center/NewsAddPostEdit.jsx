@@ -197,7 +197,6 @@ const NewsAddPostEdit = ({setIsModalOpen, refetchGetNews, isAddModalOpen}) => {
                 }
             })
         }
-        console.log(fileListProps)
         if (file?.status === 'removed') {
             const deleteImageFileProps = {...fileListProps}
             if (index === null) {

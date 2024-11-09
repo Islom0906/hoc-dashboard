@@ -31,9 +31,12 @@ const contentPopoverDeadline = (deadline, systemMode) => {
             <Title level={5} style={{marginBottom:0}}>
                 {deadline?.title}
             </Title>
-                <AvatarUserProfile size={25} key={deadline?.created_by?.id} full_name={deadline?.created_by?.full_name}
-                                   moduls={deadline?.created_by?.roles[0]?.module?.name}
-                                   image={deadline?.created_by?.image}/>
+                <AvatarUserProfile
+                    size={25}
+                    keyId={deadline?.created_by?.id}
+                    full_name={deadline?.created_by?.full_name}
+                    moduls={deadline?.created_by?.roles[0]?.module?.name}
+                    image={deadline?.created_by?.image}/>
 
 
         </Flex>
@@ -51,7 +54,7 @@ const contentPopoverDeadline = (deadline, systemMode) => {
                     deadline?.included_users?.length>0  ?
                         <Avatar.Group size={"small"}>
                             {deadline?.included_users?.map((user) => (
-                                <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}
+                                <AvatarUserProfile key={user?.id} size={25} keyId={user?.id} full_name={user?.full_name}
                                                    moduls={user?.roles?.[0]?.name} image={user?.image}/>
 
                             ))}
@@ -95,7 +98,7 @@ const contentPopoverMeeting = (meeting, systemMode) => {
                 </Title>
                 <AvatarUserProfile
                     size={25}
-                    key={meeting?.created_by?.id}
+                    keyId={meeting?.created_by?.id}
                     full_name={meeting?.created_by?.full_name}
                     moduls={meeting?.created_by?.roles[0]?.module?.name}
                     image={meeting?.created_by?.image}/>
@@ -111,7 +114,7 @@ const contentPopoverMeeting = (meeting, systemMode) => {
             <Flex align={"center"} gap={2}  style={{marginRight:10}}>
                 {
                     meeting?.companies.map((item,ind)=> (
-                        <>
+                        <div   key={item?.id}>
                         <img style={{
                             width: 25,
                             height: 25,
@@ -125,7 +128,7 @@ const contentPopoverMeeting = (meeting, systemMode) => {
                                 ind!==meeting?.companies.length-1 && '|'
                             }
 
-                        </>
+                        </div>
                     ))
                 }
 
@@ -137,7 +140,7 @@ const contentPopoverMeeting = (meeting, systemMode) => {
                     meeting?.users?.length>0 ?
             <Avatar.Group size={"small"} >
                 {meeting?.users?.map((user) => (
-                    <AvatarUserProfile size={25} key={user?.id} full_name={user?.full_name}
+                    <AvatarUserProfile key={user?.id} size={25} keyId={user?.id} full_name={user?.full_name}
                                        moduls={user?.roles?.[0]?.name} image={user?.image}/>
 
                 ))}
@@ -243,7 +246,7 @@ export const dateCellRender = (
             <ul className="events" style={{color:colorTextCalendar}}>
 
                 {birthdaysOnDate?.map(birthday => (
-                    <DeadlinePopover bg={birthdayBg}>
+                    <DeadlinePopover key={birthday?.id} bg={birthdayBg}>
                         <Popover
                             trigger={'hover'}
                             key={birthday?.id}
@@ -262,7 +265,7 @@ export const dateCellRender = (
 
                 ))}
                 {meetingsOnDate?.map((meeting) => (
-                    <DeadlinePopover bg={meetingBg}>
+                    <DeadlinePopover key={meeting?.id} bg={meetingBg}>
 
                         <Popover
                             trigger={'hover'}
@@ -281,7 +284,7 @@ export const dateCellRender = (
                     </DeadlinePopover>
                 ))}
                 {deadlineOnDate?.map((deadline) => (
-                    <DeadlinePopover bg={deadlineBg}>
+                    <DeadlinePopover key={deadline?.id} bg={deadlineBg}>
                     <Popover
                             className={'deadline-popover'}
                             trigger={'hover'}

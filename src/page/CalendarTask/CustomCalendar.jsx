@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {memo, useState} from 'react';
 import { Calendar, ConfigProvider} from "antd";
 import dayjs from "dayjs";
 import 'dayjs/locale/ru';
@@ -15,6 +15,8 @@ dayjs.locale('ru');
 
 
 const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadline, colorMeeting , setFilterDate }) => {
+    console.log('render calendar')
+
     const [value, setValue] = useState(() => dayjs());
     const [filterForColor, setFilterForColor] = useState('all');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -77,5 +79,5 @@ const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadlin
     );
 };
 
-export default CustomCalendar;
+export default memo(CustomCalendar);
 

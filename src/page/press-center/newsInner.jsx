@@ -75,7 +75,7 @@ const NewsInner = () => {
                                     <Avatar.Group size={"large"}>
                                         {getByIdNews?.views?.map(user => (
                                             <AvatarUserProfile
-                                                key={user?.id}
+                                                keyId={user?.id}
                                                 full_name={user?.full_name}
                                                 roles={user?.position}
                                                 image={user?.image}

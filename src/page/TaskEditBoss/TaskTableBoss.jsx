@@ -54,14 +54,14 @@ const TaskTableBoss = ({data}) => {
               <Avatar.Group size={"small"}>
                 {
                   users.map(user => (
-                      <AvatarUserProfile key={user?.id} full_name={user?.full_name} image={user?.image}   />
+                      <AvatarUserProfile keyId={user?.id} full_name={user?.full_name} image={user?.image}   />
                   ))
                 }
               </Avatar.Group>
               <Avatar.Group size={"small"}>
                 {
                   record?.moduls.map(company => (
-                      <AvatarUserProfile key={company?.id} full_name={company?.name} image={company?.image} />
+                      <AvatarUserProfile keyId={company?.id} full_name={company?.name} image={company?.image} />
 
                   ))
                 }

@@ -23,7 +23,7 @@ const TaskCardForBoss = ({   title , deadline_status  ,created_at ,deadline , do
           title={title}
           extra={
             <div style={{padding:'8px 0'}}>
-              <AvatarUserProfile size={'large'} key={tag?.id} company={tag?.name} image={tag?.image_light}/>
+              <AvatarUserProfile size={'large'} keyId={tag?.id} company={tag?.name} image={tag?.image_light}/>
             </div>
           }
       >
@@ -63,7 +63,7 @@ const TaskCardForBoss = ({   title , deadline_status  ,created_at ,deadline , do
           <Flex align={"center"} justify={"space-between"} gap={5}>
             <Text style={{fontSize:'12px'}}>Ответственный:</Text>
 
-            <AvatarUserProfile size={40} key={responsible_user?.id} full_name={responsible_user?.full_name} moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image}  />
+            <AvatarUserProfile size={40} keyId={responsible_user?.id} full_name={responsible_user?.full_name} moduls={responsible_user?.modules?.[0]?.name} image={responsible_user?.image}  />
           </Flex>
 
           <Flex align={"center"} wrap={true} gap={5} justify={"space-between"}>
@@ -73,7 +73,7 @@ const TaskCardForBoss = ({   title , deadline_status  ,created_at ,deadline , do
 
             <Avatar.Group size={"small"}>
               {included_users?.map((user) => (
-                  <AvatarUserProfile size={30} key={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image} />
+                  <AvatarUserProfile size={30} keyId={user?.id} full_name={user?.full_name} moduls={user?.roles?.[0]?.name} image={user?.image} />
 
               ))}
             </Avatar.Group>

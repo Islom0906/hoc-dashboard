@@ -5,6 +5,7 @@ const EyeButton = ({children}) => {
     return <ConfigProvider
         theme={{
             token: {
+
                 colorPrimary: "#0dcaf0",  // Primary color
                 colorPrimaryHover: "#0bb7dd",  // Hover color
             },

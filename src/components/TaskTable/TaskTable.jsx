@@ -5,11 +5,12 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
-import {AvatarUserProfile, EyeButton ,HistoryCard} from "../../components";
+import {AvatarUserProfile, EyeButton, HistoryCard} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
 import {FaRegEye} from "react-icons/fa";
 import './index.scss'
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
+
 const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPagination, handleTableChange }) => {
     const navigate = useNavigate();
     const {data:{user}}=useSelector(state => state.auth)
@@ -55,7 +56,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             render: (text , record) =>
                 <AvatarUserProfile
                     size={xl ? 50:xs ? 30 : 40}
-                    key={record?.company?.id}
+                    keyId={record?.company?.id}
                     company={record?.company?.title}
                     image={record?.company?.image_light}
                 />,
@@ -68,7 +69,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             render: (text , record) =>
                 <AvatarUserProfile
                     size={xl ? 50:xs ? 30 : 40}
-                    key={record?.created_by?.id}
+                    keyId={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
                     image={record?.created_by?.image}
@@ -137,7 +138,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             render: (_, record) => <Flex justify={"space-between"} align={'center'}>
                 {
                     record?.histories.map(item => (
-                        <HistoryCard history={item} />
+                        <HistoryCard key={item?.user?.id} history={item} />
 
                     ))
                 }
@@ -155,7 +156,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                         <Avatar.Group >
                             <AvatarUserProfile
                                 size={xl ? 40:xs ? 25 : 30}
-                                key={record?.responsible_user?.id}
+                                keyId={record?.responsible_user?.id}
                                 full_name={record?.responsible_user?.full_name}
                                 moduls={record?.responsible_user?.roles[0].position}
                                 image={record?.responsible_user?.image}
@@ -165,9 +166,11 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                             count: 4,
                             style: { color: "#f56a00", backgroundColor: "#fde3cf" },
                         }} >
-                            {users.map((user) => (
+                            {users?.map((user) => (
+
                                 <AvatarUserProfile
                                     key={user?.id}
+                                    keyId={user?.id}
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}
                                     image={user?.image}
@@ -187,7 +190,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             width: xs ? 130:110,
             render: (_, record) => (
 
-                <Flex gap={5} justify={'end'}>
+                <Flex gap={5} justify={'center'}>
                     {
                         user?.roles[0]?.role?.name !== 'director' ?
                             record?.done_sub_tasks_count ===0 &&

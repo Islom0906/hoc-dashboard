@@ -71,7 +71,7 @@ const TaskCard = ({
                   <Text>
                       {title}
                   </Text>
-                  <AvatarUserProfile size={35} key={tag?.id} company={tag?.title} image={tag?.image_light}/>
+                  <AvatarUserProfile size={35} keyId={tag?.id} company={tag?.title} image={tag?.image_light}/>
               </Flex>
               <Space style={{width: "100%"}} size={5} direction={"vertical"}>
                   <Progress
@@ -107,7 +107,7 @@ const TaskCard = ({
                   {
                       responsible_user?.id && <Flex align={"center"} justify={"space-between"} gap={5}>
                           <Text style={{fontSize: '12px'}}>Ответственный:</Text>
-                          <AvatarUserProfile size={30} key={responsible_user?.id} full_name={responsible_user?.full_name}
+                          <AvatarUserProfile size={30} keyId={responsible_user?.id} full_name={responsible_user?.full_name}
                                              moduls={responsible_user?.roles[0]?.position} image={responsible_user?.image}/>
                       </Flex>
                   }
@@ -119,7 +119,7 @@ const TaskCard = ({
                       {/*</Text>*/}
                       <Avatar.Group size={"small"}>
                           {included_users?.map((user) => (
-                              <AvatarUserProfile size={30} key={user?.id} full_name={user?.full_name}
+                              <AvatarUserProfile size={30} keyId={user?.id} full_name={user?.full_name}
                                                  moduls={user?.roles[0]?.position} image={user?.image}/>
 
                           ))}
@@ -128,7 +128,7 @@ const TaskCard = ({
                   <Divider/>
                   <Flex align={"center"} justify={"space-between"} gap={5}>
                       <Text style={{fontSize: '12px'}}>{created_by?.full_name}</Text>
-                      <AvatarUserProfile size={30} key={created_by?.id} full_name={created_by?.full_name}
+                      <AvatarUserProfile size={30} keyId={created_by?.id} full_name={created_by?.full_name}
                                          moduls={created_by?.roles[0]?.position} image={created_by?.image}/>
                   </Flex>
               </Space>

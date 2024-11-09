@@ -19,7 +19,7 @@ const CommentUser = ({comment}) => {
             <Text style={{flexShrink: 0, fontSize: '11px'}}
                   type="secondary">{dayjs(comment.created_at).format("DD.MM.YYYY hh:mm")}</Text>
             <div style={{width:40 , height:40}}>
-          <AvatarUserProfile key={comment?.created_by?.id} full_name={comment?.created_by?.full_name} moduls={comment?.created_by?.roles[0].position} image={comment?.created_by?.image} />
+          <AvatarUserProfile keyId={comment?.created_by?.id} full_name={comment?.created_by?.full_name} moduls={comment?.created_by?.roles[0].position} image={comment?.created_by?.image} />
             </div>
 
           </div>

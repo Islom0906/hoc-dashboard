@@ -28,13 +28,13 @@ import {AvatarUserProfile} from "../index";
           <Flex align={'center'} justify={'space-between'}>
             <Text type={'secondary'}> Компания:</Text>
             <Flex align={"center"} gap={10}>
-              <AvatarUserProfile key={tag?.id} company={tag?.title} image={tag?.image_light}  />
+              <AvatarUserProfile keyId={tag?.id} company={tag?.title} image={tag?.image_light}  />
             </Flex>
           </Flex>
             <Flex align={'center'} justify={'space-between'}>
                 <Text type={'secondary'}> Таскер:</Text>
                 <Flex align={"center"} gap={10}>
-                    <AvatarUserProfile key={created_by?.id} full_name={created_by?.full_name} image={created_by?.image} moduls={created_by?.roles[0].position} />
+                    <AvatarUserProfile keyId={created_by?.id} full_name={created_by?.full_name} image={created_by?.image} moduls={created_by?.roles[0].position} />
                 </Flex>
             </Flex>
             {
@@ -42,7 +42,7 @@ import {AvatarUserProfile} from "../index";
                 <Flex align={'center'} justify={'space-between'}>
                     <Text type={'secondary'}> Ответственный:</Text>
                     <Flex align={"center"} gap={10}>
-                        <AvatarUserProfile key={main_task_responsible_user?.id} full_name={main_task_responsible_user?.full_name} image={main_task_responsible_user?.image}  />
+                        <AvatarUserProfile keyId={main_task_responsible_user?.id} full_name={main_task_responsible_user?.full_name} image={main_task_responsible_user?.image}  />
                     </Flex>
                 </Flex>
             }

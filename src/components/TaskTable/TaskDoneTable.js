@@ -1,7 +1,7 @@
-import {Avatar, Badge, Button, Flex,  Table, Tag, } from "antd";
+import {Avatar, Badge, Button, Flex, Table, Tag,} from "antd";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
-import {AvatarUserProfile, EyeButton ,HistoryCard} from "../../components";
+import {AvatarUserProfile, EyeButton, HistoryCard} from "../../components";
 import {FaFileDownload, FaRegEye} from "react-icons/fa";
 import './index.scss'
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
@@ -23,7 +23,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             render: (text , record) =>
                 <AvatarUserProfile
                     size={xl ? 50:xs ? 30 : 40}
-                    key={record?.company?.id}
+                    keyId={record?.company?.id}
                     company={record?.company?.title}
                     image={record?.company?.image_light}
                 />,
@@ -36,7 +36,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             render: (text , record) =>
                 <AvatarUserProfile
                     size={xl ? 50:xs ? 30 : 40}
-                    key={record?.created_by?.id}
+                    keyId={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
                     image={record?.created_by?.image}
@@ -63,8 +63,8 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             width: md ? 250:200,
             render: (_, record) => <Flex justify={"space-between"} align={'center'}>
                 {
-                    record?.histories.map(item => (
-                        <HistoryCard history={item} />
+                    record?.histories?.map(item => (
+                        <HistoryCard key={item?.user?.id} history={item}/>
 
                     ))
                 }
@@ -82,7 +82,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
                         <Avatar.Group >
                             <AvatarUserProfile
                                 size={xl ? 40:xs ? 25 : 30}
-                                key={record?.responsible_user?.id}
+                                keyId={record?.responsible_user?.id}
                                 full_name={record?.responsible_user?.full_name}
                                 moduls={record?.responsible_user?.roles[0].position}
                                 image={record?.responsible_user?.image}
@@ -94,8 +94,9 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
                         }} >
                             {users.map((user) => (
                                 <AvatarUserProfile
-                                    size={xl ? 40:xs ? 25 : 30}
                                     key={user?.id}
+                                    size={xl ? 40:xs ? 25 : 30}
+                                    keyId={user?.id}
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}
                                     image={user?.image}

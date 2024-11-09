@@ -14,7 +14,7 @@ import {
 import { Chart ,Bar} from 'react-chartjs-2';
 import {Card, Col, Row, Select, theme, Typography} from "antd";
 import dayjs from "dayjs";
-import {useEffect, useState} from "react";
+import {memo, useEffect, useState} from "react";
 import {chartColor} from "../config.dashboard";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
@@ -173,7 +173,6 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
     const newValue = value.month(newMonth);
     // onChange(newValue);
   };
-  console.log(chartHeight)
   return (
       <Card size={"small"}>
         <Row gutter={10} justify={"space-between"}>
@@ -219,4 +218,4 @@ const ForBossTaskChart = ({modules , dataChart ,setSelectYear}) => {
   );
 };
 
-export default ForBossTaskChart;
+export default memo(ForBossTaskChart);

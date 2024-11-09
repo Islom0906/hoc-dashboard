@@ -4,7 +4,6 @@ import {AvatarUserProfile} from "../index";
 
 const {Text} = Typography
 const FileCard = ({files, comment, date, user}) => {
-console.log('files', files)
     return (
         <Card  size={"small"}>
             <Space size={5} direction={"vertical"} style={{width: '100%'}}>
@@ -35,7 +34,7 @@ console.log('files', files)
                     {
                         user &&
                         <div style={{width: 30, height: 30}}>
-                            <AvatarUserProfile key={user?.created_user?.id} full_name={user?.created_user?.full_name}
+                            <AvatarUserProfile keyId={user?.created_user?.id} full_name={user?.created_user?.full_name}
                                                moduls={user?.created_user?.roles[0]?.position}
                                                image={user?.created_user?.images.image}/>
                         </div>

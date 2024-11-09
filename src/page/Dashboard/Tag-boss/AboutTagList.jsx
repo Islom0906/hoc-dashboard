@@ -1,5 +1,5 @@
 import {Avatar, Col, Progress, Row, Select, Typography, Flex, Card} from "antd";
-import React, { useEffect } from "react";
+import React, {memo, useEffect} from "react";
 import AvatarUserProfile from "../../../components/AvatarUserProfile/AvatarUserProfile";
 import { UserOutlined } from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,9 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
     const {modulsID} = useSelector(state => state.modulsSlice)
     const screens = useBreakpoint();
     const progressSize = screens.sm ? 40 : 30;
+
+
+
     useEffect(() => {
         if (data) {
             dispatch(selectModuls(data[0]?.id));
@@ -90,7 +93,7 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
                                 {record?.staffs?.length > 0 ? (
                                     record?.staffs?.map((staff) => (
                                         <AvatarUserProfile
-                                            key={staff?.id}
+                                            keyId={staff?.id}
                                             size={progressSize}
                                             full_name={staff?.full_name}
                                             image={staff?.image}
@@ -108,4 +111,4 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
     );
 };
 
-export default AboutTagList;
+export default memo(AboutTagList);

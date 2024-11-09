@@ -11,6 +11,7 @@ import InboxCategoryPostEdit from "./category/inboxCategoryPostEdit";
 import {CiHashtag} from "react-icons/ci";
 import useDebounce from "../../hooks/useDebounce";
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
+
 const {Title, Text} = Typography
 
 
@@ -45,7 +46,7 @@ const Inbox = () => {
         deleteInbox({url, id});
     };
     const Delete = async (id) => {
-        deleteCategory({url: '/users/inbox-category', id})
+        deleteCategory({url: '/users/inbox-category', id:`${id}/`})
     };
     const Edit = (id) => {
         localStorage.setItem('editDataId', id)
@@ -148,47 +149,8 @@ const Inbox = () => {
                                       </Flex>
                                   </Card>
                                   {categoryData?.map(category => (
-                                      <Popover key={category?.id}
-                                               content={<Flex gap={20}>
-                                                   <Button
-                                                       onClick={() => Edit(category?.id)}
-                                                       type='dashed'
-                                                       out
-                                                       icon={<EditOutlined/>}/>
-                                                   <Popconfirm
-                                                       title={'Вы уверены, что хотите удалить это?'}
-                                                       description={'Удалить'}
-                                                       onConfirm={() => Delete(category?.id)}>
-                                                       <Button type='primary' danger
-                                                               icon={<DeleteOutlined/>}/>
-                                                   </Popconfirm>
-                                               </Flex>
-                                               }>
-
-                                          <Card
-                                              bordered={true}
-
-                                              size={"small"}
-                                              style={{
-                                                  cursor: 'pointer',
-                                                  background: checkCategory === category?.id ? "#F2FFEA" : "",
-                                              }}
-                                              onClick={() => setCheckCategory(category?.id)}>
-                                              <Flex align={"center"} gap={4}>
-                                                  <CiHashtag style={{
-                                                      fontSize: '18px',
-                                                      color: checkCategory === category?.id ? "#69B13D" : "#818181",
-                                                  }}
-                                                  />
-                                                  <Text style={{
-                                                      fontSize: 12,
-                                                      color: checkCategory === category?.id ? "#69B13D" : "#959595",
-                                                  }}>
-                                                      {category?.name}
-                                                  </Text>
-                                              </Flex>
-                                          </Card>
-                                      </Popover>
+                                      <TagCard key={category?.id} Edit={Edit} Delete={Delete} category={category}
+                                               setCheckCategory={setCheckCategory} checkCategory={checkCategory}/>
                                   ))}
 
                               </Flex>
@@ -227,4 +189,50 @@ const Inbox = () => {
 };
 
 export default Inbox;
+
+const TagCard = ({category, Edit, Delete, checkCategory, setCheckCategory}) => {
+    return (
+        <Popover
+            content={<Flex gap={20}>
+                <Button
+                    onClick={() => Edit(category?.id)}
+                    type='dashed'
+                    out
+                    icon={<EditOutlined/>}/>
+                <Popconfirm
+                    title={'Вы уверены, что хотите удалить это?'}
+                    description={'Удалить'}
+                    onConfirm={() => Delete(category?.id)}>
+                    <Button type='primary' danger
+                            icon={<DeleteOutlined/>}/>
+                </Popconfirm>
+            </Flex>
+            }>
+
+            <Card
+                bordered={true}
+
+                size={"small"}
+                style={{
+                    cursor: 'pointer',
+                    background: checkCategory === category?.id ? "#F2FFEA" : "",
+                }}
+                onClick={() => setCheckCategory(category?.id)}>
+                <Flex align={"center"} gap={4}>
+                    <CiHashtag style={{
+                        fontSize: '18px',
+                        color: checkCategory === category?.id ? "#69B13D" : "#818181",
+                    }}
+                    />
+                    <Text style={{
+                        fontSize: 12,
+                        color: checkCategory === category?.id ? "#69B13D" : "#959595",
+                    }}>
+                        {category?.name}
+                    </Text>
+                </Flex>
+            </Card>
+        </Popover>
+    )
+}
 

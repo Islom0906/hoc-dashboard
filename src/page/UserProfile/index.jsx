@@ -28,7 +28,6 @@ const UserProfile = () => {
         pageSize: 10,
         total: 0,
     });
-    console.log('location' , location)
     const roleName = user?.roles[0]?.role?.name
     const { data: getUserInfo, isLoading: loadingGetUserInfo, refetch:refetchGetUserInfo } = useGetQuery(
         false,
@@ -83,7 +82,6 @@ const UserProfile = () => {
         }
     } ,[taskStatusTab , userID])
 
-    console.log('roleName' , roleName )
 
     //
     // useEffect(() => {

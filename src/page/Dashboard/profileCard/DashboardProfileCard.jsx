@@ -5,6 +5,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { selectCompany, selectCompanyName } from "../../../store/slice/companySlice";
 import { useDispatch } from "react-redux";
 import './profile-card.scss';
+import {memo} from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -12,7 +13,6 @@ const { Title, Text } = Typography;
 
 const DashboardProfileCard = ({ companyIDSlice, companyID, title, image, fullName, position, total_tasks_count, done_tasks_count, in_progress_tasks_count, failed_tasks_count, responsible_tasks_count }) => {
     const dispatch = useDispatch();
-
     const handlerCompanyId = () => {
         if (companyID && fullName) {
             dispatch(selectCompany(companyID));
@@ -20,7 +20,6 @@ const DashboardProfileCard = ({ companyIDSlice, companyID, title, image, fullNam
         }
     };
 
-    console.log(in_progress_tasks_count)
 
     const {
         token: {
@@ -70,6 +69,7 @@ const DashboardProfileCard = ({ companyIDSlice, companyID, title, image, fullNam
             label: <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>Статистика</span>,
             children: (
                 <div className="statistics">
+                    {/*{total_tasks_count}*/}
                     <div className={'statistics'}>
                         <Flex align={"center"} justify={"space-between"} gap={5}
                               className={'statistics-item'}
@@ -85,7 +85,7 @@ const DashboardProfileCard = ({ companyIDSlice, companyID, title, image, fullNam
                             </Flex>
                             <Tag color={allTaskHover}
                                  style={{fontSize: '14px', color: allTask, fontWeight: 600, padding: '2px 10px'}}>
-                                {done_tasks_count + in_progress_tasks_count + failed_tasks_count || 0}
+                                {total_tasks_count || 0}
                             </Tag>
                         </Flex>
                         <Flex gap={5} align={"center"} justify={"space-between"}
@@ -190,6 +190,7 @@ const DashboardProfileCard = ({ companyIDSlice, companyID, title, image, fullNam
     ];
 
     return (
+        <>
         <Card
             className="profile-card"
             onClick={handlerCompanyId}
@@ -212,7 +213,8 @@ const DashboardProfileCard = ({ companyIDSlice, companyID, title, image, fullNam
             <Text type="secondary">{position}</Text>
             <Tabs defaultActiveKey="1" items={items}/>
         </Card>
+        </>
     );
 };
 
-export default DashboardProfileCard;
+export default memo(DashboardProfileCard);

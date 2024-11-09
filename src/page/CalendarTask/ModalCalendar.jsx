@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {memo, useEffect, useMemo, useState} from 'react';
 import {Button, Col, Form, Modal, Row, Select, Spin, TimePicker, Typography} from "antd";
 import {FormInput, FormTextArea} from "../../components";
 import {useQueryClient} from "react-query";
@@ -15,7 +15,6 @@ const initialValueForm = {
     text: "",
     meeting_date: "",
     companies: null,
-    tag: '',
     users: []
 }
 const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting}) => {
@@ -265,7 +264,7 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
             >
                 <Form
                     form={form}
-                    name="basic"
+                    name="modal"
                     labelCol={{
                         span: 24
                     }}
@@ -401,4 +400,4 @@ const ModalCalendar = ({isModalOpen, setIsModalOpen, title, date, refetchMeeting
     );
 };
 
-export default ModalCalendar;
+export default memo(ModalCalendar);
