@@ -153,21 +153,22 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                 const users = [...(record.included_users || [])];
                 return (
                     <Flex justify={"space-between"} align={'center'}>
-                        <Avatar.Group >
+                        {
+                            record?.responsible_user &&
                             <AvatarUserProfile
-                                size={xl ? 40:xs ? 25 : 30}
-                                keyId={record?.responsible_user?.id}
-                                full_name={record?.responsible_user?.full_name}
-                                moduls={record?.responsible_user?.roles[0].position}
-                                image={record?.responsible_user?.image}
+                            size={xl ? 40:xs ? 25 : 30}
+                            keyId={record?.responsible_user?.id}
+                            full_name={record?.responsible_user?.full_name}
+                            moduls={record?.responsible_user?.roles[0].position}
+                            image={record?.responsible_user?.image}
                             />
-                        </Avatar.Group>
+                        }
+
                         <Avatar.Group  max={{
                             count: 4,
                             style: { color: "#f56a00", backgroundColor: "#fde3cf" },
                         }} >
                             {users?.map((user) => (
-
                                 <AvatarUserProfile
                                     key={user?.id}
                                     keyId={user?.id}
