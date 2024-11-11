@@ -61,7 +61,7 @@ export const samplePagesConfigs = [
         path: '/map-add',
         element:  AddLocationMap,
         noIndex: true,
-        permittedRole: [authRole.admin,authRole.general_director],
+        permittedRole: [authRole.admin],
         isBackground: true
     },
     // {
@@ -102,7 +102,7 @@ export const samplePagesConfigs = [
         path: '/task-list',
         label: 'Задачи',
         element: TaskList,
-        permittedRole: [authRole.user ,authRole.boss,authRole.general_director],
+        permittedRole: [authRole.user ,authRole.boss],
         isBackground: true
     },
 
@@ -194,7 +194,7 @@ export const samplePagesConfigs = [
         icon: <PiShuffleBold className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/taskEditBoss',
         element: BossTracking,
-        permittedRole: [authRole.boss ,authRole.general_director],
+        permittedRole: [authRole.boss ],
         isBackground: true
     },
     {
@@ -210,7 +210,7 @@ export const samplePagesConfigs = [
         icon:  <RiContractFill className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/Responsible',
         element: ResponsibleUser,
-        permittedRole: [authRole.boss, authRole.user,authRole.general_director],
+        permittedRole: [authRole.boss, authRole.user],
         isBackground: true
     },
     // {
@@ -233,13 +233,13 @@ export const samplePagesConfigs = [
         icon: <BsBuildingAdd className={'icon'} style={{fontSize: 22, height: '100%'}}/>,
         path: '/company',
         element: Company,
-        permittedRole: [authRole.admin,authRole.general_director],
+        permittedRole: [authRole.admin],
         isBackground: true
     },
     {
         path: '/company/add',
         element: CompanyPostEdit,
-        permittedRole: [authRole.admin,authRole.general_director],
+        permittedRole: [authRole.admin],
         isBackground: true,
         noIndex: true
     },
@@ -255,7 +255,7 @@ export const samplePagesConfigs = [
     {
         path: '/create-worker/add',
         element: CreateWorkerPostEdit,
-        permittedRole: [authRole.admin,authRole.general_director],
+        permittedRole: [authRole.admin],
         isBackground: true,
         noIndex: true
     },
@@ -265,13 +265,13 @@ export const samplePagesConfigs = [
         icon: <VscFileSubmodule className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         path: '/module',
         element: Module,
-        permittedRole: [authRole.admin,authRole.general_director],
+        permittedRole: [authRole.admin],
         isBackground: true
     },
     {
         path: '/module/add',
         element: ModulePostEdit,
-        permittedRole: [authRole.admin,authRole.general_director],
+        permittedRole: [authRole.admin],
         isBackground: true,
         noIndex: true
     },
