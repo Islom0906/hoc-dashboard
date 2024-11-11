@@ -21,7 +21,6 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
             setSelectModul(data[0].name)
             dispatch(selectModulsName(data[0].name));
         }
-        // console.log('data', data)
     }, [data]);
 
     const { Title } = Typography;
@@ -93,6 +92,7 @@ const AboutTagList = ({ data, valueYear, setValueYear, setValueMonth, valueMonth
                                 {record?.staffs?.length > 0 ? (
                                     record?.staffs?.map((staff) => (
                                         <AvatarUserProfile
+                                            key={staff?.id}
                                             keyId={staff?.id}
                                             size={progressSize}
                                             full_name={staff?.full_name}

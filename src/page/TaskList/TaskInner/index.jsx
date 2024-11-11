@@ -1,18 +1,9 @@
-import {
-  Avatar,
-  Col,
-  Row,
-  Space,
-  Modal,
-  Spin,
-  Card,
-  Tag,
-} from "antd";
-import { useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { AvatarUserProfile, TaskInnerCard ,HistoryCard } from "../../../components";
-import { useSelector } from "react-redux";
-import { useGetByIdQuery } from "../../../service/query/Queries";
+import {Avatar, Card, Col, Modal, Row, Space, Spin,} from "antd";
+import {useParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {AvatarUserProfile, HistoryCard, TaskInnerCard} from "../../../components";
+import {useSelector} from "react-redux";
+import {useGetByIdQuery} from "../../../service/query/Queries";
 import WriteComment from "./writeComment";
 import SubTaskInner from "./subTaskInner";
 import CommentUser from "./commentUser";
@@ -111,6 +102,7 @@ const TaskInner = () => {
                 <Avatar.Group>
                   {taskInner?.included_users?.map((user) => (
                       <AvatarUserProfile
+                          key={user?.id}
                           keyId={user?.id}
                           full_name={user?.full_name}
                           roles={user?.roles[0].position}
@@ -138,8 +130,9 @@ const TaskInner = () => {
                   <Card title="История процесса" size="small" bordered={true}>
                     <Space direction={"vertical"} size={5} style={{ maxHeight: "300px", overflowY: "scroll",width:'100%' }}>
                       {taskInner?.histories?.map((history) => (
-                          <HistoryCard history={history} isVertical={false} key={history.id} />
-                      ))}
+                              <HistoryCard history={history} isVertical={false} key={history?.user?.id}/>
+                          )
+                      )}
                     </Space>
                   </Card>
               }

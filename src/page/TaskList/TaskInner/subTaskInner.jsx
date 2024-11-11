@@ -44,10 +44,10 @@ const SubTaskInner = ({ refetchTaskInner,subTask, showModal, whichWriteID, respo
             {subTask?.map((task) => (
                 <Card className={"card--sub-task"} key={task?.id} size={"small"} bordered={true}>
                   <Flex className={"card--sub-task__card"} vertical={true} >
-                    <Flex justify={"space-between"} gap={10}>
-                      <Space size={[6 , 12]} >
+                    <Flex  className={'task--card-info'}>
+                      <Space size={[6 , 12]} className={'task--card__text'}>
                         <Flex align={"start"} gap={5} vertical={true}>
-                          <Title className={'page--title'} level={4}>{task?.title}</Title>
+                          <Title className={'sub--task--title'} level={4}>{task?.title}</Title>
                           <Text type={'secondary'}>{task?.text}</Text>
                           {task?.file && (
                               <Tag className={'file'} color={'blue'} icon={<FaFileDownload  style={{ fontSize:14 ,flexShrink:0}} />} style={{display:"flex" , alignItems:'center' , gap:5 ,width:'100%'}}>
@@ -58,8 +58,8 @@ const SubTaskInner = ({ refetchTaskInner,subTask, showModal, whichWriteID, respo
                           )}
                         </Flex>
                       </Space>
-                      <Space size={[5 ,10]}>
-                        <Flex align={"start"}  gap={2}>
+                      <Space size={[5 ,10]} className={'task--card__status'}>
+                        <Flex align={"center"} justify={"space-between"}  gap={2}>
                         {(roles === 'admin' || roles === 'general_director')  && (
                             <AvatarUserProfile
                                 keyId={task?.task_manager?.id}
@@ -95,23 +95,39 @@ const SubTaskInner = ({ refetchTaskInner,subTask, showModal, whichWriteID, respo
                       </Space>
                     </Flex>
 
-                    <Tabs defaultActiveKey="1">
-                          <TabPane tab="История процесса" key="2" style={{height:50}}>
-                            <Space size={'small'} direction={"vertical"} style={{ width: '100%', height: 250, overflowY: "scroll" }}>
+                    <Tabs defaultActiveKey="1" items={[
+                      {
+                        key: '2',
+                        label: 'История процесса',
+                        children: (
+                            <Space
+                                size="small"
+                                direction="vertical"
+                                style={{ width: '100%', height: 250, overflowY: 'scroll' }}
+                            >
                               {task?.histories.map((history) => (
                                   <HistoryCard history={history} key={history.id} />
                               ))}
                             </Space>
-                          </TabPane>
-
-                          <TabPane tab="Комментарии" key="1">
-                            <Space size={'small'} direction={"vertical"} style={{ width: '100%', height: 250, overflowY: "scroll" }}>
+                        ),
+                      },
+                      {
+                        key: '1',
+                        label: 'Комментарии',
+                        children: (
+                            <Space
+                                size="small"
+                                direction="vertical"
+                                style={{ width: '100%', height: 250, overflowY: 'scroll' }}
+                            >
                               {task?.messages.map((message) => (
                                   <CommentUser key={message?.id} comment={message} />
                               ))}
                             </Space>
-                          </TabPane>
-                    </Tabs>
+                        ),
+                      },
+                    ]} />
+
                   </Flex>
                 </Card>
             ))}

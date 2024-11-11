@@ -242,7 +242,7 @@ export const dateCellRender = (
 
     return (
         <div className={`custom-td`}>
-            <div className={`date-number `}><span className={`${today ? 'today' : ""}`}>{value.date()}</span></div>
+            <div className={`date-number `}><p className={`${today ? 'today' : ""}`}><span>{value.date()}</span></p></div>
             <ul className="events" style={{color:colorTextCalendar}}>
 
                 {birthdaysOnDate?.map(birthday => (

@@ -144,7 +144,6 @@ const NewsAddPostEdit = ({setIsModalOpen, refetchGetNews, isAddModalOpen}) => {
     //     };
     //     window.addEventListener('beforeunload', handleBeforeUnload);
     //     return () => {
-    //         console.log('render')
     //         localStorage.removeItem('editDataId')
     //         localStorage.removeItem('myFormValues')
     //         window.removeEventListener('beforeunload', handleBeforeUnload);

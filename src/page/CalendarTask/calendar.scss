@@ -91,16 +91,23 @@ $activeDayBackground:#000;
     .date-number {
       font-size: 14px;
       padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      .today {
+        width: 25px !important;
+        height: 25px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        background-color: var(--activeDayBackground);
+        color: #fff;
 
+      }
     }
 
-    .today {
-      padding: 4px 8px;
 
-      border-radius: 100%;
-      background-color: var(--activeDayBackground);
-      color: #fff;
-    }
 
     .events {
       display: flex;
@@ -280,16 +287,12 @@ $activeDayBackground:#000;
         font-size: 10px;
         padding: 3px;
 
+        .today {
+          width: 15px !important;
+          height: 15px !important;
+        }
       }
 
-      .today {
-        padding: 3px 6px;
-
-
-        border-radius: 100%;
-        background-color: var(--activeDayBackground);
-        color: #fff;
-      }
 
       .events {
         gap: 2px;

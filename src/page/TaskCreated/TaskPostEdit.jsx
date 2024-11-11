@@ -267,7 +267,6 @@ const TaskPostEdit = () => {
     }, [getUserByModules]);
 
 
-    console.log(getUserByModules)
     const onChangeModules = (id, index) => {
         setSelectModulesID(id)
         setSubTaskStaffs([])
@@ -373,72 +372,77 @@ const TaskPostEdit = () => {
 
                     <Col span={24}>
                         {
-                            !isBoss ?
-
-                        <Tabs activeKey={selectAddSubTask ? '1' : '2'} onChange={handleTabChange} defaultActiveKey="1">
-                            <TabPane
-                                tab={
-                                    <span style={{display: 'flex', alignItems: 'center', gap: 5}}>
-                                      Добавить подзадачу
-                                    </span>
-                                }
-                                key="1"
-                            >
-                                {
-                                    selectAddSubTask
-                                    &&
-                                    <Card bordered={true} size={"small"}
-                                          style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
-                                        <Flex align={'center'} vertical={true} justify={'center'}
-                                              style={{height: '100%'}}>
-                                            <CreatSubTask
-                                                form={form}
-                                                onChangeModules={onChangeModules}
-                                                optionsModules={optionsModules}
-                                                optionsUserByModules={
-                                                    editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules
-                                                }
-                                                fileListProps={fileListProps}
-                                                setFileListProps={setFileListProps}
-                                            />
-                                        </Flex>
-                                    </Card>
-                                }
-                            </TabPane>
-                            <TabPane
-                                tab={
-                                    <span style={{display: 'flex', alignItems: 'center', gap: 5}}>
-                                        Добавить сотрудника
-                                      </span>
-                                }
-                                key="2"
-                            >
-                                {!selectAddSubTask && (
-                                    <Card bordered={true}
-                                          size={"small"}
-                                          style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
-                                        <Flex align={'center'} vertical={true} justify={'center'}
-                                              style={{height: '100%'}}>
-                                            <AddStaffTask
-                                                optionsModules={optionsModules}
-                                                optionsUserByModules={optionsUserByModules}
-                                                onChangeModules={onChangeModules}
-                                                isBoss={isBoss}
-                                            />
-                                        </Flex>
-                                    </Card>
-                                )}
-
-
-                            </TabPane>
-
-
-                        </Tabs>
-                                :
-                                <Card bordered={true} size={"small"}
-                                      style={{border: 1, borderStyle: 'dashed', borderColor: 'white'}}>
-                                    <Flex align={'center'} vertical={true} justify={'center'}
-                                          style={{height: '100%'}}>
+                            !isBoss ? (
+                                <Tabs
+                                    activeKey={selectAddSubTask ? '1' : '2'}
+                                    onChange={handleTabChange}
+                                    defaultActiveKey="1"
+                                    items={[
+                                        {
+                                            key: '1',
+                                            label: (
+                                                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                                                    Добавить подзадачу
+                                                  </span>
+                                            ),
+                                            children: (
+                                                selectAddSubTask && (
+                                                    <Card
+                                                        bordered={true}
+                                                        size="small"
+                                                        style={{ border: 1, borderStyle: 'dashed', borderColor: 'white' }}
+                                                    >
+                                                        <Flex align="center" vertical={true} justify="center" style={{ height: '100%' }}>
+                                                            <CreatSubTask
+                                                                form={form}
+                                                                onChangeModules={onChangeModules}
+                                                                optionsModules={optionsModules}
+                                                                optionsUserByModules={
+                                                                    editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules
+                                                                }
+                                                                fileListProps={fileListProps}
+                                                                setFileListProps={setFileListProps}
+                                                            />
+                                                        </Flex>
+                                                    </Card>
+                                                )
+                                            ),
+                                        },
+                                        {
+                                            key: '2',
+                                            label: (
+                                                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                                                    Добавить сотрудника
+                                                  </span>
+                                            ),
+                                            children: (
+                                                !selectAddSubTask && (
+                                                    <Card
+                                                        bordered={true}
+                                                        size="small"
+                                                        style={{ border: 1, borderStyle: 'dashed', borderColor: 'white' }}
+                                                    >
+                                                        <Flex align="center" vertical={true} justify="center" style={{ height: '100%' }}>
+                                                            <AddStaffTask
+                                                                optionsModules={optionsModules}
+                                                                optionsUserByModules={optionsUserByModules}
+                                                                onChangeModules={onChangeModules}
+                                                                isBoss={isBoss}
+                                                            />
+                                                        </Flex>
+                                                    </Card>
+                                                )
+                                            ),
+                                        },
+                                    ]}
+                                />
+                            ) : (
+                                <Card
+                                    bordered={true}
+                                    size="small"
+                                    style={{ border: 1, borderStyle: 'dashed', borderColor: 'white' }}
+                                >
+                                    <Flex align="center" vertical={true} justify="center" style={{ height: '100%' }}>
                                         <AddStaffTask
                                             optionsModules={optionsModules}
                                             optionsUserByModules={optionsUserByModules}
@@ -447,9 +451,10 @@ const TaskPostEdit = () => {
                                         />
                                     </Flex>
                                 </Card>
+                            )
                         }
-
                     </Col>
+
 
                     {/*    {*/}
                     {/*    selectAddSubTask ?*/}

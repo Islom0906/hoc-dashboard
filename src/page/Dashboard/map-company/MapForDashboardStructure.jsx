@@ -42,6 +42,34 @@ const MapForDashboardStructure = ({roleName}) => {
   const deleteHandle = (url, id) => {
     mutate({url, id});
   };
+  const items = [
+    {
+      key: '1',
+      label: (
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+        <FaMapMarkerAlt /> Карта
+      </span>
+      ),
+      children: (
+          <Col span={24} style={{ borderRadius: 10, overflow: 'hidden' }}>
+            <Map zoom={12} positions={getOffice?.results} mapHeight={400} />
+          </Col>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+        <FaListAlt /> Таблица
+      </span>
+      ),
+      children: (
+          <Col span={24} style={{ borderRadius: 10, overflow: 'hidden' }}>
+            <MapTable data={getOffice?.results} deleteHandle={deleteHandle} />
+          </Col>
+      ),
+    },
+  ];
   return (
       <>
         <Card size={"small"}>
@@ -63,32 +91,7 @@ const MapForDashboardStructure = ({roleName}) => {
             }
 
             <Col span={24} style={{ marginTop: 10 }}>
-              <Tabs defaultActiveKey="1">
-                <TabPane
-                    tab={
-                      <span style={{display:'flex' , alignItems:'center' , gap:5}}>
-                    <FaMapMarkerAlt /> Карта
-                  </span>
-                    }
-                    key="1"
-                >
-                  <Col span={24} style={{ borderRadius: 10, overflow: "hidden" }}>
-                    <Map zoom={12} positions={getOffice?.results} mapHeight={400} />
-                  </Col>
-                </TabPane>
-                <TabPane
-                    tab={
-                      <span style={{display:'flex' , alignItems:'center' , gap:5}}>
-                    <FaListAlt /> Таблица
-                  </span>
-                    }
-                    key="2"
-                >
-                  <Col span={24} style={{ borderRadius: 10, overflow: "hidden" }}>
-                    <MapTable data={getOffice?.results}  deleteHandle={deleteHandle}/>
-                  </Col>
-                </TabPane>
-              </Tabs>
+              <Tabs defaultActiveKey="1" items={items}/>
             </Col>
           </Row>
         </Card>

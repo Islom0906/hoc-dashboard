@@ -15,16 +15,48 @@
 
 .card--sub-task__card {
   padding-top: 25px;
-  padding-top: 10px;
-  borderRadius: 10;
+  border-radius: 10px;
   position: relative;
+
+  .task--card-info {
+    justify-content: space-between;
+    gap: 10px;
+
+    .task--card__status {
+      order: 2;
+
+      .ant-space-item {
+        width: 100%;
+
+      }
+    }
+
+    .task--card__text {
+      order: 1;
+    }
+  }
 }
 
 @media (max-width: 576px) {
   .card--sub-task__card {
-    padding: 5px;
-    padding-top: 20px;
+    padding-top: 25px;
 
+    .sub--task--title {
+      font-size: 20px;
+    }
+
+    .task--card-info {
+      flex-direction: column;
+      gap: 5px;
+
+      .task--card__status {
+        order: 1;
+      }
+
+      .task--card__text {
+        order: 2;
+      }
+    }
   }
 }
 
