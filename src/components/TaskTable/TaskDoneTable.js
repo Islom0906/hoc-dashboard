@@ -76,23 +76,24 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             id: "team",
             width: md ? 250:200,
             render: (text, record) => {
-                const users = [...(record.included_users || [])];
                 return (
                     <Flex justify={"space-between"} align={'center'}>
-                        <Avatar.Group >
-                            <AvatarUserProfile
-                                size={xl ? 40:xs ? 25 : 30}
-                                keyId={record?.responsible_user?.id}
-                                full_name={record?.responsible_user?.full_name}
-                                moduls={record?.responsible_user?.roles[0].position}
-                                image={record?.responsible_user?.image}
-                            />
-                        </Avatar.Group>
-                        <Avatar.Group  max={{
+                            {
+                                record?.responsible_user &&
+                                <AvatarUserProfile
+                                    size={xl ? 40:xs ? 25 : 30}
+                                    keyId={record?.responsible_user?.id}
+                                    full_name={record?.responsible_user?.full_name}
+                                    moduls={record?.responsible_user?.roles[0].position}
+                                    image={record?.responsible_user?.image}
+                                />
+                            }
+
+                        <Avatar.Group   max={{
                             count: 4,
                             style: { color: "#f56a00", backgroundColor: "#fde3cf" },
                         }} >
-                            {users.map((user) => (
+                            {record?.included_users?.map((user) => (
                                 <AvatarUserProfile
                                     key={user?.id}
                                     size={xl ? 40:xs ? 25 : 30}
