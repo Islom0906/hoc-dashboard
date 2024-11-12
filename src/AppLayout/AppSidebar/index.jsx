@@ -1,7 +1,7 @@
 import { Button, Flex, Menu } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import './index.scss';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import { samplePagesConfigs } from "../../page/routerPage";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -10,14 +10,23 @@ import { BsBoxArrowInLeft, BsBoxArrowInRight } from "react-icons/bs";
 const AppSidebar = () => {
     const [userRole, setUserRole] = useState(null);
     const [collapsed, setCollapsed] = useState(false);
+    const [defaultKey, setDefaultKey] = useState('')
     const { data: { user } } = useSelector(state => state.auth);
-
+const router=useLocation()
     useEffect(() => {
         if (user) {
             const roles = user.roles.map(item => item.role.name);
             setUserRole(roles);
         }
     }, [user]);
+
+    useEffect(() => {
+        const pathname=router.pathname.split('/')[1]
+
+        const defaultKey=samplePagesConfigs.filter(item=>item?.path.split('/')[1]===pathname&&!item?.path.split('/')[2])
+        setDefaultKey(`${defaultKey[0]?.key}`)
+    }, [router.pathname]);
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -67,7 +76,6 @@ const AppSidebar = () => {
                 ),
             };
         }) : [];
-
     return (
         <>
             <Sider
@@ -82,6 +90,7 @@ const AppSidebar = () => {
                         className="app-aside"
                         mode="inline"
                         items={menuItems}
+                        selectedKeys={[defaultKey]}
                     />
                     <Button
                         icon={collapsed ? <BsBoxArrowInRight style={{ fontSize: 24, height: '100%' }} /> :

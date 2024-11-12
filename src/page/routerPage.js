@@ -33,6 +33,7 @@ import {RxDashboard} from "react-icons/rx";
 import {BiSupport} from "react-icons/bi";
 import {GiNewspaper} from "react-icons/gi";
 import {GrStatusInfo} from "react-icons/gr";
+import {GoBook} from "react-icons/go";
 
 // import TaskEditBoss from "./TaskEditBoss";
 // import TaskEdit from "./TaskEditBoss/TaskEdit";
@@ -294,7 +295,7 @@ export const samplePagesConfigs = [
     },
     {
         key: 900000,
-        icon: <GiNewspaper className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
+        icon: <GoBook className={'icon'} style={{fontSize: 24, height: '100%'}}/>,
         label: 'Пресс-центр',
         path: '/press-center',
         element: PressCenter,
