@@ -61,7 +61,6 @@ const TaskCreated = () => {
   }, [staff, companyID]);
 
   // useEffect(() => {
-  //   console.log(staff,selectedOptionSearch)
   //   if (staff && companyID){
   //     refetch()
   //   }

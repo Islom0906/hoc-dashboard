@@ -16,11 +16,11 @@ const CreateWorker = () => {
     const navigate = useNavigate()
     const {mutate,isSuccess,isLoading:deleteLoading}=useDeleteQuery()
     const {companyID} = useSelector(state => state.companySlice)
+    const {data:{user}} = useSelector(state => state.auth)
     const {data,isLoading:getLoading,refetch}=useGetQuery(false,'create-worker-get',`/users/users` , false)
     const [search, setSearch] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
     const ScreenMD = useBreakpoint().md;
-
     useEffect(() => {
         if(companyID) {
         refetch()
@@ -58,9 +58,11 @@ const CreateWorker = () => {
                         </Title>
                     </Col>
                     {/*<FilterCompanyForAdmin/>*/}
-                    <Col span={16}>
+                    <Col span={   user?.roles[0]?.role?.name==='general_director' ?24 :16 }>
                         <Input placeholder="Поиск сотрудников" onChange={(e) => searchFunc(e.target.value)} />
                     </Col>
+                    {
+                        user?.roles[0]?.role?.name!=='general_director' &&
                     <Col span={8}>
                         <Button
                             type='primary'
@@ -72,6 +74,7 @@ const CreateWorker = () => {
                             }
                         </Button>
                     </Col>
+                    }
 
                 </Row>
                 <Spin

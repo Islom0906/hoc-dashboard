@@ -197,7 +197,7 @@ const TagCard = ({category, Edit, Delete, checkCategory, setCheckCategory}) => {
                 <Button
                     onClick={() => Edit(category?.id)}
                     type='dashed'
-                    out
+                    out={'true'}
                     icon={<EditOutlined/>}/>
                 <Popconfirm
                     title={'Вы уверены, что хотите удалить это?'}

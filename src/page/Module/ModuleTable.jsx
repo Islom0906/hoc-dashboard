@@ -43,7 +43,7 @@ const ModuleTable = ({data,deleteHandle}) => {
                     <Button
                         onClick={() => Edit(record.id)}
                         type='dashed'
-                        out
+                        out={"true"}
                         icon={<EditOutlined />}/>
                     <Popconfirm
                         title={'Вы уверены, что хотите удалить это?'}

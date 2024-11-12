@@ -5,6 +5,7 @@ import { useSelector} from "react-redux";
 import {EditGetById, onPreviewImage, SetInitialValue, SuccessCreateAndEdit} from "../../hooks";
 import {useEditQuery, useGetByIdQuery, usePostQuery} from "../../service/query/Queries";
 import {useQueryClient} from "react-query";
+import {useLocation} from "react-router-dom";
 
 
 const initialValueForm = {
@@ -15,10 +16,13 @@ const initialValueForm = {
 
 const CompanyPostEdit = () => {
     const [form] = Form.useForm();
-    const {editId} = useSelector(state => state.query)
+    // const {editId} = useSelector(state => state.query)
     const [fileListPropsDark, setFileListPropsDark] = useState([]);
     const [fileListPropsLight, setFileListPropsLight] = useState([]);
-
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const editId = queryParams.get('editId');
+    console.log(editId)
     // query-company
     const {
         mutate: postCompanyMutate,
@@ -43,7 +47,7 @@ const CompanyPostEdit = () => {
     SuccessCreateAndEdit(postCompanySuccess,putCompanySuccess,'/company')
     // if edit compant
 
-    EditGetById(editCompanyRefetch)
+    EditGetById(editCompanyRefetch,editId)
     // if no edit company
     SetInitialValue(form,initialValueForm)
     //edit company
@@ -86,6 +90,26 @@ const CompanyPostEdit = () => {
             postCompanyMutate({url: `/users/companies/`, data: formData});
         }
     }
+
+    // refresh page again get data
+    useEffect(() => {
+        const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
+        if (storedValues) {
+            // storedValues.image = []
+            const data = {
+                ...storedValues,
+                image_light: 'editDataId',
+                image_dark: 'editDataId',
+            }
+            form.setFieldsValue(data);
+        }
+
+        return () => {
+            localStorage.removeItem('editDataId')
+            // localStorage.removeItem('myFormValues')
+        }
+    }, []);
+
     const onChangeImageLight = ({fileList: newFileList } ) => {
         setFileListPropsLight(newFileList);
     };

@@ -15,7 +15,6 @@ dayjs.locale('ru');
 
 
 const CustomCalendar = ({ dataBirthDay, dataMeeting, refetchMeeting, dataDeadline, colorMeeting , setFilterDate }) => {
-    console.log('render calendar')
 
     const [value, setValue] = useState(() => dayjs());
     const [filterForColor, setFilterForColor] = useState('all');

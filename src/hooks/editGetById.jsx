@@ -1,11 +1,11 @@
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
 
-const EditGetById = (getByIdRefetch) => {
+const EditGetById = (getByIdRefetch,id) => {
     const {editId} = useSelector(state => state.query)
 
     useEffect(() => {
-        if (editId !== "") {
+        if (editId !== ""||id) {
             getByIdRefetch();
         }
     }, [editId]);

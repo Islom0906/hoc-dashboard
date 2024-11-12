@@ -234,7 +234,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                             </>
 
                     }
-                    <Badge dot={record?.is_checking}>
+                    <Badge dot={record?.is_checking} style={{width:"auto"}}>
                         <EyeButton>
                             <Button
                                 size={xs ?'small':"middle"}

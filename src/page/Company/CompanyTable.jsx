@@ -12,9 +12,9 @@ const CompanyTable = ({data,deleteHandle}) => {
         deleteHandle('/users/tag',id)
     };
     const Edit = (id) => {
-        localStorage.setItem('editDataId',id)
-        dispatch(editIdQuery(id))
-        navigate('/company/add')
+        // localStorage.setItem('editDataId',id)
+        // dispatch(editIdQuery(id))
+        navigate(`/company/add?editId=${id}`)
     };
     const columns = [
         {
@@ -57,7 +57,7 @@ const CompanyTable = ({data,deleteHandle}) => {
                     <Button
                         onClick={() => Edit(record.id)}
                         type='dashed'
-                        out
+                        out={"true"}
                         icon={<EditOutlined />}/>
                     <Popconfirm
                         title={'Вы уверены, что хотите удалить это?'}
