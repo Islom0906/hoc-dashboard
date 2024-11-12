@@ -7,7 +7,7 @@ import React, {useEffect, useState} from "react";
 import {useDeleteQuery, usePostQuery} from "../../service/query/Queries";
 const {Title} = Typography
 
-const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,form ,fileListProps,setFileListProps}) => {
+const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,form ,fileListProps,setFileListProps,handleSubListRemove}) => {
   const [fileListNumber, setFileListNumber] = useState([]);
   const {
     mutate: imagesDeleteMutate
@@ -70,7 +70,7 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                         <Col span={2}>
                           {
                             index>0 &&
-                          <Button  danger onClick={() => remove(field.name)}>
+                          <Button  danger onClick={() => handleSubListRemove(remove,field.name,index)}>
                             <MinusCircleOutlined
                             />
                           </Button>
@@ -131,7 +131,7 @@ const CreatSubTask = ({optionsUserByModules, optionsModules, onChangeModules  ,f
                                 }]}
                                 placeholder='Выберите сотрудника'
                                 optionLabelProp='label'
-                                options={optionsUserByModules && optionsUserByModules[0]?.length > 0 ? optionsUserByModules[index] : optionsUserByModules}
+                                options={optionsUserByModules[index] ? optionsUserByModules[index]:[]}
                             />
                           </Form.Item>
                         </Col>
