@@ -32,11 +32,6 @@ const SuccessTask = () => {
     }
   }, [isSuccessGetTask]);
 
-  // const onPaginationChange = (page, pageSize) => {
-  //   setCurrentPage(page);
-  //   setPageSize(pageSize);
-  // };
-
   useEffect(() => {
     const fetchData = () => {
       if (roleName === 'admin' || roleName === 'general_director') {
@@ -67,12 +62,9 @@ const SuccessTask = () => {
                 <Col span={24}>
                   <h2>Ваши выполненные задачи:</h2>
                 </Col>
-                <Col span={24}>
-                  {/*<Spin spinning={isLoadingStaffGetTask}>*/}
-                  {/*</Spin>*/}
-                </Col>
               </Row>
                   <TaskDoneTable
+                      isLoading={isLoadingStaffGetTask}
                       data={staffGetTask?.results}
                       pagination={pagination}
                       setPagination={setPagination}

@@ -73,7 +73,7 @@ const UserProfile = () => {
     } , [userID])
 
     useEffect(() => {
-        if(userID){
+        if(userID && roleName !== 'staff' && roleName !== 'boss' ){
             if((taskStatusTab === 'failed'|| taskStatusTab ===  'progress')) {
                 refetchGetUserTaskStatusProgressFailed()
             }else if( taskStatusTab === 'done') {
