@@ -100,7 +100,7 @@ const TaskCreated = () => {
 
   const getTagCompanyArray = useMemo(() => {
     return Object.entries(GetTagCompany).map(([key, value]) => ({
-      text: value?.title,
+      text: `${value?.title} (${value?.count})`,
       value: value?.id,
     }));
   }, [GetTagCompany]);
