@@ -2,7 +2,7 @@ import {Avatar,  Tooltip} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import {ProfileHoverActive} from "../index";
 
-const AvatarUserProfile = ({ full_name , moduls  , image , keyId ,size ,company}) => {
+const AvatarUserProfile = ({ full_name , moduls  , image , keyId ,size ,company ,style}) => {
 
   return (
       <Tooltip
@@ -13,8 +13,9 @@ const AvatarUserProfile = ({ full_name , moduls  , image , keyId ,size ,company}
           placement="top"
       >
         <Avatar
-            style={{flexShrink:0}}
+            style={{flexShrink:0 , style}}
             size={size}
+
             icon={
               image ? (
                   <img

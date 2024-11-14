@@ -1,8 +1,8 @@
-import {Avatar, Badge, Button, Flex, Table, Tag,} from "antd";
+import {Avatar, Badge, Button, Flex, Space, Table, Tag,} from "antd";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 import {AvatarUserProfile, EyeButton, HistoryCard} from "../../components";
-import {FaFileDownload, FaRegEye} from "react-icons/fa";
+import {FaFileDownload, FaRegEye, FaSortDown} from "react-icons/fa";
 import './index.scss'
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
@@ -18,7 +18,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             title: "Компания",
             dataIndex: "company",
             id: "company",
-            width: md ? 120:80,
+            width: md ? 110:80,
             filters: getTagCompanyArray,
             render: (text , record) =>
                 <AvatarUserProfile
@@ -32,10 +32,10 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             title: "Создано",
             dataIndex: "created_by",
             id: "created_by",
-            width: md ? 120:80,
+            width: md ? 110:80,
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={xl ? 50:xs ? 30 : 40}
+                    size={xl ? 40:xs ? 20 : 30}
                     keyId={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
@@ -53,8 +53,8 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
             title: "Крайний срок",
             dataIndex: "deadline",
             id: "deadline",
-            width:md ? 150:180,
-            render: (_, record) =>  <Tag className={'deadline-tag'} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
+            width:md ? 120:180,
+            render: (_, record) => <Flex vertical={true} justify={"center"} align={"center"} gap={1}> <Tag className={'deadline-tag'} style={{marginBottom:0}} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}</Tag> <FaSortDown size={9} /> <Tag style={{marginBottom:0}}  className={'deadline-tag'} color={"purple"} > {dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag></Flex>,
         },
         {
             title: "История",
@@ -81,7 +81,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
                             {
                                 record?.responsible_user &&
                                 <AvatarUserProfile
-                                    size={xl ? 40:xs ? 25 : 30}
+                                    size={xl ? 40:xs ? 20 : 30}
                                     keyId={record?.responsible_user?.id}
                                     full_name={record?.responsible_user?.full_name}
                                     moduls={record?.responsible_user?.roles[0].position}
@@ -96,7 +96,7 @@ const TaskDoneTable = ({ data,  getTagCompanyArray , isLoading , pagination, han
                             {record?.included_users?.map((user) => (
                                 <AvatarUserProfile
                                     key={user?.id}
-                                    size={xl ? 40:xs ? 25 : 30}
+                                    size={xl ? 40:xs ? 20 : 30}
                                     keyId={user?.id}
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}

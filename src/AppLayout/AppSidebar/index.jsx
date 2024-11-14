@@ -39,9 +39,7 @@ const AppSidebar = () => {
         setCollapsed(!collapsed);
     };
 
-    const menuItems = userRole ? samplePagesConfigs
-        .filter(menu => isPermitted(menu.permittedRole) && !menu.noIndex)
-        .map((menu) => {
+    const menuItems = userRole ? samplePagesConfigs.filter(menu => isPermitted(menu.permittedRole) && !menu.noIndex).map((menu) => {
             if (menu.items) {
                 return {
                     key: menu.key,

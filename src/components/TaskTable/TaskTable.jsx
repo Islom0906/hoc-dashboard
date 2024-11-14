@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import DeadlineStatusColor from "../../hooks/deadlineStatusColor";
 import {AvatarUserProfile, EyeButton, HistoryCard} from "../../components";
 import {deadlineColor} from "../../constants/deadlineColor";
-import {FaRegEye} from "react-icons/fa";
+import {FaRegEye, FaSortDown} from "react-icons/fa";
 import './index.scss'
 import useBreakpoint from "antd/es/grid/hooks/useBreakpoint";
 
@@ -68,7 +68,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             width: md ? 120:80,
             render: (text , record) =>
                 <AvatarUserProfile
-                    size={xl ? 50:xs ? 30 : 40}
+                    size={xl ? 40:xs ? 20 : 30}
                     keyId={record?.created_by?.id}
                     company={record?.created_by?.roles[0].position}
                     full_name={record?.created_by?.full_name}
@@ -91,7 +91,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
             id: "deadline",
             sorter: {multiple: 3},
             width:md ? 150:180,
-            render: (_, record) =>  <Tag className={'deadline-tag'} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}-{ dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag>,
+            render: (_, record) => <Flex vertical={true} justify={"center"} align={"center"} gap={1}> <Tag className={'deadline-tag'} style={{marginBottom:0}} color={"purple"} > {dayjs(record?.created_at).format("DD.MM.YYYY")}</Tag> <FaSortDown size={9} /> <Tag style={{marginBottom:0}}  className={'deadline-tag'} color={"purple"} > {dayjs(record?.deadline).format("DD.MM.YYYY")}</Tag></Flex>,
         },
         {
             title: "Статус",
@@ -156,7 +156,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                         {
                             record?.responsible_user &&
                             <AvatarUserProfile
-                            size={xl ? 40:xs ? 25 : 30}
+                                size={xl ? 40:xs ? 20 : 30}
                             keyId={record?.responsible_user?.id}
                             full_name={record?.responsible_user?.full_name}
                             moduls={record?.responsible_user?.roles[0].position}
@@ -175,7 +175,7 @@ const TaskTable = ({ data, deleteHandle, getTagCompanyArray , pagination, setPag
                                     full_name={user?.full_name}
                                     moduls={user?.roles[0].position}
                                     image={user?.image}
-                                    size={xl ? 40:xs ? 25 : 30}
+                                    size={xl ? 40:xs ? 20 : 30}
                                 />
                             ))}
                         </Avatar.Group>
