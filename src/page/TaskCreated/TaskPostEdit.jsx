@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import {useEditQuery, useGetByIdQuery, useGetQuery, usePostQuery} from "../../service/query/Queries";
 import CreatSubTask from "./CreatSubTask";
 import AddStaffTask from "./AddStaffTask";
-import TabPane from "antd/es/tabs/TabPane";
 
 const {Title,Text} = Typography
 const initialValueForm = {
@@ -45,9 +44,10 @@ const TaskPostEdit = () => {
 
     const [selectModulesID, setSelectModulesID] = useState(null)
     const [fileListProps, setFileListProps] = useState([[]]);
-    const {companyID} = useSelector(state => state.companySlice)
     const [selectAddSubTask, setSelectAddSubTask] = useState(false)
     const [subTaskStaffs, setSubTaskStaffs] = useState([])
+    const [subTaskListIndex, setSubTaskListIndex] = useState(null)
+    const {companyID} = useSelector(state => state.companySlice)
 
     const handleTabChange = (key) => {
         setSelectAddSubTask(key === '1')
@@ -205,21 +205,9 @@ const TaskPostEdit = () => {
 
     // refresh page again get data
     useEffect(() => {
-        // const storedValues = JSON.parse(localStorage.getItem('myFormValues'));
-        // if (storedValues) {
-        //     // storedValues.image = []
-        //     const data = {
-        //         ...storedValues,
-        //         deadline: dayjs(storedValues?.deadline)
-        //     }
-        //     form.setFieldsValue(data);
-        // }
         const handleBeforeUnload = (event) => {
             event.preventDefault()
-            // localStorage.setItem(
-            //     'myFormValues',
-            //     JSON.stringify(form.getFieldsValue()),
-            // );
+
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => {
@@ -256,20 +244,41 @@ const TaskPostEdit = () => {
             };
         });
     }, [getModules]);
+
     // option module
     const optionsUserByModules = useMemo(() => {
-        return getUserByModules?.results?.map((option) => {
-            return {
-                value: option?.id,
-                label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
-            };
-        });
+        if (!selectAddSubTask) {
+            return getUserByModules?.results?.map((option) => {
+                return {
+                    value: option?.id,
+                    label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
+                };
+            });
+        }
     }, [getUserByModules]);
 
 
+    useEffect(() => {
+        if (selectAddSubTask) {
+            const data = getUserByModules?.results?.map((option) => {
+                return {
+                    value: option?.id,
+                    label: `${option?.full_name}  Позиция- (${option?.roles[0].position})`,
+                };
+            });
+            const prevSubTaskStaffs = [...subTaskStaffs]
+            prevSubTaskStaffs[subTaskListIndex] = data
+            setSubTaskStaffs(prevSubTaskStaffs)
+        }
+    }, [getUserByModules]);
+
     const onChangeModules = (id, index) => {
+        const prevSubTaskStaffs = [...subTaskStaffs]
+        prevSubTaskStaffs[index] = []
+        setSubTaskStaffs(prevSubTaskStaffs)
         setSelectModulesID(id)
-        setSubTaskStaffs([])
+        setSubTaskListIndex(index)
+
         if (selectAddSubTask) {
             const getValueStaff = form.getFieldValue('sub_tasks')
             getValueStaff[index] = {...getValueStaff[index], staff: null}
@@ -280,6 +289,14 @@ const TaskPostEdit = () => {
             form.setFieldsValue({allModuls: getValueModules})
         }
     }
+    const handleSubListRemove=(remove,name,index)=>{
+        const prevSubTaskStaffs = [...subTaskStaffs]
+        prevSubTaskStaffs.splice(index,1)
+
+        setSubTaskStaffs(prevSubTaskStaffs)
+        remove(name)
+    }
+
     useEffect(() => {
         if (companyID) {
             if (!isBoss) {
@@ -394,11 +411,12 @@ const TaskPostEdit = () => {
                                                     >
                                                         <Flex align="center" vertical={true} justify="center" style={{ height: '100%' }}>
                                                             <CreatSubTask
+                                                                handleSubListRemove={handleSubListRemove}
                                                                 form={form}
                                                                 onChangeModules={onChangeModules}
                                                                 optionsModules={optionsModules}
                                                                 optionsUserByModules={
-                                                                    editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules
+                                                                    subTaskStaffs
                                                                 }
                                                                 fileListProps={fileListProps}
                                                                 setFileListProps={setFileListProps}
@@ -456,35 +474,7 @@ const TaskPostEdit = () => {
                     </Col>
 
 
-                    {/*    {*/}
-                    {/*    selectAddSubTask ?*/}
-                    {/*        <Col span={24}>*/}
-                    {/*            <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>*/}
-                    {/*                <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>*/}
-                    {/*                    <CreatSubTask  form={form}  onChangeModules={onChangeModules} optionsModules={optionsModules}*/}
-                    {/*                                   optionsUserByModules={editTaskSuccess && subTaskStaffs?.length > 0 ? subTaskStaffs : optionsUserByModules}*/}
-                    {/*                                   fileListProps={fileListProps}*/}
-                    {/*                                   setFileListProps={setFileListProps}*/}
-                    {/*                    />*/}
-                    {/*                </Flex>*/}
-                    {/*            </Card>*/}
 
-                    {/*        </Col>*/}
-                    {/*        :*/}
-                    {/*        <Col span={24}>*/}
-
-                    {/*            <Card bordered={true} style={{border: 1, borderStyle: "dashed", borderColor: "white"}}>*/}
-                    {/*                <Flex align={'center'} vertical={true} justify={"center"} style={{height: "100%"}}>*/}
-                    {/*                    <AddStaffTask*/}
-                    {/*                        optionsModules={optionsModules}*/}
-                    {/*                        optionsUserByModules={optionsUserByModules}*/}
-                    {/*                        onChangeModules={onChangeModules}*/}
-                    {/*                        isBoss={isBoss}*/}
-                    {/*                    />*/}
-                    {/*                </Flex>*/}
-                    {/*            </Card>*/}
-                    {/*        </Col>*/}
-                    {/*}*/}
                     <Col span={24}>
                         <Form.Item
                             label={'Ответственный'}
