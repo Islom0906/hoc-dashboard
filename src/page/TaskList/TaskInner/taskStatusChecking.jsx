@@ -10,9 +10,10 @@ const TaskStatusChecking = ({ id, task_manager, task_status, roles, user_id, cre
     const handleStatusUpdate = (status) => updateStatus(id, status);
 
     if (task_manager === user_id) {
+        console.log('task_manager === user_id' , task_manager , user_id)
         if (task_status === 'done') {
             return <StatusTag  status={'done'} text={'done'}/>;
-        } else if (task_status === 'progress') {
+        } else if (task_status === 'progress' ||task_status === 'failed') {
             return (
                 <Popconfirm
                     cancelText="Отменить"

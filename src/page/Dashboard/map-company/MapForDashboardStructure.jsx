@@ -1,5 +1,5 @@
 import { Button, Card, Col, Flex, Row, Typography, Tabs } from "antd";
-import { FaPlus, FaMapMarkerAlt, FaListAlt } from "react-icons/fa"; // Import icons
+import { FaPlus, FaMapMarkerAlt, FaListAlt } from "react-icons/fa";
 import { Map } from "../../../components";
 import MapTable from "./map-table";
 import { useNavigate } from "react-router-dom";
@@ -7,26 +7,8 @@ import {useDeleteQuery, useGetQuery} from "../../../service/query/Queries";
 import {useEffect} from "react";
 
 const { Title } = Typography;
-const { TabPane } = Tabs;
 
-const positions = [
-  {
-    latitude: 41.2995,
-    longitude: 69.2401,
-    name: 'Tashkent',
-    fulladdress: 'Tashkent, Uzbekistan',
-    category: 'Capital',
-    icon: 'https://gacauto.uz/icon.png',
-  },
-  {
-    latitude: 40.7821,
-    longitude: 72.3500,
-    name: 'Andijan',
-    fulladdress: 'Andijan Region, Uzbekistan',
-    category: 'Region',
-    icon: 'https://gacauto.uz/icon.png',
-  },
-];
+
 
 const MapForDashboardStructure = ({roleName}) => {
   const navigate = useNavigate();
